@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>{% block title site.name %}</title>
+        <meta name="description" content="{% block description site.description %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="{{ site.authorName }}">
+        <meta name="generator" content="Ideys Expose">
+        {% if site.verificationKey|length %}
+        <meta name="google-site-verification" content="{{ site.verificationKey }}">
+        {% endif %}
+        <link rel="stylesheet" href="{{ app.request.basepath }}/css/normalize.css">
+        <link rel="stylesheet" href="{{ app.request.basepath }}/css/foundation.min.css">
+        <link rel="stylesheet" href="{{ app.request.basepath }}/css/main.css">
+        {% block head %}{% endblock %}
+        <script src="{{ app.request.basepath }}/js/vendor/custom.modernizr.js"></script>
+    </head>
+    <body class="background-{{ site.layoutBackground }}">
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <div class="row">
+          <div class="twelve columns">
+            {% for type, flashMessages in app.session.flashbag.all() %}
+              {% for flashMessage in flashMessages %}
+                <div class="alert-box {{ type }}">
+                    {{ flashMessage|raw }}
+                    <a href="" class="close">&times;</a>
+                </div>
+              {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% block content %}{% endblock %}
+
+        <div id="footer">{% block footer %}{% endblock %}</div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="{{ app.request.basepath }}/js/vendor/jquery.js"><\/script>')</script>
+        <script src="{{ app.request.basepath }}/js/vendor/foundation.min.js"></script>
+        <script src="{{ app.request.basepath }}/js/plugins.js"></script>
+        <script src="{{ app.request.basepath }}/js/main.js"></script>
+        {% block javascripts %}{% endblock %}
+
+        {% if site.analyticsKey|length %}
+        <!-- Google Analytics -->
+        <script type="text/javascript">
+          var _gaq = _gaq || [];
+          _gaq.push(['_setAccount', '{{ site.analyticsKey }}']);
+          _gaq.push(['_trackPageview']);
+
+          (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+          })();
+        </script>
+        {% endif %}
+    </body>
+</html>
