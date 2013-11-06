@@ -12,6 +12,9 @@ Desktop.ini
 /vendor/*
 composer.lock
 
+# User assets
+/web/gallery/*
+
 # Others
 [Bb]in
 [Oo]bj

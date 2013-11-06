@@ -28,6 +28,8 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
     $settings = new Settings($app);
     $twig->addGlobal('site', $settings->getAll());
+    $gallery = new Gallery($app);
+    $twig->addGlobal('sections', $gallery->findSections());
 
     return $twig;
 }));

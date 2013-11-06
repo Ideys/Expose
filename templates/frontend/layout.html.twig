@@ -1,0 +1,49 @@
+{% extends "layout.html.twig" %}
+
+{% block content -%}
+<nav class="top-bar">
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
+    </li>
+    <li class="toggle-topbar menu-icon">
+      <a href="#"><span></span></a>
+    </li>
+  </ul>
+  <section class="top-bar-section">
+    <ul class="left">
+      {% for section in sections if section.active == 1 %}
+        {% if section.sections|length %}
+        <li class="has-dropdown">
+          <a href="#">{{ section.title }}</a>
+          <ul class="dropdown">
+            {% for child in section.sections if child.active == 1 %}
+            <li>
+              <a href="{{ path('section', {'slug': child.slug}) }}">
+                {{ child.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {% else %}
+        <li>
+          <a href="{{ path('section', {'slug': section.slug}) }}">
+            {{ section.title }}
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <ul class="right">
+      <li class="divider show-for-small"></li>
+      <li>
+        <a href="{{ path('contact') }}">
+          {{ 'contact.contact'|trans }}
+        </a>
+      </li>
+    </ul>
+  </section>
+</nav>
+{% block main %}{% endblock %}
+{%- endblock content%}
