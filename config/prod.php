@@ -18,6 +18,20 @@ $app['swiftmailer.options'] = array(
     'auth_mode' => null
 );
 
+$app['security.firewalls'] = array(
+    'admin' => array(
+        'pattern' => '^/[a-z]{2}/admin',
+        'http' => true,
+        'remember_me' => array(
+            'key' => '2QRXS92PSXZ5SWGF5UB1LS901ZDPGYNNLG98H2BU',
+            'always_remember_me' => true,
+        ),
+        'users' => $app->share(function () use ($app) {
+            return new UserProvider($app['db']);
+        }),
+    ),
+);
+
 $app['twig.path'] = array(__DIR__.'/../templates');
 $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 

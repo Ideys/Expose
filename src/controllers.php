@@ -19,6 +19,8 @@ $app->get('/', function () use ($app) {
 
 $app->mount('/{_locale}', include 'controllers/frontend.php');
 
+$app->mount('/{_locale}/admin', include 'controllers/backend.php');
+
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
         return;

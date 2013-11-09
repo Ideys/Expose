@@ -11,8 +11,8 @@ $frontendController->get('/', function () use ($app) {
 
 $frontendController->get('/theme/{slug}', function ($slug) use ($app) {
 
-    $gallery = new Gallery($app);
-    $section = $gallery->findSection($slug);
+    $content = new Content($app);
+    $section = $content->findSection($slug);
 
     return $app['twig']->render('frontend/'.$section['type'].'.html.twig', array(
       'section' => $section,

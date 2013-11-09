@@ -18,8 +18,6 @@ Debug::enable();
 
 $app = require __DIR__.'/../src/app.php';
 require __DIR__.'/../config/dev.php';
-require __DIR__.'/../src/util/tools.php';
-require __DIR__.'/../src/util/Settings.php';
-require __DIR__.'/../src/util/Gallery.php';
+require __DIR__.'/../src/data.php';
 require __DIR__.'/../src/controllers.php';
 $app->run();

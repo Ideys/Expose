@@ -1,14 +1,14 @@
 <?php
 
 /**
- * App gallery manager.
+ * App content manager.
  */
-class Gallery
+class Content
 {
     /**
-     * @var Doctrine
+     * @var Doctrine\DBAL\Connection
      */
-    private $orm;
+    private $db;
 
     /**
      * @var string
@@ -28,12 +28,12 @@ class Gallery
      */
     public function __construct($app)
     {
-        $this->orm = $app['db'];
+        $this->db = $app['db'];
         $this->language = 'fr';
     }
 
     /**
-     * Return gallery sections.
+     * Return sections.
      *
      * @return array
      */
@@ -43,13 +43,13 @@ class Gallery
             return $this->sections;
         }
 
-        $sql = "SELECT s.*, t.title, t.description, t.credits
+        $sql = "SELECT s.*, t.title, t.description
                 FROM expose_section AS s
                 LEFT JOIN expose_section_trans AS t
                 ON t.expose_section_id = s.id
                 WHERE t.language = ?
                 ORDER BY s.hierarchy ASC";
-        $sections = $this->orm->fetchAll($sql, array($this->language));
+        $sections = $this->db->fetchAll($sql, array($this->language));
 
         // Use sql primary keys as array keys and add sections tree
         foreach ($sections as $section) {
@@ -69,20 +69,20 @@ class Gallery
     }
 
     /**
-     * Return a gallery section.
+     * Return a section.
      *
      * @return array
      */
     public function findSection($slug)
     {
-        $sql = "SELECT s.*, t.title, t.description, t.credits
+        $sql = "SELECT s.*, t.title, t.description
                 FROM expose_section AS s
                 LEFT JOIN expose_section_trans AS t
                 ON t.expose_section_id = s.id
                 WHERE s.slug = ?
                 AND t.language = ?
                 ORDER BY s.hierarchy ASC";
-        $section = $this->orm->fetchAssoc($sql, array($slug, $this->language));
+        $section = $this->db->fetchAssoc($sql, array($slug, $this->language));
 
         return $section;
     }

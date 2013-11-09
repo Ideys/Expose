@@ -1,0 +1,42 @@
+{% extends "layout.html.twig" %}
+
+{% block content -%}
+<nav class="top-bar">
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
+    </li>
+    <li class="toggle-topbar menu-icon">
+      <a href="#"><span></span></a>
+    </li>
+  </ul>
+  <section class="top-bar-section">
+    <ul class="left">
+      <li>
+        <a href="{{ path('admin_content_manager') }}">
+          {{ 'admin.content.manager'|trans }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('admin_site_settings') }}">
+          {{ 'admin.site.settings'|trans }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ path('admin_users_manager') }}">
+          {{ 'admin.users.manager'|trans }}
+        </a>
+      </li>
+    </ul>
+    <ul class="right">
+      <li class="divider show-for-small"></li>
+      <li>
+        <a href="{{ path('admin_logout') }}">
+          {{ 'admin.users.logout'|trans }}
+        </a>
+      </li>
+    </ul>
+  </section>
+</nav>
+{% block main %}{% endblock %}
+{%- endblock content%}
