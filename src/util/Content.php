@@ -88,4 +88,23 @@ class Content
 
         return $section;
     }
+
+    /**
+     * Create a new section.
+     */
+    public function addSection($type, $title, $description, $language, $active = false)
+    {
+        $this->db->insert('expose_section', array(
+            'type' => $type,
+            'slug' => slugify($title),
+            'active' => $active,
+        ));
+        $sectionId = $this->db->lastInsertId();
+        $this->db->insert('expose_section_trans', array(
+            'expose_section_id' => $sectionId,
+            'title' => $title,
+            'description' => $description,
+            'language' => $language,
+        ));
+    }
 }

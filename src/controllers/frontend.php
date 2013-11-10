@@ -11,7 +11,7 @@ $frontendController->get('/', function () use ($app) {
 
 $frontendController->get('/theme/{slug}', function ($slug) use ($app) {
 
-    $content = new Content($app);
+    $content = new Content($app['db']);
     $section = $content->findSection($slug);
 
     return $app['twig']->render('frontend/'.$section['type'].'.html.twig', array(

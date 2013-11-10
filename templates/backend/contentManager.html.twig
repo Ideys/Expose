@@ -1,5 +1,30 @@
 {% extends "backend/layout.html.twig" %}
 
 {% block main -%}
-My admin!
+<div class="row">
+  <div class="large-12 columns">
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+          <legend>{{ 'section.new'|trans }}</legend>
+          {{ form_row(form.type) }}
+          {{ form_row(form.title) }}
+          {{ form_row(form.description) }}
+          {{ form_row(form.active) }}
+        </fieldset>
+        <div class="hidden">
+          {{ form_rest(form) }}
+        </div>
+        <input type="submit" name="submit"
+               value="{{ 'submit'|trans }}" class="tiny button">
+    {{ form_end(form) }}
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+    {% for section in sections %}
+    {{ section.slug }}
+    {% endfor %}
+  </div>
+</div>
 {%- endblock main %}

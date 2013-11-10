@@ -27,7 +27,7 @@ if (!$schema->tablesExist('expose_section')) {
     $table = new Table('expose_section');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
-    $table->addColumn('expose_section_id', 'integer', array('unsigned' => true));
+    $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('type', 'string', array('length' => 32));
     $table->addColumn('slug', 'string', array('length' => 255));
@@ -44,7 +44,7 @@ if (!$schema->tablesExist('expose_section_trans')) {
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true));
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('title', 'string', array('length' => 255));
-    $table->addColumn('description', 'string', array('length' => 500, 'nullable' => true));
+    $table->addColumn('description', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('language', 'string', array('length' => 5));
 
     $schema->createTable($table);
@@ -56,7 +56,7 @@ if (!$schema->tablesExist('expose_settings')) {
     $table->setPrimaryKey(array('id'));
     $table->addColumn('attribute', 'string', array('length' => 255));
     $table->addUniqueIndex(array('attribute'));
-    $table->addColumn('value', 'text', array('nullable' => true));
+    $table->addColumn('value', 'text', array('default' => null, 'notnull' => false));
 
     $schema->createTable($table);
 }

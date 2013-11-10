@@ -4,9 +4,9 @@ $backendController = $app['controllers_factory'];
 
 $backendController->get('/', function () use ($app) {
 
-    return $app['twig']->render('backend/contentManager.html.twig');
+    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
 })
-->bind('admin_content_manager')
+->bind('admin')
 ;
 
 $backendController->get('/logout', function () use ($app) {
