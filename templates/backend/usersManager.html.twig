@@ -1,5 +1,37 @@
 {% extends "backend/layout.html.twig" %}
 
 {% block main -%}
-Users manager
+<div class="row">
+  <div class="small-12 large-6 columns">
+    {% for user in users %}
+    <div class="panel">
+      <h5>{{ user.username }}</h5>
+      <p>{{ user.roles }}</p>
+      <a href="#" data-dropdown="drop" class="tiny button dropdown">
+        {{ 'actions'|trans }}
+      </a>
+      <br>
+      <ul id="drop" data-dropdown-content="" class="f-dropdown">
+        <li><a href="#">{{ 'edit'|trans }}</a></li>
+        <li><a href="#">{{ 'delete'|trans }}</a></li>
+      </ul>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="small-12 large-6 columns">
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+          {{ form_row(form.username) }}
+        </fieldset>
+        <fieldset>
+          {{ form_row(form.password) }}
+        </fieldset>
+        <div class="hidden">
+          {{ form_rest(form) }}
+        </div>
+        <input type="submit" name="submit" value="Valider" class="tiny button">
+    {{ form_end(form) }}
+  </div>
+</div>
 {%- endblock main %}

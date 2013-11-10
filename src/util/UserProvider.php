@@ -33,6 +33,28 @@ class UserProvider implements UserProviderInterface
         return new User($user['username'], $user['password'], explode(',', $user['roles']), true, true, true, true);
     }
 
+    public function findAll()
+    {
+        $users = $this->db->fetchAll('SELECT * FROM expose_user');
+
+        return $users;
+    }
+
+    public function addUser($security, $username, $password, array $roles = array('ROLE_USER'))
+    {
+        $user = new User($username, $password, $roles);
+        $encoder = $security->getEncoder($user);
+        $password = $encoder->encodePassword($password, $user->getSalt());
+
+        $this->db->insert('expose_user', array(
+            'username' => $username,
+            'password' => $password,
+            'roles' => implode(',', $roles),
+        ));
+
+        return $user;
+    }
+
     public function refreshUser(UserInterface $user)
     {
         if (!$user instanceof User) {

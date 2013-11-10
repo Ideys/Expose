@@ -16,13 +16,6 @@ $backendController->get('/settings', function () use ($app) {
 ->bind('admin_site_settings')
 ;
 
-$backendController->get('/users', function () use ($app) {
-
-    return $app['twig']->render('backend/usersManager.html.twig');
-})
-->bind('admin_users_manager')
-;
-
 $backendController->get('/logout', function () use ($app) {
 
     $app['session']->remove('user');
