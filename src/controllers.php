@@ -21,6 +21,8 @@ $app->mount('/{_locale}', include 'controllers/frontend.php');
 
 $app->mount('/{_locale}/admin', include 'controllers/backend.php');
 
+$app->mount('/{_locale}/admin/settings', include 'controllers/backend/siteSettings.php');
+
 $app->mount('/{_locale}/admin/users', include 'controllers/backend/usersManager.php');
 
 $app->error(function (\Exception $e, $code) use ($app) {

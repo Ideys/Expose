@@ -9,13 +9,6 @@ $backendController->get('/', function () use ($app) {
 ->bind('admin_content_manager')
 ;
 
-$backendController->get('/settings', function () use ($app) {
-
-    return $app['twig']->render('backend/siteSettings.html.twig');
-})
-->bind('admin_site_settings')
-;
-
 $backendController->get('/logout', function () use ($app) {
 
     $app['session']->remove('user');

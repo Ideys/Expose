@@ -1,5 +1,35 @@
 {% extends "backend/layout.html.twig" %}
 
 {% block main -%}
-Site settings
+<div class="row">
+  <div class="small-12 large-6 columns">
+    {{ form_start(form) }}
+        {{ form_errors(form) }}
+        <fieldset>
+          <legend>{{ 'site'|trans }}</legend>
+          {{ form_row(form.name) }}
+          {{ form_row(form.description) }}
+          {{ form_row(form.authorName) }}
+        </fieldset>
+        <fieldset>
+          <legend>Google</legend>
+          {{ form_row(form.analyticsKey) }}
+          {{ form_row(form.verificationKey) }}
+        </fieldset>
+        <fieldset>
+          <legend>{{ 'site.style'|trans }}</legend>
+          {{ form_row(form.layoutBackground) }}
+        </fieldset>
+        <fieldset>
+          <legend>{{ 'contact.contact'|trans }}</legend>
+          {{ form_row(form.contactContent) }}
+        </fieldset>
+        <div class="hidden">
+          {{ form_rest(form) }}
+        </div>
+        <input type="submit" name="submit"
+               value="{{ 'submit'|trans }}" class="tiny button">
+    {{ form_end(form) }}
+  </div>
+</div>
 {%- endblock main %}

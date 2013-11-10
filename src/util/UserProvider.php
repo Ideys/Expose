@@ -13,7 +13,7 @@ use Doctrine\DBAL\Connection;
 class UserProvider implements UserProviderInterface
 {
     /**
-     * @var Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Connection
      */
     private $db;
 

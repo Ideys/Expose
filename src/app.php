@@ -34,9 +34,9 @@ $app->register(new ImagineServiceProvider());
 $app->register(new TwigServiceProvider());
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
-    $settings = new Settings($app);
+    $settings = new Settings($app['db']);
     $twig->addGlobal('site', $settings->getAll());
-    $content = new Content($app);
+    $content = new Content($app['db']);
     $twig->addGlobal('sections', $content->findSections());
 
     return $twig;

@@ -49,3 +49,14 @@ if (!$schema->tablesExist('expose_section_trans')) {
 
     $schema->createTable($table);
 }
+
+if (!$schema->tablesExist('expose_settings')) {
+    $table = new Table('expose_settings');
+    $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+    $table->setPrimaryKey(array('id'));
+    $table->addColumn('attribute', 'string', array('length' => 255));
+    $table->addUniqueIndex(array('attribute'));
+    $table->addColumn('value', 'text', array('nullable' => true));
+
+    $schema->createTable($table);
+}

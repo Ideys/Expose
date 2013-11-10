@@ -46,4 +46,6 @@ $usersManagerController->match('/', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
+$usersManagerController->assert('_locale', implode('|', $app['languages']));
+
 return $usersManagerController;

@@ -1,12 +1,14 @@
 <?php
 
+use Doctrine\DBAL\Connection;
+
 /**
  * App content manager.
  */
 class Content
 {
     /**
-     * @var Doctrine\DBAL\Connection
+     * @var \Doctrine\DBAL\Connection
      */
     private $db;
 
@@ -26,9 +28,9 @@ class Content
      *
      * @param array $app
      */
-    public function __construct($app)
+    public function __construct(Connection $connection)
     {
-        $this->db = $app['db'];
+        $this->db = $connection;
         $this->language = 'fr';
     }
 
