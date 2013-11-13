@@ -15,6 +15,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 
 require __DIR__.'/util/Content.php';
+require __DIR__.'/util/Messaging.php';
 require __DIR__.'/util/Settings.php';
 require __DIR__.'/util/UserProvider.php';
 require __DIR__.'/util/tools.php';

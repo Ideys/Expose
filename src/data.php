@@ -50,6 +50,18 @@ if (!$schema->tablesExist('expose_section_trans')) {
     $schema->createTable($table);
 }
 
+if (!$schema->tablesExist('expose_messaging')) {
+    $table = new Table('expose_messaging');
+    $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+    $table->setPrimaryKey(array('id'));
+    $table->addColumn('name', 'string', array('length' => 255));
+    $table->addColumn('email', 'string', array('length' => 255));
+    $table->addColumn('message', 'text');
+    $table->addColumn('date', 'datetime');
+
+    $schema->createTable($table);
+}
+
 if (!$schema->tablesExist('expose_settings')) {
     $table = new Table('expose_settings');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
