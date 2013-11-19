@@ -92,13 +92,16 @@ class Content
     /**
      * Create a new section.
      */
-    public function addSection($type, $title, $description, $language, $active = false)
+    public function addSection($type, $title, $description, $dirId, $language, $active = false)
     {
+        $dirId = is_numeric($dirId) ? (int)$dirId : null;
         $this->db->insert('expose_section', array(
+            'expose_section_id' => $dirId,
             'type' => $type,
             'slug' => slugify($title),
             'active' => $active,
         ));
+
         $sectionId = $this->db->lastInsertId();
         $this->db->insert('expose_section_trans', array(
             'expose_section_id' => $sectionId,

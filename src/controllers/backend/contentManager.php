@@ -8,6 +8,13 @@ $contentManagerController = $app['controllers_factory'];
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $content = new Content($app['db']);
+    $dirsChoice = array();
+    $sections = $content->findSections();
+    foreach ($sections as $section) {
+        if ('dir' === $section['type']) {
+            $dirsChoice[$section['id']] = $section['title'];
+        }
+    }
 
     $form = $app['form.factory']->createBuilder('form')
         ->add('type', 'choice', array(
@@ -15,6 +22,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
                 'slideshow' => 'section.slideshow',
                 'video' => 'section.video',
                 'page' => 'section.page',
+                'dir' => 'section.dir',
             ),
             'label'         => 'section.type',
         ))
@@ -24,6 +32,11 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
         ->add('description', 'textarea', array(
             'required'      => false,
             'label'         => 'section.description',
+        ))
+        ->add('dir', 'choice', array(
+            'choices'       => $dirsChoice,
+            'required'      => false,
+            'label'         => 'section.dir',
         ))
         ->add('active', 'checkbox', array(
             'required'      => false,
@@ -39,6 +52,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
                 $data['type'],
                 $data['title'],
                 $data['description'],
+                $data['dir'],
                 $language,
                 $data['active']
         );

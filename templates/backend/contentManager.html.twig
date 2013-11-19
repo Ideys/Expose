@@ -10,6 +10,7 @@
           {{ form_row(form.type) }}
           {{ form_row(form.title) }}
           {{ form_row(form.description) }}
+          {{ form_row(form.dir) }}
           {{ form_row(form.active) }}
         </fieldset>
         <div class="hidden">
@@ -23,7 +24,20 @@
 <div class="row">
   <div class="large-12 columns">
     {% for section in sections %}
-    {{ section.slug }}
+      {% if 'dir' == section.type %}
+        <h3>{{ section.title }}</h3>
+        <div class="section-container accordion"
+             data-section="accordion">
+          {% for section in section.sections %}
+            {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="section-container accordion"
+             data-section="accordion">
+          {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
+        </div>
+      {% endif %}
     {% endfor %}
   </div>
 </div>
