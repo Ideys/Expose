@@ -26,7 +26,8 @@
             {% endfor %}
           </ul>
         </li>
-        {% else %}
+        {# An empty dir is not a content #}
+        {% elseif section.type != 'dir' %}
         <li>
           <a href="{{ path('section', {'slug': section.slug}) }}">
             {{ section.title }}

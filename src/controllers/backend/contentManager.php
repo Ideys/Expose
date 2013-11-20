@@ -20,6 +20,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
         ->add('type', 'choice', array(
             'choices'       => array(
                 'slideshow' => 'content.slideshow',
+                'gallery' => 'content.gallery',
                 'video' => 'content.video',
                 'page' => 'content.page',
                 'dir' => 'content.dir',
