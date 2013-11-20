@@ -12,6 +12,7 @@ use Silex\Provider\RememberMeServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 
 require __DIR__.'/util/Content.php';
@@ -33,6 +34,15 @@ $app->register(new SwiftmailerServiceProvider());
 $app->register(new TranslationServiceProvider());
 $app->register(new ImagineServiceProvider());
 $app->register(new TwigServiceProvider());
+$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+    $translator->addLoader('yaml', new YamlFileLoader());
+
+    foreach ($app['languages'] as $lg) {
+        $translator->addResource('yaml', __DIR__.'/locales/'.$lg.'.yml', $lg);
+    }
+
+    return $translator;
+}));
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
     $settings = new Settings($app['db']);

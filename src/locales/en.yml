@@ -1,0 +1,54 @@
+## English.
+
+user:
+    name: Username
+    login: Login
+    logout: Logout
+    password: Password
+    access: Access
+
+contact:
+    contact: Contact
+    name: Name
+    email: Email
+    message: Message
+    send: Send
+    content: Contact section content
+
+section:
+    sections: Sections
+    title: Title
+    description: Description
+    active: Display section
+    new: New section
+
+content:
+    content: Content
+    type: Content type
+    slideshow: Slideshow
+    gallery: Gallery
+    video: Video
+    page: Page
+    dir: Directory
+
+messaging:
+    messaging: Messaging
+
+site:
+    site: Website
+    settings: Settings
+    name: Site name
+    description: Site description
+    author: Author
+    style: Layout
+    background:
+      background: Background
+      white: White layout
+      black: Black layout
+
+google:
+    analytics.key: Google Analytics key
+    verification.key: Google verification key
+
+submit: Submit
+actions: Actions

@@ -19,12 +19,12 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $form = $app['form.factory']->createBuilder('form')
         ->add('type', 'choice', array(
             'choices'       => array(
-                'slideshow' => 'section.slideshow',
-                'video' => 'section.video',
-                'page' => 'section.page',
-                'dir' => 'section.dir',
+                'slideshow' => 'content.slideshow',
+                'video' => 'content.video',
+                'page' => 'content.page',
+                'dir' => 'content.dir',
             ),
-            'label'         => 'section.type',
+            'label'         => 'content.type',
         ))
         ->add('title', 'text', array(
             'label'         => 'section.title',
@@ -36,7 +36,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
         ->add('dir', 'choice', array(
             'choices'       => $dirsChoice,
             'required'      => false,
-            'label'         => 'section.dir',
+            'label'         => 'content.dir',
         ))
         ->add('active', 'checkbox', array(
             'required'      => false,

@@ -4,7 +4,9 @@
 <div class="row">
   <div class="large-4 columns">
     {{ site.contactContent }}
-    <a href="{{ path('admin') }}">admin</a>
+    <a href="{{ path('admin') }}">
+      {{ 'user.login'|trans }}
+    </a>
   </div>
   <div class="large-8 columns">
     {{ form_start(form) }}
@@ -18,7 +20,7 @@
           {{ form_rest(form) }}
         </div>
         <input type="submit" name="submit"
-               value="{{ 'submit'|trans }}" class="tiny button">
+               value="{{ 'contact.send'|trans }}" class="tiny button">
     {{ form_end(form) }}
   </div>
 </div>

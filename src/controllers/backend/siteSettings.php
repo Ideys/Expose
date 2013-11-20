@@ -50,7 +50,7 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
                 'black' => 'site.background.black',
                 'white' => 'site.background.white',
             ),
-            'label'         => 'site.background',
+            'label'         => 'site.background.background',
         ))
         ->add('contactContent', 'textarea', array(
             'required'      => false,

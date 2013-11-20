@@ -1,0 +1,54 @@
+## Français.
+
+user:
+    name: Nom d'utilisateur
+    login: Connexion
+    logout: Déconnexion
+    password: Mot de passe
+    access: Accès
+
+contact:
+    contact: Contact
+    name: Nom
+    email: Email
+    message: Message
+    send: Envoyer
+    content: Contenu de la section contact
+
+section:
+    sections: Sections
+    title: Titre
+    description: Description
+    active: Afficher la section
+    new: New section
+
+content:
+    content: Contenu
+    type: Type de contenu
+    slideshow: Diaporama
+    gallery: Galerie
+    video: Vidéo
+    page: Page
+    dir: Dossier
+
+messaging:
+    messaging: Messagerie
+
+site:
+    site: Site Internet
+    settings: Paramétrages
+    name: Nom du site
+    description: Description du site
+    author: Auteur
+    style: Mise en forme
+    background:
+      background: Arrière plan
+      white: Fond blanc
+      black: Fond noir
+
+google:
+    analytics.key: Clé de Google Analytics
+    verification.key: Clé de vérification Google
+
+submit: Valider
+actions: Actions

@@ -15,13 +15,13 @@ $usersManagerController->match('/', function (Request $request) use ($app) {
                 new Assert\Length(array('min' => 5)),
                 new Assert\NotBlank(),
             ),
-            'label'         => 'username',
+            'label'         => 'user.name',
         ))
         ->add('password', 'password', array(
             'constraints'   => array(
                 new Assert\NotBlank()
             ),
-            'label'         => 'password',
+            'label'         => 'user.password',
         ))
         ->getForm();
 
