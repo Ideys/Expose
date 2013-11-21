@@ -6,6 +6,7 @@ user:
     logout: Déconnexion
     password: Mot de passe
     access: Accès
+    deletion.error: Impossible de supprimer l'utilisateur
 
 contact:
     contact: Contact
@@ -13,6 +14,7 @@ contact:
     email: Email
     message: Message
     send: Envoyer
+    info.sent: Le message a bien été envoyé.
     content: Contenu de la section contact
 
 section:

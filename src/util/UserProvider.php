@@ -3,6 +3,7 @@
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\User;
+use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Doctrine\DBAL\Connection;
@@ -53,6 +54,28 @@ class UserProvider implements UserProviderInterface
         ));
 
         return $user;
+    }
+
+    /**
+     * Delete a user.
+     * @param integer                                           $id
+     * @param \Symfony\Component\Security\Core\SecurityContext  $security
+     * @return boolean
+     */
+    public function deleteUser($id, SecurityContext $security)
+    {
+        $loggedUser = $security->getToken()->getUser();
+
+        // A user could not delete himself
+        $user = $this->db->fetchAssoc('SELECT * FROM expose_user WHERE id = ?', array($id));
+
+        if ($loggedUser->getUsername() == $user['username']) {
+            return false;
+        }
+
+        $this->db->delete('expose_user', array('id' => $id));
+
+        return true;
     }
 
     public function refreshUser(UserInterface $user)

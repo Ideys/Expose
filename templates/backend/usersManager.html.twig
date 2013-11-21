@@ -7,13 +7,13 @@
     <div class="panel">
       <h5>{{ user.username }}</h5>
       <p>{{ user.roles }}</p>
-      <a href="#" data-dropdown="drop" class="tiny button dropdown">
+      <a href="#" data-dropdown="user_action{{ user.id }}" class="tiny button dropdown">
         {{ 'actions'|trans }}
       </a>
       <br>
-      <ul id="drop" data-dropdown-content="" class="f-dropdown">
+      <ul id="user_action{{ user.id }}" data-dropdown-content="" class="f-dropdown">
         <li><a href="#">{{ 'edit'|trans }}</a></li>
-        <li><a href="#">{{ 'delete'|trans }}</a></li>
+        <li><a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}">{{ 'delete'|trans }}</a></li>
       </ul>
     </div>
     {% endfor %}

@@ -38,6 +38,15 @@ class Messaging
     }
 
     /**
+     * Delete a message.
+     * @param integer $id
+     */
+    public function delete($id)
+    {
+        $this->db->delete('expose_messaging', array('id' => $id));
+    }
+
+    /**
      * Retrieve all messages.
      */
     public function findAll()

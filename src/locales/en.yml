@@ -6,6 +6,7 @@ user:
     logout: Logout
     password: Password
     access: Access
+    deletion.error: Unable to remove user
 
 contact:
     contact: Contact
@@ -13,6 +14,7 @@ contact:
     email: Email
     message: Message
     send: Send
+    info.sent: The message has been sent.
     content: Contact section content
 
 section:

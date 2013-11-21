@@ -46,6 +46,20 @@ $usersManagerController->match('/', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
+$usersManagerController->get('/{id}/delete', function ($id) use ($app) {
+
+    $userProvider = new UserProvider($app['db']);
+    if (false === $userProvider->deleteUser($id, $app['security'])) {
+        $app['session']
+            ->getFlashBag()
+            ->add('alert', $app['translator']->trans('user.deletion.error'));
+    }
+
+    return $app->redirect($app['url_generator']->generate('admin_users_manager'));
+})
+->bind('admin_user_manager_delete')
+;
+
 $usersManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $usersManagerController;
