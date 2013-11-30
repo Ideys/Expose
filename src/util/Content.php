@@ -22,6 +22,11 @@ class Content
      */
     private $sections = array();
 
+    const CONTENT_GALLERY   = 'gallery';
+    const CONTENT_VIDEO     = 'video';
+    const CONTENT_PAGE      = 'page';
+    const CONTENT_FORM      = 'form';
+    const CONTENT_DIR       = 'dir';
 
     /**
      * Constructor: inject required Silex dependencies.
@@ -109,5 +114,30 @@ class Content
             'description' => $description,
             'language' => $language,
         ));
+    }
+
+    /**
+     * Return content types keys
+     *
+     * @return array
+     */
+    public static function getContentTypes()
+    {
+        return array(
+            self::CONTENT_GALLERY,
+            self::CONTENT_VIDEO,
+            self::CONTENT_PAGE,
+            self::CONTENT_FORM,
+            self::CONTENT_DIR,
+        );
+    }
+
+    public static function getContentTypesChoice()
+    {
+        $keys = static::getContentTypes();
+        $values = array_map(function($item){
+            return 'content.'.$item;
+        }, $keys);
+        return array_combine($keys, $values);
     }
 }

@@ -18,13 +18,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $form = $app['form.factory']->createBuilder('form')
         ->add('type', 'choice', array(
-            'choices'       => array(
-                'slideshow' => 'content.slideshow',
-                'gallery' => 'content.gallery',
-                'video' => 'content.video',
-                'page' => 'content.page',
-                'dir' => 'content.dir',
-            ),
+            'choices'       => Content::getContentTypesChoice(),
             'label'         => 'content.type',
         ))
         ->add('title', 'text', array(
