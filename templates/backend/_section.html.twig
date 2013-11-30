@@ -1,9 +1,7 @@
-<section>
-  <p class="title" data-section-title>
-    <a href="#">{{ section.title }}</a>
-  </p>
-  <div class="content" data-section-content>
+<dd>
+  <a href="#panel{{ section.id }}">{{ section.title }}</a>
+  <div class="content" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
     {% block content %}{% endblock %}
   </div>
-</section>
+</dd>

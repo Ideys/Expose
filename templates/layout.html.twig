@@ -18,7 +18,7 @@
         <link rel="stylesheet" href="{{ app.request.basepath }}/css/foundation.min.css">
         <link rel="stylesheet" href="{{ app.request.basepath }}/css/main.css">
         {% block head %}{% endblock %}
-        <script src="{{ app.request.basepath }}/js/vendor/custom.modernizr.js"></script>
+        <script src="{{ app.request.basepath }}/js/vendor/modernizr.js"></script>
     </head>
     <body class="background-{{ site.layoutBackground }}">
         <!--[if lt IE 7]>
@@ -42,10 +42,9 @@
 
         <div id="footer">{% block footer %}{% endblock %}</div>
 
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="{{ app.request.basepath }}/js/vendor/jquery.js"><\/script>')</script>
         <script src="{{ app.request.basepath }}/js/vendor/foundation.min.js"></script>
-        <script src="{{ app.request.basepath }}/js/plugins.js"></script>
         <script src="{{ app.request.basepath }}/js/main.js"></script>
         {% block javascripts %}{% endblock %}
         <script>

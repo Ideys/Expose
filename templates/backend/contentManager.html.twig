@@ -26,17 +26,15 @@
     {% for section in sections %}
       {% if 'dir' == section.type %}
         <h3>{{ section.title }}</h3>
-        <div class="section-container accordion"
-             data-section="accordion">
+        <dl class="accordion" data-accordion>
           {% for section in section.sections %}
             {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
           {% endfor %}
-        </div>
+        </dl>
       {% else %}
-        <div class="section-container accordion"
-             data-section="accordion">
+        <dl class="accordion" data-accordion>
           {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
-        </div>
+        </dl>
       {% endif %}
     {% endfor %}
   </div>
