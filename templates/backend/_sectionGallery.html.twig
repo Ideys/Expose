@@ -1,5 +1,14 @@
 {% embed "backend/_section.html.twig" with {'section': section} only %}
 {% block content %}
-Gallery
+<dl class="tabs" data-tab>
+  <dd class="active"><a href="#panel{{ section.id }}-1">{{ 'content.gallery'|trans }}</a></dd>
+  <dd><a href="#panel{{ section.id }}-2">{{ 'settings'|trans }}</a></dd>
+</dl>
+<div class="tabs-content">
+  <div class="content active" id="panel{{ section.id }}-1">
+  </div>
+  <div class="content" id="panel{{ section.id }}-2">
+  </div>
+</div>
 {% endblock content %}
 {% endembed %}

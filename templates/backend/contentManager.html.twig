@@ -31,10 +31,12 @@
             {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
           {% endfor %}
         </dl>
+        <hr>
       {% else %}
         <dl class="accordion" data-accordion>
           {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
         </dl>
+        <hr>
       {% endif %}
     {% endfor %}
   </div>

@@ -78,6 +78,7 @@ class Content
     /**
      * Return a section.
      *
+     * @param string $slug Section slug
      * @return array
      */
     public function findSection($slug)
@@ -95,6 +96,26 @@ class Content
     }
 
     /**
+     * Return a section.
+     *
+     * @param integer $id Section id
+     * @return array
+     */
+    public function findSectionItems($id)
+    {
+        $sql = "SELECT i.*, t.title, t.description, t.content
+                FROM expose_section_item AS i
+                LEFT JOIN expose_section_item_trans AS t
+                ON t.expose_section_item_id = i.id
+                WHERE i.expose_section_id = ?
+                AND t.language = ?
+                ORDER BY i.hierarchy ASC";
+        $items = $this->db->fetchAssoc($sql, array($id, $this->language));
+
+        return $items;
+    }
+
+    /**
      * Create a new section.
      */
     public function addSection($type, $title, $description, $dirId, $language, $active = false)
@@ -105,13 +126,35 @@ class Content
             'type' => $type,
             'slug' => slugify($title),
             'active' => $active,
-        ));
+        ) + $this->blameAndTimestampData());
 
         $sectionId = $this->db->lastInsertId();
         $this->db->insert('expose_section_trans', array(
             'expose_section_id' => $sectionId,
             'title' => $title,
             'description' => $description,
+            'language' => $language,
+        ));
+    }
+
+    /**
+     * Insert a new content.
+     */
+    public function addItem($type, $path, $title, $description, $content, $language)
+    {
+        $dirId = is_numeric($dirId) ? (int)$dirId : null;
+        $this->db->insert('expose_section_item', array(
+            'expose_section_id' => $dirId,
+            'type' => $type,
+            'path' => $path,
+        ) + $this->blameAndTimestampData());
+
+        $itemId = $this->db->lastInsertId();
+        $this->db->insert('expose_section_item_trans', array(
+            'expose_section_id' => $itemId,
+            'title' => $title,
+            'description' => $description,
+            'content' => $content,
             'language' => $language,
         ));
     }
@@ -132,6 +175,12 @@ class Content
         );
     }
 
+    /**
+     * Return content types keys and trans values
+     * Used on select forms.
+     *
+     * @return array
+     */
     public static function getContentTypesChoice()
     {
         $keys = static::getContentTypes();
@@ -139,5 +188,23 @@ class Content
             return 'content.'.$item;
         }, $keys);
         return array_combine($keys, $values);
+    }
+
+    /**
+     * Define user author and timestamp for persisted data.
+     *
+     * @return array
+     */
+    private function blameAndTimestampData($id = 0)
+    {
+        $userId = null;
+        $datetime = (new \DateTime())->format('u');
+        return array(
+            'updated_by' => $userId,
+            'updated_at' => $datetime,
+        ) + (($id == 0) ? array(
+            'created_by' => $userId,
+            'created_at' => $datetime,
+        ) : array());
     }
 }
