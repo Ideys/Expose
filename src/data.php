@@ -55,7 +55,7 @@ if (!$schema->tablesExist('expose_section_item')) {
     $table = new Table('expose_section_item');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
-    $table->addColumn('expose_section_id', 'integer', array('unsigned' => true));
+    $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('type', 'string', array('length' => 55));
     $table->addColumn('path', 'string', array('length' => 255, 'default' => null, 'notnull' => false));

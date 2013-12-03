@@ -23,6 +23,8 @@ $app->mount('/{_locale}/admin', include 'controllers/backend.php');
 
 $app->mount('/{_locale}/admin/content', include 'controllers/backend/contentManager.php');
 
+$app->mount('/{_locale}/admin/upload', include 'controllers/backend/uploadManager.php');
+
 $app->mount('/{_locale}/admin/messaging', include 'controllers/backend/messagingManager.php');
 
 $app->mount('/{_locale}/admin/settings', include 'controllers/backend/siteSettings.php');

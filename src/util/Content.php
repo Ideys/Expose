@@ -140,7 +140,7 @@ class Content
     /**
      * Insert a new content.
      */
-    public function addItem($type, $path, $title, $description, $content, $language)
+    public function addItem($dirId, $type, $path, $title, $description, $content, $language)
     {
         $dirId = is_numeric($dirId) ? (int)$dirId : null;
         $this->db->insert('expose_section_item', array(
@@ -151,7 +151,7 @@ class Content
 
         $itemId = $this->db->lastInsertId();
         $this->db->insert('expose_section_item_trans', array(
-            'expose_section_id' => $itemId,
+            'expose_section_item_id' => $itemId,
             'title' => $title,
             'description' => $description,
             'content' => $content,

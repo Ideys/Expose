@@ -1,6 +1,6 @@
 <dd>
   <a href="#panel{{ section.id }}">{{ section.title }}</a>
-  <div class="content" id="panel{{ section.id }}">
+  <div class="content {{ type }}" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
     {% block content %}{% endblock %}
   </div>
