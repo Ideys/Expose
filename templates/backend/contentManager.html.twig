@@ -4,20 +4,34 @@
 <div class="row">
   <div class="large-12 columns">
     {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <fieldset>
-          <legend>{{ 'section.new'|trans }}</legend>
-          {{ form_row(form.type) }}
-          {{ form_row(form.title) }}
-          {{ form_row(form.description) }}
-          {{ form_row(form.dir) }}
-          {{ form_row(form.active) }}
-        </fieldset>
-        <div class="hidden">
-          {{ form_rest(form) }}
+      {{ form_errors(form) }}
+      <div class="row">
+        <div class="medium-8 columns">
+          {{ form_widget(form.title) }}
         </div>
-        <input type="submit" name="submit"
-               value="{{ 'submit'|trans }}" class="tiny button">
+        <div class="medium-4 columns">
+          {{ form_widget(form.type) }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="medium-12 columns">
+          {{ form_widget(form.description) }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="medium-8 columns">
+          {{ form_widget(form.dir) }}
+        </div>
+        <div class="medium-4 columns">
+          {{ form_widget(form.active) }}
+          {{ form_label(form.active) }}
+        </div>
+      </div>
+      <div class="hidden">
+        {{ form_rest(form) }}
+      </div>
+      <input type="submit" name="submit"
+             value="{{ 'submit'|trans }}" class="tiny button">
     {{ form_end(form) }}
   </div>
 </div>

@@ -33,6 +33,7 @@ content:
     page: Page
     form: Formulaire
     dir: Dossier
+    root: Racine
 
 picture:
     upload: Télécharger des images

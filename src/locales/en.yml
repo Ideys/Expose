@@ -33,6 +33,7 @@ content:
     page: Page
     form: Form
     dir: Directory
+    root: Root
 
 picture:
     upload: Upload pictures

@@ -25,15 +25,22 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
         ))
         ->add('title', 'text', array(
             'label'         => 'section.title',
+            'attr' => array(
+                'placeholder' => 'section.new',
+            ),
         ))
         ->add('description', 'textarea', array(
             'required'      => false,
             'label'         => 'section.description',
+            'attr' => array(
+                'placeholder' => 'section.description',
+            ),
         ))
         ->add('dir', 'choice', array(
             'choices'       => $dirsChoice,
             'required'      => false,
             'label'         => 'content.dir',
+            'empty_value'   => 'content.root',
         ))
         ->add('active', 'checkbox', array(
             'required'      => false,
