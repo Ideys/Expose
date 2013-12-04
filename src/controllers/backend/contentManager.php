@@ -10,13 +10,15 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $content = new Content($app['db']);
     $dirsChoice = array();
     $sections = $content->findSections();
+    $items = $content->findItems();
+
     foreach ($sections as $section) {
         if ('dir' === $section['type']) {
             $dirsChoice[$section['id']] = $section['title'];
         }
     }
 
-    $form = $app['form.factory']->createBuilder('form')
+    $form = $app['form.factory']->createBuilder('form', array('active' => true))
         ->add('type', 'choice', array(
             'choices'       => Content::getContentTypesChoice(),
             'label'         => 'content.type',
@@ -56,6 +58,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
     return $app['twig']->render('backend/contentManager.html.twig', array(
         'form' => $form->createView(),
+        'items' => $items,
     ));
 })
 ->bind('admin_content_manager')

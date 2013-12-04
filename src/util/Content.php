@@ -22,6 +22,11 @@ class Content
      */
     private $sections = array();
 
+    /**
+     * @var array
+     */
+    private $items = array();
+
     const CONTENT_GALLERY   = 'gallery';
     const CONTENT_VIDEO     = 'video';
     const CONTENT_PAGE      = 'page';
@@ -76,6 +81,33 @@ class Content
     }
 
     /**
+     * Return all items.
+     *
+     * @return array
+     */
+    public function findItems()
+    {
+        if (!empty($this->items)) {
+            return $this->items;
+        }
+
+        $sql = "SELECT i.*, t.title, t.description, t.content
+                FROM expose_section_item AS i
+                LEFT JOIN expose_section_item_trans AS t
+                ON t.expose_section_item_id = i.id
+                WHERE t.language = ?
+                ORDER BY i.hierarchy ASC";
+        $items = $this->db->fetchAll($sql, array($this->language));
+
+        //Group by section ids
+        foreach ($items as $item) {
+            $this->items[(int)$item['expose_section_id']][] = $item;
+        }
+
+        return $this->items;
+    }
+
+    /**
      * Return a section.
      *
      * @param string $slug Section slug
@@ -110,7 +142,7 @@ class Content
                 WHERE i.expose_section_id = ?
                 AND t.language = ?
                 ORDER BY i.hierarchy ASC";
-        $items = $this->db->fetchAssoc($sql, array($id, $this->language));
+        $items = $this->db->fetchAll($sql, array($id, $this->language));
 
         return $items;
     }

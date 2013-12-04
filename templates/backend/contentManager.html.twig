@@ -28,13 +28,15 @@
         <h3>{{ section.title }}</h3>
         <dl class="accordion" data-accordion>
           {% for section in section.sections %}
-            {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
+            {% include "backend/_section"~section.type|capitalize~".html.twig"
+                  with {'section': section, 'items': items} only %}
           {% endfor %}
         </dl>
         <hr>
       {% else %}
         <dl class="accordion" data-accordion>
-          {% include "backend/_section"~section.type|capitalize~".html.twig" with {'section': section} only %}
+          {% include "backend/_section"~section.type|capitalize~".html.twig"
+                with {'section': section, 'items': items} only %}
         </dl>
         <hr>
       {% endif %}

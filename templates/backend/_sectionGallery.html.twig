@@ -1,4 +1,5 @@
-{% embed "backend/_section.html.twig" with {'section': section, 'type': 'gallery'} only %}
+{% embed "backend/_section.html.twig"
+    with {'section': section, 'items': items, 'type': 'gallery'} only %}
 {% block content -%}
 <dl class="tabs" data-tab>
   <dd class="active">
@@ -19,6 +20,15 @@
 </dl>
 <div class="tabs-content">
   <div class="content active" id="panel{{ section.id }}-1">
+    {% if items[section.id] is defined %}
+    <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-6">
+      {% for item in items[section.id] %}
+      <li>
+        <img class="th" src="{{ app.request.basepath }}/gallery/{{ item.path }}">
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
   </div>
   <div class="content" id="panel{{ section.id }}-2">
   </div>

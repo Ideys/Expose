@@ -38,6 +38,11 @@ $uploadManagerController->post('/', function (Request $request) use ($app) {
                 $data['content'],
                 $data['language']
         );
+        $transformation = new \Imagine\Filter\Transformation();
+        $transformation->thumbnail(new \Imagine\Image\Box(220, 220))
+            ->save($app['gallery.dir'].'/220/'.$data['path']);
+        $transformation->apply($app['imagine']
+            ->open($app['gallery.dir'].'/'.$data['path']));
 
         $jsonResponse[] = array(
             'path' => $data['path'],

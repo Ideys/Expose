@@ -16,9 +16,11 @@ $frontendController->get('/theme/{slug}', function ($slug) use ($app) {
 
     $content = new Content($app['db']);
     $section = $content->findSection($slug);
+    $items = $content->findSectionItems($section['id']);
 
     return $app['twig']->render('frontend/'.$section['type'].'.html.twig', array(
       'section' => $section,
+      'items' => $items,
     ));
 })
 ->bind('section')
