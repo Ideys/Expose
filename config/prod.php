@@ -20,8 +20,14 @@ $app['swiftmailer.options'] = array(
 
 $app['security.firewalls'] = array(
     'admin' => array(
-        'pattern' => '^/[a-z]{2}/admin',
-        'http' => true,
+        'pattern' => '^/admin',
+        'form' => array(
+            'login_path'  => '/login',
+            'check_path'  => '/admin/login_check',
+        ),
+        'logout' => array(
+            'logout_path' => '/admin/logout',
+        ),
         'remember_me' => array(
             'key' => '2QRXS92PSXZ5SWGF5UB1LS901ZDPGYNNLG98H2BU',
             'always_remember_me' => true,

@@ -17,19 +17,35 @@ $app->get('/', function () use ($app) {
 ->bind('root')
 ;
 
+$app->get('/admin', function () use ($app) {
+
+    $language = client_language_guesser($app);
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager', array('_locale' => $language)));
+})
+->bind('admin')
+;
+
+$app->get('/login', function(Request $request) use ($app) {
+    return $app['twig']->render('backend/login.html.twig', array(
+        'error'         => $app['security.last_error']($request),
+        'last_username' => $app['session']->get('_security.last_username'),
+    ));
+})
+->bind('admin_login')
+;
+
 $app->mount('/{_locale}', include 'controllers/frontend.php');
 
-$app->mount('/{_locale}/admin', include 'controllers/backend.php');
+$app->mount('/admin/{_locale}/content', include 'controllers/backend/contentManager.php');
 
-$app->mount('/{_locale}/admin/content', include 'controllers/backend/contentManager.php');
+$app->mount('/admin/{_locale}/upload', include 'controllers/backend/uploadManager.php');
 
-$app->mount('/{_locale}/admin/upload', include 'controllers/backend/uploadManager.php');
+$app->mount('/admin/{_locale}/messaging', include 'controllers/backend/messagingManager.php');
 
-$app->mount('/{_locale}/admin/messaging', include 'controllers/backend/messagingManager.php');
+$app->mount('/admin/{_locale}/settings', include 'controllers/backend/siteSettings.php');
 
-$app->mount('/{_locale}/admin/settings', include 'controllers/backend/siteSettings.php');
-
-$app->mount('/{_locale}/admin/users', include 'controllers/backend/usersManager.php');
+$app->mount('/admin/{_locale}/users', include 'controllers/backend/usersManager.php');
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {

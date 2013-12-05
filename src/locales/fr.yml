@@ -57,6 +57,9 @@ google:
     analytics.key: Clé de Google Analytics
     verification.key: Clé de vérification Google
 
+admin:
+    admin: Admin
+
 submit: Valider
 actions: Actions
 settings: Paramétrages

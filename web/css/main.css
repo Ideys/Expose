@@ -97,16 +97,11 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
-
-
-
-
-
-
-
-
-
-
+#admin-link {
+   position: fixed;
+   bottom: 0px;
+   right: 30px;
+}
 
 
 

@@ -57,6 +57,9 @@ google:
     analytics.key: Google Analytics key
     verification.key: Google verification key
 
+admin:
+    admin: Admin
+
 submit: Submit
 actions: Actions
 settings: Settings

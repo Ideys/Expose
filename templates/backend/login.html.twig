@@ -1,0 +1,16 @@
+{% extends "layout.html.twig" %}
+
+{% block content -%}
+<div class="row">
+  <div class="medium-6 medium-centered columns">
+    <form action="{{ path('admin_login_check') }}"
+          method="POST"
+          style="margin-top: 28%">
+      {{ error }}
+      <input type="text" name="_username" value="{{ last_username }}">
+      <input type="password" name="_password" value="">
+      <button type="submit" class="button small">{{ 'submit'|trans }}</button>
+    </form>
+  </div>
+</div>
+{%- endblock content %}
