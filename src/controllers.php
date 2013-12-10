@@ -39,6 +39,8 @@ $app->mount('/{_locale}', include 'controllers/frontend.php');
 
 $app->mount('/admin/{_locale}/content', include 'controllers/backend/contentManager.php');
 
+$app->mount('/admin/{_locale}/form', include 'controllers/backend/formManager.php');
+
 $app->mount('/admin/{_locale}/upload', include 'controllers/backend/uploadManager.php');
 
 $app->mount('/admin/{_locale}/messaging', include 'controllers/backend/messagingManager.php');

@@ -38,6 +38,23 @@ content:
 picture:
     upload: Télécharger des images
 
+form:
+    results: Résultats
+    no.results: Aucune réponse
+    edit: Éditer les champs
+    label: Label
+    help: Aide
+    specs: Spécifications
+    required: Requis
+    field:
+        add: Ajouter le champ
+        type: Type de champ
+        text: Texte
+        textarea: Zone texte
+        select: Menu déroulant
+        checkbox: Case à cocher
+        radio: Choix multiple
+
 messaging:
     messaging: Messagerie
 

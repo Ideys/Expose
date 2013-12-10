@@ -36,7 +36,7 @@ class Content
     /**
      * Constructor: inject required Silex dependencies.
      *
-     * @param array $app
+     * @param \Doctrine\DBAL\Connection $connection
      */
     public function __construct(Connection $connection)
     {
@@ -178,6 +178,7 @@ class Content
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $dirId,
             'type' => $type,
+            'slug' => slugify($title),
             'path' => $path,
         ) + $this->blameAndTimestampData());
 

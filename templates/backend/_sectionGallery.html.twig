@@ -1,39 +1,42 @@
-{% embed "backend/_section.html.twig"
-    with {'section': section, 'items': items, 'type': 'gallery'} only %}
-{% block content -%}
-<dl class="tabs" data-tab>
-  <dd class="active">
-    <a href="#panel{{ section.id }}-1">
-      {{ 'content.gallery'|trans }}
-    </a>
-  </dd>
-  <dd>
-    <a href="#panel{{ section.id }}-2" data-item-upload="{{ section.id }}">
-      {{ 'picture.upload'|trans }}
-    </a>
-  </dd>
-  <dd>
-    <a href="#panel{{ section.id }}-3">
-      {{ 'settings'|trans }}
-    </a>
-  </dd>
-</dl>
-<div class="tabs-content">
-  <div class="content active" id="panel{{ section.id }}-1">
-    {% if items[section.id] is defined %}
-    <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-6">
-      {% for item in items[section.id] %}
-      <li>
-        <img class="th" src="{{ app.request.basepath }}/gallery/{{ item.path }}">
-      </li>
-      {% endfor %}
-    </ul>
-    {% endif %}
+{% spaceless %}
+<dd>
+  <a href="#panel{{ section.id }}">{{ section.title }}</a>
+  <div class="content gallery" id="panel{{ section.id }}">
+    <p>{{ section.description|nl2br }}</p>
+    <dl class="tabs" data-tab>
+      <dd class="active">
+        <a href="#panel{{ section.id }}-1">
+          {{ 'content.gallery'|trans }}
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-2" data-item-upload="{{ section.id }}">
+          {{ 'picture.upload'|trans }}
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-3">
+          {{ 'settings'|trans }}
+        </a>
+      </dd>
+    </dl>
+    <div class="tabs-content">
+      <div class="content active" id="panel{{ section.id }}-1">
+        {% if items[section.id] is defined %}
+        <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-6">
+          {% for item in items[section.id] %}
+          <li>
+            <img class="th" src="{{ app.request.basepath }}/gallery/{{ item.path }}">
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </div>
+      <div class="content" id="panel{{ section.id }}-2">
+      </div>
+      <div class="content" id="panel{{ section.id }}-3">
+      </div>
+    </div>
   </div>
-  <div class="content" id="panel{{ section.id }}-2">
-  </div>
-  <div class="content" id="panel{{ section.id }}-3">
-  </div>
-</div>
-{%- endblock content %}
-{% endembed %}
+</dd>
+{% endspaceless %}

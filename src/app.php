@@ -16,6 +16,7 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 
 require __DIR__.'/util/Content.php';
+require __DIR__.'/util/DynamicForm.php';
 require __DIR__.'/util/Messaging.php';
 require __DIR__.'/util/Settings.php';
 require __DIR__.'/util/UserProvider.php';

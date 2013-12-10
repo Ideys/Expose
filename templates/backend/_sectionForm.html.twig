@@ -1,5 +1,29 @@
-{% embed "backend/_section.html.twig" with {'section': section, 'type': 'form'} only %}
-{% block content %}
-Form
-{% endblock content %}
-{% endembed %}
+{% spaceless %}
+<dd>
+  <a href="#panel{{ section.id }}">{{ section.title }}</a>
+  <div class="content form" id="panel{{ section.id }}">
+    <p>{{ section.description|nl2br }}</p>
+    <dl class="tabs" data-tab>
+      <dd class="active">
+        <a href="#panel{{ section.id }}-1">
+          {{ 'form.results'|trans }}
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-2"
+           data-inject-call="{{ path('admin_form_manager_edit', {'id': section.id}) }}"
+           data-inject-in="#panel{{ section.id }}-2">
+          {{ 'form.edit'|trans }}
+        </a>
+      </dd>
+    </dl>
+    <div class="tabs-content">
+      <div class="content active" id="panel{{ section.id }}-1">
+        {{ 'form.no.results'|trans }}
+      </div>
+      <div class="content" id="panel{{ section.id }}-2">
+      </div>
+    </div>
+  </div>
+</dd>
+{% endspaceless %}

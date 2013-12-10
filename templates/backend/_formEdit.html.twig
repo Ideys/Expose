@@ -1,0 +1,27 @@
+{% spaceless %}
+{% for field in fields %}
+  {{ field.type }}
+  {{ field.title }}
+  {{ field.description }}
+  {{ field.content|nl2br }}
+{% endfor %}
+
+{{ form_start(form, {'action': path('admin_form_manager_edit', {'id': section_id})}) }}
+<div class="row">
+  <div class="medium-3 columns">
+    {{ form_row(form.type) }}
+    {{ form_row(form.required) }}
+  </div>
+  <div class="medium-3 columns">
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+  </div>
+  <div class="medium-3 columns">
+    {{ form_row(form.content) }}
+  </div>
+  <div class="medium-3 columns">
+    <button type="submit">{{ 'form.field.add'|trans }}</button>
+  </div>
+</div>
+{{ form_end(form) }}
+{% endspaceless %}

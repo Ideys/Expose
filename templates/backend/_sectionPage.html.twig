@@ -1,5 +1,9 @@
-{% embed "backend/_section.html.twig" with {'section': section, 'type': 'page'} only %}
-{% block content %}
-Page
-{% endblock content %}
-{% endembed %}
+{% spaceless %}
+<dd>
+  <a href="#panel{{ section.id }}">{{ section.title }}</a>
+  <div class="content page" id="panel{{ section.id }}">
+    <p>{{ section.description|nl2br }}</p>
+    Page
+  </div>
+</dd>
+{% endspaceless %}

@@ -3,7 +3,7 @@
 {% block main -%}
 <div class="row">
   <div class="large-12 columns">
-    {{ form_start(form) }}
+    {{ form_start(form, {'action': path('admin_content_manager')}) }}
       {{ form_errors(form) }}
       <div class="row">
         <div class="medium-8 columns">

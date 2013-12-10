@@ -38,6 +38,23 @@ content:
 picture:
     upload: Upload pictures
 
+form:
+    results: Results
+    no.results: No responses
+    edit: Edit fields
+    label: Label
+    help: Help
+    specs: Specifications
+    required: Required
+    field:
+        add: Add field
+        type: Field type
+        text: Text
+        textarea: Textarea
+        select: Selector
+        checkbox: Checkbox
+        radio: Multiple choice
+
 messaging:
     messaging: Messaging
 

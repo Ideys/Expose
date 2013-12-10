@@ -1,5 +1,9 @@
-{% embed "backend/_section.html.twig" with {'section': section, 'type': 'video'} only %}
-{% block content %}
-Video
-{% endblock content %}
-{% endembed %}
+{% spaceless %}
+<dd>
+  <a href="#panel{{ section.id }}">{{ section.title }}</a>
+  <div class="content video" id="panel{{ section.id }}">
+    <p>{{ section.description|nl2br }}</p>
+    Video
+  </div>
+</dd>
+{% endspaceless %}
