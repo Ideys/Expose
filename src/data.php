@@ -80,6 +80,19 @@ if (!$schema->tablesExist('expose_section_item_trans')) {
     $schema->createTable($table);
 }
 
+if (!$schema->tablesExist('expose_form_result')) {
+    $table = new Table('expose_form_result');
+    $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+    $table->setPrimaryKey(array('id'));
+    $table->addColumn('expose_section_id', 'integer', array('unsigned' => true));
+    $table->addIndex(array('expose_section_id'));
+    $table->addColumn('result', 'text');
+    $table->addColumn('language', 'string', array('length' => 5));
+    $table->addColumn('date', 'datetime');
+
+    $schema->createTable($table);
+}
+
 if (!$schema->tablesExist('expose_messaging')) {
     $table = new Table('expose_messaging');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));

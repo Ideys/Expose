@@ -1,0 +1,23 @@
+{% spaceless %}
+{% for result in results %}
+  {{ result.date|date('d/m/Y H:i') }}
+  <table>
+    <thead>
+      <tr>
+        {% for attr_name, data in result.result %}
+          <th>{{ attr_name }}</th>
+        {% endfor %}
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        {% for data in result.result %}
+          <td>{{ data }}</td>
+        {% endfor %}
+      </tr>
+    </tbody>
+  </table>
+{% else %}
+  {{ 'form.no.results'|trans }}
+{% endfor %}
+{% endspaceless %}

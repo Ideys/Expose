@@ -12,26 +12,30 @@ $frontendController->get('/', function () use ($app) {
 ->bind('homepage')
 ;
 
-$frontendController->get('/theme/{slug}', function ($slug) use ($app) {
+$frontendController->match('/theme/{slug}', function (Request $request, $slug) use ($app) {
 
     $content = new Content($app['db']);
     $section = $content->findSection($slug);
     $items = $content->findSectionItems($section['id']);
-    $form = null;
+    $formView = null;
 
     if (Content::CONTENT_FORM == $section['type']) {
         $dynamicForm = new DynamicForm($app['db'], $app['form.factory']);
-        $generatedForm = $dynamicForm->generateFormFields($items);
-        $form = $generatedForm->createView();
+        $form = $dynamicForm->generateFormFields($items);
+        if ($dynamicForm->checkSubmitedForm($section['id'], $request, $form)) {
+            return $app->redirect($app['url_generator']->generate('section', array('slug' => $slug)));
+        }
+        $formView = $form->createView();
     }
 
     return $app['twig']->render('frontend/'.$section['type'].'.html.twig', array(
       'section' => $section,
       'items' => $items,
-      'form' => $form,
+      'form' => $formView,
     ));
 })
 ->bind('section')
+->method('GET|POST')
 ;
 
 $frontendController->match('/contact', function (Request $request) use ($app) {

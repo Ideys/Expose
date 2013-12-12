@@ -69,12 +69,24 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 ->method('GET|POST')
 ;
 
-$formManagerController->post('/{id}/remove', function (Request $request, $id) use ($app) {
+$formManagerController->get('/{id}/results', function (Request $request, $id) use ($app) {
+
+    $dynamicForm = new DynamicForm($app['db'], $app['form.factory']);
+    $results = $dynamicForm->getResults($id);
+
+    return $app['twig']->render('backend/_formResults.html.twig', array(
+        'results' => $results,
+    ));
+})
+->bind('admin_form_manager_results')
+;
+
+$formManagerController->post('/{id}/remove/field', function (Request $request, $id) use ($app) {
 
 
 
 })
-->bind('admin_form_manager_remove')
+->bind('admin_form_manager_remove_field')
 ;
 
 $formManagerController->assert('_locale', implode('|', $app['languages']));

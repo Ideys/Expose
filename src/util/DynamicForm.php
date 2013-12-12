@@ -57,6 +57,52 @@ class DynamicForm
     }
 
     /**
+     * Return the form object with dynamic fields.
+     *
+     * @param  integer                                   $sectionId
+     * @param  \Symfony\Component\HttpFoundation\Request $request
+     * @param  \Symfony\Component\Form\Form              $form
+     * @return boolean true if form is submited
+     */
+    public function checkSubmitedForm($sectionId, $request, $form)
+    {
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $data = $form->getData();
+            $language = 'fr';
+            $this->db->insert('expose_form_result', array(
+                'expose_section_id' => $sectionId,
+                'result' => serialize($data),
+                'language' => $language,
+                'date' => (new \DateTime())->format('Y-m-d H:i:s'),
+            ));
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Return form results.
+     *
+     * @return array
+     */
+    public function getResults($sectionId)
+    {
+        $sql = "SELECT r.*
+                FROM expose_form_result AS r
+                WHERE r.expose_section_id = ?
+                ORDER BY r.date ASC";
+        $results = $this->db->fetchAll($sql, array($sectionId));
+
+        foreach ($results as $row => $result) {
+            $results[$row]['result'] = unserialize($result['result']);
+        }
+
+        return $results;
+    }
+
+    /**
      * Return fields types keys
      *
      * @return array
