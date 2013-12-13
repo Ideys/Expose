@@ -33,7 +33,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
             ),
             'required' => false,
         ))
-        ->add('content', 'textarea', array(
+        ->add('options', 'textarea', array(
             'label'         => 'form.specs',
             'attr' => array(
                 'placeholder' => 'form.specs',
@@ -46,6 +46,10 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
     if ($form->isValid()) {
         $data = $form->getData();
         $data['path'] = null;
+        $data['content'] = serialize(array(
+            'required' => $data['required'],
+            'options' => $data['options'],
+        ));
         $language = 'fr';
         $content->addItem(
                 $id,

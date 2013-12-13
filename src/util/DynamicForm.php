@@ -48,9 +48,24 @@ class DynamicForm
         $form = $this->formFactory->createBuilder('form');
 
         foreach ($items as $item) {
-            $form->add($item['slug'], static::typeEquivalent($item['type']), array(
+            $type = static::typeEquivalent($item['type']);
+            $settings = unserialize($item['content']);
+            $options =  array(
                 'label' => $item['title'],
-            ));
+                'required' => (boolean) $settings['required'],
+            );
+            if ('choice' == $type) {
+                $choices = explode("\n", $settings['options']);
+                $options += array(
+                    'choices' => array_combine($choices, $choices),
+                );
+            }
+            if (self::TYPE_RADIO == $item['type']) {
+                $options += array(
+                    'expanded' => true,
+                );
+            }
+            $form->add($item['slug'], $type, $options);
         }
 
         return $form->getForm();
