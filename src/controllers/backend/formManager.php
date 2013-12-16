@@ -60,7 +60,8 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
                 $data['content'],
                 $language
         );
-        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+        // Call fields with new result
+        $fields = $content->findSectionItems($id);
     }
 
     return $app['twig']->render('backend/_formEdit.html.twig', array(

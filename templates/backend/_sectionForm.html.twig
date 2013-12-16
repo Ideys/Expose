@@ -4,25 +4,25 @@
   <div class="content form" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
     <dl class="tabs" data-tab>
-      <dd class="active">
-        <a href="#panel{{ section.id }}-1"
+      <dd>
+        <a href="#panel{{ section.id }}-result"
            data-inject-call="{{ path('admin_form_manager_results', {'id': section.id}) }}"
-           data-inject-in="#panel{{ section.id }}-1">
+           data-inject-in="#panel{{ section.id }}-result">
           {{ 'form.results'|trans }}
         </a>
       </dd>
       <dd>
-        <a href="#panel{{ section.id }}-2"
+        <a href="#panel{{ section.id }}-edit"
            data-inject-call="{{ path('admin_form_manager_edit', {'id': section.id}) }}"
-           data-inject-in="#panel{{ section.id }}-2">
+           data-inject-in="#panel{{ section.id }}-edit">
           {{ 'form.edit'|trans }}
         </a>
       </dd>
     </dl>
     <div class="tabs-content">
-      <div class="content active" id="panel{{ section.id }}-1">
+      <div class="content active" id="panel{{ section.id }}-result">
       </div>
-      <div class="content" id="panel{{ section.id }}-2">
+      <div class="content" id="panel{{ section.id }}-edit">
       </div>
     </div>
   </div>

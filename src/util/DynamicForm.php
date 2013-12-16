@@ -19,6 +19,7 @@ class DynamicForm
     private $formFactory;
 
     const TYPE_TEXT     = 'text';
+    const TYPE_EMAIL    = 'email';
     const TYPE_TEXTAREA = 'textarea';
     const TYPE_SELECT   = 'select';
     const TYPE_CHECKBOX = 'checkbox';
@@ -55,7 +56,7 @@ class DynamicForm
                 'required' => (boolean) $settings['required'],
             );
             if ('choice' == $type) {
-                $choices = explode("\n", $settings['options']);
+                $choices = array_map('trim', explode("\n", $settings['options']));
                 $options += array(
                     'choices' => array_combine($choices, $choices),
                 );
@@ -126,6 +127,7 @@ class DynamicForm
     {
         return array(
             self::TYPE_TEXT,
+            self::TYPE_EMAIL,
             self::TYPE_TEXTAREA,
             self::TYPE_SELECT,
             self::TYPE_CHECKBOX,
@@ -157,6 +159,7 @@ class DynamicForm
     {
         $equivalents = array(
             self::TYPE_TEXT     => 'text',
+            self::TYPE_EMAIL    => 'email',
             self::TYPE_TEXTAREA => 'textarea',
             self::TYPE_SELECT   => 'choice',
             self::TYPE_CHECKBOX => 'checkbox',

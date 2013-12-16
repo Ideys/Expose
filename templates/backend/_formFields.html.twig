@@ -1,0 +1,20 @@
+{% spaceless %}
+<table>
+  <thead>
+    <tr>
+      <th>{{ 'form.field.type'|trans }}</th>
+      <th>{{ 'form.field.type'|trans }}</th>
+      <th>{{ 'form.field.type'|trans }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for field in fields %}
+    <tr>
+      <td>{{ field.type|trans }}</td>
+      <td>{{ field.title }}<br>{{ field.description }}</td>
+      <td>{{ field.content|nl2br }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endspaceless %}
