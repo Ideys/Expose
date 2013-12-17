@@ -29,7 +29,7 @@ $uploadManagerController->post('/', function (Request $request) use ($app) {
 
         $file->move($app['gallery.dir'], $data['path']);
 
-        $content->addItem(
+        $content->blame($app['security'])->addItem(
                 $sectionId,
                 $data['type'],
                 $data['path'],

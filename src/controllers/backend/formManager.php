@@ -51,7 +51,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
             'options' => $data['options'],
         ));
         $language = 'fr';
-        $content->addItem(
+        $content->blame($app['security'])->addItem(
                 $id,
                 $data['type'],
                 $data['path'],

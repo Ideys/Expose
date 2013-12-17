@@ -1,6 +1,7 @@
 <?php
 
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Security\Core\SecurityContext;
 
 /**
  * App content manager.
@@ -11,6 +12,11 @@ class Content
      * @var \Doctrine\DBAL\Connection
      */
     private $db;
+
+    /**
+     * @var \Symfony\Component\Security\Core\SecurityContext
+     */
+    private $security;
 
     /**
      * @var string
@@ -224,14 +230,37 @@ class Content
     }
 
     /**
+     * Define user id to blame next persisted data.
+     *
+     * @param \Symfony\Component\Security\Core\SecurityContext  $security
+     * @return Content
+     */
+    public function blame(SecurityContext $security)
+    {
+        $this->security = $security;
+
+        return $this;
+    }
+
+    /**
      * Define user author and timestamp for persisted data.
      *
+     * @param integer $id
      * @return array
      */
     private function blameAndTimestampData($id = 0)
     {
-        $userId = null;
-        $datetime = (new \DateTime())->format('u');
+        $datetime = (new \DateTime())->format('c');
+        if ($this->security instanceof SecurityContext) {
+            $loggedUser = $this->security->getToken()->getUser();
+            $user = $this->db->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
+                $loggedUser->getUsername(),
+            ));
+            $userId = $user['id'];
+        } else {
+            $userId = null;
+        }
+
         return array(
             'updated_by' => $userId,
             'updated_at' => $datetime,

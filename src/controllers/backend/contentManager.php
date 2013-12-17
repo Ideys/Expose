@@ -52,7 +52,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     if ($form->isValid()) {
         $data = $form->getData();
         $language = 'fr';
-        $content->addSection(
+        $content->blame($app['security'])->addSection(
                 $data['type'],
                 $data['title'],
                 $data['description'],
