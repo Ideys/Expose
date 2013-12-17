@@ -67,10 +67,11 @@ site:
     description: Description du site
     author: Auteur
     style: Mise en forme
+    style.custom: Style personnalisé
     background:
-      background: Arrière plan
-      white: Fond blanc
-      black: Fond noir
+        background: Arrière plan
+        white: Fond blanc
+        black: Fond noir
 
 google:
     analytics.key: Clé de Google Analytics

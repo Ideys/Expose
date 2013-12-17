@@ -67,6 +67,7 @@ site:
     description: Site description
     author: Author
     style: Layout
+    style.custom: Custom style
     background:
       background: Background
       white: White layout

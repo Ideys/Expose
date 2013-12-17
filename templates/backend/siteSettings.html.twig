@@ -1,35 +1,38 @@
 {% extends "backend/layout.html.twig" %}
 
 {% block main -%}
+{{ form_start(form) }}
 <div class="row">
   <div class="small-12 large-6 columns">
-    {{ form_start(form) }}
-        {{ form_errors(form) }}
-        <fieldset>
-          <legend>{{ 'site.site'|trans }}</legend>
-          {{ form_row(form.name) }}
-          {{ form_row(form.description) }}
-          {{ form_row(form.authorName) }}
-        </fieldset>
-        <fieldset>
-          <legend>Google</legend>
-          {{ form_row(form.analyticsKey) }}
-          {{ form_row(form.verificationKey) }}
-        </fieldset>
-        <fieldset>
-          <legend>{{ 'site.style'|trans }}</legend>
-          {{ form_row(form.layoutBackground) }}
-        </fieldset>
-        <fieldset>
-          <legend>{{ 'contact.contact'|trans }}</legend>
-          {{ form_row(form.contactContent) }}
-        </fieldset>
-        <div class="hidden">
-          {{ form_rest(form) }}
-        </div>
-        <input type="submit" name="submit"
-               value="{{ 'submit'|trans }}" class="tiny button">
-    {{ form_end(form) }}
+    {{ form_errors(form) }}
+    <fieldset>
+      <legend>{{ 'site.site'|trans }}</legend>
+      {{ form_row(form.name) }}
+      {{ form_row(form.description) }}
+      {{ form_row(form.authorName) }}
+    </fieldset>
+    <fieldset>
+      <legend>Google</legend>
+      {{ form_row(form.analyticsKey) }}
+      {{ form_row(form.verificationKey) }}
+    </fieldset>
+  </div>
+  <div class="small-12 large-6 columns">
+    <fieldset>
+      <legend>{{ 'site.style'|trans }}</legend>
+      {{ form_row(form.layoutBackground) }}
+      {{ form_row(form.customStyle, {'attr': {'rows': '12'} }) }}
+    </fieldset>
+    <fieldset>
+      <legend>{{ 'contact.contact'|trans }}</legend>
+      {{ form_row(form.contactContent) }}
+    </fieldset>
+    <div class="hidden">
+      {{ form_rest(form) }}
+    </div>
+    <input type="submit" name="submit"
+           value="{{ 'submit'|trans }}" class="tiny button">
   </div>
 </div>
+{{ form_end(form) }}
 {%- endblock main %}

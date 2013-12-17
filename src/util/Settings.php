@@ -27,6 +27,7 @@ class Settings
                 'analyticsKey' => '',
                 'verificationKey' => '',
                 'layoutBackground' => 'white',
+                'customStyle' => '',
                 'contactContent' => 'Contact me',
             );
 

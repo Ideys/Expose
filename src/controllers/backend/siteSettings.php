@@ -52,6 +52,10 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             ),
             'label'         => 'site.background.background',
         ))
+        ->add('customStyle', 'textarea', array(
+            'required'      => false,
+            'label'         => 'site.style.custom',
+        ))
         ->add('contactContent', 'textarea', array(
             'required'      => false,
             'label'         => 'contact.content',

@@ -1,5 +1,11 @@
 {% extends "layout.html.twig" %}
 
+{% block head %}
+<style>
+{{ site.customStyle|raw }}
+</style>
+{% endblock head %}
+
 {% block content -%}
 <nav class="top-bar" data-topbar>
   <ul class="title-area">
