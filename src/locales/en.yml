@@ -50,6 +50,8 @@ form:
         add: Add field
         type: Field type
         text: Text
+        email: Email
+        integer: Integer number
         textarea: Textarea
         select: Selector
         checkbox: Checkbox

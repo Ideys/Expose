@@ -20,6 +20,7 @@ class DynamicForm
 
     const TYPE_TEXT     = 'text';
     const TYPE_EMAIL    = 'email';
+    const TYPE_INTEGER  = 'integer';
     const TYPE_TEXTAREA = 'textarea';
     const TYPE_SELECT   = 'select';
     const TYPE_CHECKBOX = 'checkbox';
@@ -128,6 +129,7 @@ class DynamicForm
         return array(
             self::TYPE_TEXT,
             self::TYPE_EMAIL,
+            self::TYPE_INTEGER,
             self::TYPE_TEXTAREA,
             self::TYPE_SELECT,
             self::TYPE_CHECKBOX,
@@ -160,6 +162,7 @@ class DynamicForm
         $equivalents = array(
             self::TYPE_TEXT     => 'text',
             self::TYPE_EMAIL    => 'email',
+            self::TYPE_INTEGER  => 'integer',
             self::TYPE_TEXTAREA => 'textarea',
             self::TYPE_SELECT   => 'choice',
             self::TYPE_CHECKBOX => 'checkbox',

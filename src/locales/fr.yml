@@ -50,6 +50,8 @@ form:
         add: Ajouter le champ
         type: Type de champ
         text: Texte
+        email: Email
+        integer: Chiffre entier
         textarea: Zone texte
         select: Menu déroulant
         checkbox: Case à cocher
