@@ -31,6 +31,7 @@ if (!$schema->tablesExist('expose_section')) {
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('type', 'string', array('length' => 32));
     $table->addColumn('slug', 'string', array('length' => 255));
+    $table->addColumn('homepage', 'boolean');
     $table->addColumn('active', 'boolean');
     $table->addColumn('hierarchy', 'smallint');
     blameAndTimestampSchema($table);

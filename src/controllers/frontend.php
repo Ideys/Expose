@@ -5,17 +5,15 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $frontendController = $app['controllers_factory'];
 
-$frontendController->get('/', function () use ($app) {
-
-    return $app['twig']->render('frontend/homepage.html.twig');
-})
-->bind('homepage')
-;
-
-$frontendController->match('/theme/{slug}', function (Request $request, $slug) use ($app) {
+$frontendContent = function (Request $request, $slug = null) use ($app) {
 
     $content = new Content($app['db']);
-    $section = $content->findSection($slug);
+
+    if (null === $slug) {
+        $section = $content->findHomepage($slug);
+    } else {
+        $section = $content->findSection($slug);
+    }
     $items = $content->findSectionItems($section['id']);
     $formView = null;
 
@@ -28,12 +26,18 @@ $frontendController->match('/theme/{slug}', function (Request $request, $slug) u
         $formView = $form->createView();
     }
 
-    return $app['twig']->render('frontend/'.$section['type'].'.html.twig', array(
+    return $app['twig']->render('frontend/content.html.twig', array(
       'section' => $section,
       'items' => $items,
       'form' => $formView,
     ));
-})
+};
+
+$frontendController->get('/', $frontendContent)
+->bind('homepage')
+;
+
+$frontendController->match('/theme/{slug}', $frontendContent)
 ->bind('section')
 ->method('GET|POST')
 ;

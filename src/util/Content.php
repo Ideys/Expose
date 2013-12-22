@@ -33,6 +33,24 @@ class Content
      */
     private $items = array();
 
+    /**
+     * @var string
+     */
+    private $sqlSelectSection =
+       'SELECT s.*, t.title, t.description
+        FROM expose_section AS s
+        LEFT JOIN expose_section_trans AS t
+        ON t.expose_section_id = s.id ';
+
+    /**
+     * @var string
+     */
+    private $sqlSelectItem =
+       'SELECT i.*, t.title, t.description, t.content
+        FROM expose_section_item AS i
+        LEFT JOIN expose_section_item_trans AS t
+        ON t.expose_section_item_id = i.id ';
+
     const CONTENT_GALLERY   = 'gallery';
     const CONTENT_VIDEO     = 'video';
     const CONTENT_PAGE      = 'page';
@@ -61,12 +79,9 @@ class Content
             return $this->sections;
         }
 
-        $sql = "SELECT s.*, t.title, t.description
-                FROM expose_section AS s
-                LEFT JOIN expose_section_trans AS t
-                ON t.expose_section_id = s.id
-                WHERE t.language = ?
-                ORDER BY s.hierarchy ASC";
+        $sql = $this->sqlSelectSection .
+           'WHERE t.language = ?
+            ORDER BY s.hierarchy ASC';
         $sections = $this->db->fetchAll($sql, array($this->language));
 
         // Use sql primary keys as array keys and add sections tree
@@ -97,12 +112,9 @@ class Content
             return $this->items;
         }
 
-        $sql = "SELECT i.*, t.title, t.description, t.content
-                FROM expose_section_item AS i
-                LEFT JOIN expose_section_item_trans AS t
-                ON t.expose_section_item_id = i.id
-                WHERE t.language = ?
-                ORDER BY i.hierarchy ASC";
+        $sql = $this->sqlSelectItem .
+           'WHERE t.language = ?
+            ORDER BY i.hierarchy ASC';
         $items = $this->db->fetchAll($sql, array($this->language));
 
         //Group by section ids
@@ -121,16 +133,72 @@ class Content
      */
     public function findSection($slug)
     {
-        $sql = "SELECT s.*, t.title, t.description
-                FROM expose_section AS s
-                LEFT JOIN expose_section_trans AS t
-                ON t.expose_section_id = s.id
-                WHERE s.slug = ?
-                AND t.language = ?
-                ORDER BY s.hierarchy ASC";
+        $sql = $this->sqlSelectSection .
+           'WHERE s.slug = ?
+            AND t.language = ?
+            ORDER BY s.hierarchy ASC';
         $section = $this->db->fetchAssoc($sql, array($slug, $this->language));
 
         return $section;
+    }
+
+    /**
+     * Return a section.
+     *
+     * @return array
+     */
+    public function findHomepage()
+    {
+        $sql = $this->sqlSelectSection .
+           'WHERE s.homepage = 1
+            AND t.language = ?
+            ORDER BY s.hierarchy ASC';
+        $section = $this->db->fetchAssoc($sql, array($this->language));
+
+        // Generate default homepage
+        if (false === $section) {
+            $settings = new Settings($this->db);
+            $sectionId = $this->addSection(
+                self::CONTENT_PAGE,
+                $settings->name,
+                '',
+                null,
+                $this->language
+            );
+            $this->addItem(
+                $sectionId,
+                self::CONTENT_PAGE,
+                null,
+                $settings->name,
+                '',
+                '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
+                $this->language
+            );
+            $this->defindHomepage($sectionId);
+            $section = $this->findHomepage();
+        }
+
+        return $section;
+    }
+
+    /**
+     * Define the homepage section.
+     *
+     * @param integer $sectionId
+     */
+    public function defindHomepage($sectionId)
+    {
+        // Reset old homepage
+        $this->db->update(
+            'expose_section',
+            array('homepage' => 0, 'active' => 0),
+            array('homepage' => 1)
+        );
+        $this->db->update(
+            'expose_section',
+            array('homepage' => 1, 'active' => 1),
+            array('id' => $sectionId)
+        );
     }
 
     /**
@@ -141,13 +209,10 @@ class Content
      */
     public function findSectionItems($id)
     {
-        $sql = "SELECT i.*, t.title, t.description, t.content
-                FROM expose_section_item AS i
-                LEFT JOIN expose_section_item_trans AS t
-                ON t.expose_section_item_id = i.id
-                WHERE i.expose_section_id = ?
-                AND t.language = ?
-                ORDER BY i.hierarchy ASC";
+        $sql = $this->sqlSelectItem .
+           'WHERE i.expose_section_id = ?
+            AND t.language = ?
+            ORDER BY i.hierarchy ASC';
         $items = $this->db->fetchAll($sql, array($id, $this->language));
 
         return $items;
@@ -155,6 +220,8 @@ class Content
 
     /**
      * Create a new section.
+     *
+     * @return integer Section id
      */
     public function addSection($type, $title, $description, $dirId, $language, $active = false)
     {
@@ -173,16 +240,20 @@ class Content
             'description' => $description,
             'language' => $language,
         ));
+
+        return $sectionId;
     }
 
     /**
      * Insert a new content.
+     *
+     * @return integer Item id
      */
-    public function addItem($dirId, $type, $path, $title, $description, $content, $language)
+    public function addItem($sectionId, $type, $path, $title, $description, $content, $language)
     {
-        $dirId = is_numeric($dirId) ? (int)$dirId : null;
+        $sectionId = is_numeric($sectionId) ? (int)$sectionId : null;
         $this->db->insert('expose_section_item', array(
-            'expose_section_id' => $dirId,
+            'expose_section_id' => $sectionId,
             'type' => $type,
             'slug' => slugify($title),
             'path' => $path,
@@ -196,6 +267,8 @@ class Content
             'content' => $content,
             'language' => $language,
         ));
+
+        return $itemId;
     }
 
     /**

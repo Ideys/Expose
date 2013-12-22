@@ -18,7 +18,9 @@
   </ul>
   <section class="top-bar-section">
     <ul class="left">
-      {% for section in sections if section.active == 1 %}
+      {% for section in sections
+          if section.active == 1
+         and section.homepage == 0 %}
         {% if section.sections|length %}
         <li class="has-dropdown">
           <a href="#">{{ section.title }}</a>

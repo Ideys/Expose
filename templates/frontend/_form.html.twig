@@ -1,6 +1,4 @@
-{% extends "frontend/layout.html.twig" %}
-
-{% block main -%}
+{% spaceless %}
 <div class="row">
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
@@ -22,4 +20,4 @@
     {{ form_end(form) }}
   </div>
 </div>
-{%- endblock main %}
+{% endspaceless %}
