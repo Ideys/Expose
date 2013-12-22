@@ -46,10 +46,14 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
     if ($form->isValid()) {
         $data = $form->getData();
         $data['path'] = null;
-        $data['content'] = serialize(array(
-            'required' => $data['required'],
-            'options' => $data['options'],
-        ));
+        if (DynamicForm::TYPE_HTML == $data['type']) {
+            $data['content'] = $data['options'];
+        } else {
+            $data['content'] = serialize(array(
+                'required' => $data['required'],
+                'options' => $data['options'],
+            ));
+        }
         $language = 'fr';
         $content->blame($app['security'])->addItem(
                 $id,

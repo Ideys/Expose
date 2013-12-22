@@ -3,12 +3,16 @@
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
     {% for item in items %}
-      <div class="row">
-        <div class="large-12 columns">
-          {{ form_row(form[ item.slug ]) }}
-          <em>{{ item.description }}</em>
+      {% if 'html.insert' == item.type %}
+        {{ item.content|raw }}
+      {% else %}
+        <div class="row">
+          <div class="large-12 columns">
+            {{ form_row(form[ item.slug ]) }}
+            <em>{{ item.description }}</em>
+          </div>
         </div>
-      </div>
+      {% endif %}
     {% endfor %}
     <div class="row">
       <div class="large-12 columns text-right">

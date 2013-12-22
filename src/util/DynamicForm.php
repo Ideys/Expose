@@ -25,6 +25,7 @@ class DynamicForm
     const TYPE_SELECT   = 'select';
     const TYPE_CHECKBOX = 'checkbox';
     const TYPE_RADIO    = 'radio';
+    const TYPE_HTML     = 'html.insert';
 
     /**
      * Constructor: inject required Silex dependencies.
@@ -50,6 +51,9 @@ class DynamicForm
         $form = $this->formFactory->createBuilder('form');
 
         foreach ($items as $item) {
+            if (self::TYPE_HTML == $item['type']) {
+                continue;
+            }
             $type = static::typeEquivalent($item['type']);
             $settings = unserialize($item['content']);
             $options =  array(
@@ -134,6 +138,7 @@ class DynamicForm
             self::TYPE_SELECT,
             self::TYPE_CHECKBOX,
             self::TYPE_RADIO,
+            self::TYPE_HTML,
         );
     }
 
