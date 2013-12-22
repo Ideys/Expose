@@ -56,6 +56,10 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             'required'      => false,
             'label'         => 'site.style.custom',
         ))
+        ->add('customJavascript', 'textarea', array(
+            'required'      => false,
+            'label'         => 'site.style.customjs',
+        ))
         ->add('contactContent', 'textarea', array(
             'required'      => false,
             'label'         => 'contact.content',

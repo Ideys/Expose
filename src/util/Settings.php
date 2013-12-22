@@ -28,6 +28,7 @@ class Settings
                 'verificationKey' => '',
                 'layoutBackground' => 'white',
                 'customStyle' => '',
+                'customJavascript' => '',
                 'contactContent' => 'Contact me',
                 'hideMenuOnHomepage' => '0',
             );

@@ -69,6 +69,7 @@ site:
     style:
         layout: Mise en forme
         custom: Style personnalisé
+        customjs: Code Javascript global
         hide.menu.on.homepage: Masquer le menu sur la page d'accueil
     background:
         background: Arrière plan

@@ -6,6 +6,12 @@
 </style>
 {% endblock head %}
 
+{% block javascripts %}
+<script>
+{{ site.customJavascript|raw }}
+</script>
+{% endblock javascripts %}
+
 {% set hideMenuOnHomepage = site.hideMenuOnHomepage ? ' hide-menu-on-homepage' : ''%}
 {% block body_class parent()~' background-'~site.layoutBackground~hideMenuOnHomepage %}
 

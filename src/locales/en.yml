@@ -69,6 +69,7 @@ site:
     style:
         layout: Layout
         custom: Custom style
+        customjs: Global Javascript code
         hide.menu.on.homepage: Hide menu on homepage
     background:
         background: Background
