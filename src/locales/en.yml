@@ -66,12 +66,14 @@ site:
     name: Site name
     description: Site description
     author: Author
-    style: Layout
-    style.custom: Custom style
+    style:
+        layout: Layout
+        custom: Custom style
+        hide.menu.on.homepage: Hide menu on homepage
     background:
-      background: Background
-      white: White layout
-      black: Black layout
+        background: Background
+        white: White layout
+        black: Black layout
 
 google:
     analytics.key: Google Analytics key
@@ -80,6 +82,8 @@ google:
 admin:
     admin: Admin
 
+yes: Yes
+no: No
 submit: Submit
 actions: Actions
 settings: Settings

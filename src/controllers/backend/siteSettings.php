@@ -60,6 +60,13 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             'required'      => false,
             'label'         => 'contact.content',
         ))
+        ->add('hideMenuOnHomepage', 'choice', array(
+            'choices'   => array(
+                '1' => 'yes',
+                '0' => 'no',
+            ),
+            'label'         => 'site.style.hide.menu.on.homepage',
+        ))
         ->getForm();
 
     $form->handleRequest($request);

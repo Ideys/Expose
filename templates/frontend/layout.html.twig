@@ -6,6 +6,9 @@
 </style>
 {% endblock head %}
 
+{% set hideMenuOnHomepage = site.hideMenuOnHomepage ? ' hide-menu-on-homepage' : ''%}
+{% block body_class parent()~' background-'~site.layoutBackground~hideMenuOnHomepage %}
+
 {% block content -%}
 <nav class="top-bar" data-topbar>
   <ul class="title-area">

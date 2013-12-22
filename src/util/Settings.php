@@ -29,6 +29,7 @@ class Settings
                 'layoutBackground' => 'white',
                 'customStyle' => '',
                 'contactContent' => 'Contact me',
+                'hideMenuOnHomepage' => '0',
             );
 
     /**

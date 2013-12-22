@@ -20,7 +20,7 @@
         {% block head %}{% endblock %}
         <script src="{{ app.request.basepath }}/js/vendor/modernizr.js"></script>
     </head>
-    <body class="background-{{ site.layoutBackground }}">
+    <body class="{% block body_class '' %}">
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->

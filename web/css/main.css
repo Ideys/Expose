@@ -112,6 +112,10 @@ textarea {
     text-align: center;
 }
 
+.content-homepage.hide-menu-on-homepage .top-bar {
+    display: none;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */

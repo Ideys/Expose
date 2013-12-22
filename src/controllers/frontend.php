@@ -11,8 +11,10 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
 
     if (null === $slug) {
         $section = $content->findHomepage($slug);
+        $contentType = 'homepage';
     } else {
         $section = $content->findSection($slug);
+        $contentType = $section['type'];
     }
     $items = $content->findSectionItems($section['id']);
     $formView = null;
@@ -27,6 +29,7 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
     }
 
     return $app['twig']->render('frontend/content.html.twig', array(
+      'contentType' => $contentType,
       'section' => $section,
       'items' => $items,
       'form' => $formView,
