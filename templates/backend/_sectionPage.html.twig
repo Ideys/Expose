@@ -3,7 +3,45 @@
   <a href="#panel{{ section.id }}">{{ section.title }}</a>
   <div class="content page" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
-    Page
+    <dl class="tabs" data-tab>
+      <dd class="active">
+        <a href="#panel{{ section.id }}-preview">
+          {{ 'content.preview'|trans }}
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-edit"
+           data-inject-call="{{ path('admin_page_manager_edit', {'id': section.id}) }}"
+           data-inject-in="#panel{{ section.id }}-edit">
+          {{ 'content.edit'|trans }}
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-settings">
+          {{ 'settings'|trans }}
+        </a>
+      </dd>
+    </dl>
+    <div class="tabs-content">
+      <div class="content active" id="panel{{ section.id }}-preview">
+        {% if items[section.id] is defined %}
+          {% set pages = items[section.id] %}
+          {% if pages|length > 1 %}
+            {% for page in pages %}
+              {{ page.title }}
+            {% endfor %}
+          {% else %}
+          <iframe class="page-preview"
+                  src="{{ path('section', {'slug': pages[0].slug}) }}"
+                  seamless></iframe>
+          {% endif %}
+        {% endif %}
+      </div>
+      <div class="content" id="panel{{ section.id }}-edit">
+      </div>
+      <div class="content" id="panel{{ section.id }}-settings">
+      </div>
+    </div>
   </div>
 </dd>
 {% endspaceless %}

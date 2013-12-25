@@ -43,6 +43,8 @@ $app->mount('/admin/{_locale}/form', include 'controllers/backend/formManager.ph
 
 $app->mount('/admin/{_locale}/upload', include 'controllers/backend/uploadManager.php');
 
+$app->mount('/admin/{_locale}/page', include 'controllers/backend/pageManager.php');
+
 $app->mount('/admin/{_locale}/messaging', include 'controllers/backend/messagingManager.php');
 
 $app->mount('/admin/{_locale}/settings', include 'controllers/backend/siteSettings.php');

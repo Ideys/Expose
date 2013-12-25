@@ -34,6 +34,8 @@ content:
     form: Formulaire
     dir: Dossier
     root: Racine
+    preview: Aperçu
+    edit: Éditer le contenu
 
 picture:
     upload: Télécharger des images

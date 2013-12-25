@@ -231,7 +231,7 @@ class Content
             'type' => $type,
             'slug' => slugify($title),
             'active' => $active,
-        ) + $this->blameAndTimestampData());
+        ) + $this->blameAndTimestampData(0));
 
         $sectionId = $this->db->lastInsertId();
         $this->db->insert('expose_section_trans', array(
@@ -257,7 +257,7 @@ class Content
             'type' => $type,
             'slug' => slugify($title),
             'path' => $path,
-        ) + $this->blameAndTimestampData());
+        ) + $this->blameAndTimestampData(0));
 
         $itemId = $this->db->lastInsertId();
         $this->db->insert('expose_section_item_trans', array(
@@ -269,6 +269,34 @@ class Content
         ));
 
         return $itemId;
+    }
+
+    /**
+     * Update a content.
+     *
+     * @return integer Item id
+     */
+    public function editItem($entity)
+    {
+        $this->db->update(
+            'expose_section_item',
+            array(
+                'path' => $entity['path'],
+            ) + $this->blameAndTimestampData($entity['id']),
+            array('id' => $entity['id'])
+        );
+        $this->db->update(
+            'expose_section_item_trans',
+            array(
+                'title' => $entity['title'],
+                'description' => $entity['description'],
+                'content' => $entity['content'],
+            ),
+            array(
+                'expose_section_item_id' => $entity['id'],
+                'language' => $this->language,
+            )
+        );
     }
 
     /**
@@ -321,7 +349,7 @@ class Content
      * @param integer $id
      * @return array
      */
-    private function blameAndTimestampData($id = 0)
+    private function blameAndTimestampData($id)
     {
         $datetime = (new \DateTime())->format('c');
         if ($this->security instanceof SecurityContext) {
