@@ -20,12 +20,15 @@ $uploadManagerController->post('/', function (Request $request) use ($app) {
             'title' => $file->getClientOriginalName(),
             'description' => null,
             'content' => null,
+            'parameters' => array(),
             'language' => 'fr',
         );
         $fileExt = $file->guessClientExtension();
         $realExt = $file->guessExtension();// from mime type
         $fileSize = $file->getClientSize();
         $data['path'] = uniqid('expose').'.'.$fileExt;
+        $data['parameters']['real_ext'] = $realExt;
+        $data['parameters']['file_size'] = $fileSize;
 
         $file->move($app['gallery.dir'], $data['path']);
 
@@ -36,6 +39,7 @@ $uploadManagerController->post('/', function (Request $request) use ($app) {
                 $data['title'],
                 $data['description'],
                 $data['content'],
+                $data['parameters'],
                 $data['language']
         );
         $transformation = new \Imagine\Filter\Transformation();

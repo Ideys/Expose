@@ -46,14 +46,11 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
     if ($form->isValid()) {
         $data = $form->getData();
         $data['path'] = null;
-        if (DynamicForm::TYPE_HTML == $data['type']) {
-            $data['content'] = $data['options'];
-        } else {
-            $data['content'] = serialize(array(
-                'required' => $data['required'],
-                'options' => $data['options'],
-            ));
-        }
+        $data['content'] = $data['options'];
+        $data['parameters'] = array(
+            'required' => $data['required'],
+            'options' => $data['options'],
+        );
         $language = 'fr';
         $content->blame($app['security'])->addItem(
                 $id,
@@ -62,6 +59,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
                 $data['title'],
                 $data['description'],
                 $data['content'],
+                $data['parameters'],
                 $language
         );
         // Call fields with new result

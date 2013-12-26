@@ -46,7 +46,7 @@ class Content
      * @var string
      */
     private $sqlSelectItem =
-       'SELECT i.*, t.title, t.description, t.content
+       'SELECT i.*, t.title, t.description, t.content, t.parameters
         FROM expose_section_item AS i
         LEFT JOIN expose_section_item_trans AS t
         ON t.expose_section_item_id = i.id ';
@@ -172,6 +172,7 @@ class Content
                 $settings->name,
                 '',
                 '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
+                array(),
                 $this->language
             );
             $this->defindHomepage($sectionId);
@@ -215,6 +216,10 @@ class Content
             ORDER BY i.hierarchy ASC';
         $items = $this->db->fetchAll($sql, array($id, $this->language));
 
+        foreach ($items as $row => $item) {
+            $items[$row]['parameters'] = unserialize($item['parameters']);
+        }
+
         return $items;
     }
 
@@ -249,7 +254,7 @@ class Content
      *
      * @return integer Item id
      */
-    public function addItem($sectionId, $type, $path, $title, $description, $content, $language)
+    public function addItem($sectionId, $type, $path, $title, $description, $content, $settings, $language)
     {
         $sectionId = is_numeric($sectionId) ? (int)$sectionId : null;
         $this->db->insert('expose_section_item', array(
@@ -265,6 +270,7 @@ class Content
             'title' => $title,
             'description' => $description,
             'content' => $content,
+            'parameters' => serialize($settings),
             'language' => $language,
         ));
 

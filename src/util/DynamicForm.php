@@ -55,13 +55,12 @@ class DynamicForm
                 continue;
             }
             $type = static::typeEquivalent($item['type']);
-            $settings = unserialize($item['content']);
             $options =  array(
                 'label' => $item['title'],
-                'required' => (boolean) $settings['required'],
+                'required' => (boolean) $item['parameters']['required'],
             );
             if ('choice' == $type) {
-                $choices = array_map('trim', explode("\n", $settings['options']));
+                $choices = array_map('trim', explode("\n", $item['parameters']['options']));
                 $options += array(
                     'choices' => array_combine($choices, $choices),
                 );

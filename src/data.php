@@ -76,6 +76,7 @@ if (!$schema->tablesExist('expose_section_item_trans')) {
     $table->addColumn('title', 'string', array('length' => 255));
     $table->addColumn('description', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('content', 'text', array('default' => null, 'notnull' => false));
+    $table->addColumn('parameters', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('language', 'string', array('length' => 5));
 
     $schema->createTable($table);

@@ -3,16 +3,28 @@
   <thead>
     <tr>
       <th>{{ 'form.field.type'|trans }}</th>
-      <th>{{ 'form.field.type'|trans }}</th>
-      <th>{{ 'form.field.type'|trans }}</th>
+      <th>{{ 'form.label'|trans }}</th>
+      <th>{{ 'form.specs'|trans }}</th>
+      <th>&nbsp;</th>
     </tr>
   </thead>
   <tbody>
     {% for field in fields %}
     <tr>
-      <td>{{ field.type|trans }}</td>
+      <td>{{ ('form.field.'~field.type)|trans }}</td>
       <td>{{ field.title }}<br>{{ field.description }}</td>
-      <td>{{ field.content|nl2br }}</td>
+      <td>
+        {% if field.parameters.required|length %}
+          <span class="label">{{ 'form.required'|trans }}</span><br>
+        {% endif %}
+        {% if field.type in ['select', 'radio'] %}
+          <em>{{ 'form.choices'|trans }}</em>:<br>
+          {{field.parameters.options|nl2br }}
+        {% elseif field.type == 'html.insert' %}
+          {{field.content|raw }}
+        {% endif %}
+      </td>
+      <td></td>
     </tr>
     {% endfor %}
   </tbody>

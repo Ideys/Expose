@@ -48,6 +48,7 @@ form:
     help: Help
     specs: Specifications
     required: Required
+    choices: Choices
     field:
         add: Add field
         type: Field type

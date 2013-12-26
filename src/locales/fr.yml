@@ -48,6 +48,7 @@ form:
     help: Aide
     specs: Spécifications
     required: Requis
+    choices: Choix
     field:
         add: Ajouter le champ
         type: Type de champ
