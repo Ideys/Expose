@@ -306,6 +306,22 @@ class Content
     }
 
     /**
+     * Delete an item.
+     *
+     * @param integer $id
+     * @return boolean
+     */
+    public function deleteItem($id)
+    {
+        // Delete item's translations
+        $this->db->delete('expose_section_item_trans', array('expose_section_item_id' => $id));
+        // Delete item
+        $rows = $this->db->delete('expose_section_item', array('id' => $id));
+
+        return (0 < $rows);
+    }
+
+    /**
      * Return content types keys
      *
      * @return array

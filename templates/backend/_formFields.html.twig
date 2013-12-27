@@ -10,7 +10,7 @@
   </thead>
   <tbody>
     {% for field in fields %}
-    <tr>
+    <tr id="field-line-{{ field.id }}">
       <td>{{ ('form.field.'~field.type)|trans }}</td>
       <td>{{ field.title }}<br>{{ field.description }}</td>
       <td>
@@ -24,7 +24,13 @@
           {{field.content|raw }}
         {% endif %}
       </td>
-      <td></td>
+      <td>
+        <button
+            type="button"
+            class="tiny secondary button"
+            data-delete-ajax="{{ path('admin_form_manager_remove_field', {'id': field.id}) }}"
+            data-target="#field-line-{{ field.id }}">{{ 'delete'|trans }}</button>
+      </td>
     </tr>
     {% endfor %}
   </tbody>

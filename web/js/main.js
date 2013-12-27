@@ -34,5 +34,22 @@ $(function(){
         });
         return false;
     });
+    $('body').on('click', '[data-delete-ajax]', function(event) {
+        event.stopImmediatePropagation();
+        var url = $(this).data('delete-ajax')
+          , target = $(this).data('target')
+          ;
+        $.ajax({
+            url: url,
+            type: 'POST'
+        })
+        .done(function(response) {
+            $(target).remove();
+        })
+        .fail(function() {
+            console.warn('AJAX deletion error.');
+        });
+        return false;
+    });
 });
 }(window.jQuery);

@@ -88,10 +88,14 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
 ->bind('admin_form_manager_results')
 ;
 
-$formManagerController->post('/{id}/remove/field', function (Request $request, $id) use ($app) {
+$formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 
+    $content = new Content($app['db']);
+    $isDeleted = $content->deleteItem($id);
 
+    $jsonResponse = $isDeleted;
 
+    return $app->json($jsonResponse);
 })
 ->bind('admin_form_manager_remove_field')
 ;
