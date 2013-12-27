@@ -2,7 +2,7 @@
 $(function(){
     $('body').on('click', '[data-inject-call]', function() {
         var url = $(this).data('inject-call')
-          , target = $(this).data('inject-in')
+          , target = $(this).data('target')
           ;
         $.ajax({
             url: url
@@ -19,7 +19,7 @@ $(function(){
         var form = $(this).parents('form')
           , url = form.prop('action')
           , formData = form.serialize()
-          , target = $(this).data('inject-in')
+          , target = $(this).data('target')
           ;
         $.ajax({
             url: url,

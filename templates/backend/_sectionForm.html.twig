@@ -7,14 +7,14 @@
       <dd>
         <a href="#panel{{ section.id }}-result"
            data-inject-call="{{ path('admin_form_manager_results', {'id': section.id}) }}"
-           data-inject-in="#panel{{ section.id }}-result">
+           data-target="#panel{{ section.id }}-result">
           {{ 'form.results'|trans }}
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-edit"
            data-inject-call="{{ path('admin_form_manager_edit', {'id': section.id}) }}"
-           data-inject-in="#panel{{ section.id }}-edit">
+           data-target="#panel{{ section.id }}-edit">
           {{ 'form.edit'|trans }}
         </a>
       </dd>
