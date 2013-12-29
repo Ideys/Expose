@@ -11,27 +11,27 @@ class Content
     /**
      * @var \Doctrine\DBAL\Connection
      */
-    private $db;
+    protected $db;
 
     /**
      * @var \Symfony\Component\Security\Core\SecurityContext
      */
-    private $security;
+    protected $security;
 
     /**
      * @var string
      */
-    private $language;
+    protected $language;
 
     /**
      * @var array
      */
-    private $sections = array();
+    protected $sections = array();
 
     /**
      * @var array
      */
-    private $items = array();
+    protected $items = array();
 
     /**
      * @var string

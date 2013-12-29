@@ -20,9 +20,10 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
     $formView = null;
 
     if (Content::CONTENT_FORM == $section['type']) {
-        $dynamicForm = new DynamicForm($app['db'], $app['form.factory']);
-        $form = $dynamicForm->generateFormFields($items);
-        if ($dynamicForm->checkSubmitedForm($section['id'], $request, $form)) {
+        $contentForm = new ContentForm($app['db']);
+        $contentForm->setFormFactory($app['form.factory']);
+        $form = $contentForm->generateFormFields($items);
+        if ($contentForm->checkSubmitedForm($section['id'], $request, $form)) {
             return $app->redirect($app['url_generator']->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();

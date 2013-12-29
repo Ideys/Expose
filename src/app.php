@@ -16,7 +16,10 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 
 require __DIR__.'/models/Content.php';
-require __DIR__.'/models/DynamicForm.php';
+require __DIR__.'/models/ContentGallery.php';
+require __DIR__.'/models/ContentVideo.php';
+require __DIR__.'/models/ContentPage.php';
+require __DIR__.'/models/ContentForm.php';
 require __DIR__.'/models/Messaging.php';
 require __DIR__.'/models/Settings.php';
 require __DIR__.'/models/UserProvider.php';

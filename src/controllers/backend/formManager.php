@@ -8,12 +8,12 @@ $formManagerController = $app['controllers_factory'];
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
     $content = new Content($app['db']);
-    $dynamicForm = new DynamicForm($app['db'], $app['form.factory']);
+    $contentForm = new ContentForm($app['db']);
     $fields = $content->findSectionItems($id);
 
     $form = $app['form.factory']->createBuilder('form')
         ->add('type', 'choice', array(
-            'choices'       => DynamicForm::getFieldTypesChoice(),
+            'choices'       => ContentForm::getFieldTypesChoice(),
             'label'         => 'form.field.type',
         ))
         ->add('title', 'text', array(
@@ -78,8 +78,8 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
 $formManagerController->get('/{id}/results', function (Request $request, $id) use ($app) {
 
-    $dynamicForm = new DynamicForm($app['db'], $app['form.factory']);
-    $results = $dynamicForm->getResults($id);
+    $contentForm = new ContentForm($app['db']);
+    $results = $contentForm->getResults($id);
 
     return $app['twig']->render('backend/_formResults.html.twig', array(
         'results' => $results,
@@ -90,8 +90,8 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
 
 $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 
-    $content = new Content($app['db']);
-    $isDeleted = $content->deleteItem($id);
+    $contentForm = new ContentForm($app['db']);
+    $isDeleted = $contentForm->deleteItem($id);
 
     $jsonResponse = $isDeleted;
 

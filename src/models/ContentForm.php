@@ -1,18 +1,12 @@
 <?php
 
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Form\FormFactory;
 
 /**
- * Dynamic forms manager.
+ * Forms content manager.
  */
-class DynamicForm
+class ContentForm extends Content
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    private $db;
-
     /**
      * @var \Symfony\Component\Form\FormFactory
      */
@@ -28,17 +22,13 @@ class DynamicForm
     const TYPE_HTML     = 'html.insert';
 
     /**
-     * Constructor: inject required Silex dependencies.
+     * Inject form factory dependency.
      *
-     * @param \Doctrine\DBAL\Connection             $connection
      * @param \Symfony\Component\Form\FormFactory   $formFactory
      */
-    public function __construct(Connection  $connection,
-                                FormFactory $formFactory)
+    public function setFormFactory(FormFactory $formFactory)
     {
-        $this->db = $connection;
         $this->formFactory = $formFactory;
-        $this->language = 'fr';
     }
 
     /**
