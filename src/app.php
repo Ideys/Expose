@@ -15,12 +15,12 @@ use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 
-require __DIR__.'/util/Content.php';
-require __DIR__.'/util/DynamicForm.php';
-require __DIR__.'/util/Messaging.php';
-require __DIR__.'/util/Settings.php';
-require __DIR__.'/util/UserProvider.php';
-require __DIR__.'/util/tools.php';
+require __DIR__.'/models/Content.php';
+require __DIR__.'/models/DynamicForm.php';
+require __DIR__.'/models/Messaging.php';
+require __DIR__.'/models/Settings.php';
+require __DIR__.'/models/UserProvider.php';
+require __DIR__.'/util.php';
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
