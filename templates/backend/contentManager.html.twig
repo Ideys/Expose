@@ -3,6 +3,9 @@
 {% block main -%}
 <div class="row">
   <div class="large-12 columns">
+    <dl class="accordion" data-accordion><dd>
+    <a href="#new-section">{{ 'section.new'|trans }}</a>
+    <div id="new-section" class="content">
     {{ form_start(form, {'action': path('admin_content_manager')}) }}
       {{ form_errors(form) }}
       <div class="row">
@@ -30,11 +33,16 @@
       <div class="hidden">
         {{ form_rest(form) }}
       </div>
-      <input type="submit" name="submit"
-             value="{{ 'submit'|trans }}" class="tiny button">
+      <div class="text-right">
+        <input type="submit" name="submit"
+               value="{{ 'submit'|trans }}" class="tiny button">
+      </div>
     {{ form_end(form) }}
+    </div>
+  </dd></dl>
   </div>
 </div>
+<hr>
 <div class="row">
   <div class="large-12 columns">
     {% for section in sections %}

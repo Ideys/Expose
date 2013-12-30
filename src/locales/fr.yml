@@ -39,6 +39,7 @@ content:
 
 picture:
     upload: Télécharger des images
+    drop.here: Déposez vos images dans cette zone
 
 form:
     results: Résultats

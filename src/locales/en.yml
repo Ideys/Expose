@@ -39,6 +39,7 @@ content:
 
 picture:
     upload: Upload pictures
+    drop.here: Post your images in this area
 
 form:
     results: Results

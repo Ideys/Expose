@@ -32,8 +32,10 @@
     <div class="hidden">
       {{ form_rest(form) }}
     </div>
-    <input type="submit" name="submit"
-           value="{{ 'submit'|trans }}" class="tiny button">
+    <div class="text-right">
+      <input type="submit" name="submit"
+             value="{{ 'submit'|trans }}" class="tiny button">
+    </div>
   </div>
 </div>
 {{ form_end(form) }}

@@ -1,32 +1,25 @@
 {% spaceless %}
 <div class="row">
-  <div class="medium-12 columns"
+  <div class="medium-6 medium-push-6 columns"
        id="form-fields-{{ section_id }}">
     {% include "backend/_formFields.html.twig" with {'fields': fields} only %}
   </div>
-</div>
-
-{{ form_start(form, {'action': path('admin_form_manager_edit', {'id': section_id})}) }}
-<div class="row">
-  <div class="medium-3 columns">
-    {{ form_row(form.type) }}
-    {{ form_row(form.required) }}
-  </div>
-  <div class="medium-3 columns">
-    {{ form_row(form.title) }}
-    {{ form_row(form.description) }}
-  </div>
-  <div class="medium-3 columns">
-    {{ form_row(form.options) }}
-  </div>
-  <div class="medium-3 columns">
-    <button type="submit"
-            class="tiny button"
-            data-submit-ajax
-            data-target="#panel{{ section_id }}-edit">
-      {{ 'form.field.add'|trans }}
-    </button>
+  <div class="medium-6 medium-pull-6 columns">
+    {{ form_start(form, {'action': path('admin_form_manager_edit', {'id': section_id})}) }}
+      {{ form_row(form.type) }}
+      {{ form_row(form.title) }}
+      {{ form_row(form.description) }}
+      {{ form_row(form.options) }}
+      {{ form_row(form.required) }}
+      <div class="text-right">
+        <button type="submit"
+                class="tiny button"
+                data-submit-ajax
+                data-target="#panel{{ section_id }}-edit">
+          {{ 'form.field.add'|trans }}
+        </button>
+      </div>
+    {{ form_end(form) }}
   </div>
 </div>
-{{ form_end(form) }}
 {% endspaceless %}

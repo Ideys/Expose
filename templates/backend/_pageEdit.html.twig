@@ -10,15 +10,17 @@
         <div class="medium-8 medium-centered columns">
           {{ form_row(form.content) }}
         </div>
+        <div class="medium-8 medium-centered columns text-right">
+          <input type="submit" name="submit"
+                 value="{{ 'submit'|trans }}"
+                 data-submit-ajax
+                 data-target="#panel{{ section_id }}-edit"
+                 class="tiny button">
+        </div>
       </div>
       <div class="hidden">
         {{ form_rest(form) }}
       </div>
-      <input type="submit" name="submit"
-             value="{{ 'submit'|trans }}"
-             data-submit-ajax
-             data-target="#panel{{ section_id }}-edit"
-             class="tiny button">
     {{ form_end(form) }}
   </div>
 </div>

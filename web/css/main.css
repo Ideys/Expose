@@ -112,12 +112,37 @@ textarea {
     text-align: center;
 }
 
+#content {
+    margin-top: 30px;
+}
+
+#flash {
+    position: fixed;
+    top: 25px;
+    left: 50%;
+    width: 50%;
+    margin-left: -25%;
+    z-index: 1000;
+}
+
 .content-homepage.hide-menu-on-homepage .top-bar {
     display: none;
 }
 
 .tabs-content .content {
     width: 100%;
+}
+
+.gallery-dropzone {
+    min-height: 200px;
+    background: #efefef;
+    border: 3px dotted #0088cc;
+}
+
+.gallery-dropzone p {
+    margin-top: 85px;
+    font-size: 1.3em;
+    color: #999;
 }
 
 iframe.page-preview {
