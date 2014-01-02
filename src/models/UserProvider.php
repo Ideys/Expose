@@ -18,6 +18,10 @@ class UserProvider implements UserProviderInterface
      */
     private $db;
 
+    const ROLE_SUPER_ADMIN  = 'ROLE_SUPER_ADMIN';
+    const ROLE_ADMIN        = 'ROLE_ADMIN';
+    const ROLE_USER         = 'ROLE_USER';
+
     public function __construct(Connection $connection)
     {
         $this->db = $connection;
@@ -34,6 +38,13 @@ class UserProvider implements UserProviderInterface
         return new User($user['username'], $user['password'], explode(',', $user['roles']), true, true, true, true);
     }
 
+    public function find($id)
+    {
+        $user = $this->db->fetchAssoc('SELECT * FROM expose_user WHERE id = ?', array((int)$id));
+
+        return $user;
+    }
+
     public function findAll()
     {
         $users = $this->db->fetchAll('SELECT * FROM expose_user');
@@ -41,17 +52,25 @@ class UserProvider implements UserProviderInterface
         return $users;
     }
 
-    public function addUser($security, $username, $password, array $roles = array('ROLE_USER'))
+    public function persistUser($security, $username, $password, array $roles = array('ROLE_USER'), $id = null)
     {
         $user = new User($username, $password, $roles);
-        $encoder = $security->getEncoder($user);
-        $password = $encoder->encodePassword($password, $user->getSalt());
-
-        $this->db->insert('expose_user', array(
+        $data = array(
             'username' => $username,
-            'password' => $password,
             'roles' => implode(',', $roles),
-        ));
+        );
+
+        if (!empty($password)) {
+            $encoder = $security->getEncoder($user);
+            $password = $encoder->encodePassword($password, $user->getSalt());
+            $data += array('password' => $password);
+        }
+
+        if (empty($id)) {
+            $this->db->insert('expose_user', $data);
+        } else {
+            $this->db->update('expose_user', $data, array('id' => $id));
+        }
 
         return $user;
     }
@@ -85,6 +104,24 @@ class UserProvider implements UserProviderInterface
         }
 
         return $this->loadUserByUsername($user->getUsername());
+    }
+
+    public static function getRoles()
+    {
+        return array(
+            self::ROLE_SUPER_ADMIN,
+            self::ROLE_ADMIN,
+            self::ROLE_USER
+        );
+    }
+
+    public static function getRolesChoice()
+    {
+        $keys = static::getRoles();
+        $values = array_map(function($item){
+            return 'user.role.'.$item;
+        }, $keys);
+        return array_combine($keys, $values);
     }
 
     public function supportsClass($class)

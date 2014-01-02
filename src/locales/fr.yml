@@ -7,6 +7,11 @@ user:
     password: Mot de passe
     access: Accès
     deletion.error: Impossible de supprimer l'utilisateur
+    role:
+        role: Statut
+        ROLE_SUPER_ADMIN: Super administrateur
+        ROLE_ADMIN: Administrateur
+        ROLE_USER: Utilisateur
 
 contact:
     contact: Contact
@@ -92,4 +97,6 @@ yes: Oui
 no: Non
 submit: Valider
 actions: Actions
+edit: Éditer
+delete: Supprimer
 settings: Paramétrages

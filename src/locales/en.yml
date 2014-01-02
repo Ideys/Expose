@@ -7,6 +7,11 @@ user:
     password: Password
     access: Access
     deletion.error: Unable to remove user
+    role:
+        role: Role
+        ROLE_SUPER_ADMIN: Super admin
+        ROLE_ADMIN: Administrator
+        ROLE_USER: User
 
 contact:
     contact: Contact
@@ -92,4 +97,6 @@ yes: Yes
 no: No
 submit: Submit
 actions: Actions
+edit: Edit
+delete: Delete
 settings: Settings

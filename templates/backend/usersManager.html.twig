@@ -3,29 +3,33 @@
 {% block main -%}
 <div class="row">
   <div class="small-12 large-6 columns">
-    {% for user in users %}
-    <div class="panel">
-      <h5>{{ user.username }}</h5>
-      <p>{{ user.roles }}</p>
-      <a href="#" data-dropdown="user_action{{ user.id }}" class="tiny button dropdown">
-        {{ 'actions'|trans }}
-      </a>
-      <br>
-      <ul id="user_action{{ user.id }}" data-dropdown-content="" class="f-dropdown">
-        <li><a href="#">{{ 'edit'|trans }}</a></li>
-        <li><a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}">{{ 'delete'|trans }}</a></li>
-      </ul>
-    </div>
-    {% endfor %}
+    <table>
+      <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ ('user.role.'~user.roles)|trans }}</td>
+          <td>
+            <a href="#" data-dropdown="user_action{{ user.id }}" class="tiny button dropdown">
+              {{ 'actions'|trans }}
+            </a>
+            <ul id="user_action{{ user.id }}" data-dropdown-content="" class="f-dropdown">
+              <li><a href="{{ path('admin_users_manager', {'id': user.id}) }}">{{ 'edit'|trans }}</a></li>
+              <li><a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}">{{ 'delete'|trans }}</a></li>
+            </ul>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
   </div>
   <div class="small-12 large-6 columns">
     {{ form_start(form) }}
       {{ form_errors(form) }}
       <fieldset>
         {{ form_row(form.username) }}
-      </fieldset>
-      <fieldset>
         {{ form_row(form.password) }}
+        {{ form_row(form.roles) }}
       </fieldset>
       <div class="hidden">
         {{ form_rest(form) }}

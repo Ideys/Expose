@@ -5,11 +5,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $usersManagerController = $app['controllers_factory'];
 
-$usersManagerController->match('/', function (Request $request) use ($app) {
+$usersManagerController->match('/{id}', function (Request $request, $id = null) use ($app) {
 
     $userProvider = new UserProvider($app['db']);
 
-    $form = $app['form.factory']->createBuilder('form')
+    if ($id > 0) {
+        $user = $userProvider->find($id);
+    } else {
+        $user = array('roles' => UserProvider::ROLE_USER);
+    }
+
+    $form = $app['form.factory']->createBuilder('form', $user)
         ->add('username', 'text', array(
             'constraints'   => array(
                 new Assert\Length(array('min' => 5)),
@@ -18,21 +24,32 @@ $usersManagerController->match('/', function (Request $request) use ($app) {
             'label'         => 'user.name',
         ))
         ->add('password', 'password', array(
-            'constraints'   => array(
+            'constraints'   => ($id > 0) ? array() : array(
                 new Assert\NotBlank()
             ),
+            'required'      => false,
             'label'         => 'user.password',
+        ))
+        ->add('roles', 'choice', array(
+            'choices' => UserProvider::getRolesChoice(),
+            'constraints'   => array(
+                new Assert\Choice(UserProvider::getRoles())
+            ),
+            'label'         => 'user.role.role',
         ))
         ->getForm();
 
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        $userProvider->addUser(
+        $userProvider->persistUser(
             $app['security.encoder_factory'],
             $data['username'],
-            $data['password']
+            $data['password'],
+            array($data['roles']),
+            $id
         );
+        return $app->redirect($app['url_generator']->generate('admin_users_manager'));
     }
 
     $users = $userProvider->findAll();
@@ -42,6 +59,8 @@ $usersManagerController->match('/', function (Request $request) use ($app) {
         'form'  => $form->createView(),
     ));
 })
+->value('id', null)
+->assert('id', '\d+')
 ->bind('admin_users_manager')
 ->method('GET|POST')
 ;
