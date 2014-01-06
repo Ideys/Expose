@@ -27,7 +27,7 @@ section:
     title: Titre
     description: Description
     active: Afficher la section
-    new: New section
+    new: Nouvelle section
 
 content:
     content: Contenu

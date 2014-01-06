@@ -26,7 +26,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
         ->add('title', 'text', array(
             'label'         => 'section.title',
             'attr' => array(
-                'placeholder' => 'section.new',
+                'placeholder' => 'section.title',
             ),
         ))
         ->add('description', 'textarea', array(
