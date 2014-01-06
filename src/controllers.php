@@ -41,7 +41,7 @@ $app->mount('/admin/{_locale}/content', include 'controllers/backend/contentMana
 
 $app->mount('/admin/{_locale}/form', include 'controllers/backend/formManager.php');
 
-$app->mount('/admin/{_locale}/upload', include 'controllers/backend/uploadManager.php');
+$app->mount('/admin/{_locale}/gallery', include 'controllers/backend/galleryManager.php');
 
 $app->mount('/admin/{_locale}/page', include 'controllers/backend/pageManager.php');
 

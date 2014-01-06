@@ -72,6 +72,24 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
+$contentManagerController->post('/sort/items', function (Request $request) use ($app) {
+
+    $hierarchy = $request->get('hierarchy');
+//    $app['monolog']->addDebug(var_export($hierarchy, true));
+
+    foreach ($hierarchy as $key => $value) {
+        $app['db']->update('expose_section_item',
+                array('hierarchy' => $key),
+                array('id' => filter_var($value, FILTER_SANITIZE_NUMBER_INT))
+        );
+    }
+    $response = array(true);
+
+    return $app->json($response);
+})
+->bind('admin_content_manager_sort_items')
+;
+
 $contentManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $contentManagerController;

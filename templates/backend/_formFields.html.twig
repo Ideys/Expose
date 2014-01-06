@@ -2,15 +2,18 @@
 <table>
   <thead>
     <tr>
+      <th>&nbsp;</th>
       <th>{{ 'form.field.type'|trans }}</th>
       <th>{{ 'form.label'|trans }}</th>
       <th>{{ 'form.specs'|trans }}</th>
       <th>&nbsp;</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody data-sortable="{{ path('admin_content_manager_sort_items') }}">
     {% for field in fields %}
-    <tr id="field-line-{{ field.id }}">
+    <tr id="field-line-{{ field.id }}"
+        data-id="{{ field.id }}">
+      <td><span class="handle">::</span></td>
       <td>{{ ('form.field.'~field.type)|trans }}</td>
       <td>{{ field.title }}<br>{{ field.description }}</td>
       <td>

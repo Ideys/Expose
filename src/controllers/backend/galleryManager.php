@@ -2,9 +2,9 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
-$uploadManagerController = $app['controllers_factory'];
+$galleryManagerController = $app['controllers_factory'];
 
-$uploadManagerController->post('/', function (Request $request) use ($app) {
+$galleryManagerController->post('/upload', function (Request $request) use ($app) {
 
     $uploadedFiles = $request->files->all();
     $sectionId = (int) $request->request->get('sectionId');
@@ -56,9 +56,9 @@ $uploadManagerController->post('/', function (Request $request) use ($app) {
 
     return $app->json($jsonResponse);
 })
-->bind('admin_upload_manager_upload')
+->bind('admin_gallery_manager_upload')
 ;
 
-$uploadManagerController->assert('_locale', implode('|', $app['languages']));
+$galleryManagerController->assert('_locale', implode('|', $app['languages']));
 
-return $uploadManagerController;
+return $galleryManagerController;

@@ -72,6 +72,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
         'section_id' => $id,
     ));
 })
+->assert('id', '\d+')
 ->bind('admin_form_manager_edit')
 ->method('GET|POST')
 ;
