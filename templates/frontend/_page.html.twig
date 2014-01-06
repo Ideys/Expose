@@ -6,7 +6,9 @@
     {{ item.title }}
     {% endfor %}
   {% else %}
-    {{ items[0].content|raw }}
+    {{ items[0].content|replace({
+      '__path:gallery__': app.request.basepath~'/gallery',
+    })|raw }}
   {% endif %}
   </div>
 </div>
