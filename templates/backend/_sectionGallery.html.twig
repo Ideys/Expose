@@ -22,8 +22,44 @@
     </dl>
     <div class="tabs-content">
       <div class="content active" id="panel{{ section.id }}-1">
+        <div id="slides-actions-{{ section.id }}" class="hidden">
+          <ul class="button-group">
+            <li>
+              <h3 class="selectable-counter">&nbsp;</h3>
+            </li>
+            <li>
+              <a href="#"
+                 class="button small"
+                 data-display="#delete-slides-{{ section.id }}">
+                {{ 'delete'|trans }}
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 id="delete-slides-{{ section.id }}"
+                 class="button small alert hidden">
+                {{ 'confirm'|trans }}
+              </a>
+            </li>
+            <li>
+              <a href="#"
+                 data-dropdown="drop"
+                 class="button dropdown small">
+                {{ 'move'|trans }}
+              </a><br>
+              <ul id="drop" data-dropdown-content class="f-dropdown">
+                {% for sectionMove in sections
+                    if 'gallery' == sectionMove.type
+                    and sectionMove.id != section.id %}
+                <li><a href="#">{{ sectionMove.title }}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+          </ul>
+        </div>
         {% if items[section.id] is defined %}
-        <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-6"
+        <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid"
+            data-selectable="#slides-actions-{{ section.id }}"
             data-sortable="{{ path('admin_content_manager_sort_items') }}">
           {% for item in items[section.id] %}
           <li data-id="{{ item.id }}">

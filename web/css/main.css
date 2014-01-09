@@ -97,6 +97,10 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+.top-bar {
+    z-index: 100;
+}
+
 #admin-link {
    position: fixed;
    bottom: 0px;
@@ -131,6 +135,15 @@ textarea {
 
 .tabs-content .content {
     width: 100%;
+}
+
+.slides-grid .selected .th {
+    border-color: #0088cc;
+}
+
+.selectable-counter {
+    color: #0088cc;
+    padding-right: 10px;
 }
 
 .gallery-dropzone {

@@ -96,7 +96,9 @@ admin:
 yes: Oui
 no: Non
 submit: Valider
+confirm: Confirmer
 actions: Actions
 edit: Éditer
 delete: Supprimer
+move: Déplacer
 settings: Paramétrages

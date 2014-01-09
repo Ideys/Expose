@@ -51,5 +51,11 @@ $(function(){
         });
         return false;
     });
+    $('body').on('click', '[data-display]', function(event) {
+        event.stopImmediatePropagation();
+        var target = $(this).data('display');
+        $(target).toggleClass('hidden');
+        return false;
+    });
 });
 }(window.jQuery);
