@@ -12,7 +12,13 @@
     <tbody>
       <tr>
         {% for data in result.result %}
-          <td>{{ data }}</td>
+          <td>
+          {% if data is iterable %}
+            {{ data|join(' ; ') }}
+          {% else %}
+              {{ data }}
+          {% endif %}
+          </td>
         {% endfor %}
       </tr>
     </tbody>

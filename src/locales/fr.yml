@@ -63,8 +63,9 @@ form:
         integer: Chiffre entier
         textarea: Zone texte
         select: Menu déroulant
+        multiple.select: Choix multiple
         checkbox: Case à cocher
-        radio: Choix multiple
+        radio: Choix à puces
         html.insert: Insertion HTML
 
 messaging:

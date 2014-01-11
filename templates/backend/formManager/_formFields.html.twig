@@ -20,7 +20,7 @@
         {% if field.parameters.required|length %}
           <span class="label">{{ 'form.required'|trans }}</span><br>
         {% endif %}
-        {% if field.type in ['select', 'radio'] %}
+        {% if field.type in ['select', 'multiple.select', 'radio'] %}
           <em>{{ 'form.choices'|trans }}</em>:<br>
           {{field.parameters.options|nl2br }}
         {% elseif field.type == 'html.insert' %}

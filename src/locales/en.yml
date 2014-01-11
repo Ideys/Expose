@@ -63,8 +63,9 @@ form:
         integer: Integer number
         textarea: Textarea
         select: Selector
+        multiple.select: Multiple choice
         checkbox: Checkbox
-        radio: Multiple choice
+        radio: Bullet selector
         html.insert: HTML insert
 
 messaging:

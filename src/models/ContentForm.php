@@ -17,6 +17,7 @@ class ContentForm extends Content
     const TYPE_INTEGER  = 'integer';
     const TYPE_TEXTAREA = 'textarea';
     const TYPE_SELECT   = 'select';
+    const TYPE_MULTIPLE_SELECT = 'multiple.select';
     const TYPE_CHECKBOX = 'checkbox';
     const TYPE_RADIO    = 'radio';
     const TYPE_HTML     = 'html.insert';
@@ -53,6 +54,11 @@ class ContentForm extends Content
                 $choices = array_map('trim', explode("\n", $item['parameters']['options']));
                 $options += array(
                     'choices' => array_combine($choices, $choices),
+                );
+            }
+            if (self::TYPE_MULTIPLE_SELECT == $item['type']) {
+                $options += array(
+                    'multiple' => true,
                 );
             }
             if (self::TYPE_RADIO == $item['type']) {
@@ -125,6 +131,7 @@ class ContentForm extends Content
             self::TYPE_INTEGER,
             self::TYPE_TEXTAREA,
             self::TYPE_SELECT,
+            self::TYPE_MULTIPLE_SELECT,
             self::TYPE_CHECKBOX,
             self::TYPE_RADIO,
             self::TYPE_HTML,
@@ -159,6 +166,7 @@ class ContentForm extends Content
             self::TYPE_INTEGER  => 'integer',
             self::TYPE_TEXTAREA => 'textarea',
             self::TYPE_SELECT   => 'choice',
+            self::TYPE_MULTIPLE_SELECT => 'choice',
             self::TYPE_CHECKBOX => 'checkbox',
             self::TYPE_RADIO    => 'choice',
         );
