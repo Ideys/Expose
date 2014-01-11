@@ -79,7 +79,7 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
         $settings->updateParameters($data);
     }
 
-    return $app['twig']->render('backend/siteSettings.html.twig', array(
+    return $app['twig']->render('backend/siteSettings/siteSettings.html.twig', array(
         'form' => $form->createView(),
     ));
 })

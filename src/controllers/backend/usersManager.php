@@ -54,7 +54,7 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
 
     $users = $userProvider->findAll();
 
-    return $app['twig']->render('backend/usersManager.html.twig', array(
+    return $app['twig']->render('backend/usersManager/usersManager.html.twig', array(
         'users' => $users,
         'form'  => $form->createView(),
     ));

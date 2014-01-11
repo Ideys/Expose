@@ -32,11 +32,12 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
         $content->blame($app['security'])->editItem($data);
     }
 
-    return $app['twig']->render('backend/_pageEdit.html.twig', array(
+    return $app['twig']->render('backend/pageManager/_pageEdit.html.twig', array(
         'form' => $form->createView(),
         'section_id' => $id,
     ));
 })
+->assert('id', '\d+')
 ->bind('admin_page_manager_edit')
 ->method('GET|POST')
 ;

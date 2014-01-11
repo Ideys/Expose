@@ -1,0 +1,41 @@
+{% spaceless %}
+<dd>
+  <a href="#panel{{ section.id }}"
+     data-click="#panel{{ section.id }} .tabs dd:first-child a">
+    {{ section.title }}
+  </a>
+  <div class="content gallery" id="panel{{ section.id }}">
+    <p>{{ section.description|nl2br }}</p>
+    <dl class="tabs" data-tab>
+      <dd>
+        <a href="#panel{{ section.id }}-list"
+           data-inject-call="{{ path('admin_gallery_manager_list', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-list">
+          {{ 'content.gallery'|trans }}
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-upload" data-item-upload="{{ section.id }}">
+          {{ 'picture.upload'|trans }}
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-settings">
+          {{ 'settings'|trans }}
+        </a>
+      </dd>
+    </dl>
+    <div class="tabs-content">
+      <div class="content" id="panel{{ section.id }}-list">
+      </div>
+      <div class="content" id="panel{{ section.id }}-upload">
+        <div class="gallery-dropzone">
+          <p class="text-center">{{ 'picture.drop.here'|trans }}</p>
+        </div>
+      </div>
+      <div class="content" id="panel{{ section.id }}-settings">
+      </div>
+    </div>
+  </div>
+</dd>
+{% endspaceless %}

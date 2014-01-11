@@ -1,5 +1,9 @@
 !function($) {
 $(function(){
+    $('body').on('click', '[data-click]', function() {
+        var target = $($(this).data('click'));
+        target.click();
+    });
     $('body').on('click', '[data-inject-call]', function() {
         var url = $(this).data('inject-call')
           , target = $(this).data('target')

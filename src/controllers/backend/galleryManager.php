@@ -4,6 +4,22 @@ use Symfony\Component\HttpFoundation\Request;
 
 $galleryManagerController = $app['controllers_factory'];
 
+$galleryManagerController->get('/{id}/list', function (Request $request, $id) use ($app) {
+
+    $contentGallery = new ContentGallery($app['db']);
+    $slides = $contentGallery->findSectionItems($id);
+    $sections = $contentGallery->findSections();
+
+    return $app['twig']->render('backend/galleryManager/_slideList.html.twig', array(
+        'section_id' => $id,
+        'sections' => $sections,
+        'slides' => $slides,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_gallery_manager_list')
+;
+
 $galleryManagerController->post('/upload', function (Request $request) use ($app) {
 
     $uploadedFiles = $request->files->all();
@@ -11,7 +27,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     if (0 == $sectionId) {
         $sectionId = null;
     }
-    $content = new Content($app['db']);
+    $contentGallery = new ContentGallery($app['db']);
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
@@ -32,7 +48,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 
         $file->move($app['gallery.dir'], $data['path']);
 
-        $content->blame($app['security'])->addItem(
+        $contentGallery->blame($app['security'])->addItem(
                 $sectionId,
                 $data['type'],
                 $data['path'],
@@ -57,6 +73,19 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     return $app->json($jsonResponse);
 })
 ->bind('admin_gallery_manager_upload')
+;
+
+$galleryManagerController->post('/delete/{id}/slides', function (Request $request, $id) use ($app) {
+
+    $itemIds = $request->get('items');
+    $contentGallery = new ContentGallery($app['db']);
+
+    $deletedIds = $contentGallery->deleteSlides($id, $itemIds);
+
+    return $app->json($deletedIds);
+})
+->assert('id', '\d+')
+->bind('admin_gallery_manager_delete_slides')
 ;
 
 $galleryManagerController->assert('_locale', implode('|', $app['languages']));

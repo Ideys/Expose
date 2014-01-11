@@ -7,9 +7,8 @@ $formManagerController = $app['controllers_factory'];
 
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $content = new Content($app['db']);
     $contentForm = new ContentForm($app['db']);
-    $fields = $content->findSectionItems($id);
+    $fields = $contentForm->findSectionItems($id);
 
     $form = $app['form.factory']->createBuilder('form')
         ->add('type', 'choice', array(
@@ -52,7 +51,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
             'options' => $data['options'],
         );
         $language = 'fr';
-        $content->blame($app['security'])->addItem(
+        $contentForm->blame($app['security'])->addItem(
                 $id,
                 $data['type'],
                 $data['path'],
@@ -63,10 +62,10 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
                 $language
         );
         // Call fields with new result
-        $fields = $content->findSectionItems($id);
+        $fields = $contentForm->findSectionItems($id);
     }
 
-    return $app['twig']->render('backend/_formEdit.html.twig', array(
+    return $app['twig']->render('backend/formManager/_formEdit.html.twig', array(
         'form' => $form->createView(),
         'fields' => $fields,
         'section_id' => $id,
@@ -82,10 +81,11 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
     $contentForm = new ContentForm($app['db']);
     $results = $contentForm->getResults($id);
 
-    return $app['twig']->render('backend/_formResults.html.twig', array(
+    return $app['twig']->render('backend/formManager/_formResults.html.twig', array(
         'results' => $results,
     ));
 })
+->assert('id', '\d+')
 ->bind('admin_form_manager_results')
 ;
 
@@ -98,6 +98,7 @@ $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 
     return $app->json($jsonResponse);
 })
+->assert('id', '\d+')
 ->bind('admin_form_manager_remove_field')
 ;
 

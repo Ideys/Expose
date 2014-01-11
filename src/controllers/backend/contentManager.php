@@ -63,7 +63,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 
-    return $app['twig']->render('backend/contentManager.html.twig', array(
+    return $app['twig']->render('backend/contentManager/contentManager.html.twig', array(
         'form' => $form->createView(),
         'items' => $items,
     ));
@@ -88,6 +88,22 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
     return $app->json($response);
 })
 ->bind('admin_content_manager_sort_items')
+;
+
+$contentManagerController->post('/delete/items', function (Request $request) use ($app) {
+
+    $items = $request->get('items');
+    $content = new Content($app['db']);
+    $response = array();
+
+    foreach ($items as $item) {
+        $content->deleteItem($item);
+        $response[] = $item;
+    }
+
+    return $app->json($response);
+})
+->bind('admin_content_manager_delete_items')
 ;
 
 $contentManagerController->assert('_locale', implode('|', $app['languages']));

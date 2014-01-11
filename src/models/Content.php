@@ -214,10 +214,12 @@ class Content
            'WHERE i.expose_section_id = ?
             AND t.language = ?
             ORDER BY i.hierarchy ASC';
-        $items = $this->db->fetchAll($sql, array($id, $this->language));
+        $entities = $this->db->fetchAll($sql, array($id, $this->language));
 
-        foreach ($items as $row => $item) {
-            $items[$row]['parameters'] = unserialize($item['parameters']);
+        $items = array();
+        foreach ($entities as $entity) {
+            $items[$entity['id']] = $entity;
+            $items[$entity['id']]['parameters'] = unserialize($entity['parameters']);
         }
 
         return $items;

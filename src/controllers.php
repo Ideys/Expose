@@ -45,6 +45,8 @@ $app->mount('/admin/{_locale}/gallery', include 'controllers/backend/galleryMana
 
 $app->mount('/admin/{_locale}/page', include 'controllers/backend/pageManager.php');
 
+$app->mount('/admin/{_locale}/video', include 'controllers/backend/videoManager.php');
+
 $app->mount('/admin/{_locale}/messaging', include 'controllers/backend/messagingManager.php');
 
 $app->mount('/admin/{_locale}/settings', include 'controllers/backend/siteSettings.php');

@@ -57,7 +57,7 @@
         <hr>
       {% else %}
         <dl class="accordion" data-accordion>
-          {% include "backend/_section"~section.type|capitalize~".html.twig"
+          {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
                 with {'section': section, 'items': items} only %}
         </dl>
         <hr>
