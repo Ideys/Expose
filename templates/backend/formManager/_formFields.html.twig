@@ -31,8 +31,17 @@
         <button
             type="button"
             class="tiny secondary button"
+            data-display="#delete-field-{{ field.id }}">
+          {{ 'delete'|trans }}
+        </button>
+        <button
+            type="button"
+            id="delete-field-{{ field.id }}"
+            class="tiny alert button hidden"
             data-delete-ajax="{{ path('admin_form_manager_remove_field', {'id': field.id}) }}"
-            data-target="#field-line-{{ field.id }}">{{ 'delete'|trans }}</button>
+            data-target="#field-line-{{ field.id }}">
+          {{ 'confirm'|trans }}
+        </button>
       </td>
     </tr>
     {% endfor %}

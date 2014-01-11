@@ -5,20 +5,22 @@
       <h3 class="selectable-counter">&nbsp;</h3>
     </li>
     <li>
-      <a href="#"
+      <button
+          type="button"
          class="button small"
          data-display="#delete-slides-{{ section_id }}">
         {{ 'delete'|trans }}
-      </a>
+      </button>
     </li>
     <li>
-      <a href="#"
+      <button
+         type="button"
          data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section_id}) }}"
          data-target="#slides-{{ section_id }}"
          id="delete-slides-{{ section_id }}"
          class="button small alert hidden">
         {{ 'confirm'|trans }}
-      </a>
+      </button>
     </li>
     <li>
       <a href="#"
