@@ -79,8 +79,10 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
 
     $contentForm = new ContentForm($app['db']);
     $results = $contentForm->getResults($id);
+    $fields = $contentForm->findSectionItems($id);
 
     return $app['twig']->render('backend/formManager/_formResults.html.twig', array(
+        'fields' => $fields,
         'results' => $results,
     ));
 })
@@ -99,6 +101,17 @@ $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 })
 ->assert('id', '\d+')
 ->bind('admin_form_manager_remove_field')
+;
+
+$formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
+
+    $contentForm = new ContentForm($app['db']);
+    $isDeleted = $contentForm->deleteResult($id);
+
+    return $app->json($isDeleted);
+})
+->assert('id', '\d+')
+->bind('admin_form_manager_remove_result')
 ;
 
 $formManagerController->assert('_locale', implode('|', $app['languages']));

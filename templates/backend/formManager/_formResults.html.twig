@@ -1,17 +1,23 @@
 {% spaceless %}
-{% for result in results %}
-  {{ result.date|date('d/m/Y H:i') }}
   <table>
     <thead>
       <tr>
-        {% for attr_name, data in result.result %}
-          <th>{{ attr_name }}</th>
+        <th>{{ 'date'|trans }}</th>
+        {% for field in fields %}
+          <th>{{ field.title }}</th>
         {% endfor %}
+        <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        {% for data in result.result %}
+    {% for result in results %}
+      <tr id="result-{{ result.id }}">
+        <td>
+          {{ result.date|date('d/m/Y H:i') }}
+        </td>
+        {% for field in fields %}
+          {% if result.result[field.slug] is defined %}
+          {% set data = result.result[field.slug] %}
           <td>
           {% if data is iterable %}
             {{ data|join(' ; ') }}
@@ -19,11 +25,34 @@
               {{ data }}
           {% endif %}
           </td>
+          {% else %}
+          <td class="muted"></td>
+          {% endif %}
         {% endfor %}
+        <td>
+          <button
+              type="button"
+              class="tiny secondary button"
+              data-display="#delete-result-{{ result.id }}">
+            {{ 'delete'|trans }}
+          </button>
+          <button
+              type="button"
+              id="delete-result-{{ result.id }}"
+              class="tiny alert button hidden"
+              data-delete-ajax="{{ path('admin_form_manager_remove_result', {'id': result.id}) }}"
+              data-target="#result-{{ result.id }}">
+            {{ 'confirm'|trans }}
+          </button>
+        </td>
       </tr>
+    {% else %}
+      <tr>
+        <td colspan="{{ fields|length }}">
+          {{ 'form.no.results'|trans }}
+        </td>
+      </tr>
+    {% endfor %}
     </tbody>
   </table>
-{% else %}
-  {{ 'form.no.results'|trans }}
-{% endfor %}
 {% endspaceless %}

@@ -119,6 +119,19 @@ class ContentForm extends Content
     }
 
     /**
+     * Delete a form result.
+     *
+     * @param integer $id
+     * @return boolean
+     */
+    public function deleteResult($id)
+    {
+        $rows = $this->db->delete('expose_form_result', array('id' => $id));
+
+        return (0 < $rows);
+    }
+
+    /**
      * Return fields types keys
      *
      * @return array
