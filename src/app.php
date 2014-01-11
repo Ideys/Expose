@@ -50,6 +50,7 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
     $settings = new Settings($app['db']);
+    $twig->addGlobal('semver', '0.4');
     $twig->addGlobal('site', $settings->getAll());
     $content = new Content($app['db']);
     $twig->addGlobal('sections', $content->findSections());

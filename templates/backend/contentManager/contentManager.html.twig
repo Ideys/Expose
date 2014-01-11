@@ -50,7 +50,7 @@
         <h3>{{ section.title }}</h3>
         <dl class="accordion" data-accordion>
           {% for section in section.sections %}
-            {% include "backend/_section"~section.type|capitalize~".html.twig"
+            {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
                   with {'section': section, 'items': items} only %}
           {% endfor %}
         </dl>

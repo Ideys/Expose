@@ -14,11 +14,11 @@
         {% if site.verificationKey|length %}
         <meta name="google-site-verification" content="{{ site.verificationKey }}">
         {% endif %}
-        <link rel="stylesheet" href="{{ app.request.basepath }}/css/normalize.css">
-        <link rel="stylesheet" href="{{ app.request.basepath }}/css/foundation.min.css">
-        <link rel="stylesheet" href="{{ app.request.basepath }}/css/main.css">
+        <link rel="stylesheet" href="{{ app.request.basepath }}/css/normalize.css?v={{ semver }}">
+        <link rel="stylesheet" href="{{ app.request.basepath }}/css/foundation.min.css?v={{ semver }}">
+        <link rel="stylesheet" href="{{ app.request.basepath }}/css/main.css?v={{ semver }}">
         {% block head %}{% endblock %}
-        <script src="{{ app.request.basepath }}/js/vendor/modernizr.js"></script>
+        <script src="{{ app.request.basepath }}/js/vendor/modernizr.js?v={{ semver }}"></script>
     </head>
     <body class="{% block body_class '' %}">
         <!--[if lt IE 7]>
@@ -45,8 +45,8 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="{{ app.request.basepath }}/js/vendor/jquery.js"><\/script>')</script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
-        <script src="{{ app.request.basepath }}/js/vendor/foundation.min.js"></script>
-        <script src="{{ app.request.basepath }}/js/main.js"></script>
+        <script src="{{ app.request.basepath }}/js/vendor/foundation.min.js?v={{ semver }}"></script>
+        <script src="{{ app.request.basepath }}/js/main.js?v={{ semver }}"></script>
         {% block javascripts %}{% endblock %}
         <script>
           $(document).foundation();

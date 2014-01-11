@@ -49,5 +49,5 @@
 {%- endblock content%}
 
 {% block javascripts %}
-<script src="{{ app.request.basepath }}/js/admin.js"></script>
+<script src="{{ app.request.basepath }}/js/admin.js?v={{ semver }}"></script>
 {% endblock javascripts %}
