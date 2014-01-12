@@ -5,11 +5,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $pageManagerController = $app['controllers_factory'];
 
+$pageManagerController->get('/{id}/preview', function (Request $request, $id) use ($app) {
+
+    $contentPage = new ContentPage($app['db']);
+    $pages = $contentPage->findSectionItems($id);
+
+    return $app['twig']->render('backend/pageManager/_pagePreview.html.twig', array(
+        'pages' => $pages,
+        'section_id' => $id,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_page_manager_preview')
+;
+
 $pageManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $content = new Content($app['db']);
-    $pages = $content->findSectionItems($id);
-    $page = $pages[0];
+    $contentPage = new ContentPage($app['db']);
+    $pages = $contentPage->findSectionItems($id);
+    $page = array_shift($pages);
 
     $form = $app['form.factory']->createBuilder('form', $page)
         ->add('title', 'text', array(
@@ -29,7 +43,7 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        $content->blame($app['security'])->editItem($data);
+        $contentPage->blame($app['security'])->editItem($data);
     }
 
     return $app['twig']->render('backend/pageManager/_pageEdit.html.twig', array(

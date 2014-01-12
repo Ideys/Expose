@@ -1,14 +1,17 @@
 {% spaceless %}
 <dd data-id="{{ section.id }}">
-  <a href="#panel{{ section.id }}">
+  <a href="#panel{{ section.id }}"
+     data-click="#panel{{ section.id }} .tabs dd:first-child a">
     <span class="handle-section">&nbsp;</span>
     {{ section.title }}
   </a>
   <div class="content page" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
     <dl class="tabs" data-tab>
-      <dd class="active">
-        <a href="#panel{{ section.id }}-preview">
+      <dd>
+        <a href="#panel{{ section.id }}-preview"
+           data-inject-call="{{ path('admin_page_manager_preview', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-preview">
           {{ 'content.preview'|trans }}
         </a>
       </dd>
@@ -26,19 +29,7 @@
       </dd>
     </dl>
     <div class="tabs-content">
-      <div class="content active" id="panel{{ section.id }}-preview">
-        {% if items[section.id] is defined %}
-          {% set pages = items[section.id] %}
-          {% if pages|length > 1 %}
-            {% for page in pages %}
-              {{ page.title }}
-            {% endfor %}
-          {% else %}
-          <iframe class="page-preview"
-                  src="{{ path('section', {'slug': pages[0].slug}) }}"
-                  seamless></iframe>
-          {% endif %}
-        {% endif %}
+      <div class="content" id="panel{{ section.id }}-preview">
       </div>
       <div class="content" id="panel{{ section.id }}-edit">
       </div>

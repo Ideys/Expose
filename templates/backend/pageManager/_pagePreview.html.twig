@@ -1,0 +1,18 @@
+{% spaceless %}
+{% if pages|length > 1 %}
+<ul class="pagination">
+  {% for page in pages %}
+  <li{% if loop.first %} class="current"{% endif %}>
+      <a href="#{{ page.slug }}"
+         title="{{ page.title }}">
+        {{ loop.index }}
+      </a>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% set first_page = pages|first %}
+<iframe class="page-preview"
+        src="{{ path('section', {'slug': first_page.slug}) }}"
+        seamless></iframe>
+{% endspaceless %}
