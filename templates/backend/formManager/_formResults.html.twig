@@ -48,7 +48,7 @@
       </tr>
     {% else %}
       <tr>
-        <td colspan="{{ fields|length }}">
+        <td colspan="{{ fields|length + 2 }}" class="notice-empty">
           {{ 'form.no.results'|trans }}
         </td>
       </tr>

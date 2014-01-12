@@ -38,6 +38,7 @@
     </li>
   </ul>
 </div>
+{% if slides|length %}
 <ul id="slides-{{ section_id }}"
     class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid"
     data-selectable="#slides-actions-{{ section_id }}"
@@ -50,4 +51,7 @@
   </li>
   {% endfor %}
 </ul>
+{% else %}
+<p class="notice-empty">{{ 'picture.no.pics'|trans }}</p>
+{% endif %}
 {% endspaceless %}

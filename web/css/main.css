@@ -211,6 +211,16 @@ iframe.page-preview {
     border: 1px solid #333;
 }
 
+.notice-empty {
+    background-color: #556778;
+    color: #fff;
+    text-align: center;
+    padding: 15px 0px;
+}
+
+td.notice-empty {
+}
+
 td.muted {
     background-color: #ccc;
 }
