@@ -11,8 +11,12 @@
   {% endfor %}
 </ul>
 {% endif %}
-{% set first_page = pages|first %}
-<iframe class="page-preview"
-        src="{{ path('section', {'slug': first_page.slug}) }}"
-        seamless></iframe>
+{% if pages|length %}
+  {% set first_page = pages|first %}
+  <iframe class="page-preview"
+          src="{{ path('section', {'slug': first_page.slug}) }}"
+          seamless></iframe>
+{% else %}
+  <p class="notice-empty">{{ 'page.no.page'|trans }}</p>
+{% endif %}
 {% endspaceless %}

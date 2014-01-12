@@ -128,10 +128,27 @@ class Content
     /**
      * Return a section.
      *
+     * @param integer $id
+     * @return array
+     */
+    public function findSection($id)
+    {
+        $sql = $this->sqlSelectSection .
+           'WHERE s.id = ?
+            AND t.language = ?
+            ORDER BY s.hierarchy ASC';
+        $section = $this->db->fetchAssoc($sql, array($id, $this->language));
+
+        return $section;
+    }
+
+    /**
+     * Return a section.
+     *
      * @param string $slug Section slug
      * @return array
      */
-    public function findSection($slug)
+    public function findSectionBySlug($slug)
     {
         $sql = $this->sqlSelectSection .
            'WHERE s.slug = ?

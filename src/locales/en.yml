@@ -74,6 +74,11 @@ form:
         radio: Bullet selector
         html.insert: HTML insert
 
+page:
+    page: Page
+    pages: Pages
+    no.page: Aucunes pages dans cette section
+
 messaging:
     messaging: Messaging
 

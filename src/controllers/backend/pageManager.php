@@ -24,12 +24,15 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
     $contentPage = new ContentPage($app['db']);
     $pages = $contentPage->findSectionItems($id);
     $page = array_shift($pages);
+    if (empty($page)) {
+        $page = $contentPage->addFirstPage($id);
+    }
 
     $form = $app['form.factory']->createBuilder('form', $page)
         ->add('title', 'text', array(
             'label'         => 'section.title',
             'attr' => array(
-                'placeholder' => 'content.title',
+                'placeholder' => 'section.title',
             ),
         ))
         ->add('content', 'textarea', array(

@@ -13,7 +13,7 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
         $section = $content->findHomepage($slug);
         $contentType = 'homepage';
     } else {
-        $section = $content->findSection($slug);
+        $section = $content->findSectionBySlug($slug);
         $contentType = $section['type'];
     }
     $items = $content->findSectionItems($section['id']);

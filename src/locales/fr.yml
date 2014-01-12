@@ -74,6 +74,11 @@ form:
         radio: Choix à puces
         html.insert: Insertion HTML
 
+page:
+    page: Page
+    pages: Pages
+    no.page: Aucunes pages dans cette section
+
 messaging:
     messaging: Messagerie
 
