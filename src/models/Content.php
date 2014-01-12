@@ -236,7 +236,7 @@ class Content
         $this->db->insert('expose_section', array(
             'expose_section_id' => $dirId,
             'type' => $type,
-            'slug' => slugify($title),
+            'slug' => $this->uniqueSlug($title),
             'active' => $active,
         ) + $this->blameAndTimestampData(0));
 
@@ -249,6 +249,38 @@ class Content
         ));
 
         return $sectionId;
+    }
+
+    /**
+     * Increments slugs for identical name sections:
+     * new-section / new-section-2 / new-section-4 => new-section-5
+     *
+     * @param string $title
+     * @return string
+     */
+    protected function uniqueSlug($title)
+    {
+        $slug = slugify($title);
+
+        $sections = $this->db->fetchAll(
+            'SELECT slug FROM expose_section WHERE slug LIKE ?',
+            array($slug.'%')
+        );
+
+        $namesakes = array();
+        foreach($sections as $section) {
+            $e = explode('-', $section['slug']);
+            $prefix = array_pop($e);
+            $namesakes[] = (int)$prefix;
+        }
+
+        if (!empty($namesakes)) {
+            sort($namesakes);
+            $lastIncr = array_pop($namesakes);
+            $slug .= '-' . (++$lastIncr);
+        }
+
+        return $slug;
     }
 
     /**
