@@ -146,15 +146,13 @@ textarea {
     padding-right: 10px;
 }
 
-.gallery-dropzone {
+.gallery-upload {
     min-height: 200px;
     background: #efefef;
     border: 3px dotted #0088cc;
 }
 
-.gallery-dropzone p {
-    margin-top: 85px;
-    font-size: 1.3em;
+.gallery-upload .upload-info {
     color: #999;
 }
 

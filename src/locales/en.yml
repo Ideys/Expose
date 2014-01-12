@@ -45,6 +45,7 @@ content:
 picture:
     upload: Upload pictures
     drop.here: Post your images in this area
+    upload.info: %i pictures upload in progress
 
 form:
     results: Results

@@ -45,6 +45,7 @@ content:
 picture:
     upload: Télécharger des images
     drop.here: Déposez vos images dans cette zone
+    upload.info: %i images en cours d'envoi
 
 form:
     results: Résultats

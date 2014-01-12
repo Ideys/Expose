@@ -1,6 +1,43 @@
 !function($) {
 $(function(){
   $('body')
+    .on('click', '[data-gallery-upload]', function(){
+        var uploadForm = $($(this).data('gallery-upload'))
+          , uploadProgress = uploadForm.find('.progress .meter')
+          , uploadGrid = uploadForm.find('.upload-grid')
+          , uploadInfo = uploadForm.find('.upload-info')
+          , uploadProgressText = uploadInfo.data('upload-info')
+          , picsCounter = 0
+          ;
+
+        if (!uploadForm.hasClass('upload-active')) {
+            uploadForm.fileupload({
+                dropZone: uploadForm,
+                dataType: 'json',
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    uploadProgress.css('width', progress + '%');
+                },
+                add: function (e, data) {
+                    picsCounter++;
+                    var uploadText = uploadProgressText.replace('%i', picsCounter);
+                    uploadInfo.text(uploadText);
+                    data.submit();
+                },
+                done: function (e, data) {
+                    $.each(data.result, function (index, file) {
+                        var item = $('<li class="new"></li>')
+                          , slide = $('<img/>')
+                            .prop('src', basePath + '/gallery/220/' + file.path)
+                            .addClass('th handle');
+                        item.append(slide);
+                        item.appendTo(uploadGrid);
+                    });
+                }
+            });
+            uploadForm.addClass('upload-active');
+        }
+    })
     .on('mouseenter', '[data-sortable]', function() {
         var list = $(this);
 

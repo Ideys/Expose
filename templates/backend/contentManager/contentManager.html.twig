@@ -65,15 +65,6 @@
     {% endfor %}
   </div>
 </div>
-<form id="fileupload"
-      class="hidden"
-      action="{{ path('admin_gallery_manager_upload') }}"
-      method="POST"
-      enctype="multipart/form-data">
-    <input type="file" name="files[]" multiple>
-    <input type="hidden" name="sectionId" value="0">
-    <button type="submit"></button>
-</form>
 {%- endblock main %}
 
 {% block javascripts %}
@@ -81,21 +72,4 @@
 <script src="{{ app.request.basepath }}/js/vendor/jquery.ui.widget.js"></script>
 <script src="{{ app.request.basepath }}/js/vendor/jquery.iframe-transport.js"></script>
 <script src="{{ app.request.basepath }}/js/vendor/jquery.fileupload.js"></script>
-<script>
-$(function () {
-    $('.content.gallery').each(function(){
-        $(this).on('click', '[data-item-upload]', function(){
-            var sectionId = $(this).data('item-upload');
-            console.log(sectionId)
-            $('#fileupload [name="sectionId"]').val(sectionId);
-        });
-    });
-    $('#fileupload').fileupload({
-        dataType: 'json',
-        done: function (e, data) {
-            console.log(data._response.result);
-        }
-    });
-});
-</script>
 {% endblock javascripts %}

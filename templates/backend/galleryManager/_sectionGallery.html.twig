@@ -15,7 +15,8 @@
         </a>
       </dd>
       <dd>
-        <a href="#panel{{ section.id }}-upload" data-item-upload="{{ section.id }}">
+        <a href="#panel{{ section.id }}-upload"
+           data-gallery-upload="#gallery-upload{{ section.id }}">
           {{ 'picture.upload'|trans }}
         </a>
       </dd>
@@ -30,8 +31,26 @@
       </div>
       <div class="content" id="panel{{ section.id }}-upload">
         <div class="gallery-dropzone">
-          <p class="text-center">{{ 'picture.drop.here'|trans }}</p>
         </div>
+        <form class="gallery-upload"
+              id="gallery-upload{{ section.id }}"
+              action="{{ path('admin_gallery_manager_upload') }}"
+              method="POST"
+              enctype="multipart/form-data">
+          <div class="progress">
+            <span class="meter" style="width: 0%;"></span>
+          </div>
+          <h4 class="text-center upload-info"
+              data-upload-info="{{ 'picture.upload.info'|trans }}">
+            {{ 'picture.drop.here'|trans }}
+          </h4>
+          <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 upload-grid"></ul>
+          <div class="hidden">
+            <input type="file" name="files[]" multiple>
+            <input type="hidden" name="sectionId" value="{{ section.id }}">
+            <button type="submit"></button>
+          </div>
+        </form>
       </div>
       <div class="content" id="panel{{ section.id }}-settings">
       </div>

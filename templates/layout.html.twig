@@ -47,6 +47,9 @@
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
         <script src="{{ app.request.basepath }}/js/vendor/foundation.min.js?v={{ semver }}"></script>
         <script src="{{ app.request.basepath }}/js/main.js?v={{ semver }}"></script>
+        <script>
+          var basePath = "{{ app.request.basepath }}";
+        </script>
         {% block javascripts %}{% endblock %}
         <script>
           $(document).foundation();
