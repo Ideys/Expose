@@ -47,6 +47,8 @@ picture:
     drop.here: Déposez vos images dans cette zone
     upload.info: %i images en cours d'envoi
     no.pics: Aucune images dans cette section
+    delete.gallery: Supprimer la section et ses photos
+    gallery.deleted: Une galerie a été supprimée
 
 form:
     results: Résultats

@@ -114,6 +114,19 @@ $formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
 ->bind('admin_form_manager_remove_result')
 ;
 
+$formManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+
+    return $app['twig']->render('backend/formManager/_formSettings.html.twig', array(
+        'delete_form' => $deleteForm->createView(),
+        'section_id' => $id,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_form_manager_settings')
+->method('GET|POST')
+;
+
 $formManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $formManagerController;

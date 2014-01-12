@@ -75,7 +75,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 ->bind('admin_gallery_manager_upload')
 ;
 
-$galleryManagerController->post('/delete/{id}/slides', function (Request $request, $id) use ($app) {
+$galleryManagerController->post('/{id}/delete/slides', function (Request $request, $id) use ($app) {
 
     $itemIds = $request->get('items');
     $contentGallery = new ContentGallery($app['db']);
@@ -86,6 +86,40 @@ $galleryManagerController->post('/delete/{id}/slides', function (Request $reques
 })
 ->assert('id', '\d+')
 ->bind('admin_gallery_manager_delete_slides')
+;
+
+$galleryManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
+
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+    $contentGallery = new ContentGallery($app['db']);
+
+    $deleteForm->handleRequest($request);
+    if ($deleteForm->isValid()) {
+        $contentGallery->deleteSection($id);
+
+        $app['session']
+            ->getFlashBag()
+            ->add('default', $app['translator']->trans('picture.gallery.deleted'));
+    }
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+})
+->assert('id', '\d+')
+->bind('admin_gallery_manager_delete')
+;
+
+$galleryManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
+
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+
+    return $app['twig']->render('backend/galleryManager/_gallerySettings.html.twig', array(
+        'delete_form' => $deleteForm->createView(),
+        'section_id' => $id,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_gallery_manager_settings')
+->method('GET|POST')
 ;
 
 $galleryManagerController->assert('_locale', implode('|', $app['languages']));

@@ -218,7 +218,10 @@ iframe.page-preview {
     padding: 15px 0px;
 }
 
-td.notice-empty {
+.safety-pin-info {
+    color: #dc322f;
+    line-height: 35px;
+    padding-left: 8px;
 }
 
 td.muted {

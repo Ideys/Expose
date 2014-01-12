@@ -22,11 +22,20 @@
           {{ 'form.edit'|trans }}
         </a>
       </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-settings"
+           data-inject-call="{{ path('admin_form_manager_settings', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-settings">
+          {{ 'settings'|trans }}
+        </a>
+      </dd>
     </dl>
     <div class="tabs-content">
       <div class="content active" id="panel{{ section.id }}-result">
       </div>
       <div class="content" id="panel{{ section.id }}-edit">
+      </div>
+      <div class="content" id="panel{{ section.id }}-settings">
       </div>
     </div>
   </div>

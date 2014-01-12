@@ -47,6 +47,8 @@ picture:
     drop.here: Post your images in this area
     upload.info: %i pictures upload in progress
     no.pics: No pictures in this section
+    delete.gallery: Delete section and related pictures
+    gallery.deleted: A gallery was deleted
 
 form:
     results: Results
