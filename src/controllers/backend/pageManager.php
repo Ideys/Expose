@@ -59,6 +59,40 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
 ->method('GET|POST')
 ;
 
+$pageManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
+
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+    $contentPage = new ContentPage($app['db']);
+
+    $deleteForm->handleRequest($request);
+    if ($deleteForm->isValid()) {
+        $contentPage->deleteSection($id);
+
+        $app['session']
+            ->getFlashBag()
+            ->add('default', $app['translator']->trans('page.section.deleted'));
+    }
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+})
+->assert('id', '\d+')
+->bind('admin_page_manager_delete')
+;
+
+$pageManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
+
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+
+    return $app['twig']->render('backend/pageManager/_pageSettings.html.twig', array(
+        'delete_form' => $deleteForm->createView(),
+        'section_id' => $id,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_page_manager_settings')
+->method('GET|POST')
+;
+
 $pageManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $pageManagerController;

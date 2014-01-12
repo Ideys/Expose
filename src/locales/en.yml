@@ -78,6 +78,8 @@ page:
     page: Page
     pages: Pages
     no.page: Aucunes pages dans cette section
+    delete.section: Delete this section and all its content
+    section.deleted: A section was deleted
 
 messaging:
     messaging: Messaging

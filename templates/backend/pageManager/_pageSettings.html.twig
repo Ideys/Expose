@@ -1,0 +1,14 @@
+{% spaceless %}
+<div class="row">
+  <div class="medium-6 columns">
+  </div>
+  <div class="medium-6 columns">
+    {% include 'backend/contentManager/_deleteForm.html.twig' with {
+    'id': section_id,
+    'delete_form': delete_form,
+    'action_path': path('admin_page_manager_delete', {'id': section_id}),
+    'info': 'page.delete.section'
+    } only %}
+  </div>
+</div>
+{% endspaceless %}

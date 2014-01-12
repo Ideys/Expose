@@ -23,7 +23,9 @@
         </a>
       </dd>
       <dd>
-        <a href="#panel{{ section.id }}-settings">
+        <a href="#panel{{ section.id }}-settings"
+           data-inject-call="{{ path('admin_page_manager_settings', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-settings">
           {{ 'settings'|trans }}
         </a>
       </dd>
