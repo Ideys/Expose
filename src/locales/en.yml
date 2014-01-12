@@ -59,6 +59,8 @@ form:
     specs: Specifications
     required: Required
     choices: Choices
+    delete.form: Delete this form and those results
+    form.deleted: The form was deleted
     field:
         add: Add field
         type: Field type

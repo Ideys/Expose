@@ -127,6 +127,26 @@ $formManagerController->match('/{id}/settings', function (Request $request, $id)
 ->method('GET|POST')
 ;
 
+$formManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
+
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+    $contentForm = new ContentForm($app['db']);
+
+    $deleteForm->handleRequest($request);
+    if ($deleteForm->isValid()) {
+        $contentForm->deleteSection($id);
+
+        $app['session']
+            ->getFlashBag()
+            ->add('default', $app['translator']->trans('form.form.deleted'));
+    }
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+})
+->assert('id', '\d+')
+->bind('admin_form_manager_delete')
+;
+
 $formManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $formManagerController;

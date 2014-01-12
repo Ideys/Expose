@@ -132,6 +132,23 @@ class ContentForm extends Content
     }
 
     /**
+     * Delete a form and its result.
+     *
+     * @param integer $id
+     * @return boolean
+     */
+    public function deleteSection($id)
+    {
+        $formDeleted = parent::deleteSection($id);
+
+        if ($formDeleted) {
+            $this->db->delete('expose_form_result', array('expose_section_id' => $id));
+        }
+
+        return $formDeleted;
+    }
+
+    /**
      * Return fields types keys
      *
      * @return array
