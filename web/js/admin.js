@@ -44,6 +44,7 @@ $(function(){
         if (!list.hasClass('sort-active')) {
             list.sortable({
                 handle: ".handle",
+                placeholder: "item-sort-placeholder",
                 update: function(){
                     var result = $(this).sortable('toArray', {attribute: 'data-id'})
                       , sortUrl = $(this).data('sortable')
@@ -98,6 +99,17 @@ $(function(){
             console.log(json);
         } );
         return false;
+    });
+
+    $('#content-sections, .dir-sections .accordion').sortable({
+        handle: ".handle-section",
+        placeholder: "section-sort-placeholder",
+        update: function(){
+            var result = $(this).sortable('toArray', {attribute: 'data-id'})
+              , sortUrl = $('#content-sections').data('sort-url')
+            ;
+            $.post(sortUrl, {hierarchy: result}, function(json) {console.log(json)} );
+        }
     });
 });
 }(window.jQuery);

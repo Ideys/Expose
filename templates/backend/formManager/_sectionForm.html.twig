@@ -1,7 +1,8 @@
 {% spaceless %}
-<dd>
+<dd data-id="{{ section.id }}">
   <a href="#panel{{ section.id }}"
      data-click="#panel{{ section.id }} .tabs dd:first-child a">
+    <span class="handle-section">&nbsp;</span>
     {{ section.title }}
   </a>
   <div class="content form" id="panel{{ section.id }}">

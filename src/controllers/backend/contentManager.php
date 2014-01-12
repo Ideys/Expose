@@ -72,6 +72,23 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
+$contentManagerController->post('/sort/sections', function (Request $request) use ($app) {
+
+    $hierarchy = $request->get('hierarchy');
+
+    foreach ($hierarchy as $key => $value) {
+        $app['db']->update('expose_section',
+                array('hierarchy' => $key),
+                array('id' => filter_var($value, FILTER_SANITIZE_NUMBER_INT))
+        );
+    }
+    $response = array(true);
+
+    return $app->json($response);
+})
+->bind('admin_content_manager_sort_sections')
+;
+
 $contentManagerController->post('/sort/items', function (Request $request) use ($app) {
 
     $hierarchy = $request->get('hierarchy');

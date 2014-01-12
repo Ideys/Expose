@@ -44,9 +44,13 @@
 </div>
 <hr>
 <div class="row">
-  <div class="large-12 columns">
+  <div id="content-sections"
+       data-sort-url="{{ path('admin_content_manager_sort_sections') }}"
+       class="large-12 columns">
     {% for section in sections %}
       {% if 'dir' == section.type %}
+      <div class="content-section dir-sections" data-id="{{ section.id }}">
+        <span class="handle-section handle-dir">&nbsp;</span>
         <h3>{{ section.title }}</h3>
         <dl class="accordion" data-accordion>
           {% for section in section.sections %}
@@ -55,12 +59,16 @@
           {% endfor %}
         </dl>
         <hr>
+      </div>
       {% else %}
+      <div class="content-section single-section" data-id="{{ section.id }}">
+        <span class="handle-section">&nbsp;</span>
         <dl class="accordion" data-accordion>
           {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
                 with {'section': section, 'items': items} only %}
         </dl>
         <hr>
+      </div>
       {% endif %}
     {% endfor %}
   </div>

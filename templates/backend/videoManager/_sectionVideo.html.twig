@@ -1,6 +1,9 @@
 {% spaceless %}
-<dd>
-  <a href="#panel{{ section.id }}">{{ section.title }}</a>
+<dd data-id="{{ section.id }}">
+  <a href="#panel{{ section.id }}">
+    <span class="handle-section">&nbsp;</span>
+    {{ section.title }}
+  </a>
   <div class="content video" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
     Video
