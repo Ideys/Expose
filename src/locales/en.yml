@@ -28,6 +28,8 @@ section:
     description: Description
     active: Display section
     new: New section
+    display: Display section
+    hide: Hide section
 
 content:
     content: Content

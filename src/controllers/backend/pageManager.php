@@ -81,11 +81,14 @@ $pageManagerController->post('/{id}/delete', function (Request $request, $id) us
 
 $pageManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
+    $contentPage = new ContentPage($app['db']);
+    $section = $contentPage->findSection($id);
+
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     return $app['twig']->render('backend/pageManager/_pageSettings.html.twig', array(
         'delete_form' => $deleteForm->createView(),
-        'section_id' => $id,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')

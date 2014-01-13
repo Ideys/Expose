@@ -82,6 +82,19 @@ $(function(){
             stackActionPanel.addClass('hidden');
         }
     })
+    .on('click', '[data-toggle-section]', function(){
+        var section = $(this).parents('.section')
+          , toggleUrl = $(this).data('toggle-section')
+          ;
+
+        $.post(toggleUrl, {}, function(done) {
+            if (done === true) {
+                section.toggleClass('hidden-section');
+            } else {
+                console.warn('Toggle section error');
+            }
+        } );
+    })
     .on('click', '[data-delete]', function(event) {
         event.stopPropagation();
         var list = $($(this).data('target'))

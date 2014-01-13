@@ -205,6 +205,15 @@ textarea {
     height: 103px;
 }
 
+.toggle-section-show,
+.hidden-section .toggle-section-hide {
+    display: none;
+}
+
+.hidden-section .toggle-section-show {
+    display: inline;
+}
+
 iframe.page-preview {
     width: 100%;
     height: 500px;

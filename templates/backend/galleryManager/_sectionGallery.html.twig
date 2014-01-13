@@ -1,5 +1,6 @@
 {% spaceless %}
-<dd data-id="{{ section.id }}">
+<dd data-id="{{ section.id }}"
+    class="section{% if not section.active %} hidden-section{% endif %}">
   <a href="#panel{{ section.id }}"
      data-click="#panel{{ section.id }} .tabs dd:first-child a">
     <span class="handle-section">&nbsp;</span>

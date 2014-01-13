@@ -123,6 +123,17 @@ $contentManagerController->post('/delete/items', function (Request $request) use
 ->bind('admin_content_manager_delete_items')
 ;
 
+$contentManagerController->post('/{id}/toggle', function ($id) use ($app) {
+
+    $content = new Content($app['db']);
+    $response = $content->toggleSection($id);
+
+    return $app->json($response);
+})
+->assert('id', '\d+')
+->bind('admin_content_manager_toggle_section')
+;
+
 $contentManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $contentManagerController;

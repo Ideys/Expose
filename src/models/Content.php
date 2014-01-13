@@ -290,6 +290,22 @@ class Content
     }
 
     /**
+     * Toggle section frontend visibility.
+     *
+     * @param integer $id
+     * @return boolean
+     */
+    public function toggleSection($id)
+    {
+        $exec = $this->db->exec(
+            'UPDATE expose_section SET active = NOT active WHERE id = ' .
+            (int) $id
+        );
+
+        return $exec > 0;
+    }
+
+    /**
      * Increments slugs for identical name sections:
      * new-section / new-section-2 / new-section-4 => new-section-5
      *

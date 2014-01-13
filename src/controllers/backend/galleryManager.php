@@ -110,11 +110,14 @@ $galleryManagerController->post('/{id}/delete', function (Request $request, $id)
 
 $galleryManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
+    $contentGallery = new ContentGallery($app['db']);
+    $section = $contentGallery->findSection($id);
+
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     return $app['twig']->render('backend/galleryManager/_gallerySettings.html.twig', array(
         'delete_form' => $deleteForm->createView(),
-        'section_id' => $id,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')

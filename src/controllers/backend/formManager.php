@@ -115,11 +115,15 @@ $formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
 ;
 
 $formManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
+
+    $contentForm = new ContentForm($app['db']);
+    $section = $contentForm->findSection($id);
+
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     return $app['twig']->render('backend/formManager/_formSettings.html.twig', array(
         'delete_form' => $deleteForm->createView(),
-        'section_id' => $id,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')
