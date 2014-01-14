@@ -32,10 +32,16 @@
     <div class="hidden">
       {{ form_rest(form) }}
     </div>
-    <div class="text-right">
-      <input type="submit" name="submit"
-             value="{{ 'submit'|trans }}" class="tiny button">
-    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="large-12 columns">
+    <p class="left copyright">
+        &copy; 2013-{{ 'now'|date('Y') }} Ideys Expose v.{{ semver }}
+    </p>
+    <input type="submit" name="submit"
+           class="right tiny button"
+           value="{{ 'submit'|trans }}" class="">
   </div>
 </div>
 {{ form_end(form) }}
