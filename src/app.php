@@ -54,6 +54,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $twig->addGlobal('site', $settings->getAll());
     $content = new Content($app['db']);
     $twig->addGlobal('sections', $content->findSections());
+    $twig->addExtension(new Twig_Extension_StringLoader());
 
     return $twig;
 }));
