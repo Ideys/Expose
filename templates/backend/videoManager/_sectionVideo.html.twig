@@ -1,13 +1,20 @@
 {% spaceless %}
 <dd data-id="{{ section.id }}"
     class="section{% if not section.active %} hidden-section{% endif %}">
-  <a href="#panel{{ section.id }}">
-    <span class="handle-section">&nbsp;</span>
-    {{ section.title }}
-  </a>
+  {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
   <div class="content video" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
-    Video
+    <dl class="tabs" data-tab>
+      <dd>
+        <a href="#panel{{ section.id }}-preview">
+          {{ 'content.video'|trans }}
+        </a>
+      </dd>
+    </dl>
+    <div class="tabs-content">
+      <div class="content" id="panel{{ section.id }}-preview">
+      </div>
+    </div>
   </div>
 </dd>
 {% endspaceless %}

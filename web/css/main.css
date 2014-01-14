@@ -205,6 +205,34 @@ textarea {
     height: 103px;
 }
 
+.type-icon {
+    font-size: 28px;
+    color: rgba(0, 136, 204, 0.8);
+    text-shadow: 1px 4px 6px #FFF, 0 0 0 #000, 1px 4px 6px #FFF;
+    float: left;
+    line-height: 0px;
+    margin: -2px 8px 0 4px;
+}
+
+.state-icon {
+    font-size: 25px;
+    line-height: 0px;
+    float: right;
+}
+
+.state-icon.fi-home {
+    color: #555;
+}
+
+.state-icon.fi-prohibited {
+    color: #ff6908;
+    display: none;
+}
+
+.hidden-section .state-icon.fi-prohibited {
+    display: inline-block;
+}
+
 .toggle-section-show,
 .hidden-section .toggle-section-hide {
     display: none;

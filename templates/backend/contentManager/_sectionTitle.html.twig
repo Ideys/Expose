@@ -1,0 +1,19 @@
+{% spaceless %}
+{% set icons = {
+    'gallery': 'photo',
+    'video': 'play-video',
+    'page': 'page-filled',
+    'form': 'checkbox'
+} %}
+<a href="#panel{{ section.id }}"
+   data-click="#panel{{ section.id }} .tabs dd:first-child a">
+  <span class="handle-section">&nbsp;</span>
+  <i class="fi-{{ icons[section.type] }} type-icon"></i>
+  {{ section.title }}
+  {% if section.homepage %}
+    <i class="fi-home state-icon"></i>
+  {% else %}
+    <i class="fi-prohibited state-icon"></i>
+  {% endif %}
+</a>
+{% endspaceless %}

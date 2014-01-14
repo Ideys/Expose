@@ -1,11 +1,7 @@
 {% spaceless %}
 <dd data-id="{{ section.id }}"
     class="section{% if not section.active %} hidden-section{% endif %}">
-  <a href="#panel{{ section.id }}"
-     data-click="#panel{{ section.id }} .tabs dd:first-child a">
-    <span class="handle-section">&nbsp;</span>
-    {{ section.title }}
-  </a>
+  {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
   <div class="content gallery" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
     <dl class="tabs" data-tab>
