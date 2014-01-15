@@ -52,9 +52,11 @@
           var basePath = "{{ app.request.basepath }}";
         </script>
         {% block javascripts %}{% endblock %}
+        {% block foundation_js %}
         <script>
           $(document).foundation();
         </script>
+        {% endblock foundation_js %}
 
         {% if site.analyticsKey|length %}
         <!-- Google Analytics -->

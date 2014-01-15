@@ -29,7 +29,7 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
         $formView = $form->createView();
     }
 
-    return $app['twig']->render('frontend/content.html.twig', array(
+    return $app['twig']->render('frontend/'.$section['type'].'.html.twig', array(
       'contentType' => $contentType,
       'section' => $section,
       'items' => $items,

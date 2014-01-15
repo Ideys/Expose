@@ -1,7 +1,0 @@
-{% extends "frontend/layout.html.twig" %}
-
-{% block body_class parent()~' content-'~contentType %}
-
-{% block main -%}
-  {% include 'frontend/_'~section.type~'.html.twig' %}
-{%- endblock main %}

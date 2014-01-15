@@ -1,4 +1,8 @@
-{% spaceless %}
+{% extends "frontend/layout.html.twig" %}
+
+{% block body_class parent()~' content-form' %}
+
+{% block main -%}
 <div class="row">
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
@@ -24,4 +28,4 @@
     {{ form_end(form) }}
   </div>
 </div>
-{% endspaceless %}
+{%- endblock main %}
