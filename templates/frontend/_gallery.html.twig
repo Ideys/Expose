@@ -5,9 +5,10 @@
       {% for item in items %}
       <li>
         <img src="{{ app.request.basepath }}/gallery/{{ item.path }}" alt="{{ item.title|e }}">
-        {% if item.description|length %}
+        {% if item.title|length or item.description|length %}
         <div class="orbit-caption">
-          {{ item.description|nl2br }}
+          {{ item.title|nl2br }}
+          {{ item.description|raw|nl2br }}
         </div>
         {% endif %}
       </li>

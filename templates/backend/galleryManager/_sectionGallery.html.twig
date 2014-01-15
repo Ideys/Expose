@@ -13,6 +13,13 @@
         </a>
       </dd>
       <dd>
+        <a href="#panel{{ section.id }}-labels"
+           data-inject-call="{{ path('admin_gallery_manager_labels', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-labels">
+          {{ 'picture.labels'|trans }}
+        </a>
+      </dd>
+      <dd>
         <a href="#panel{{ section.id }}-upload"
            data-gallery-upload="#gallery-upload{{ section.id }}">
           {{ 'picture.upload'|trans }}
@@ -28,6 +35,8 @@
     </dl>
     <div class="tabs-content">
       <div class="content" id="panel{{ section.id }}-list">
+      </div>
+      <div class="content" id="panel{{ section.id }}-labels">
       </div>
       <div class="content" id="panel{{ section.id }}-upload">
         <div class="gallery-dropzone">

@@ -394,6 +394,30 @@ class Content
     }
 
     /**
+     * Update item title and description
+     *
+     * @param integer $id
+     * @param string  $title
+     * @param string  $description
+     */
+    public function updateItemTitle($id, $title, $description = null)
+    {
+        $data = array('title' => $title);
+        if (null !== $description) {
+            $data += array('description' => $description);
+        }
+
+        $this->db->update(
+            'expose_section_item_trans',
+            $data,
+            array(
+                'expose_section_item_id' => $id,
+                'language' => $this->language,
+            )
+        );
+    }
+
+    /**
      * Delete an item.
      *
      * @param integer $id

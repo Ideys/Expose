@@ -1,0 +1,28 @@
+{% spaceless %}
+{% if slides|length %}
+{{ form_start(form, {'action': path('admin_gallery_manager_labels', {'id': section_id})}) }}
+<button type="submit" class="button small"
+        data-submit-ajax data-target="#panel{{ section_id }}-labels">
+  {{ 'submit'|trans }}
+</button>
+<ul class="small-block-grid-2 large-block-grid-2">
+  {% for slide in slides %}
+  <li>
+    <div class="th">
+      <img src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}"
+           class="left">
+      {{ form_widget(form['title'~slide.id]) }}
+      {{ form_widget(form['description'~slide.id]) }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+<button type="submit" class="button small"
+        data-submit-ajax data-target="panel{{ section_id }}-labels">
+  {{ 'submit'|trans }}
+</button>
+{{ form_end(form) }}
+{% else %}
+<p class="notice-empty">{{ 'picture.no.pics'|trans }}</p>
+{% endif %}
+{% endspaceless %}

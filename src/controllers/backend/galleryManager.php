@@ -20,6 +20,60 @@ $galleryManagerController->get('/{id}/list', function (Request $request, $id) us
 ->bind('admin_gallery_manager_list')
 ;
 
+$galleryManagerController->match('/{id}/labels', function (Request $request, $id) use ($app) {
+
+    $contentGallery = new ContentGallery($app['db']);
+    $slides = $contentGallery->findSectionItems($id);
+    $formBuilder = $app['form.factory']->createBuilder('form', $slides);
+    foreach ($slides as $slide) {
+    $formBuilder
+        ->add('title'.$slide['id'], 'text', array(
+            'required'      => false,
+            'label'         => 'section.title',
+            'data'          => $slide['title'],
+            'attr' => array(
+                'placeholder' => 'section.title',
+            ),
+        ))
+        ->add('description'.$slide['id'], 'textarea', array(
+            'required'      => false,
+            'label'         => 'section.description',
+            'data'          => $slide['description'],
+            'attr' => array(
+                'placeholder' => 'section.description',
+            ),
+        ));
+    }
+    $form = $formBuilder->getForm();
+
+    $form->handleRequest($request);
+    if ($form->isValid()) {
+        $data = $form->getData();
+        foreach ($slides as $slide) {
+            $contentGallery->updateItemTitle(
+                $slide['id'],
+                $data['title'.$slide['id']],
+                $data['description'.$slide['id']]
+            );
+        }
+        return $app->redirect(
+            $app['url_generator']->generate(
+                'admin_gallery_manager_labels',
+                array('id' => $id))
+            );
+    }
+
+    return $app['twig']->render('backend/galleryManager/_labelsList.html.twig', array(
+        'section_id' => $id,
+        'slides' => $slides,
+        'form' => $form->createView(),
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_gallery_manager_labels')
+->method('GET|POST')
+;
+
 $galleryManagerController->post('/upload', function (Request $request) use ($app) {
 
     $uploadedFiles = $request->files->all();
@@ -33,7 +87,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     foreach ($uploadedFiles['files'] as $file) {
         $data = array(
             'type' => $file->getMimeType(),
-            'title' => $file->getClientOriginalName(),
+            'title' => null,
             'description' => null,
             'content' => null,
             'parameters' => array(),
@@ -45,6 +99,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
         $data['path'] = uniqid('expose').'.'.$fileExt;
         $data['parameters']['real_ext'] = $realExt;
         $data['parameters']['file_size'] = $fileSize;
+        $data['parameters']['original_name'] = $file->getClientOriginalName();
 
         $file->move($app['gallery.dir'], $data['path']);
 

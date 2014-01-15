@@ -73,7 +73,7 @@ if (!$schema->tablesExist('expose_section_item_trans')) {
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_item_id', 'integer', array('unsigned' => true));
     $table->addIndex(array('expose_section_item_id'));
-    $table->addColumn('title', 'string', array('length' => 255));
+    $table->addColumn('title', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('description', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('content', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('parameters', 'text', array('default' => null, 'notnull' => false));

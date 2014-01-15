@@ -51,6 +51,7 @@ picture:
     no.pics: No pictures in this section
     delete.gallery: Delete section and related pictures
     gallery.deleted: A gallery was deleted
+    labels: Labels
 
 form:
     results: Results
@@ -113,6 +114,7 @@ yes: Yes
 no: No
 submit: Submit
 confirm: Confirm
+cancel: Cancel
 actions: Actions
 edit: Edit
 delete: Delete
