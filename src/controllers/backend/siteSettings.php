@@ -64,11 +64,12 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             'required'      => false,
             'label'         => 'contact.content',
         ))
+        ->add('displayContactForm', 'choice', array(
+            'choices'       => Settings::getIOChoices(),
+            'label'         => 'contact.form.display',
+        ))
         ->add('hideMenuOnHomepage', 'choice', array(
-            'choices'   => array(
-                '1' => 'yes',
-                '0' => 'no',
-            ),
+            'choices'       => Settings::getIOChoices(),
             'label'         => 'site.style.hide.menu.on.homepage',
         ))
         ->getForm();

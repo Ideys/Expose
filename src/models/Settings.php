@@ -30,6 +30,7 @@ class Settings
                 'customStyle' => '',
                 'customJavascript' => '',
                 'contactContent' => 'Contact me',
+                'displayContactForm' => '1',
                 'hideMenuOnHomepage' => '0',
             );
 
@@ -63,6 +64,19 @@ class Settings
     public function getAll()
     {
         return $this->parameters;
+    }
+
+    /**
+     * Return yes / no choices for form selects.
+     *
+     * @return array
+     */
+    public static function getIOChoices()
+    {
+        return array(
+            '1' => 'yes',
+            '0' => 'no',
+        );
     }
 
     /**

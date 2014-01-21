@@ -21,6 +21,7 @@ contact:
     send: Send
     info.sent: The message has been sent.
     content: Contact section content
+    form.display: Display contact form
 
 section:
     sections: Sections
