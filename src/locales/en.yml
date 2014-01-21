@@ -30,6 +30,7 @@ section:
     new: New section
     display: Display section
     hide: Hide section
+    define.as.homepage: Define as the homepage
 
 content:
     content: Content
@@ -52,6 +53,10 @@ picture:
     delete.gallery: Delete section and related pictures
     gallery.deleted: A gallery was deleted
     labels: Labels
+
+video:
+    delete.section: Delete this video
+    section.deleted: A video was deleted
 
 form:
     results: Results

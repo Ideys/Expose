@@ -134,6 +134,17 @@ $contentManagerController->post('/{id}/toggle', function ($id) use ($app) {
 ->bind('admin_content_manager_toggle_section')
 ;
 
+$contentManagerController->get('/{id}/homepage', function ($id) use ($app) {
+
+    $content = new Content($app['db']);
+    $content->defindHomepage($id);
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+})
+->assert('id', '\d+')
+->bind('admin_content_manager_define_homepage')
+;
+
 $contentManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $contentManagerController;

@@ -3,11 +3,8 @@
   <div class="medium-6 columns">
   </div>
   <div class="medium-6 columns">
-    {% include 'backend/contentManager/_hideButton.html.twig' with {
-        'section': section
-    } only %}
-    {% include 'backend/contentManager/_deleteForm.html.twig' with {
-    'id': section.id,
+    {% include 'backend/contentManager/_interactionsLinks.html.twig' with {
+    'section': section,
     'delete_form': delete_form,
     'action_path': path('admin_page_manager_delete', {'id': section.id}),
     'info': 'page.delete.section'
