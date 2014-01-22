@@ -82,11 +82,21 @@ $pageManagerController->post('/{id}/delete', function (Request $request, $id) us
 $pageManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
     $contentPage = new ContentPage($app['db']);
+    $contentPage->setFormFactory($app['form.factory']);
     $section = $contentPage->findSection($id);
 
+    $editForm = $contentPage->editForm($section);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
+    $editForm->handleRequest($request);
+    if ($editForm->isValid()) {
+        $section = $editForm->getData();
+        $contentPage->blame($app['security'])->updateSection($section);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    }
+
     return $app['twig']->render('backend/pageManager/_pageSettings.html.twig', array(
+        'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         'section' => $section,
     ));

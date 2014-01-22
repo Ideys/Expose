@@ -1,17 +1,10 @@
 <?php
 
-use Symfony\Component\Form\FormFactory;
-
 /**
  * Forms content manager.
  */
 class ContentForm extends Content
 {
-    /**
-     * @var \Symfony\Component\Form\FormFactory
-     */
-    private $formFactory;
-
     const TYPE_TEXT     = 'text';
     const TYPE_EMAIL    = 'email';
     const TYPE_INTEGER  = 'integer';
@@ -21,16 +14,6 @@ class ContentForm extends Content
     const TYPE_CHECKBOX = 'checkbox';
     const TYPE_RADIO    = 'radio';
     const TYPE_HTML     = 'html.insert';
-
-    /**
-     * Inject form factory dependency.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
-     */
-    public function setFormFactory(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
 
     /**
      * Return the form object with dynamic fields.

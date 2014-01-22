@@ -1,4 +1,5 @@
 {% spaceless %}
+{% if not section.homepage %}
 <button class="button tiny secondary"
         data-toggle-section="{{ path('admin_content_manager_toggle_section', {'id': section.id}) }}">
   <span class="toggle-section-hide">
@@ -8,12 +9,10 @@
     {{ 'section.display'|trans }}
   </span>
 </button>
-{% if not section.homepage %}
 <a class="button tiny secondary"
    href="{{ path('admin_content_manager_define_homepage', {'id': section.id}) }}">
   {{ 'section.define.as.homepage'|trans }}
 </a>
-{% endif %}
 {{ form_start(delete_form, {
   'action': action_path
 }) }}
@@ -46,4 +45,5 @@
     </li>
   </ul>
 {{ form_end(delete_form) }}
+{% endif %}
 {% endspaceless %}

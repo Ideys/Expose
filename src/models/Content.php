@@ -2,6 +2,7 @@
 
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Form\FormFactory;
 
 /**
  * App content manager.
@@ -17,6 +18,11 @@ class Content
      * @var \Symfony\Component\Security\Core\SecurityContext
      */
     protected $security;
+
+    /**
+     * @var \Symfony\Component\Form\FormFactory
+     */
+    protected $formFactory;
 
     /**
      * @var string
@@ -37,7 +43,9 @@ class Content
      * @var string
      */
     private $sqlSelectSection =
-       'SELECT s.*, t.title, t.description
+       'SELECT s.id, s.expose_section_id, s.type, s.slug, s.parameters,
+               s.homepage, s.active, s.hierarchy,
+               t.title, t.description
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
         ON t.expose_section_id = s.id ';
@@ -66,6 +74,51 @@ class Content
     {
         $this->db = $connection;
         $this->language = 'fr';
+    }
+
+    /**
+     * Inject form factory dependency.
+     *
+     * @param \Symfony\Component\Form\FormFactory   $formFactory
+     */
+    public function setFormFactory(FormFactory $formFactory)
+    {
+        $this->formFactory = $formFactory;
+    }
+
+    /**
+     * Return default section model
+     *
+     * @return array
+     */
+    public function getSectionModel()
+    {
+        return array(
+            'expose_section_id' => null,
+            'type' => self::CONTENT_PAGE,
+            'title' => null,
+            'description' => null,
+            'parameters' => array(),
+            'active' => true,
+        );
+    }
+
+    /**
+     * Return default item model
+     *
+     * @return array
+     */
+    public function getItemModel()
+    {
+        return array(
+            'expose_section_id' => null,
+            'type' => self::CONTENT_PAGE,
+            'title' => null,
+            'description' => null,
+            'content' => null,
+            'path' => null,
+            'parameters' => array(),
+        );
     }
 
     /**
@@ -170,33 +223,26 @@ class Content
            'WHERE s.homepage = 1
             AND t.language = ?
             ORDER BY s.hierarchy ASC';
-        $section = $this->db->fetchAssoc($sql, array($this->language));
+        $homepageSection = $this->db->fetchAssoc($sql, array($this->language));
 
         // Generate default homepage
-        if (false === $section) {
+        if (false === $homepageSection) {
             $settings = new Settings($this->db);
-            $sectionId = $this->addSection(
-                self::CONTENT_PAGE,
-                $settings->name,
-                '',
-                null,
-                $this->language
-            );
-            $this->addItem(
-                $sectionId,
-                self::CONTENT_PAGE,
-                null,
-                $settings->name,
-                '',
-                '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
-                array(),
-                $this->language
-            );
-            $this->defindHomepage($sectionId);
-            $section = $this->findHomepage();
+            $section = $this->addSection(array(
+                'type' => self::CONTENT_PAGE,
+                'title' => $settings->name,
+            ));
+            $this->addItem(array(
+                'expose_section_id' => $section['id'],
+                'type' => self::CONTENT_PAGE,
+                'title' => $settings->name,
+                'content' => '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
+            ));
+            $this->defindHomepage($section['id']);
+            $homepageSection = $this->findHomepage();
         }
 
-        return $section;
+        return $homepageSection;
     }
 
     /**
@@ -245,27 +291,51 @@ class Content
     /**
      * Create a new section.
      *
-     * @return integer Section id
+     * @return array $section
      */
-    public function addSection($type, $title, $description, $dirId, $language, $active = false)
+    public function addSection($section)
     {
-        $dirId = is_numeric($dirId) ? (int)$dirId : null;
+        $section = array_merge($this->getSectionModel(), $section);
+
         $this->db->insert('expose_section', array(
-            'expose_section_id' => $dirId,
-            'type' => $type,
-            'slug' => $this->uniqueSlug($title),
-            'active' => $active,
+            'expose_section_id' => $section['expose_section_id'],
+            'type' => $section['type'],
+            'slug' => $this->uniqueSlug($section['title']),
+            'active' => $section['active'],
         ) + $this->blameAndTimestampData(0));
 
-        $sectionId = $this->db->lastInsertId();
+        $section['id'] = $this->db->lastInsertId();
         $this->db->insert('expose_section_trans', array(
-            'expose_section_id' => $sectionId,
-            'title' => $title,
-            'description' => $description,
-            'language' => $language,
+            'expose_section_id' => $section['id'],
+            'title' => $section['title'],
+            'description' => $section['description'],
+            'language' => $this->language,
         ));
 
-        return $sectionId;
+        return $section;
+    }
+
+    /**
+     * Edit a section.
+     *
+     * @return array Section
+     */
+    public function updateSection($section)
+    {
+        $section = array_merge($this->getSectionModel(), $section);
+
+        // Update section
+        $this->db->update('expose_section', array(
+            'slug' => $this->uniqueSlug($section['title'], $section['id']),
+            'expose_section_id' => $section['expose_section_id'],
+        ) + $this->blameAndTimestampData($section['id']),
+        array('id' => $section['id']));
+
+        // Update translated section attributes
+        $this->db->update('expose_section_trans', array(
+            'title' => $section['title'],
+            'description' => $section['description'],
+        ), array('expose_section_id' => $section['id'], 'language' => $this->language));
     }
 
     /**
@@ -312,13 +382,13 @@ class Content
      * @param string $title
      * @return string
      */
-    protected function uniqueSlug($title)
+    protected function uniqueSlug($title, $id = 0)
     {
         $slug = slugify($title);
 
         $sections = $this->db->fetchAll(
-            'SELECT slug FROM expose_section WHERE slug LIKE ?',
-            array($slug.'%')
+            'SELECT slug FROM expose_section WHERE slug LIKE ? AND id != ?',
+            array($slug.'%', $id)
         );
 
         $namesakes = array();
@@ -340,29 +410,30 @@ class Content
     /**
      * Insert a new content.
      *
-     * @return integer Item id
+     * @return array $item
      */
-    public function addItem($sectionId, $type, $path, $title, $description, $content, $settings, $language)
+    public function addItem($item)
     {
-        $sectionId = is_numeric($sectionId) ? (int)$sectionId : null;
+        $item = array_merge($this->getItemModel(), $item);
+
         $this->db->insert('expose_section_item', array(
-            'expose_section_id' => $sectionId,
-            'type' => $type,
-            'slug' => slugify($title),
-            'path' => $path,
+            'expose_section_id' => $item['expose_section_id'],
+            'type' => $item['type'],
+            'slug' => slugify($item['title']),
+            'path' => $item['path'],
         ) + $this->blameAndTimestampData(0));
 
-        $itemId = $this->db->lastInsertId();
+        $item['id'] = $this->db->lastInsertId();
         $this->db->insert('expose_section_item_trans', array(
-            'expose_section_item_id' => $itemId,
-            'title' => $title,
-            'description' => $description,
-            'content' => $content,
-            'parameters' => serialize($settings),
-            'language' => $language,
+            'expose_section_item_id' => $item['id'],
+            'title' => $item['title'],
+            'description' => $item['description'],
+            'content' => $item['content'],
+            'parameters' => serialize($item['parameters']),
+            'language' => $this->language,
         ));
 
-        return $itemId;
+        return $item;
     }
 
     /**
@@ -370,31 +441,33 @@ class Content
      *
      * @return integer Item id
      */
-    public function editItem($entity)
+    public function editItem($item)
     {
+        $item = array_merge($this->getItemModel(), $item);
+
         $this->db->update(
             'expose_section_item',
             array(
-                'path' => $entity['path'],
-            ) + $this->blameAndTimestampData($entity['id']),
-            array('id' => $entity['id'])
+                'path' => $item['path'],
+            ) + $this->blameAndTimestampData($item['id']),
+            array('id' => $item['id'])
         );
         $this->db->update(
             'expose_section_item_trans',
             array(
-                'title' => $entity['title'],
-                'description' => $entity['description'],
-                'content' => $entity['content'],
+                'title' => $item['title'],
+                'description' => $item['description'],
+                'content' => $item['content'],
             ),
             array(
-                'expose_section_item_id' => $entity['id'],
+                'expose_section_item_id' => $item['id'],
                 'language' => $this->language,
             )
         );
     }
 
     /**
-     * Update item title and description
+     * Update item title and description.
      *
      * @param integer $id
      * @param string  $title
@@ -434,7 +507,82 @@ class Content
     }
 
     /**
-     * Return content types keys
+     * Return the create section form.
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function createForm()
+    {
+        $form = $this->sectionForm($this->getSectionModel());
+
+        return $form->getForm();
+    }
+
+    /**
+     * Return the section edit form.
+     *
+     * @param array $section
+     * @return \Symfony\Component\Form\Form
+     */
+    public function editForm($section)
+    {
+        $form = $this->sectionForm($section)
+            ->remove('type')
+            ->remove('active')
+        ;
+
+        return $form->getForm();
+    }
+
+    /**
+     * Return section form builder.
+     *
+     * @return \Symfony\Component\Form\FormBuilder
+     */
+    private function sectionForm($entity)
+    {
+        $dirsChoice = array();
+        foreach ($this->findSections() as $section) {
+            if ('dir' === $section['type']) {
+                $dirsChoice[$section['id']] = $section['title'];
+            }
+        }
+
+        $form = $this->formFactory->createBuilder('form', $entity)
+            ->add('type', 'choice', array(
+                'choices'       => Content::getContentTypesChoice(),
+                'label'         => 'content.type',
+            ))
+            ->add('title', 'text', array(
+                'label'         => 'section.title',
+                'attr' => array(
+                    'placeholder' => 'section.title',
+                ),
+            ))
+            ->add('description', 'textarea', array(
+                'required'      => false,
+                'label'         => 'section.description',
+                'attr' => array(
+                    'placeholder' => 'section.description',
+                ),
+            ))
+            ->add('expose_section_id', 'choice', array(
+                'choices'       => $dirsChoice,
+                'required'      => false,
+                'label'         => 'content.dir',
+                'empty_value'   => 'content.root',
+            ))
+            ->add('active', 'checkbox', array(
+                'required'      => false,
+                'label'         => 'section.active',
+            ))
+        ;
+
+        return $form;
+    }
+
+    /**
+     * Return content types keys.
      *
      * @return array
      */

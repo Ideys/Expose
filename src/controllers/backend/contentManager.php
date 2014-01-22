@@ -8,58 +8,14 @@ $contentManagerController = $app['controllers_factory'];
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $content = new Content($app['db']);
-    $dirsChoice = array();
-    $sections = $content->findSections();
+    $content->setFormFactory($app['form.factory']);
     $items = $content->findItems();
-
-    foreach ($sections as $section) {
-        if ('dir' === $section['type']) {
-            $dirsChoice[$section['id']] = $section['title'];
-        }
-    }
-
-    $form = $app['form.factory']->createBuilder('form', array('active' => true))
-        ->add('type', 'choice', array(
-            'choices'       => Content::getContentTypesChoice(),
-            'label'         => 'content.type',
-        ))
-        ->add('title', 'text', array(
-            'label'         => 'section.title',
-            'attr' => array(
-                'placeholder' => 'section.title',
-            ),
-        ))
-        ->add('description', 'textarea', array(
-            'required'      => false,
-            'label'         => 'section.description',
-            'attr' => array(
-                'placeholder' => 'section.description',
-            ),
-        ))
-        ->add('dir', 'choice', array(
-            'choices'       => $dirsChoice,
-            'required'      => false,
-            'label'         => 'content.dir',
-            'empty_value'   => 'content.root',
-        ))
-        ->add('active', 'checkbox', array(
-            'required'      => false,
-            'label'         => 'section.active',
-        ))
-        ->getForm();
+    $form = $content->createForm();
 
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        $language = 'fr';
-        $content->blame($app['security'])->addSection(
-                $data['type'],
-                $data['title'],
-                $data['description'],
-                $data['dir'],
-                $language,
-                $data['active']
-        );
+        $content->blame($app['security'])->addSection($data);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

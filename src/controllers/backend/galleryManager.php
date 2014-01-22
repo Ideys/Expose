@@ -85,42 +85,33 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
-        $data = array(
+        $item = array(
+            'expose_section_id' => $sectionId,
             'type' => $file->getMimeType(),
             'title' => null,
             'description' => null,
             'content' => null,
             'parameters' => array(),
-            'language' => 'fr',
         );
         $fileExt = $file->guessClientExtension();
         $realExt = $file->guessExtension();// from mime type
         $fileSize = $file->getClientSize();
-        $data['path'] = uniqid('expose').'.'.$fileExt;
-        $data['parameters']['real_ext'] = $realExt;
-        $data['parameters']['file_size'] = $fileSize;
-        $data['parameters']['original_name'] = $file->getClientOriginalName();
+        $item['path'] = uniqid('expose').'.'.$fileExt;
+        $item['parameters']['real_ext'] = $realExt;
+        $item['parameters']['file_size'] = $fileSize;
+        $item['parameters']['original_name'] = $file->getClientOriginalName();
 
-        $file->move($app['gallery.dir'], $data['path']);
+        $file->move($app['gallery.dir'], $item['path']);
 
-        $contentGallery->blame($app['security'])->addItem(
-                $sectionId,
-                $data['type'],
-                $data['path'],
-                $data['title'],
-                $data['description'],
-                $data['content'],
-                $data['parameters'],
-                $data['language']
-        );
+        $contentGallery->blame($app['security'])->addItem($item);
         $transformation = new \Imagine\Filter\Transformation();
         $transformation->thumbnail(new \Imagine\Image\Box(220, 220))
-            ->save($app['gallery.dir'].'/220/'.$data['path']);
+            ->save($app['gallery.dir'].'/220/'.$item['path']);
         $transformation->apply($app['imagine']
-            ->open($app['gallery.dir'].'/'.$data['path']));
+            ->open($app['gallery.dir'].'/'.$item['path']));
 
         $jsonResponse[] = array(
-            'path' => $data['path'],
+            'path' => $item['path'],
             'id' => $sectionId,
         );
     }
@@ -166,11 +157,21 @@ $galleryManagerController->post('/{id}/delete', function (Request $request, $id)
 $galleryManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
     $contentGallery = new ContentGallery($app['db']);
+    $contentGallery->setFormFactory($app['form.factory']);
     $section = $contentGallery->findSection($id);
 
+    $editForm = $contentGallery->editForm($section);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
+    $editForm->handleRequest($request);
+    if ($editForm->isValid()) {
+        $section = $editForm->getData();
+        $contentGallery->blame($app['security'])->updateSection($section);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    }
+
     return $app['twig']->render('backend/galleryManager/_gallerySettings.html.twig', array(
+        'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         'section' => $section,
     ));

@@ -50,17 +50,8 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
             'required' => $data['required'],
             'options' => $data['options'],
         );
-        $language = 'fr';
-        $contentForm->blame($app['security'])->addItem(
-                $id,
-                $data['type'],
-                $data['path'],
-                $data['title'],
-                $data['description'],
-                $data['content'],
-                $data['parameters'],
-                $language
-        );
+        $data['expose_section_id'] = $id;
+        $contentForm->blame($app['security'])->addItem($data);
         return $app->redirect($app['url_generator']->generate('admin_form_manager_edit', array('id' => $id)));
     }
 
