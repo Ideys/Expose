@@ -12,6 +12,7 @@ if (!$schema->tablesExist('expose_user')) {
     $table->addUniqueIndex(array('username'));
     $table->addColumn('password', 'string', array('length' => 255));
     $table->addColumn('roles', 'string', array('length' => 255));
+    $table->addColumn('last_login', 'datetime', array('default' => null, 'notnull' => false));
 
     $schema->createTable($table);
 

@@ -6,6 +6,7 @@ user:
     logout: Logout
     password: Password
     access: Access
+    never.connected: Never connected
     deletion.error: Unable to remove user
     role:
         role: Role

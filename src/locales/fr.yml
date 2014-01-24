@@ -6,6 +6,7 @@ user:
     logout: Déconnexion
     password: Mot de passe
     access: Accès
+    never.connected: Jamais connecté
     deletion.error: Impossible de supprimer l'utilisateur
     role:
         role: Statut

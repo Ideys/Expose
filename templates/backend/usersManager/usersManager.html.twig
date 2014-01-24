@@ -8,7 +8,15 @@
       {% for user in users %}
         <tr>
           <td>{{ user.username }}</td>
-          <td>{{ ('user.role.'~user.roles)|trans }}</td>
+          <td>
+            {{ ('user.role.'~user.roles)|trans }}
+            <br>
+            {% if user.last_login|length %}
+              {{ user.last_login|date('d/m/y H:i') }}
+            {% else %}
+              {{ 'user.never.connected'|trans }}
+            {% endif %}
+          </td>
           <td>
             <a href="#" data-dropdown="user_action{{ user.id }}" class="tiny button dropdown">
               {{ 'actions'|trans }}

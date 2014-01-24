@@ -35,6 +35,17 @@ class UserProvider implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
+        // Check and update user last login
+        if (null !== $user['last_login']) {
+            $user['last_login'] = new \DateTime($user['last_login']);
+        }
+        if (null === $user['last_login']
+                  || $user['last_login']->diff(new \DateTime('now'))->h > 0) {
+            $user['last_login'] = new \DateTime('now');
+            $lastLogin = $user['last_login']->format('Y-m-d H:i:s');
+            $this->db->update('expose_user', array('last_login' => $lastLogin), array('id' => $user['id']));
+        }
+
         return new User($user['username'], $user['password'], explode(',', $user['roles']), true, true, true, true);
     }
 
