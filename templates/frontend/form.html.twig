@@ -3,6 +3,7 @@
 {% block body_class parent()~' content-form' %}
 
 {% block main -%}
+{% if items|length %}
 <div class="row">
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
@@ -28,4 +29,9 @@
     {{ form_end(form) }}
   </div>
 </div>
+{% else %}
+<p class="coming-soon">
+  {{ 'content.coming.soon'|trans }}
+</p>
+{% endif %}
 {%- endblock main %}

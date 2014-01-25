@@ -46,6 +46,7 @@ content:
     root: Root
     preview: Preview
     edit: Edit content
+    coming.soon: Coming soon
 
 picture:
     upload: Upload pictures

@@ -129,6 +129,13 @@ textarea {
     z-index: 1000;
 }
 
+.coming-soon {
+    font-size: 3em;
+    color: #999;
+    text-align: center;
+    margin-top: 10%;
+}
+
 .content-homepage.hide-menu-on-homepage .top-bar {
     display: none;
 }

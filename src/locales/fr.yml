@@ -46,6 +46,7 @@ content:
     root: Racine
     preview: Aperçu
     edit: Éditer le contenu
+    coming.soon: Prochainement
 
 picture:
     upload: Télécharger des images

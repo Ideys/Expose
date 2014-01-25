@@ -26,6 +26,7 @@ $(document).foundation({
 {% endblock foundation_js %}
 
 {% block main -%}
+{% if items|length %}
 <div class="row">
   <div class="large-12 columns">
     <ul class="gallery-slideshow" data-orbit>
@@ -43,4 +44,9 @@ $(document).foundation({
     </ul>
   </div>
 </div>
+{% else %}
+<p class="coming-soon">
+  {{ 'content.coming.soon'|trans }}
+</p>
+{% endif %}
 {%- endblock main %}
