@@ -36,13 +36,16 @@
   </div>
 </div>
 <div class="row">
-  <div class="large-12 columns">
-    <p class="left copyright">
-        &copy; 2013-{{ 'now'|date('Y') }} Ideys Expose v.{{ semver }}
-    </p>
+  <div class="medium-6 medium-push-6 columns">
     <input type="submit" name="submit"
            class="right tiny button"
            value="{{ 'submit'|trans }}" class="">
+  </div>
+  <div class="medium-6 medium-pull-6 columns copyright">
+    <img class="left" src="{{ app.request.basepath }}/img/ideys.png">
+    <p>
+        &copy; 2013-{{ 'now'|date('Y') }} Ideys Expose v.{{ semver }}
+    </p>
   </div>
 </div>
 {{ form_end(form) }}

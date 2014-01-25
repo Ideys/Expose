@@ -272,9 +272,16 @@ td.muted {
     background-color: #ccc;
 }
 
-.copyright {
+.copyright img {
+    width: 32px;
+    height: 32px;
+    margin-right: 10px;
+}
+
+.copyright p {
     font-size: 0.8em;
     color: #556778;
+    line-height: 32px;
 }
 
 /* ==========================================================================
