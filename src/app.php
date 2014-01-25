@@ -52,7 +52,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $settings = new Settings($app['db']);
     $twig->addGlobal('semver', '0.5.7');
     $twig->addGlobal('site', $settings->getAll());
-    $content = new Content($app['db']);
+    $content = new Content($app);
     $twig->addGlobal('sections', $content->findSections());
     $twig->addExtension(new Twig_Extension_StringLoader());
 

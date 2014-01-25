@@ -32,7 +32,6 @@ if (!$schema->tablesExist('expose_section')) {
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('type', 'string', array('length' => 32));
     $table->addColumn('slug', 'string', array('length' => 255));
-    $table->addColumn('parameters', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('homepage', 'boolean');
     $table->addColumn('active', 'boolean');
     $table->addColumn('hierarchy', 'smallint');
@@ -49,6 +48,7 @@ if (!$schema->tablesExist('expose_section_trans')) {
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('title', 'string', array('length' => 255));
     $table->addColumn('description', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
+    $table->addColumn('parameters', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('language', 'string', array('length' => 5));
 
     $schema->createTable($table);

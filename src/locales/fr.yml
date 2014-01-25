@@ -70,6 +70,8 @@ form:
     specs: Spécifications
     required: Requis
     choices: Choix
+    validation.message: Message de confirmation
+    validation.message.default: Merci d'avoir prit le temps de compléter se formulaire.
     delete.form: Supprimer ce formulaire et ses résultats
     form.deleted: Le formulaire a été supprimé
     field:

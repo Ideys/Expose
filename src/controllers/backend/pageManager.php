@@ -7,7 +7,7 @@ $pageManagerController = $app['controllers_factory'];
 
 $pageManagerController->get('/{id}/preview', function (Request $request, $id) use ($app) {
 
-    $contentPage = new ContentPage($app['db']);
+    $contentPage = new ContentPage($app);
     $pages = $contentPage->findSectionItems($id);
 
     return $app['twig']->render('backend/pageManager/_pagePreview.html.twig', array(
@@ -21,7 +21,7 @@ $pageManagerController->get('/{id}/preview', function (Request $request, $id) us
 
 $pageManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $contentPage = new ContentPage($app['db']);
+    $contentPage = new ContentPage($app);
     $pages = $contentPage->findSectionItems($id);
     $page = array_shift($pages);
     if (empty($page)) {
@@ -62,7 +62,7 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
 $pageManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentPage = new ContentPage($app['db']);
+    $contentPage = new ContentPage($app);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {
@@ -81,8 +81,7 @@ $pageManagerController->post('/{id}/delete', function (Request $request, $id) us
 
 $pageManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentPage = new ContentPage($app['db']);
-    $contentPage->setFormFactory($app['form.factory']);
+    $contentPage = new ContentPage($app);
     $section = $contentPage->findSection($id);
 
     $editForm = $contentPage->editForm($section);

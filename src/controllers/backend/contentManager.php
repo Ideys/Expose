@@ -7,8 +7,7 @@ $contentManagerController = $app['controllers_factory'];
 
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
-    $content = new Content($app['db']);
-    $content->setFormFactory($app['form.factory']);
+    $content = new Content($app);
     $items = $content->findItems();
     $form = $content->createForm();
 
@@ -66,7 +65,7 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
 $contentManagerController->post('/delete/items', function (Request $request) use ($app) {
 
     $items = $request->get('items');
-    $content = new Content($app['db']);
+    $content = new Content($app);
     $response = array();
 
     foreach ($items as $item) {
@@ -81,7 +80,7 @@ $contentManagerController->post('/delete/items', function (Request $request) use
 
 $contentManagerController->post('/{id}/toggle', function ($id) use ($app) {
 
-    $content = new Content($app['db']);
+    $content = new Content($app);
     $response = $content->toggleSection($id);
 
     return $app->json($response);
@@ -92,7 +91,7 @@ $contentManagerController->post('/{id}/toggle', function ($id) use ($app) {
 
 $contentManagerController->get('/{id}/homepage', function ($id) use ($app) {
 
-    $content = new Content($app['db']);
+    $content = new Content($app);
     $content->defindHomepage($id);
 
     return $app->redirect($app['url_generator']->generate('admin_content_manager'));

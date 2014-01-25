@@ -7,7 +7,7 @@ $formManagerController = $app['controllers_factory'];
 
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $contentForm = new ContentForm($app['db']);
+    $contentForm = new ContentForm($app);
     $fields = $contentForm->findSectionItems($id);
 
     $form = $app['form.factory']->createBuilder('form')
@@ -68,7 +68,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
 $formManagerController->get('/{id}/results', function (Request $request, $id) use ($app) {
 
-    $contentForm = new ContentForm($app['db']);
+    $contentForm = new ContentForm($app);
     $results = $contentForm->getResults($id);
     $fields = $contentForm->findSectionItems($id);
 
@@ -83,7 +83,7 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
 
 $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 
-    $contentForm = new ContentForm($app['db']);
+    $contentForm = new ContentForm($app);
     $isDeleted = $contentForm->deleteItem($id);
 
     $jsonResponse = $isDeleted;
@@ -96,7 +96,7 @@ $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 
 $formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
 
-    $contentForm = new ContentForm($app['db']);
+    $contentForm = new ContentForm($app);
     $isDeleted = $contentForm->deleteResult($id);
 
     return $app->json($isDeleted);
@@ -107,12 +107,21 @@ $formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
 
 $formManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentForm = new ContentForm($app['db']);
+    $contentForm = new ContentForm($app);
     $section = $contentForm->findSection($id);
 
+    $editForm = $contentForm->editForm($section);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
+    $editForm->handleRequest($request);
+    if ($editForm->isValid()) {
+        $section = $editForm->getData();
+        $contentForm->blame($app['security'])->updateSection($section);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    }
+
     return $app['twig']->render('backend/formManager/_formSettings.html.twig', array(
+        'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         'section' => $section,
     ));
@@ -125,7 +134,7 @@ $formManagerController->match('/{id}/settings', function (Request $request, $id)
 $formManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentForm = new ContentForm($app['db']);
+    $contentForm = new ContentForm($app);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {

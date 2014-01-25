@@ -7,7 +7,7 @@ $videoManagerController = $app['controllers_factory'];
 
 $videoManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentVideo = new ContentVideo($app['db']);
+    $contentVideo = new ContentVideo($app);
     $section = $contentVideo->findSection($id);
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
@@ -25,7 +25,7 @@ $videoManagerController->match('/{id}/settings', function (Request $request, $id
 $videoManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentVideo = new ContentVideo($app['db']);
+    $contentVideo = new ContentVideo($app);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {

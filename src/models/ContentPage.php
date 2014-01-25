@@ -16,15 +16,12 @@ class ContentPage extends Content
     {
         $section = $this->findSection($id);
 
-        $this->addItem(
-                $id,
-                self::CONTENT_PAGE,
-                null,
-                $section['title'],
-                $section['description'],
-                null,
-                array(),
-                $this->language
+        $this->addItem(array(
+                'expose_section_id' => $id,
+                'type' => self::CONTENT_PAGE,
+                'title' => $section['title'],
+                'description' => $section['description'],
+            )
         );
 
         return $section;

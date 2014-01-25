@@ -3,14 +3,19 @@
 {% block body_class parent()~' content-page' %}
 
 {% block main -%}
+{% if items|length %}
 <div class="row">
   <div class="large-12 columns">
-  {% if items|length %}
     {% set content = (items|first).content|replace({
       '__path:gallery__': app.request.basepath~'/gallery',
     }) %}
-    {% include template_from_string(content) %}
-  {% endif %}
+    {% if not content|length %}
+      <p class="coming-soon">
+        {{ 'content.coming.soon'|trans }}
+      </p>
+    {% else %}
+      {% include template_from_string(content) %}
+    {% endif %}
   {# Pagination #}
   {% if items|length > 1 %}
   <ul class="pagination">
@@ -26,4 +31,9 @@
   {% endif %}
   </div>
 </div>
+{% else %}
+<p class="coming-soon">
+  {{ 'content.coming.soon'|trans }}
+</p>
+{% endif %}
 {%- endblock main %}

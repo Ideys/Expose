@@ -70,6 +70,8 @@ form:
     specs: Specifications
     required: Required
     choices: Choices
+    validation.message: Confirmation message
+    validation.message.default: Thank you for taking the time to complete the form.
     delete.form: Delete this form and those results
     form.deleted: The form was deleted
     field:

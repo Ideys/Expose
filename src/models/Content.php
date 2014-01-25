@@ -1,8 +1,6 @@
 <?php
 
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Security\Core\SecurityContext;
-use Symfony\Component\Form\FormFactory;
 
 /**
  * App content manager.
@@ -13,6 +11,11 @@ class Content
      * @var \Doctrine\DBAL\Connection
      */
     protected $db;
+
+    /**
+     * @var \Symfony\Component\Translation\Translator
+     */
+    protected $translator;
 
     /**
      * @var \Symfony\Component\Security\Core\SecurityContext
@@ -43,9 +46,9 @@ class Content
      * @var string
      */
     private $sqlSelectSection =
-       'SELECT s.id, s.expose_section_id, s.type, s.slug, s.parameters,
+       'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.homepage, s.active, s.hierarchy,
-               t.title, t.description
+               t.title, t.description, t.parameters
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
         ON t.expose_section_id = s.id ';
@@ -68,22 +71,14 @@ class Content
     /**
      * Constructor: inject required Silex dependencies.
      *
-     * @param \Doctrine\DBAL\Connection $connection
+     * @param \Silex\Application $app
      */
-    public function __construct(Connection $connection)
+    public function __construct(\Silex\Application $app)
     {
-        $this->db = $connection;
-        $this->language = 'fr';
-    }
-
-    /**
-     * Inject form factory dependency.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
-     */
-    public function setFormFactory(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
+        $this->db = $app['db'];
+        $this->translator = $app['translator'];
+        $this->formFactory = $app['form.factory'];
+        $this->language = $this->translator->getLocale();
     }
 
     /**
@@ -192,6 +187,8 @@ class Content
             ORDER BY s.hierarchy ASC';
         $section = $this->db->fetchAssoc($sql, array($id, $this->language));
 
+        static::hydrateParameters($section);
+
         return $section;
     }
 
@@ -208,6 +205,8 @@ class Content
             AND t.language = ?
             ORDER BY s.hierarchy ASC';
         $section = $this->db->fetchAssoc($sql, array($slug, $this->language));
+
+        static::hydrateParameters($section);
 
         return $section;
     }
@@ -282,7 +281,7 @@ class Content
         $items = array();
         foreach ($entities as $entity) {
             $items[$entity['id']] = $entity;
-            $items[$entity['id']]['parameters'] = unserialize($entity['parameters']);
+            static::hydrateParameters($items[$entity['id']]);
         }
 
         return $items;
@@ -323,6 +322,7 @@ class Content
     public function updateSection($section)
     {
         $section = array_merge($this->getSectionModel(), $section);
+        static::refreshParameters($section);
 
         // Update section
         $this->db->update('expose_section', array(
@@ -335,6 +335,7 @@ class Content
         $this->db->update('expose_section_trans', array(
             'title' => $section['title'],
             'description' => $section['description'],
+            'parameters' => serialize($section['parameters']),
         ), array('expose_section_id' => $section['id'], 'language' => $this->language));
     }
 
@@ -423,6 +424,7 @@ class Content
             'path' => $item['path'],
         ) + $this->blameAndTimestampData(0));
 
+        static::refreshParameters($item);
         $item['id'] = $this->db->lastInsertId();
         $this->db->insert('expose_section_item_trans', array(
             'expose_section_item_id' => $item['id'],
@@ -444,6 +446,7 @@ class Content
     public function editItem($item)
     {
         $item = array_merge($this->getItemModel(), $item);
+        static::refreshParameters($item);
 
         $this->db->update(
             'expose_section_item',
@@ -457,6 +460,7 @@ class Content
             array(
                 'title' => $item['title'],
                 'description' => $item['description'],
+                'parameters' => serialize($item['parameters']),
                 'content' => $item['content'],
             ),
             array(
@@ -539,7 +543,7 @@ class Content
      *
      * @return \Symfony\Component\Form\FormBuilder
      */
-    private function sectionForm($entity)
+    protected function sectionForm($entity)
     {
         $dirsChoice = array();
         foreach ($this->findSections() as $section) {
@@ -579,6 +583,40 @@ class Content
         ;
 
         return $form;
+    }
+
+    /**
+     * Hydrate custom parameters attributes.
+     *
+     * @param array $entity
+     */
+    protected static function hydrateParameters(&$entity)
+    {
+        if (null === $entity['parameters']) {
+            $entity['parameters'] = array();
+        } elseif (!is_array($entity['parameters'])) {
+            $entity['parameters'] = unserialize($entity['parameters']);
+        }
+
+        foreach ($entity['parameters'] as $paramLabel => $paramValue) {
+            $entity['parameter_'.$paramLabel] = $paramValue;
+        }
+    }
+
+    /**
+     * Refresh entity custom parameters attributes.
+     *
+     * @param array $entity
+     */
+    protected static function refreshParameters(&$entity)
+    {
+        foreach ($entity as $paramLabel => $paramValue) {
+
+            if (false !== strstr($paramLabel, 'parameter_')) {
+                $entity['parameters']
+                       [str_replace('parameter_', '', $paramLabel)] = $paramValue;
+            }
+        }
     }
 
     /**

@@ -6,7 +6,7 @@ $galleryManagerController = $app['controllers_factory'];
 
 $galleryManagerController->get('/{id}/list', function (Request $request, $id) use ($app) {
 
-    $contentGallery = new ContentGallery($app['db']);
+    $contentGallery = new ContentGallery($app);
     $slides = $contentGallery->findSectionItems($id);
     $sections = $contentGallery->findSections();
 
@@ -22,7 +22,7 @@ $galleryManagerController->get('/{id}/list', function (Request $request, $id) us
 
 $galleryManagerController->match('/{id}/labels', function (Request $request, $id) use ($app) {
 
-    $contentGallery = new ContentGallery($app['db']);
+    $contentGallery = new ContentGallery($app);
     $slides = $contentGallery->findSectionItems($id);
     $formBuilder = $app['form.factory']->createBuilder('form', $slides);
     foreach ($slides as $slide) {
@@ -81,7 +81,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     if (0 == $sectionId) {
         $sectionId = null;
     }
-    $contentGallery = new ContentGallery($app['db']);
+    $contentGallery = new ContentGallery($app);
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
@@ -124,7 +124,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 $galleryManagerController->post('/{id}/delete/slides', function (Request $request, $id) use ($app) {
 
     $itemIds = $request->get('items');
-    $contentGallery = new ContentGallery($app['db']);
+    $contentGallery = new ContentGallery($app);
 
     $deletedIds = $contentGallery->deleteSlides($id, $itemIds);
 
@@ -137,7 +137,7 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 $galleryManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentGallery = new ContentGallery($app['db']);
+    $contentGallery = new ContentGallery($app);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {
@@ -156,8 +156,7 @@ $galleryManagerController->post('/{id}/delete', function (Request $request, $id)
 
 $galleryManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentGallery = new ContentGallery($app['db']);
-    $contentGallery->setFormFactory($app['form.factory']);
+    $contentGallery = new ContentGallery($app);
     $section = $contentGallery->findSection($id);
 
     $editForm = $contentGallery->editForm($section);

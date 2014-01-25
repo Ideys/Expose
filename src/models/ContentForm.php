@@ -16,6 +16,38 @@ class ContentForm extends Content
     const TYPE_HTML     = 'html.insert';
 
     /**
+     * Return default content form parameters.
+     *
+     * @return array
+     */
+    protected function getDefaultParameters()
+    {
+        return array(
+            'validation_message' => $this->translator->trans('form.validation.message.default'),
+        );
+    }
+
+    /**
+     * Return a form section.
+     *
+     * @param integer $id
+     * @return array
+     */
+    public function findSection($id)
+    {
+        $section = parent::findSection($id);
+
+        $section['parameters'] = array_merge(
+            $this->getDefaultParameters(),
+            $section['parameters']
+        );
+
+        static::hydrateParameters($section);
+
+        return $section;
+    }
+
+    /**
      * Return the form object with dynamic fields.
      *
      * @return \Symfony\Component\Form\Form
@@ -129,6 +161,25 @@ class ContentForm extends Content
         }
 
         return $formDeleted;
+    }
+
+    /**
+     * Return the form section edit form.
+     *
+     * @param array $section
+     * @return \Symfony\Component\Form\Form
+     */
+    public function editForm($section)
+    {
+        $form = $this->sectionForm($section)
+            ->remove('type')
+            ->remove('active')
+            ->add('parameter_validation_message', 'textarea', array(
+                'label' => 'form.validation.message',
+            ))
+        ;
+
+        return $form->getForm();
     }
 
     /**

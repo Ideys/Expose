@@ -7,7 +7,7 @@ $frontendController = $app['controllers_factory'];
 
 $frontendContent = function (Request $request, $slug = null) use ($app) {
 
-    $content = new Content($app['db']);
+    $content = new Content($app);
 
     if (null === $slug) {
         $section = $content->findHomepage($slug);
@@ -20,10 +20,12 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
     $formView = null;
 
     if (Content::CONTENT_FORM == $section['type']) {
-        $contentForm = new ContentForm($app['db']);
-        $contentForm->setFormFactory($app['form.factory']);
+        $contentForm = new ContentForm($app);
         $form = $contentForm->generateFormFields($items);
         if ($contentForm->checkSubmitedForm($section['id'], $request, $form)) {
+            $app['session']
+                ->getFlashBag()
+                ->add('success', $section['parameter_validation_message']);
             return $app->redirect($app['url_generator']->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();
