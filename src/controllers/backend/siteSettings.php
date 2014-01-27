@@ -64,9 +64,9 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             'required'      => false,
             'label'         => 'contact.content',
         ))
-        ->add('displayContactForm', 'choice', array(
-            'choices'       => Settings::getIOChoices(),
-            'label'         => 'contact.form.display',
+        ->add('contactSection', 'choice', array(
+            'choices'       => Settings::getContactSectionChoices(),
+            'label'         => 'contact.section',
         ))
         ->add('hideMenuOnHomepage', 'choice', array(
             'choices'       => Settings::getIOChoices(),

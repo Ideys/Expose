@@ -16,13 +16,16 @@ user:
 
 contact:
     contact: Contact
+    section: Section contact
     name: Nom
     email: Email
     message: Message
     send: Envoyer
     info.sent: Le message a bien été envoyé.
     content: Contenu de la section contact
-    form.display: Afficher le formulaire de contact
+    enabled: Visible
+    no.form: Masquer le formulaire
+    disabled: Désactiver la section
 
 section:
     sections: Sections

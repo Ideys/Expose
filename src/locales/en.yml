@@ -16,13 +16,16 @@ user:
 
 contact:
     contact: Contact
+    section: Contact section
     name: Name
     email: Email
     message: Message
     send: Send
     info.sent: The message has been sent.
     content: Contact section content
-    form.display: Display contact form
+    enabled: Visible
+    no.form: Hide the form
+    disabled: Disabled the section
 
 section:
     sections: Sections
