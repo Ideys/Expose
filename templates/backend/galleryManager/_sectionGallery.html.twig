@@ -1,6 +1,6 @@
 {% spaceless %}
 <dd data-id="{{ section.id }}"
-    class="section{% if not section.active %} hidden-section{% endif %}">
+    class="section {{ section.visibility }}-section">
   {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
   <div class="content gallery" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>

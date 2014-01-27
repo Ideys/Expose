@@ -173,7 +173,6 @@ class ContentForm extends Content
     {
         $form = $this->sectionForm($section)
             ->remove('type')
-            ->remove('active')
             ->add('parameter_validation_message', 'textarea', array(
                 'label' => 'form.validation.message',
             ))

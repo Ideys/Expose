@@ -28,15 +28,17 @@
   <section class="top-bar-section">
     <ul class="left">
       {% for section in sections
-          if section.active == 1
+          if section.visibility not in ['hidden', 'closed']
          and section.homepage == 0 %}
         {% if section.sections|length %}
         <li class="has-dropdown">
           <a href="#">{{ section.title }}</a>
           <ul class="dropdown">
-            {% for child in section.sections if child.active == 1 %}
+            {% for child in section.sections if child.visibility not in ['hidden', 'closed'] %}
             <li>
-              <a href="{{ path('section', {'slug': child.slug}) }}">
+              {% set path_name = (section.visibility == 'private')
+                               ? 'section_private' : 'section' %}
+              <a href="{{ path(path_name, {'slug': child.slug}) }}">
                 {{ child.title }}
               </a>
             </li>
@@ -46,7 +48,9 @@
         {# An empty dir is not a content #}
         {% elseif section.type != 'dir' %}
         <li>
-          <a href="{{ path('section', {'slug': section.slug}) }}">
+          {% set path_name = (section.visibility == 'private')
+                           ? 'section_private' : 'section' %}
+          <a href="{{ path(path_name, {'slug': section.slug}) }}">
             {{ section.title }}
           </a>
         </li>

@@ -19,6 +19,14 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
     $items = $content->findSectionItems($section['id']);
     $formView = null;
 
+    if (('private' == $section['visibility']) && (null == $app['security']->getToken())
+    || ('closed' == $section['visibility'])) {
+        $app['session']
+            ->getFlashBag()
+            ->add('warning', $app['translator']->trans('section.unavailable'));
+        return $app->redirect($app['url_generator']->generate('homepage'));
+    }
+
     if (Content::CONTENT_FORM == $section['type']) {
         $contentForm = new ContentForm($app);
         $form = $contentForm->generateFormFields($items);
@@ -45,6 +53,11 @@ $frontendController->get('/', $frontendContent)
 
 $frontendController->match('/theme/{slug}', $frontendContent)
 ->bind('section')
+->method('GET|POST')
+;
+
+$frontendController->match('/private/theme/{slug}', $frontendContent)
+->bind('section_private')
 ->method('GET|POST')
 ;
 

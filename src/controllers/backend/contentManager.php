@@ -78,14 +78,15 @@ $contentManagerController->post('/delete/items', function (Request $request) use
 ->bind('admin_content_manager_delete_items')
 ;
 
-$contentManagerController->post('/{id}/toggle', function ($id) use ($app) {
+$contentManagerController->post('/{id}/toggle/{visibility}', function ($id, $visibility) use ($app) {
 
     $content = new Content($app);
-    $response = $content->toggleSection($id);
+    $response = $content->toggleVisibility($id, $visibility);
 
     return $app->json($response);
 })
 ->assert('id', '\d+')
+->assert('visibility', implode('|', Content::getSectionVisibilities()))
 ->bind('admin_content_manager_toggle_section')
 ;
 

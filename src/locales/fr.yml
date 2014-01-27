@@ -31,10 +31,12 @@ section:
     sections: Sections
     title: Titre
     description: Description
-    active: Afficher la section
     new: Nouvelle section
-    display: Afficher la section
-    hide: Masquer la section
+    visibility: Visibilité de la section
+    visibility.public: Section publique
+    visibility.private: Section privée
+    visibility.hidden: Section masquée
+    unavailable: La section demandée est indisponible.
     define.as.homepage: Définir comme page d'accueil
 
 content:

@@ -47,7 +47,7 @@ class Content
      */
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
-               s.homepage, s.active, s.hierarchy,
+               s.homepage, s.visibility, s.hierarchy,
                t.title, t.description, t.parameters
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
@@ -90,11 +90,11 @@ class Content
     {
         return array(
             'expose_section_id' => null,
-            'type' => self::CONTENT_PAGE,
+            'type' => self::CONTENT_GALLERY,
             'title' => null,
             'description' => null,
             'parameters' => array(),
-            'active' => true,
+            'visibility' => 'public',
         );
     }
 
@@ -254,12 +254,12 @@ class Content
         // Reset old homepage
         $this->db->update(
             'expose_section',
-            array('homepage' => 0, 'active' => 0),
+            array('homepage' => 0, 'visibility' => 'hidden'),
             array('homepage' => 1)
         );
         $this->db->update(
             'expose_section',
-            array('homepage' => 1, 'active' => 1),
+            array('homepage' => 1, 'visibility' => 'public'),
             array('id' => $sectionId)
         );
     }
@@ -300,7 +300,7 @@ class Content
             'expose_section_id' => $section['expose_section_id'],
             'type' => $section['type'],
             'slug' => $this->uniqueSlug($section['title']),
-            'active' => $section['active'],
+            'visibility' => $section['visibility'],
         ) + $this->blameAndTimestampData(0));
 
         $section['id'] = $this->db->lastInsertId();
@@ -366,14 +366,17 @@ class Content
      * @param integer $id
      * @return boolean
      */
-    public function toggleSection($id)
+    public function toggleSection($id, $visibility)
     {
-        $exec = $this->db->exec(
-            'UPDATE expose_section SET active = NOT active WHERE id = ' .
-            (int) $id
-        );
+        if (!in_array($visibility, static::getSectionVisibilities())) {
+            return false;
+        }
 
-        return $exec > 0;
+        $rows = $this->db->update('expose_section', array(
+            'visibility' => $visibility,
+        ), array('id' => $id));
+
+        return $rows > 0;
     }
 
     /**
@@ -532,7 +535,6 @@ class Content
     {
         $form = $this->sectionForm($section)
             ->remove('type')
-            ->remove('active')
         ;
 
         return $form->getForm();
@@ -576,9 +578,9 @@ class Content
                 'label'         => 'content.dir',
                 'empty_value'   => 'content.root',
             ))
-            ->add('active', 'checkbox', array(
-                'required'      => false,
-                'label'         => 'section.active',
+            ->add('visibility', 'choice', array(
+                'choices'       => Content::getSectionVisibilityChoice(),
+                'label'         => 'section.visibility',
             ))
         ;
 
@@ -648,6 +650,31 @@ class Content
             return 'content.'.$item;
         }, $keys);
         return array_combine($keys, $values);
+    }
+
+    /**
+     * Return content visibility states.
+     *
+     * @return array
+     */
+    public static function getSectionVisibilities()
+    {
+        return array('public', 'private' ,'hidden' ,'closed');
+    }
+
+    /**
+     * Return content visibility choices.
+     *
+     * @return array
+     */
+    public static function getSectionVisibilityChoice()
+    {
+        return array(
+            'public' => 'section.visibility.public',
+            'private' => 'section.visibility.private',
+            'hidden' => 'section.visibility.hidden',
+            'closed' => 'section.visibility.closed',
+        );
     }
 
     /**

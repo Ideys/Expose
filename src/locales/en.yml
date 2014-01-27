@@ -31,10 +31,13 @@ section:
     sections: Sections
     title: Title
     description: Description
-    active: Display section
     new: New section
-    display: Display section
-    hide: Hide section
+    visibility: Section visibility
+    visibility.public: Public section
+    visibility.private: Private section
+    visibility.hidden: Hidden section
+    visibility.closed: Closed section
+    unavailable: The requested section is unavailable.
     define.as.homepage: Define as the homepage
 
 content:

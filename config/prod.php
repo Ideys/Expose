@@ -38,6 +38,16 @@ $app['security.firewalls'] = array(
     ),
 );
 
+$app['security.role_hierarchy'] = array(
+    'ROLE_SUPER_ADMIN' => array('ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH'),
+    'ROLE_ADMIN' => array('ROLE_USER'),
+);
+
+$app['security.access_rules'] = array(
+    array('^/admin', 'ROLE_ADMIN'),
+    array('^/private', 'ROLE_USER'),
+);
+
 $app['twig.path'] = array(__DIR__.'/../templates');
 $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 
