@@ -55,7 +55,14 @@
     </ul>
     <ul class="right">
       <li class="divider show-for-small"></li>
-     {% if 'disabled' != site.contactSection %}
+      {% if 'menu' == site.adminLink %}
+      <li>
+        <a href="{{ path('admin_content_manager') }}">
+          {{ 'admin.admin'|trans }}
+        </a>
+      </li>
+      {% endif %}
+      {% if 'disabled' != site.contactSection %}
       <li>
         <a href="{{ path('contact') }}">
           {{ 'contact.contact'|trans }}

@@ -60,6 +60,10 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             'required'      => false,
             'label'         => 'site.style.customjs',
         ))
+        ->add('adminLink', 'choice', array(
+            'choices'       => Settings::getAdminLinkChoices(),
+            'label'         => 'admin.link',
+        ))
         ->add('contactContent', 'textarea', array(
             'required'      => false,
             'label'         => 'contact.content',

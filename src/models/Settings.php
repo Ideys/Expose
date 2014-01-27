@@ -29,6 +29,7 @@ class Settings
                 'layoutBackground' => 'white',
                 'customStyle' => '',
                 'customJavascript' => '',
+                'adminLink' => 'contact.section',
                 'contactContent' => 'Contact me',
                 'contactSection' => 'enabled',
                 'hideMenuOnHomepage' => '0',
@@ -67,7 +68,21 @@ class Settings
     }
 
     /**
-     * Return yes / no choices for form selects.
+     * Return Admin link position choices.
+     *
+     * @return array
+     */
+    public static function getAdminLinkChoices()
+    {
+        return array(
+            'contact.section' => 'admin.link.on.contact.section',
+            'menu' => 'admin.link.on.menu',
+            'disabled' => 'admin.link.disabled',
+        );
+    }
+
+    /**
+     * Return contact displaying choices.
      *
      * @return array
      */

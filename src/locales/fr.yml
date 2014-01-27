@@ -122,6 +122,10 @@ google:
 
 admin:
     admin: Admin
+    link: Lien d'administration
+    link.on.contact.section: Dans la section contact
+    link.on.menu: Dans le menu
+    link.disabled: Invisible
 
 yes: Oui
 no: Non

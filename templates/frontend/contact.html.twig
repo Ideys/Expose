@@ -27,9 +27,11 @@
   </div>
 {% endif %}
 </div>
+{% if 'contact.section' == site.adminLink %}
 <a href="{{ path('admin_content_manager') }}"
    id="admin-link"
    class="tiny secondary button">
   {{ 'admin.admin'|trans }}
 </a>
+{% endif %}
 {%- endblock main %}
