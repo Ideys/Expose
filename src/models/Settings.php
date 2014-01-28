@@ -32,6 +32,7 @@ class Settings
                 'adminLink' => 'contact.section',
                 'contactContent' => 'Contact me',
                 'contactSection' => 'enabled',
+                'menuPosition' => 'top',
                 'hideMenuOnHomepage' => '0',
             );
 
@@ -92,6 +93,19 @@ class Settings
             'enabled' => 'contact.enabled',
             'no.form' => 'contact.no.form',
             'disabled' => 'contact.disabled',
+        );
+    }
+
+    /**
+     * Return menu position choices.
+     *
+     * @return array
+     */
+    public static function getMenuPositionChoices()
+    {
+        return array(
+            'top' => 'top',
+            'left' => 'left',
         );
     }
 

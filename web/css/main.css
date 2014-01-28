@@ -101,6 +101,10 @@ textarea {
     z-index: 100;
 }
 
+.side-nav li.divider {
+    border-top-color: #fff;
+}
+
 #admin-link {
    position: fixed;
    bottom: 0px;

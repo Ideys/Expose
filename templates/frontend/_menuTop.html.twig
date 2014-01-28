@@ -1,0 +1,62 @@
+{% spaceless %}
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
+    </li>
+    <li class="toggle-topbar menu-icon">
+      <a href="#"><span></span></a>
+    </li>
+  </ul>
+  <section class="top-bar-section">
+    <ul class="left">
+      {% for section in sections
+          if section.visibility not in ['hidden', 'closed']
+         and section.homepage == 0 %}
+        {% if section.sections|length %}
+        <li class="has-dropdown">
+          <a href="#">{{ section.title }}</a>
+          <ul class="dropdown">
+            {% for child in section.sections if child.visibility not in ['hidden', 'closed'] %}
+            <li>
+              {% set path_name = (section.visibility == 'private')
+                               ? 'section_private' : 'section' %}
+              <a href="{{ path(path_name, {'slug': child.slug}) }}">
+                {{ child.title }}
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </li>
+        {# An empty dir is not a content #}
+        {% elseif section.type != 'dir' %}
+        <li>
+          {% set path_name = (section.visibility == 'private')
+                           ? 'section_private' : 'section' %}
+          <a href="{{ path(path_name, {'slug': section.slug}) }}">
+            {{ section.title }}
+          </a>
+        </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+    <ul class="right">
+      <li class="divider show-for-small"></li>
+      {% if 'menu' == site.adminLink %}
+      <li>
+        <a href="{{ path('admin_content_manager') }}">
+          {{ 'admin.admin'|trans }}
+        </a>
+      </li>
+      {% endif %}
+      {% if 'disabled' != site.contactSection %}
+      <li>
+        <a href="{{ path('contact') }}">
+          {{ 'contact.contact'|trans }}
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </section>
+</nav>
+{% endspaceless %}

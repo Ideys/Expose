@@ -327,6 +327,7 @@ class Content
         // Update section
         $this->db->update('expose_section', array(
             'slug' => $this->uniqueSlug($section['title'], $section['id']),
+            'visibility' => $section['visibility'],
             'expose_section_id' => $section['expose_section_id'],
         ) + $this->blameAndTimestampData($section['id']),
         array('id' => $section['id']));

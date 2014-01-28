@@ -72,9 +72,13 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             'choices'       => Settings::getContactSectionChoices(),
             'label'         => 'contact.section',
         ))
+        ->add('menuPosition', 'choice', array(
+            'choices'       => Settings::getMenuPositionChoices(),
+            'label'         => 'site.menu.position',
+        ))
         ->add('hideMenuOnHomepage', 'choice', array(
             'choices'       => Settings::getIOChoices(),
-            'label'         => 'site.style.hide.menu.on.homepage',
+            'label'         => 'site.menu.hide.on.homepage',
         ))
         ->getForm();
 

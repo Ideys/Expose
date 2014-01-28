@@ -113,7 +113,9 @@ site:
         layout: Layout
         custom: Custom style
         customjs: Global Javascript code
-        hide.menu.on.homepage: Hide menu on homepage
+    menu:
+        position: Menu position
+        hide.on.homepage: Hide menu on homepage
     background:
         background: Background
         white: White layout
@@ -132,6 +134,10 @@ admin:
 
 yes: Yes
 no: No
+left: Left
+right: Right
+top: Top
+bottom: Bottom
 submit: Submit
 confirm: Confirm
 cancel: Cancel

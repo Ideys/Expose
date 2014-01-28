@@ -112,7 +112,9 @@ site:
         layout: Mise en forme
         custom: Style personnalisé
         customjs: Code Javascript global
-        hide.menu.on.homepage: Masquer le menu sur la page d'accueil
+    menu:
+        position: Position du menu
+        hide.on.homepage: Masquer le menu sur la page d'accueil
     background:
         background: Arrière plan
         white: Fond blanc
@@ -131,6 +133,10 @@ admin:
 
 yes: Oui
 no: Non
+left: Gauche
+right: Droite
+top: Haut
+bottom: Bas
 submit: Valider
 confirm: Confirmer
 cancel: Annuler
