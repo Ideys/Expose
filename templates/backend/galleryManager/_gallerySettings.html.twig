@@ -6,6 +6,7 @@
     }) }}
       {{ form_row(edit_form.title) }}
       {{ form_row(edit_form.description) }}
+      {{ form_row(edit_form.parameter_gallery_mode) }}
       {{ form_row(edit_form.expose_section_id) }}
       {{ form_row(edit_form.visibility) }}
       <input type="submit" name="submit"
@@ -17,7 +18,7 @@
     'section': section,
     'delete_form': delete_form,
     'action_path': path('admin_gallery_manager_delete', {'id': section.id}),
-    'info': 'picture.delete.gallery'
+    'info': 'gallery.delete'
     } only %}
   </div>
 </div>

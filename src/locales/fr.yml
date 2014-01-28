@@ -53,14 +53,20 @@ content:
     edit: Éditer le contenu
     coming.soon: Prochainement
 
-picture:
+gallery:
     upload: Télécharger des images
     drop.here: Déposez vos images dans cette zone
     upload.info: %i images en cours d'envoi
     no.pics: Aucune images dans cette section
-    delete.gallery: Supprimer la section et ses photos
-    gallery.deleted: Une galerie a été supprimée
+    delete: Supprimer la section et ses photos
+    deleted: Une galerie a été supprimée
     labels: Labels
+    mode:
+        mode: Mode d'affichage de la galerie
+        slideshow: Diaporama
+        horizontal: Défilement horizontal
+        vertical: Défilement vertical
+        masonry: Miniatures imbriquées
 
 video:
     delete.section: Supprimer la vidéo

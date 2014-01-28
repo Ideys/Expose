@@ -54,14 +54,20 @@ content:
     edit: Edit content
     coming.soon: Coming soon
 
-picture:
+gallery:
     upload: Upload pictures
     drop.here: Post your images in this area
     upload.info: %i pictures upload in progress
     no.pics: No pictures in this section
-    delete.gallery: Delete section and related pictures
-    gallery.deleted: A gallery was deleted
+    delete: Delete section and related pictures
+    deleted: A gallery was deleted
     labels: Labels
+    mode:
+        mode: Gallery display mode
+        slideshow: Slideshow
+        horizontal: Horizontal scroll
+        vertical: Vertical scroll
+        masonry: Imbricated thumbs
 
 video:
     delete.section: Delete this video

@@ -145,7 +145,7 @@ $galleryManagerController->post('/{id}/delete', function (Request $request, $id)
 
         $app['session']
             ->getFlashBag()
-            ->add('default', $app['translator']->trans('picture.gallery.deleted'));
+            ->add('default', $app['translator']->trans('gallery.deleted'));
     }
 
     return $app->redirect($app['url_generator']->generate('admin_content_manager'));
