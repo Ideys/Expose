@@ -18,14 +18,12 @@
 {% block content -%}
 {% if 'top' == site.menuPosition %}
   {% set content_classes = '' %}
-  {% include "frontend/_menuTop.html.twig"
-        with {'section': section, 'site': site} only %}
+  {% include "frontend/_menuTop.html.twig" only %}
 {% endif %}
 {% if 'left' == site.menuPosition %}
   {% set content_classes = 'large-9 medium-8 columns' %}
   <div class="large-3 medium-4 columns">
-    {% include "frontend/_menuLeft.html.twig"
-        with {'section': section, 'site': site} only %}
+    {% include "frontend/_menuLeft.html.twig" only %}
   </div>
 {% endif %}
   <div id="content" class="{{ content_classes }}">
