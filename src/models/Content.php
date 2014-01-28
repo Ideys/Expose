@@ -361,25 +361,6 @@ class Content
     }
 
     /**
-     * Toggle section frontend visibility.
-     *
-     * @param integer $id
-     * @return boolean
-     */
-    public function toggleSection($id, $visibility)
-    {
-        if (!in_array($visibility, static::getSectionVisibilities())) {
-            return false;
-        }
-
-        $rows = $this->db->update('expose_section', array(
-            'visibility' => $visibility,
-        ), array('id' => $id));
-
-        return $rows > 0;
-    }
-
-    /**
      * Increments slugs for identical name sections:
      * new-section / new-section-2 / new-section-4 => new-section-5
      *

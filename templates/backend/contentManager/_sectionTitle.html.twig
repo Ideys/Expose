@@ -12,7 +12,13 @@
   {{ section.title }}
   {% if section.homepage %}
     <i class="fi-home state-icon"></i>
-  {% else %}
+  {% elseif 'public' == section.visibility %}
+    <i class="fi-link state-icon"></i>
+  {% elseif 'private' == section.visibility %}
+    <i class="fi-lock state-icon"></i>
+  {% elseif 'hidden' == section.visibility %}
+    <i class="fi-unlink state-icon"></i>
+  {% elseif 'closed' == section.visibility %}
     <i class="fi-prohibited state-icon"></i>
   {% endif %}
 </a>

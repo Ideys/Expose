@@ -48,6 +48,10 @@
 </div>
 {%- endblock content%}
 
+{% block head %}
+<link rel="stylesheet" href="{{ app.request.basepath }}/css/admin.css?v={{ semver }}">
+{% endblock head %}
+
 {% block javascripts %}
 <script src="{{ app.request.basepath }}/js/admin.js?v={{ semver }}"></script>
 {% endblock javascripts %}
