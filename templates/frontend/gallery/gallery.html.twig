@@ -1,0 +1,29 @@
+{% extends "frontend/layout.html.twig" %}
+
+{% block body_class parent()~' content-gallery' %}
+
+{% block javascripts %}
+{% if 'masonry' == section.parameter_gallery_mode %}
+  {% include "frontend/gallery/_masonry.js.twig" %}
+{% else %}
+  {{ parent() }}
+{% endif %}
+{% endblock javascripts %}
+
+{% block foundation_js %}
+{% if 'slideshow' == section.parameter_gallery_mode %}
+  {% include "frontend/gallery/_slideshow.js.twig" %}
+{% else %}
+  {{ parent() }}
+{% endif %}
+{% endblock foundation_js %}
+
+{% block main -%}
+{% if items|length %}
+    {% include "frontend/gallery/_"~ section.parameter_gallery_mode ~".html.twig" %}
+{% else %}
+<p class="coming-soon">
+  {{ 'content.coming.soon'|trans }}
+</p>
+{% endif %}
+{%- endblock main %}

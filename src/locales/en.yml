@@ -62,9 +62,12 @@ gallery:
     delete: Delete section and related pictures
     deleted: A gallery was deleted
     labels: Labels
+    thumb.list.display: Display thumbs at the bottom of the screen
     mode:
         mode: Gallery display mode
         slideshow: Slideshow
+        slideshow.full.screen: Full screen slideshow
+        slideshow.extended: Extended slideshow
         horizontal: Horizontal scroll
         vertical: Vertical scroll
         masonry: Imbricated thumbs

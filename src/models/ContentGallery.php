@@ -14,6 +14,7 @@ class ContentGallery extends Content
     {
         return array(
             'gallery_mode' => 'slideshow',
+            'thumb_list' => '0',
         );
     }
 
@@ -50,6 +51,10 @@ class ContentGallery extends Content
             ->add('parameter_gallery_mode', 'choice', array(
                 'label' => 'gallery.mode.mode',
                 'choices' => static::getGalleryModeChoice(),
+            ))
+            ->add('parameter_thumb_list', 'choice', array(
+                'label' => 'gallery.thumb.list.display',
+                'choices' => Settings::getIOChoices(),
             ))
         ;
 
@@ -119,6 +124,8 @@ class ContentGallery extends Content
     {
         return array(
             'slideshow' => 'gallery.mode.slideshow',
+            'fullscreen' => 'gallery.mode.slideshow.full.screen',
+            'extended' => 'gallery.mode.slideshow.extended',
             'horizontal' => 'gallery.mode.horizontal',
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',

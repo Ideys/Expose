@@ -61,9 +61,12 @@ gallery:
     delete: Supprimer la section et ses photos
     deleted: Une galerie a été supprimée
     labels: Labels
+    thumb.list.display: Afficher les miniatures en bas d'écran
     mode:
         mode: Mode d'affichage de la galerie
         slideshow: Diaporama
+        slideshow.full.screen: Diaporama plein écran
+        slideshow.extended: Diaporama plein écran étendu
         horizontal: Défilement horizontal
         vertical: Défilement vertical
         masonry: Miniatures imbriquées
