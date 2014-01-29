@@ -51,7 +51,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
             'options' => $data['options'],
         );
         $data['expose_section_id'] = $id;
-        $contentForm->blame($app['security'])->addItem($data);
+        $contentForm->addItem($data);
         return $app->redirect($app['url_generator']->generate('admin_form_manager_edit', array('id' => $id)));
     }
 
@@ -116,7 +116,7 @@ $formManagerController->match('/{id}/settings', function (Request $request, $id)
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $section = $editForm->getData();
-        $contentForm->blame($app['security'])->updateSection($section);
+        $contentForm->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

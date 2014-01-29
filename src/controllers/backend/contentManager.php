@@ -14,7 +14,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        $content->blame($app['security'])->addSection($data);
+        $content->addSection($data);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

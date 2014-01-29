@@ -46,7 +46,7 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        $contentPage->blame($app['security'])->editItem($data);
+        $contentPage->editItem($data);
     }
 
     return $app['twig']->render('backend/pageManager/_pageEdit.html.twig', array(
@@ -90,7 +90,7 @@ $pageManagerController->match('/{id}/settings', function (Request $request, $id)
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $section = $editForm->getData();
-        $contentPage->blame($app['security'])->updateSection($section);
+        $contentPage->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

@@ -78,6 +78,7 @@ class Content
         $this->db = $app['db'];
         $this->translator = $app['translator'];
         $this->formFactory = $app['form.factory'];
+        $this->security = $app['security'];
         $this->language = $this->translator->getLocale();
     }
 
@@ -657,19 +658,6 @@ class Content
             'hidden' => 'section.visibility.hidden',
             'closed' => 'section.visibility.closed',
         );
-    }
-
-    /**
-     * Define user id to blame next persisted data.
-     *
-     * @param \Symfony\Component\Security\Core\SecurityContext  $security
-     * @return Content
-     */
-    public function blame(SecurityContext $security)
-    {
-        $this->security = $security;
-
-        return $this;
     }
 
     /**

@@ -103,7 +103,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 
         $file->move($app['gallery.dir'], $item['path']);
 
-        $contentGallery->blame($app['security'])->addItem($item);
+        $contentGallery->addItem($item);
         $transformation = new \Imagine\Filter\Transformation();
         $transformation->thumbnail(new \Imagine\Image\Box(220, 220))
             ->save($app['gallery.dir'].'/220/'.$item['path']);
@@ -165,7 +165,7 @@ $galleryManagerController->match('/{id}/settings', function (Request $request, $
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $section = $editForm->getData();
-        $contentGallery->blame($app['security'])->updateSection($section);
+        $contentGallery->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 
