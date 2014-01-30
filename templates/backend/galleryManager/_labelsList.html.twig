@@ -1,12 +1,12 @@
 {% spaceless %}
-{% if slides|length %}
-{{ form_start(form, {'action': path('admin_gallery_manager_labels', {'id': section_id})}) }}
+{% if section.hasItems %}
+{{ form_start(form, {'action': path('admin_gallery_manager_labels', {'id': section.id})}) }}
 <button type="submit" class="button small"
-        data-submit-ajax data-target="#panel{{ section_id }}-labels">
+        data-submit-ajax data-target="#panel{{ section.id }}-labels">
   {{ 'submit'|trans }}
 </button>
 <ul class="small-block-grid-2 large-block-grid-2">
-  {% for slide in slides %}
+  {% for slide in section.items %}
   <li>
     <div class="th">
       <img src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}"
@@ -18,7 +18,7 @@
   {% endfor %}
 </ul>
 <button type="submit" class="button small"
-        data-submit-ajax data-target="panel{{ section_id }}-labels">
+        data-submit-ajax data-target="panel{{ section.id }}-labels">
   {{ 'submit'|trans }}
 </button>
 {{ form_end(form) }}

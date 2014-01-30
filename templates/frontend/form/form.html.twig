@@ -3,11 +3,11 @@
 {% block body_class parent()~' content-form' %}
 
 {% block main -%}
-{% if items|length %}
+{% if section.hasItems %}
 <div class="row">
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
-    {% for item in items %}
+    {% for item in section.items %}
       {% if 'html.insert' == item.type %}
         {{ item.content|raw }}
       {% else %}

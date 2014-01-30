@@ -1,11 +1,9 @@
 <?php
 
-use Symfony\Component\Security\Core\SecurityContext;
-
 /**
  * App content manager.
  */
-class Content
+class ContentFactory
 {
     /**
      * @var \Doctrine\DBAL\Connection
@@ -38,11 +36,6 @@ class Content
     protected $sections = array();
 
     /**
-     * @var array
-     */
-    protected $items = array();
-
-    /**
      * @var string
      */
     private $sqlSelectSection =
@@ -52,15 +45,6 @@ class Content
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
         ON t.expose_section_id = s.id ';
-
-    /**
-     * @var string
-     */
-    private $sqlSelectItem =
-       'SELECT i.*, t.title, t.description, t.content, t.parameters
-        FROM expose_section_item AS i
-        LEFT JOIN expose_section_item_trans AS t
-        ON t.expose_section_item_id = i.id ';
 
     const CONTENT_GALLERY   = 'gallery';
     const CONTENT_VIDEO     = 'video';
@@ -151,30 +135,6 @@ class Content
     }
 
     /**
-     * Return all items.
-     *
-     * @return array
-     */
-    public function findItems()
-    {
-        if (!empty($this->items)) {
-            return $this->items;
-        }
-
-        $sql = $this->sqlSelectItem .
-           'WHERE t.language = ?
-            ORDER BY i.hierarchy ASC';
-        $items = $this->db->fetchAll($sql, array($this->language));
-
-        //Group by section ids
-        foreach ($items as $item) {
-            $this->items[(int)$item['expose_section_id']][] = $item;
-        }
-
-        return $this->items;
-    }
-
-    /**
      * Return a section.
      *
      * @param integer $id
@@ -188,9 +148,7 @@ class Content
             ORDER BY s.hierarchy ASC';
         $section = $this->db->fetchAssoc($sql, array($id, $this->language));
 
-        static::hydrateParameters($section);
-
-        return $section;
+        return $this->hydrateContentPrototype($section);
     }
 
     /**
@@ -207,9 +165,7 @@ class Content
             ORDER BY s.hierarchy ASC';
         $section = $this->db->fetchAssoc($sql, array($slug, $this->language));
 
-        static::hydrateParameters($section);
-
-        return $section;
+        return $this->hydrateContentPrototype($section);
     }
 
     /**
@@ -242,7 +198,7 @@ class Content
             $homepageSection = $this->findHomepage();
         }
 
-        return $homepageSection;
+        return $this->hydrateContentPrototype($homepageSection);
     }
 
     /**
@@ -263,29 +219,6 @@ class Content
             array('homepage' => 1, 'visibility' => 'public'),
             array('id' => $sectionId)
         );
-    }
-
-    /**
-     * Return a section.
-     *
-     * @param integer $id Section id
-     * @return array
-     */
-    public function findSectionItems($id)
-    {
-        $sql = $this->sqlSelectItem .
-           'WHERE i.expose_section_id = ?
-            AND t.language = ?
-            ORDER BY i.hierarchy ASC';
-        $entities = $this->db->fetchAll($sql, array($id, $this->language));
-
-        $items = array();
-        foreach ($entities as $entity) {
-            $items[$entity['id']] = $entity;
-            static::hydrateParameters($items[$entity['id']]);
-        }
-
-        return $items;
     }
 
     /**
@@ -320,25 +253,22 @@ class Content
      *
      * @return array Section
      */
-    public function updateSection($section)
+    public function updateSection(\ContentPrototype $section)
     {
-        $section = array_merge($this->getSectionModel(), $section);
-        static::refreshParameters($section);
-
         // Update section
         $this->db->update('expose_section', array(
-            'slug' => $this->uniqueSlug($section['title'], $section['id']),
-            'visibility' => $section['visibility'],
-            'expose_section_id' => $section['expose_section_id'],
-        ) + $this->blameAndTimestampData($section['id']),
-        array('id' => $section['id']));
+            'slug' => $this->uniqueSlug($section->title, $section->id),
+            'visibility' => $section->visibility,
+            'expose_section_id' => $section->expose_section_id,
+        ) + $this->blameAndTimestampData($section->id),
+        array('id' => $section->id));
 
         // Update translated section attributes
         $this->db->update('expose_section_trans', array(
-            'title' => $section['title'],
-            'description' => $section['description'],
-            'parameters' => serialize($section['parameters']),
-        ), array('expose_section_id' => $section['id'], 'language' => $this->language));
+            'title' => $section->title,
+            'description' => $section->description,
+            'parameters' => serialize($section->parameters),
+        ), array('expose_section_id' => $section->id, 'language' => $this->language));
     }
 
     /**
@@ -432,7 +362,6 @@ class Content
     public function editItem($item)
     {
         $item = array_merge($this->getItemModel(), $item);
-        static::refreshParameters($item);
 
         $this->db->update(
             'expose_section_item',
@@ -539,7 +468,7 @@ class Content
 
         $form = $this->formFactory->createBuilder('form', $entity)
             ->add('type', 'choice', array(
-                'choices'       => Content::getContentTypesChoice(),
+                'choices'       => static::getContentTypesChoice(),
                 'label'         => 'content.type',
             ))
             ->add('title', 'text', array(
@@ -562,46 +491,12 @@ class Content
                 'empty_value'   => 'content.root',
             ))
             ->add('visibility', 'choice', array(
-                'choices'       => Content::getSectionVisibilityChoice(),
+                'choices'       => static::getSectionVisibilityChoice(),
                 'label'         => 'section.visibility',
             ))
         ;
 
         return $form;
-    }
-
-    /**
-     * Hydrate custom parameters attributes.
-     *
-     * @param array $entity
-     */
-    protected static function hydrateParameters(&$entity)
-    {
-        if (null === $entity['parameters']) {
-            $entity['parameters'] = array();
-        } elseif (!is_array($entity['parameters'])) {
-            $entity['parameters'] = unserialize($entity['parameters']);
-        }
-
-        foreach ($entity['parameters'] as $paramLabel => $paramValue) {
-            $entity['parameter_'.$paramLabel] = $paramValue;
-        }
-    }
-
-    /**
-     * Refresh entity custom parameters attributes.
-     *
-     * @param array $entity
-     */
-    protected static function refreshParameters(&$entity)
-    {
-        foreach ($entity as $paramLabel => $paramValue) {
-
-            if (false !== strstr($paramLabel, 'parameter_')) {
-                $entity['parameters']
-                       [str_replace('parameter_', '', $paramLabel)] = $paramValue;
-            }
-        }
     }
 
     /**
@@ -661,6 +556,25 @@ class Content
     }
 
     /**
+     * Instanciate a related content object from database entity.
+     *
+     * @param array $section
+     * @return \ContentPrototype
+     */
+    private function hydrateContentPrototype(array $section)
+    {
+        if (!in_array($section['type'], self::getContentTypes())) {
+            $section['type'] = self::CONTENT_PAGE;
+        }
+
+        $contentClass = 'Content'.strtoupper($section['type']);
+        $content = new $contentClass($this->db, $section);
+        $content->setLanguage($this->language);
+
+        return $content;
+    }
+
+    /**
      * Define user author and timestamp for persisted data.
      *
      * @param integer $id
@@ -669,15 +583,11 @@ class Content
     private function blameAndTimestampData($id)
     {
         $datetime = (new \DateTime())->format('c');
-        if ($this->security instanceof SecurityContext) {
-            $loggedUser = $this->security->getToken()->getUser();
-            $user = $this->db->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
-                $loggedUser->getUsername(),
-            ));
-            $userId = $user['id'];
-        } else {
-            $userId = null;
-        }
+        $loggedUser = $this->security->getToken()->getUser();
+        $user = $this->db->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
+            $loggedUser->getUsername(),
+        ));
+        $userId = $user['id'];
 
         return array(
             'updated_by' => $userId,

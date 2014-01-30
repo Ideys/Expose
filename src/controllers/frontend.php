@@ -7,42 +7,36 @@ $frontendController = $app['controllers_factory'];
 
 $frontendContent = function (Request $request, $slug = null) use ($app) {
 
-    $content = new Content($app);
+    $contentFactory = new ContentFactory($app);
 
     if (null === $slug) {
-        $section = $content->findHomepage($slug);
-        $contentType = 'homepage';
+        $section = $contentFactory->findHomepage($slug);
     } else {
-        $section = $content->findSectionBySlug($slug);
-        $contentType = $section['type'];
+        $section = $contentFactory->findSectionBySlug($slug);
     }
-    $items = $content->findSectionItems($section['id']);
-    $formView = null;
 
-    if (('private' == $section['visibility']) && (null == $app['security']->getToken())
-    || ('closed' == $section['visibility'])) {
+    if ($section->isPrivate() && (null == $app['security']->getToken())
+     || $section->isClosed()) {
         $app['session']
             ->getFlashBag()
             ->add('warning', $app['translator']->trans('section.unavailable'));
         return $app->redirect($app['url_generator']->generate('homepage'));
     }
 
-    if (Content::CONTENT_FORM == $section['type']) {
-        $contentForm = new ContentForm($app);
-        $form = $contentForm->generateFormFields($items);
-        if ($contentForm->checkSubmitedForm($section['id'], $request, $form)) {
+    $formView = null;
+    if ($section instanceof ContentForm) {
+        $form = $section->generateFormFields($app['form.factory']);
+        if ($section->checkSubmitedForm($request, $form)) {
             $app['session']
                 ->getFlashBag()
-                ->add('success', $section['parameter_validation_message']);
+                ->add('success', $section->validation_message);
             return $app->redirect($app['url_generator']->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();
     }
 
-    return $app['twig']->render('frontend/'.$section['type'].'/'.$section['type'].'.html.twig', array(
-      'contentType' => $contentType,
+    return $app['twig']->render('frontend/'.$section->type.'/'.$section->type.'.html.twig', array(
       'section' => $section,
-      'items' => $items,
       'form' => $formView,
     ));
 };

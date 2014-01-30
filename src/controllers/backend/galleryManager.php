@@ -6,14 +6,11 @@ $galleryManagerController = $app['controllers_factory'];
 
 $galleryManagerController->get('/{id}/list', function (Request $request, $id) use ($app) {
 
-    $contentGallery = new ContentGallery($app);
-    $slides = $contentGallery->findSectionItems($id);
-    $sections = $contentGallery->findSections();
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
     return $app['twig']->render('backend/galleryManager/_slideList.html.twig', array(
-        'section_id' => $id,
-        'sections' => $sections,
-        'slides' => $slides,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')
@@ -22,10 +19,10 @@ $galleryManagerController->get('/{id}/list', function (Request $request, $id) us
 
 $galleryManagerController->match('/{id}/labels', function (Request $request, $id) use ($app) {
 
-    $contentGallery = new ContentGallery($app);
-    $slides = $contentGallery->findSectionItems($id);
-    $formBuilder = $app['form.factory']->createBuilder('form', $slides);
-    foreach ($slides as $slide) {
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+    $formBuilder = $app['form.factory']->createBuilder('form');
+    foreach ($section->getItems() as $slide) {
     $formBuilder
         ->add('title'.$slide['id'], 'text', array(
             'required'      => false,
@@ -49,8 +46,8 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        foreach ($slides as $slide) {
-            $contentGallery->updateItemTitle(
+        foreach ($section->getItems() as $slide) {
+            $contentFactory->updateItemTitle(
                 $slide['id'],
                 $data['title'.$slide['id']],
                 $data['description'.$slide['id']]
@@ -64,8 +61,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     }
 
     return $app['twig']->render('backend/galleryManager/_labelsList.html.twig', array(
-        'section_id' => $id,
-        'slides' => $slides,
+        'section' => $section,
         'form' => $form->createView(),
     ));
 })
@@ -81,7 +77,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     if (0 == $sectionId) {
         $sectionId = null;
     }
-    $contentGallery = new ContentGallery($app);
+    $contentFactory = new ContentFactory($app);
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
@@ -103,7 +99,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 
         $file->move($app['gallery.dir'], $item['path']);
 
-        $contentGallery->addItem($item);
+        $contentFactory->addItem($item);
         $transformation = new \Imagine\Filter\Transformation();
         $transformation->thumbnail(new \Imagine\Image\Box(220, 220))
             ->save($app['gallery.dir'].'/220/'.$item['path']);
@@ -124,9 +120,9 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 $galleryManagerController->post('/{id}/delete/slides', function (Request $request, $id) use ($app) {
 
     $itemIds = $request->get('items');
-    $contentGallery = new ContentGallery($app);
+    $contentFactory = new ContentFactory($app);
 
-    $deletedIds = $contentGallery->deleteSlides($id, $itemIds);
+    $deletedIds = $contentFactory->deleteSlides($id, $itemIds);
 
     return $app->json($deletedIds);
 })
@@ -137,11 +133,11 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 $galleryManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentGallery = new ContentGallery($app);
+    $contentFactory = new ContentFactory($app);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {
-        $contentGallery->deleteSection($id);
+        $contentFactory->deleteSection($id);
 
         $app['session']
             ->getFlashBag()
@@ -156,16 +152,16 @@ $galleryManagerController->post('/{id}/delete', function (Request $request, $id)
 
 $galleryManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentGallery = new ContentGallery($app);
-    $section = $contentGallery->findSection($id);
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
-    $editForm = $contentGallery->editForm($section);
+    $editForm = $contentFactory->editForm($section);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $section = $editForm->getData();
-        $contentGallery->updateSection($section);
+        $contentFactory->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

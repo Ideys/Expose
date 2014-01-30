@@ -1,5 +1,5 @@
 {% spaceless %}
-<div id="slides-actions-{{ section_id }}" class="hidden">
+<div id="slides-actions-{{ section.id }}" class="hidden">
   <ul class="button-group">
     <li>
       <h3 class="selectable-counter">&nbsp;</h3>
@@ -8,16 +8,16 @@
       <button
           type="button"
          class="button small"
-         data-display="#delete-slides-{{ section_id }}">
+         data-display="#delete-slides-{{ section.id }}">
         {{ 'delete'|trans }}
       </button>
     </li>
     <li>
       <button
          type="button"
-         data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section_id}) }}"
-         data-target="#slides-{{ section_id }}"
-         id="delete-slides-{{ section_id }}"
+         data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section.id}) }}"
+         data-target="#slides-{{ section.id }}"
+         id="delete-slides-{{ section.id }}"
          class="button small alert hidden">
         {{ 'confirm'|trans }}
       </button>
@@ -31,20 +31,20 @@
       <ul id="drop" data-dropdown-content class="f-dropdown">
         {% for sectionMove in sections
             if 'gallery' == sectionMove.type
-            and sectionMove.id != section_id %}
+            and sectionMove.id != section.id %}
         <li><a href="#">{{ sectionMove.title }}</a></li>
         {% endfor %}
       </ul>
     </li>
   </ul>
 </div>
-{% if slides|length %}
-<ul id="slides-{{ section_id }}"
+{% if section.items|length %}
+<ul id="slides-{{ section.id }}"
     class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid"
-    data-selectable="#slides-actions-{{ section_id }}"
+    data-selectable="#slides-actions-{{ section.id }}"
     data-selected=""
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
-  {% for slide in slides %}
+  {% for slide in section.items %}
   <li data-id="{{ slide.id }}">
     <img class="th handle"
          src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">

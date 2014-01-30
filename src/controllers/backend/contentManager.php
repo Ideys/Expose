@@ -7,20 +7,18 @@ $contentManagerController = $app['controllers_factory'];
 
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
-    $content = new Content($app);
-    $items = $content->findItems();
-    $form = $content->createForm();
+    $contentFactory = new ContentFactory($app);
+    $form = $contentFactory->createForm();
 
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        $content->addSection($data);
+        $contentFactory->addSection($data);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 
     return $app['twig']->render('backend/contentManager/contentManager.html.twig', array(
         'form' => $form->createView(),
-        'items' => $items,
     ));
 })
 ->bind('admin_content_manager')
@@ -65,11 +63,11 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
 $contentManagerController->post('/delete/items', function (Request $request) use ($app) {
 
     $items = $request->get('items');
-    $content = new Content($app);
+    $contentFactory = new ContentFactory($app);
     $response = array();
 
     foreach ($items as $item) {
-        $content->deleteItem($item);
+        $contentFactory->deleteItem($item);
         $response[] = $item;
     }
 
@@ -80,8 +78,8 @@ $contentManagerController->post('/delete/items', function (Request $request) use
 
 $contentManagerController->get('/{id}/homepage', function ($id) use ($app) {
 
-    $content = new Content($app);
-    $content->defindHomepage($id);
+    $contentFactory = new ContentFactory($app);
+    $contentFactory->defindHomepage($id);
 
     return $app->redirect($app['url_generator']->generate('admin_content_manager'));
 })

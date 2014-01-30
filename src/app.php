@@ -15,7 +15,9 @@ use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 
-require __DIR__.'/models/Content.php';
+require __DIR__.'/models/ContentFactory.php';
+require __DIR__.'/models/ContentInterface.php';
+require __DIR__.'/models/ContentPrototype.php';
 require __DIR__.'/models/ContentGallery.php';
 require __DIR__.'/models/ContentVideo.php';
 require __DIR__.'/models/ContentPage.php';
@@ -52,7 +54,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $settings = new Settings($app['db']);
     $twig->addGlobal('semver', '0.5.8');
     $twig->addGlobal('site', $settings->getAll());
-    $content = new Content($app);
+    $content = new ContentFactory($app);
     $twig->addGlobal('sections', $content->findSections());
     $twig->addExtension(new Twig_Extension_StringLoader());
 

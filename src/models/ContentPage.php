@@ -3,8 +3,13 @@
 /**
  * Pages content manager.
  */
-class ContentPage extends Content
+class ContentPage extends ContentPrototype implements ContentInterface
 {
+    public static function getParameters()
+    {
+        return array();
+    }
+
     /**
      * Add a first page to section,
      * using section data.
@@ -18,7 +23,7 @@ class ContentPage extends Content
 
         $this->addItem(array(
                 'expose_section_id' => $id,
-                'type' => self::CONTENT_PAGE,
+                'type' => ContentFactory::CONTENT_PAGE,
                 'title' => $section['title'],
                 'description' => $section['description'],
             )

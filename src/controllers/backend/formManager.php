@@ -7,8 +7,8 @@ $formManagerController = $app['controllers_factory'];
 
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $contentForm = new ContentForm($app);
-    $fields = $contentForm->findSectionItems($id);
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
     $form = $app['form.factory']->createBuilder('form')
         ->add('type', 'choice', array(
@@ -51,14 +51,13 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
             'options' => $data['options'],
         );
         $data['expose_section_id'] = $id;
-        $contentForm->addItem($data);
+        $contentFactory->addItem($data);
         return $app->redirect($app['url_generator']->generate('admin_form_manager_edit', array('id' => $id)));
     }
 
     return $app['twig']->render('backend/formManager/_formEdit.html.twig', array(
         'form' => $form->createView(),
-        'fields' => $fields,
-        'section_id' => $id,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')
@@ -68,13 +67,11 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
 $formManagerController->get('/{id}/results', function (Request $request, $id) use ($app) {
 
-    $contentForm = new ContentForm($app);
-    $results = $contentForm->getResults($id);
-    $fields = $contentForm->findSectionItems($id);
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
     return $app['twig']->render('backend/formManager/_formResults.html.twig', array(
-        'fields' => $fields,
-        'results' => $results,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')
@@ -83,8 +80,8 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
 
 $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 
-    $contentForm = new ContentForm($app);
-    $isDeleted = $contentForm->deleteItem($id);
+    $contentFactory = new ContentFactory($app);
+    $isDeleted = $contentFactory->deleteItem($id);
 
     $jsonResponse = $isDeleted;
 
@@ -96,8 +93,8 @@ $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 
 $formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
 
-    $contentForm = new ContentForm($app);
-    $isDeleted = $contentForm->deleteResult($id);
+    $contentFactory = new ContentFactory($app);
+    $isDeleted = $contentFactory->deleteResult($id);
 
     return $app->json($isDeleted);
 })
@@ -107,16 +104,16 @@ $formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
 
 $formManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentForm = new ContentForm($app);
-    $section = $contentForm->findSection($id);
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
-    $editForm = $contentForm->editForm($section);
+    $editForm = $contentFactory->editForm($section);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $section = $editForm->getData();
-        $contentForm->updateSection($section);
+        $contentFactory->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 
@@ -134,11 +131,11 @@ $formManagerController->match('/{id}/settings', function (Request $request, $id)
 $formManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentForm = new ContentForm($app);
+    $contentFactory = new ContentFactory($app);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {
-        $contentForm->deleteSection($id);
+        $contentFactory->deleteSection($id);
 
         $app['session']
             ->getFlashBag()

@@ -3,7 +3,7 @@
 /**
  * Forms content manager.
  */
-class ContentForm extends Content
+class ContentForm extends ContentPrototype implements ContentInterface
 {
     const TYPE_TEXT     = 'text';
     const TYPE_EMAIL    = 'email';
@@ -15,12 +15,7 @@ class ContentForm extends Content
     const TYPE_RADIO    = 'radio';
     const TYPE_HTML     = 'html.insert';
 
-    /**
-     * Return default content form parameters.
-     *
-     * @return array
-     */
-    protected function getDefaultParameters()
+    public static function getParameters()
     {
         return array(
             'validation_message' => $this->translator->trans('form.validation.message.default'),
@@ -28,35 +23,15 @@ class ContentForm extends Content
     }
 
     /**
-     * Return a form section.
-     *
-     * @param integer $id
-     * @return array
-     */
-    public function findSection($id)
-    {
-        $section = parent::findSection($id);
-
-        $section['parameters'] = array_merge(
-            $this->getDefaultParameters(),
-            $section['parameters']
-        );
-
-        static::hydrateParameters($section);
-
-        return $section;
-    }
-
-    /**
      * Return the form object with dynamic fields.
      *
      * @return \Symfony\Component\Form\Form
      */
-    public function generateFormFields($items)
+    public function generateFormFields($formFactory)
     {
-        $form = $this->formFactory->createBuilder('form');
+        $form = $formFactory->createBuilder('form');
 
-        foreach ($items as $item) {
+        foreach ($this->items as $item) {
             if (self::TYPE_HTML == $item['type']) {
                 continue;
             }
@@ -90,22 +65,20 @@ class ContentForm extends Content
     /**
      * Return the form object with dynamic fields.
      *
-     * @param  integer                                   $sectionId
      * @param  \Symfony\Component\HttpFoundation\Request $request
      * @param  \Symfony\Component\Form\Form              $form
      * @return boolean true if form is submited
      */
-    public function checkSubmitedForm($sectionId, $request, $form)
+    public function checkSubmitedForm($request, $form)
     {
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $data = $form->getData();
-            $language = 'fr';
             $this->db->insert('expose_form_result', array(
-                'expose_section_id' => $sectionId,
+                'expose_section_id' => $this->id,
                 'result' => serialize($data),
-                'language' => $language,
+                'language' => $this->language,
                 'date' => (new \DateTime())->format('Y-m-d H:i:s'),
             ));
             return true;
@@ -118,13 +91,13 @@ class ContentForm extends Content
      *
      * @return array
      */
-    public function getResults($sectionId)
+    public function getResults()
     {
         $sql = "SELECT r.*
                 FROM expose_form_result AS r
                 WHERE r.expose_section_id = ?
                 ORDER BY r.date ASC";
-        $results = $this->db->fetchAll($sql, array($sectionId));
+        $results = $this->db->fetchAll($sql, array($this->id));
 
         foreach ($results as $row => $result) {
             $results[$row]['result'] = unserialize($result['result']);

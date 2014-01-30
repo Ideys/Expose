@@ -7,12 +7,11 @@ $pageManagerController = $app['controllers_factory'];
 
 $pageManagerController->get('/{id}/preview', function (Request $request, $id) use ($app) {
 
-    $contentPage = new ContentPage($app);
-    $pages = $contentPage->findSectionItems($id);
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
     return $app['twig']->render('backend/pageManager/_pagePreview.html.twig', array(
-        'pages' => $pages,
-        'section_id' => $id,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')
@@ -21,11 +20,11 @@ $pageManagerController->get('/{id}/preview', function (Request $request, $id) us
 
 $pageManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $contentPage = new ContentPage($app);
-    $pages = $contentPage->findSectionItems($id);
-    $page = array_shift($pages);
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+    $page = array_shift($section->getItems());
     if (empty($page)) {
-        $page = $contentPage->addFirstPage($id);
+        $page = $section->addFirstPage($id);
     }
 
     $form = $app['form.factory']->createBuilder('form', $page)
@@ -46,7 +45,7 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
-        $contentPage->editItem($data);
+        $contentFactory->editItem($data);
     }
 
     return $app['twig']->render('backend/pageManager/_pageEdit.html.twig', array(
@@ -62,11 +61,11 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
 $pageManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentPage = new ContentPage($app);
+    $contentFactory = new ContentFactory($app);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {
-        $contentPage->deleteSection($id);
+        $contentFactory->deleteSection($id);
 
         $app['session']
             ->getFlashBag()
@@ -81,16 +80,16 @@ $pageManagerController->post('/{id}/delete', function (Request $request, $id) us
 
 $pageManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentPage = new ContentPage($app);
-    $section = $contentPage->findSection($id);
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
-    $editForm = $contentPage->editForm($section);
+    $editForm = $contentFactory->editForm($section);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $section = $editForm->getData();
-        $contentPage->updateSection($section);
+        $contentFactory->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

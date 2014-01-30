@@ -3,7 +3,7 @@
 {% block body_class parent()~' content-gallery' %}
 
 {% block javascripts %}
-{% if 'masonry' == section.parameter_gallery_mode %}
+{% if 'masonry' == section.gallery_mode %}
   {% include "frontend/gallery/_masonry.js.twig" %}
 {% else %}
   {{ parent() }}
@@ -11,7 +11,7 @@
 {% endblock javascripts %}
 
 {% block foundation_js %}
-{% if 'slideshow' == section.parameter_gallery_mode %}
+{% if 'slideshow' == section.gallery_mode %}
   {% include "frontend/gallery/_slideshow.js.twig" %}
 {% else %}
   {{ parent() }}
@@ -19,8 +19,8 @@
 {% endblock foundation_js %}
 
 {% block main -%}
-{% if items|length %}
-    {% include "frontend/gallery/_"~ section.parameter_gallery_mode ~".html.twig" %}
+{% if section.hasItems %}
+    {% include "frontend/gallery/_"~ section.gallery_mode ~".html.twig" %}
 {% else %}
 <p class="coming-soon">
   {{ 'content.coming.soon'|trans }}

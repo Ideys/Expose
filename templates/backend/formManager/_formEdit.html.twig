@@ -1,11 +1,11 @@
 {% spaceless %}
 <div class="row">
   <div class="medium-6 medium-push-6 columns"
-       id="form-fields-{{ section_id }}">
-    {% include "backend/formManager/_formFields.html.twig" with {'fields': fields} only %}
+       id="form-fields-{{ section.id }}">
+    {% include "backend/formManager/_formFields.html.twig" with {'fields': section.items} only %}
   </div>
   <div class="medium-6 medium-pull-6 columns">
-    {{ form_start(form, {'action': path('admin_form_manager_edit', {'id': section_id})}) }}
+    {{ form_start(form, {'action': path('admin_form_manager_edit', {'id': section.id})}) }}
       {{ form_row(form.type) }}
       {{ form_row(form.title) }}
       {{ form_row(form.description) }}
@@ -15,7 +15,7 @@
         <button type="submit"
                 class="tiny button"
                 data-submit-ajax
-                data-target="#panel{{ section_id }}-edit">
+                data-target="#panel{{ section.id }}-edit">
           {{ 'form.field.add'|trans }}
         </button>
       </div>

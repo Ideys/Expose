@@ -54,7 +54,7 @@
         <dl class="accordion" data-accordion>
           {% for section in section.sections %}
             {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
-                  with {'section': section, 'items': items} only %}
+                  with {'section': section} only %}
           {% endfor %}
         </dl>
         <hr>
@@ -64,7 +64,7 @@
         <span class="handle-section">&nbsp;</span>
         <dl class="accordion" data-accordion>
           {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
-                with {'section': section, 'items': items} only %}
+                with {'section': section} only %}
         </dl>
         <hr>
       </div>

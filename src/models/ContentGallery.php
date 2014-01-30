@@ -3,39 +3,19 @@
 /**
  * Galleries content manager.
  */
-class ContentGallery extends Content
+class ContentGallery extends ContentPrototype implements ContentInterface
 {
     /**
      * Return default content form parameters.
      *
      * @return array
      */
-    protected function getDefaultParameters()
+    public static function getParameters()
     {
         return array(
             'gallery_mode' => 'slideshow',
             'thumb_list' => '0',
         );
-    }
-
-    /**
-     * Return a gallery section.
-     *
-     * @param integer $id
-     * @return array
-     */
-    public function findSection($id)
-    {
-        $section = parent::findSection($id);
-
-        $section['parameters'] = array_merge(
-            $this->getDefaultParameters(),
-            $section['parameters']
-        );
-
-        static::hydrateParameters($section);
-
-        return $section;
     }
 
     /**

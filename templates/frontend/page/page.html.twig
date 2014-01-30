@@ -3,10 +3,10 @@
 {% block body_class parent()~' content-page' %}
 
 {% block main -%}
-{% if items|length %}
+{% if section.hasItems %}
 <div class="row">
   <div class="large-12 columns">
-    {% set content = (items|first).content|replace({
+    {% set content = (section.items|first).content|replace({
       '__path:gallery__': app.request.basepath~'/gallery',
     }) %}
     {% if not content|length %}
@@ -17,9 +17,9 @@
       {% include template_from_string(content) %}
     {% endif %}
   {# Pagination #}
-  {% if items|length > 1 %}
+  {% if section.items|length > 1 %}
   <ul class="pagination">
-    {% for item in items %}
+    {% for item in section.items %}
     <li>
       <a href="#"
          title="{{ item.title }}">
