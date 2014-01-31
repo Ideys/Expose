@@ -12,9 +12,8 @@
 </ul>
 {% endif %}
 {% if section.hasItems %}
-  {% set first_page = section.items|first %}
   <iframe class="page-preview"
-          src="{{ path('section', {'slug': first_page.slug}) }}"
+          src="{{ path('section', {'slug': section.slug}) }}"
           seamless></iframe>
 {% else %}
   <p class="notice-empty">{{ 'page.no.page'|trans }}</p>

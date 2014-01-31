@@ -24,18 +24,18 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     $formBuilder = $app['form.factory']->createBuilder('form');
     foreach ($section->getItems() as $slide) {
     $formBuilder
-        ->add('title'.$slide['id'], 'text', array(
+        ->add('title'.$slide->id, 'text', array(
             'required'      => false,
             'label'         => 'section.title',
-            'data'          => $slide['title'],
+            'data'          => $slide->title,
             'attr' => array(
                 'placeholder' => 'section.title',
             ),
         ))
-        ->add('description'.$slide['id'], 'textarea', array(
+        ->add('description'.$slide->id, 'textarea', array(
             'required'      => false,
             'label'         => 'section.description',
-            'data'          => $slide['description'],
+            'data'          => $slide->description,
             'attr' => array(
                 'placeholder' => 'section.description',
             ),
@@ -48,9 +48,9 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         $data = $form->getData();
         foreach ($section->getItems() as $slide) {
             $contentFactory->updateItemTitle(
-                $slide['id'],
-                $data['title'.$slide['id']],
-                $data['description'.$slide['id']]
+                $slide->id,
+                $data['title'.$slide->id],
+                $data['description'.$slide->id]
             );
         }
         return $app->redirect(
@@ -78,11 +78,11 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
         $sectionId = null;
     }
     $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($sectionId);
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
         $item = array(
-            'expose_section_id' => $sectionId,
             'type' => $file->getMimeType(),
             'title' => null,
             'description' => null,
@@ -99,7 +99,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 
         $file->move($app['gallery.dir'], $item['path']);
 
-        $contentFactory->addItem($item);
+        $contentFactory->addItem($section, $item);
         $transformation = new \Imagine\Filter\Transformation();
         $transformation->thumbnail(new \Imagine\Image\Box(220, 220))
             ->save($app['gallery.dir'].'/220/'.$item['path']);

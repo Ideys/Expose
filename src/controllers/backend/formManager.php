@@ -50,8 +50,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
             'required' => $data['required'],
             'options' => $data['options'],
         );
-        $data['expose_section_id'] = $id;
-        $contentFactory->addItem($data);
+        $contentFactory->addItem($section, $data);
         return $app->redirect($app['url_generator']->generate('admin_form_manager_edit', array('id' => $id)));
     }
 

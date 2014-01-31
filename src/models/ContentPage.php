@@ -5,30 +5,21 @@
  */
 class ContentPage extends ContentPrototype implements ContentInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public static function getParameters()
     {
         return array();
     }
 
     /**
-     * Add a first page to section,
-     * using section data.
-     *
-     * @param integer $id
-     * @return array
+     * Return page content first page.
      */
-    public function addFirstPage($id)
+    public function getFirstPage()
     {
-        $section = $this->findSection($id);
+        $items = $this->getItems();
 
-        $this->addItem(array(
-                'expose_section_id' => $id,
-                'type' => ContentFactory::CONTENT_PAGE,
-                'title' => $section['title'],
-                'description' => $section['description'],
-            )
-        );
-
-        return $section;
+        return array_pop($items);
     }
 }

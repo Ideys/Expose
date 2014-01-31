@@ -15,6 +15,9 @@ class ContentForm extends ContentPrototype implements ContentInterface
     const TYPE_RADIO    = 'radio';
     const TYPE_HTML     = 'html.insert';
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getParameters()
     {
         return array(

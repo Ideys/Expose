@@ -6,9 +6,7 @@
 class ContentGallery extends ContentPrototype implements ContentInterface
 {
     /**
-     * Return default content form parameters.
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public static function getParameters()
     {

@@ -17,12 +17,12 @@
       <td>{{ ('form.field.'~field.type)|trans }}</td>
       <td>{{ field.title }}<br>{{ field.description }}</td>
       <td>
-        {% if field.parameters.required|length %}
+        {% if field.required|length %}
           <span class="label">{{ 'form.required'|trans }}</span><br>
         {% endif %}
         {% if field.type in ['select', 'multiple.select', 'radio'] %}
           <ul>
-          {% for choice in field.parameters.options|nl2br|split('<br />') %}
+          {% for choice in field.options|nl2br|split('<br />') %}
             <li>{{ choice }}</li>
           {% endfor %}
           </ul>

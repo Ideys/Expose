@@ -41,7 +41,7 @@ class ContentFactory
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.homepage, s.visibility, s.hierarchy,
-               t.title, t.description, t.parameters
+               t.title, t.description, t.parameters, t.language
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
         ON t.expose_section_id = s.id ';
@@ -80,17 +80,20 @@ class ContentFactory
             'description' => null,
             'parameters' => array(),
             'visibility' => 'public',
+            'homepage' => '0',
+            'language' => $this->language,
         );
     }
 
     /**
      * Return default item model
      *
+     * @param \ContentPrototype $section
      * @return array
      */
-    public function getItemModel()
+    public function getItemModel(\ContentPrototype $section = null)
     {
-        return array(
+        $itemModel =  array(
             'expose_section_id' => null,
             'type' => self::CONTENT_PAGE,
             'title' => null,
@@ -98,7 +101,15 @@ class ContentFactory
             'content' => null,
             'path' => null,
             'parameters' => array(),
+            'language' => $this->language,
         );
+
+        if (null !== $section) {
+            $itemModel['expose_section_id'] = $section->id;
+            $itemModel['title'] = $section->title;
+        }
+
+        return $itemModel;
     }
 
     /**
@@ -144,11 +155,10 @@ class ContentFactory
     {
         $sql = $this->sqlSelectSection .
            'WHERE s.id = ?
-            AND t.language = ?
             ORDER BY s.hierarchy ASC';
-        $section = $this->db->fetchAssoc($sql, array($id, $this->language));
+        $sectionTranslations = $this->db->fetchAll($sql, array($id));
 
-        return $this->hydrateContentPrototype($section);
+        return $this->hydrateContentPrototype($sectionTranslations);
     }
 
     /**
@@ -161,11 +171,10 @@ class ContentFactory
     {
         $sql = $this->sqlSelectSection .
            'WHERE s.slug = ?
-            AND t.language = ?
             ORDER BY s.hierarchy ASC';
-        $section = $this->db->fetchAssoc($sql, array($slug, $this->language));
+        $sectionTranslations = $this->db->fetchAll($sql, array($slug));
 
-        return $this->hydrateContentPrototype($section);
+        return $this->hydrateContentPrototype($sectionTranslations);
     }
 
     /**
@@ -177,28 +186,26 @@ class ContentFactory
     {
         $sql = $this->sqlSelectSection .
            'WHERE s.homepage = 1
-            AND t.language = ?
             ORDER BY s.hierarchy ASC';
-        $homepageSection = $this->db->fetchAssoc($sql, array($this->language));
+        $sectionTranslations = $this->db->fetchAll($sql);
+        $section = $this->hydrateContentPrototype($sectionTranslations);
 
         // Generate default homepage
-        if (false === $homepageSection) {
+        if (!$section) {
             $settings = new Settings($this->db);
             $section = $this->addSection(array(
                 'type' => self::CONTENT_PAGE,
                 'title' => $settings->name,
+                'homepage' => '1',
             ));
-            $this->addItem(array(
-                'expose_section_id' => $section['id'],
+            $this->addItem($section, array(
                 'type' => self::CONTENT_PAGE,
                 'title' => $settings->name,
                 'content' => '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
             ));
-            $this->defindHomepage($section['id']);
-            $homepageSection = $this->findHomepage();
         }
 
-        return $this->hydrateContentPrototype($homepageSection);
+        return $section;
     }
 
     /**
@@ -234,6 +241,7 @@ class ContentFactory
             'expose_section_id' => $section['expose_section_id'],
             'type' => $section['type'],
             'slug' => $this->uniqueSlug($section['title']),
+            'homepage' => $section['homepage'],
             'visibility' => $section['visibility'],
         ) + $this->blameAndTimestampData(0));
 
@@ -245,7 +253,7 @@ class ContentFactory
             'language' => $this->language,
         ));
 
-        return $section;
+        return $this->hydrateContentPrototype(array($section));
     }
 
     /**
@@ -329,18 +337,17 @@ class ContentFactory
      *
      * @return array $item
      */
-    public function addItem($item)
+    public function addItem(\ContentPrototype $section, array $item = array())
     {
-        $item = array_merge($this->getItemModel(), $item);
+        $item = array_merge($this->getItemModel($section), $item);
 
         $this->db->insert('expose_section_item', array(
-            'expose_section_id' => $item['expose_section_id'],
+            'expose_section_id' => $section->id,
             'type' => $item['type'],
             'slug' => slugify($item['title']),
             'path' => $item['path'],
         ) + $this->blameAndTimestampData(0));
 
-        static::refreshParameters($item);
         $item['id'] = $this->db->lastInsertId();
         $this->db->insert('expose_section_item_trans', array(
             'expose_section_item_id' => $item['id'],
@@ -558,11 +565,17 @@ class ContentFactory
     /**
      * Instanciate a related content object from database entity.
      *
-     * @param array $section
+     * @param array $sectionTranslations
      * @return \ContentPrototype
      */
-    private function hydrateContentPrototype(array $section)
+    private function hydrateContentPrototype(array $sectionTranslations)
     {
+        if (empty($sectionTranslations)) {
+            return false;
+        }
+
+        $section = $this->retrieveLanguage($sectionTranslations);
+
         if (!in_array($section['type'], self::getContentTypes())) {
             $section['type'] = self::CONTENT_PAGE;
         }
@@ -575,6 +588,22 @@ class ContentFactory
     }
 
     /**
+     * Retrieve section in current language or fallback to default one.
+     *
+     * @param array $sectionTranslations
+     */
+    private function retrieveLanguage(array $sectionTranslations)
+    {
+        foreach ($sectionTranslations as $section) {
+            if ($section['language'] == $this->language) {
+                return $section;
+            }
+        }
+
+        return $sectionTranslations[0];
+    }
+
+    /**
      * Define user author and timestamp for persisted data.
      *
      * @param integer $id
@@ -583,11 +612,17 @@ class ContentFactory
     private function blameAndTimestampData($id)
     {
         $datetime = (new \DateTime())->format('c');
-        $loggedUser = $this->security->getToken()->getUser();
-        $user = $this->db->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
-            $loggedUser->getUsername(),
-        ));
-        $userId = $user['id'];
+
+        $securityToken = $this->security->getToken();
+        if (!empty($securityToken)) {
+            $loggedUser = $securityToken->getUser();
+            $user = $this->db->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
+                $loggedUser->getUsername(),
+            ));
+            $userId = $user['id'];
+        } else {
+            $userId = null;
+        }
 
         return array(
             'updated_by' => $userId,

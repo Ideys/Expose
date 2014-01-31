@@ -22,9 +22,9 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $page = array_shift($section->getItems());
+    $page = $section->getFirstPage();
     if (empty($page)) {
-        $page = $section->addFirstPage($id);
+        $page = $contentFactory->addItem($section);
     }
 
     $form = $app['form.factory']->createBuilder('form', $page)

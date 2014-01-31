@@ -17,6 +17,8 @@ use Neutron\Silex\Provider\ImagineServiceProvider;
 
 require __DIR__.'/models/ContentFactory.php';
 require __DIR__.'/models/ContentInterface.php';
+require __DIR__.'/models/ContentParametersTrait.php';
+require __DIR__.'/models/ContentItem.php';
 require __DIR__.'/models/ContentPrototype.php';
 require __DIR__.'/models/ContentGallery.php';
 require __DIR__.'/models/ContentVideo.php';
