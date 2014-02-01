@@ -15,19 +15,9 @@ use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 
-require __DIR__.'/models/ContentFactory.php';
-require __DIR__.'/models/ContentInterface.php';
-require __DIR__.'/models/ContentParametersTrait.php';
-require __DIR__.'/models/ContentItem.php';
-require __DIR__.'/models/ContentPrototype.php';
-require __DIR__.'/models/ContentGallery.php';
-require __DIR__.'/models/ContentVideo.php';
-require __DIR__.'/models/ContentPage.php';
-require __DIR__.'/models/ContentForm.php';
-require __DIR__.'/models/Messaging.php';
-require __DIR__.'/models/Settings.php';
-require __DIR__.'/models/UserProvider.php';
-require __DIR__.'/util.php';
+foreach (glob(__DIR__.'/models/*.php') as $filename) {
+    require $filename;
+}
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
@@ -53,11 +43,11 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 }));
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
-    $settings = new Settings($app['db']);
-    $twig->addGlobal('semver', '0.5.8');
+    $settings = new \Ideys\Settings($app['db']);
+    $twig->addGlobal('semver', '0.7');
     $twig->addGlobal('site', $settings->getAll());
-    $content = new ContentFactory($app);
-    $twig->addGlobal('sections', $content->findSections());
+    $contentFactory = new \Ideys\Content\ContentFactory($app);
+    $twig->addGlobal('sections', $contentFactory->findSections());
     $twig->addExtension(new Twig_Extension_StringLoader());
 
     return $twig;

@@ -1,9 +1,11 @@
 <?php
 
+namespace Ideys\Content;
+
 /**
  * Contents parameters trait for Sections and Items.
  */
-trait ContentParametersTrait
+trait ContentTrait
 {
     /**
      * Entity main attributes
@@ -28,10 +30,15 @@ trait ContentParametersTrait
      */
     public function __get($name)
     {
-        return $this->attributes[$name];
+        return $this->getObjectTaxon($name);
     }
 
     public function __call($name, $parameters)
+    {
+        return $this->getObjectTaxon($name);
+    }
+
+    public function getObjectTaxon($name)
     {
         if (array_key_exists($name, (array)$this->attributes)) {
             return $this->attributes[$name];
@@ -39,6 +46,8 @@ trait ContentParametersTrait
             return $this->parameters[$name];
         } elseif (array_key_exists($name, static::getParameters())) {
             return static::getParameters()[$name];
+        } else {
+            throw new \Exception('Unable to find object taxon');
         }
     }
 

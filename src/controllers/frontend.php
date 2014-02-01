@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,12 +25,14 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
     }
 
     $formView = null;
-    if ($section instanceof ContentForm) {
+    if ($section instanceof Ideys\Content\Section\Form) {
         $form = $section->generateFormFields($app['form.factory']);
         if ($section->checkSubmitedForm($request, $form)) {
             $app['session']
                 ->getFlashBag()
-                ->add('success', $section->validation_message);
+                ->add('success', empty($section->validation_message) ?
+                        $app['translator']->trans('form.validation.message.default'):
+                    $section->validation_message);
             return $app->redirect($app['url_generator']->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();
@@ -57,7 +60,7 @@ $frontendController->match('/private/theme/{slug}', $frontendContent)
 
 $frontendController->match('/contact', function (Request $request) use ($app) {
 
-    $messaging = new Messaging($app['db']);
+    $messaging = new \Ideys\Messaging($app['db']);
 
     $form = $app['form.factory']->createBuilder('form')
         ->add('name', 'text', array(

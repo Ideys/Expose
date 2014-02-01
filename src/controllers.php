@@ -43,9 +43,9 @@ $app->mount('/admin/{_locale}/form', include 'controllers/backend/formManager.ph
 
 $app->mount('/admin/{_locale}/gallery', include 'controllers/backend/galleryManager.php');
 
-$app->mount('/admin/{_locale}/page', include 'controllers/backend/pageManager.php');
+$app->mount('/admin/{_locale}/html', include 'controllers/backend/htmlManager.php');
 
-$app->mount('/admin/{_locale}/video', include 'controllers/backend/videoManager.php');
+$app->mount('/admin/{_locale}/channel', include 'controllers/backend/channelManager.php');
 
 $app->mount('/admin/{_locale}/messaging', include 'controllers/backend/messagingManager.php');
 
@@ -68,3 +68,17 @@ $app->error(function (\Exception $e, $code) use ($app) {
 
     return new Response($app['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
 });
+
+/**
+ * Guess client language, relies on browser data.
+ *
+ * @param array $app
+ * @return string
+ */
+function client_language_guesser($app) {
+    $acceptLanguage = $app['request']->headers->get('accept-language');
+    $userLanguage   = strtolower(substr($acceptLanguage, 0, 2));
+    $language       = (in_array($userLanguage, $app['languages']))
+                      ? $userLanguage : $app['locale_fallback'];
+    return $language;
+}

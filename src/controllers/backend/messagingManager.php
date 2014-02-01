@@ -1,5 +1,7 @@
 <?php
 
+use Ideys\Messaging;
+
 $messagingManagerController = $app['controllers_factory'];
 
 $messagingManagerController->get('/', function () use ($app) {

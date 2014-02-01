@@ -1,9 +1,13 @@
 <?php
 
+namespace Ideys\Content\Section;
+
+use Ideys\Content\ContentInterface;
+
 /**
- * Galleries content manager.
+ * Gallery content manager.
  */
-class ContentGallery extends ContentPrototype implements ContentInterface
+class Gallery extends Section implements ContentInterface
 {
     /**
      * {@inheritdoc}
@@ -26,13 +30,13 @@ class ContentGallery extends ContentPrototype implements ContentInterface
     {
         $form = $this->sectionForm($section)
             ->remove('type')
-            ->add('parameter_gallery_mode', 'choice', array(
+            ->add('gallery_mode', 'choice', array(
                 'label' => 'gallery.mode.mode',
                 'choices' => static::getGalleryModeChoice(),
             ))
-            ->add('parameter_thumb_list', 'choice', array(
+            ->add('thumb_list', 'choice', array(
                 'label' => 'gallery.thumb.list.display',
-                'choices' => Settings::getIOChoices(),
+                'choices' => \Ideys\Settings::getIOChoices(),
             ))
         ;
 

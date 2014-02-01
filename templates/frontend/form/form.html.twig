@@ -8,7 +8,7 @@
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
     {% for item in section.items %}
-      {% if 'html.insert' == item.type %}
+      {% if 'html.insert' == item.category %}
         {{ item.content|raw }}
       {% else %}
         <div class="row">
@@ -31,7 +31,7 @@
 </div>
 {% else %}
 <p class="coming-soon">
-  {{ 'content.coming.soon'|trans }}
+  {{ 'section.coming.soon'|trans }}
 </p>
 {% endif %}
 {%- endblock main %}

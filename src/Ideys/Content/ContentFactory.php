@@ -1,5 +1,10 @@
 <?php
 
+namespace Ideys\Content;
+
+use Ideys\Content\Section;
+use Ideys\Content\Item;
+
 /**
  * App content manager.
  */
@@ -46,11 +51,16 @@ class ContentFactory
         LEFT JOIN expose_section_trans AS t
         ON t.expose_section_id = s.id ';
 
-    const CONTENT_GALLERY   = 'gallery';
-    const CONTENT_VIDEO     = 'video';
-    const CONTENT_PAGE      = 'page';
-    const CONTENT_FORM      = 'form';
-    const CONTENT_DIR       = 'dir';
+    const SECTION_GALLERY   = 'gallery';
+    const SECTION_CHANNEL   = 'channel';
+    const SECTION_HTML      = 'html';
+    const SECTION_FORM      = 'form';
+    const SECTION_DIR       = 'dir';
+
+    const ITEM_SLIDE        = 'slide';
+    const ITEM_VIDEO        = 'video';
+    const ITEM_PAGE         = 'page';
+    const ITEM_FIELD        = 'field';
 
     /**
      * Constructor: inject required Silex dependencies.
@@ -75,7 +85,7 @@ class ContentFactory
     {
         return array(
             'expose_section_id' => null,
-            'type' => self::CONTENT_GALLERY,
+            'type' => self::SECTION_GALLERY,
             'title' => null,
             'description' => null,
             'parameters' => array(),
@@ -91,11 +101,12 @@ class ContentFactory
      * @param \ContentPrototype $section
      * @return array
      */
-    public function getItemModel(\ContentPrototype $section = null)
+    public function getItemModel(Section\Section $section = null)
     {
         $itemModel =  array(
             'expose_section_id' => null,
-            'type' => self::CONTENT_PAGE,
+            'type' => self::SECTION_HTML,
+            'category' => null,
             'title' => null,
             'description' => null,
             'content' => null,
@@ -158,7 +169,7 @@ class ContentFactory
             ORDER BY s.hierarchy ASC';
         $sectionTranslations = $this->db->fetchAll($sql, array($id));
 
-        return $this->hydrateContentPrototype($sectionTranslations);
+        return $this->hydrateSection($sectionTranslations);
     }
 
     /**
@@ -174,7 +185,7 @@ class ContentFactory
             ORDER BY s.hierarchy ASC';
         $sectionTranslations = $this->db->fetchAll($sql, array($slug));
 
-        return $this->hydrateContentPrototype($sectionTranslations);
+        return $this->hydrateSection($sectionTranslations);
     }
 
     /**
@@ -188,18 +199,18 @@ class ContentFactory
            'WHERE s.homepage = 1
             ORDER BY s.hierarchy ASC';
         $sectionTranslations = $this->db->fetchAll($sql);
-        $section = $this->hydrateContentPrototype($sectionTranslations);
+        $section = $this->hydrateSection($sectionTranslations);
 
         // Generate default homepage
         if (!$section) {
-            $settings = new Settings($this->db);
+            $settings = new \Ideys\Settings($this->db);
             $section = $this->addSection(array(
-                'type' => self::CONTENT_PAGE,
+                'type' => self::SECTION_HTML,
                 'title' => $settings->name,
                 'homepage' => '1',
             ));
             $this->addItem($section, array(
-                'type' => self::CONTENT_PAGE,
+                'type' => self::ITEM_PAGE,
                 'title' => $settings->name,
                 'content' => '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
             ));
@@ -253,7 +264,7 @@ class ContentFactory
             'language' => $this->language,
         ));
 
-        return $this->hydrateContentPrototype(array($section));
+        return $this->hydrateSection(array($section));
     }
 
     /**
@@ -261,7 +272,7 @@ class ContentFactory
      *
      * @return array Section
      */
-    public function updateSection(\ContentPrototype $section)
+    public function updateSection(Section\Section $section)
     {
         // Update section
         $this->db->update('expose_section', array(
@@ -309,7 +320,7 @@ class ContentFactory
      */
     protected function uniqueSlug($title, $id = 0)
     {
-        $slug = slugify($title);
+        $slug = static::slugify($title);
 
         $sections = $this->db->fetchAll(
             'SELECT slug FROM expose_section WHERE slug LIKE ? AND id != ?',
@@ -337,14 +348,15 @@ class ContentFactory
      *
      * @return array $item
      */
-    public function addItem(\ContentPrototype $section, array $item = array())
+    public function addItem(Section\Section $section, array $item = array())
     {
         $item = array_merge($this->getItemModel($section), $item);
 
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $section->id,
             'type' => $item['type'],
-            'slug' => slugify($item['title']),
+            'category' => $item['category'],
+            'slug' => static::slugify($item['title']),
             'path' => $item['path'],
         ) + $this->blameAndTimestampData(0));
 
@@ -475,7 +487,7 @@ class ContentFactory
 
         $form = $this->formFactory->createBuilder('form', $entity)
             ->add('type', 'choice', array(
-                'choices'       => static::getContentTypesChoice(),
+                'choices'       => static::getSectionTypesChoice(),
                 'label'         => 'content.type',
             ))
             ->add('title', 'text', array(
@@ -494,8 +506,8 @@ class ContentFactory
             ->add('expose_section_id', 'choice', array(
                 'choices'       => $dirsChoice,
                 'required'      => false,
-                'label'         => 'content.dir',
-                'empty_value'   => 'content.root',
+                'label'         => 'section.dir',
+                'empty_value'   => 'section.root',
             ))
             ->add('visibility', 'choice', array(
                 'choices'       => static::getSectionVisibilityChoice(),
@@ -507,19 +519,50 @@ class ContentFactory
     }
 
     /**
-     * Return content types keys.
+     * Return section types keys.
      *
      * @return array
      */
-    public static function getContentTypes()
+    public static function getSectionTypes()
     {
         return array(
-            self::CONTENT_GALLERY,
-            self::CONTENT_VIDEO,
-            self::CONTENT_PAGE,
-            self::CONTENT_FORM,
-            self::CONTENT_DIR,
+            self::SECTION_GALLERY,
+            self::SECTION_CHANNEL,
+            self::SECTION_HTML,
+            self::SECTION_FORM,
+            self::SECTION_DIR,
         );
+    }
+
+    /**
+     * Return item types keys.
+     *
+     * @return array
+     */
+    public static function getItemTypes()
+    {
+        return array(
+            self::ITEM_SLIDE,
+            self::ITEM_VIDEO,
+            self::ITEM_PAGE,
+            self::ITEM_FIELD,
+        );
+    }
+
+    /**
+     * Return item types keys.
+     *
+     * @param  string $type The section type
+     * @return string       The section default item
+     */
+    public static function getDefaultSectionItemType($type)
+    {
+        $sectionTypes = static::getSectionTypes();
+        array_pop($sectionTypes);// Remove dir type
+        $itemTypes = static::getItemTypes();
+        $sectionItems = array_combine($sectionTypes, $itemTypes);
+
+        return $sectionItems[$type];
     }
 
     /**
@@ -528,11 +571,11 @@ class ContentFactory
      *
      * @return array
      */
-    public static function getContentTypesChoice()
+    public static function getSectionTypesChoice()
     {
-        $keys = static::getContentTypes();
+        $keys = static::getSectionTypes();
         $values = array_map(function($item){
-            return 'content.'.$item;
+            return 'section.'.$item;
         }, $keys);
         return array_combine($keys, $values);
     }
@@ -568,39 +611,40 @@ class ContentFactory
      * @param array $sectionTranslations
      * @return \ContentPrototype
      */
-    private function hydrateContentPrototype(array $sectionTranslations)
+    private function hydrateSection(array $sectionTranslations)
     {
         if (empty($sectionTranslations)) {
             return false;
         }
 
-        $section = $this->retrieveLanguage($sectionTranslations);
+        $sectionData = $this->retrieveLanguage($sectionTranslations, $this->language);
 
-        if (!in_array($section['type'], self::getContentTypes())) {
-            $section['type'] = self::CONTENT_PAGE;
+        if (!in_array($sectionData['type'], self::getSectionTypes())) {
+            $sectionData['type'] = self::SECTION_HTML;
         }
 
-        $contentClass = 'Content'.strtoupper($section['type']);
-        $content = new $contentClass($this->db, $section);
-        $content->setLanguage($this->language);
+        $sectionClass = '\Ideys\Content\Section\\'.ucfirst($sectionData['type']);
+        $section = new $sectionClass($this->db, $sectionData);
+        $section->setLanguage($this->language);
 
-        return $content;
+        return $section;
     }
 
     /**
      * Retrieve section in current language or fallback to default one.
      *
-     * @param array $sectionTranslations
+     * @param array $translations
+     * @param string $language
      */
-    private function retrieveLanguage(array $sectionTranslations)
+    private function retrieveLanguage(array $translations, $language)
     {
-        foreach ($sectionTranslations as $section) {
-            if ($section['language'] == $this->language) {
-                return $section;
+        foreach ($translations as $translation) {
+            if ($translation['language'] == $language) {
+                return $translation;
             }
         }
 
-        return $sectionTranslations[0];
+        return $translations[0];
     }
 
     /**
@@ -631,5 +675,31 @@ class ContentFactory
             'created_by' => $userId,
             'created_at' => $datetime,
         ) : array());
+    }
+
+    /**
+     * Slugify strings.
+     *
+     * @param string $string
+     * @return string
+     */
+    public static function slugify($string) {
+        return
+            preg_replace('#[^-\w]+#', '',
+            // to lowercase
+            strtolower(
+                // remove accents
+                iconv('utf-8', 'us-ascii//TRANSLIT',
+                    // trim and replace spaces by an hyphen
+                    trim(
+                        // replace non letter or digits by an hyphen
+                        preg_replace('#[^\\pL\d]+#u', '-',
+                            $string
+                        ),
+                        '-'
+                    )
+                )
+            )
+        );
     }
 }

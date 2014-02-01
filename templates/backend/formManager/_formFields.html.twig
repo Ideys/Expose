@@ -14,19 +14,19 @@
     <tr id="field-line-{{ field.id }}"
         data-id="{{ field.id }}">
       <td><span class="handle">::</span></td>
-      <td>{{ ('form.field.'~field.type)|trans }}</td>
+      <td>{{ ('form.field.'~field.category)|trans }}</td>
       <td>{{ field.title }}<br>{{ field.description }}</td>
       <td>
         {% if field.required|length %}
           <span class="label">{{ 'form.required'|trans }}</span><br>
         {% endif %}
-        {% if field.type in ['select', 'multiple.select', 'radio'] %}
+        {% if field.category in ['select', 'multiple.select', 'radio'] %}
           <ul>
           {% for choice in field.options|nl2br|split('<br />') %}
             <li>{{ choice }}</li>
           {% endfor %}
           </ul>
-        {% elseif field.type == 'html.insert' %}
+        {% elseif field.category == 'html.insert' %}
           {{field.content|raw }}
         {% endif %}
       </td>

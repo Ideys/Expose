@@ -1,9 +1,13 @@
 <?php
 
+namespace Ideys\Content\Section;
+
+use Ideys\Content\ContentInterface;
+
 /**
- * Pages content manager.
+ * HTML content manager.
  */
-class ContentPage extends ContentPrototype implements ContentInterface
+class Html extends Section implements ContentInterface
 {
     /**
      * {@inheritdoc}

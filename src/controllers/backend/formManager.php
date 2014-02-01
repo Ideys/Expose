@@ -1,5 +1,8 @@
 <?php
 
+use Ideys\Content\ContentFactory;
+use Ideys\Content\Section\Form;
+use Ideys\Content\Item\Field;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -11,8 +14,8 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
     $section = $contentFactory->findSection($id);
 
     $form = $app['form.factory']->createBuilder('form')
-        ->add('type', 'choice', array(
-            'choices'       => ContentForm::getFieldTypesChoice(),
+        ->add('category', 'choice', array(
+            'choices'       => Field::getTypesChoice(),
             'label'         => 'form.field.type',
         ))
         ->add('title', 'text', array(

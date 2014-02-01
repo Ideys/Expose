@@ -29,6 +29,17 @@ contact:
 
 section:
     sections: Sections
+    content: Contenu
+    type: Type de contenu
+    gallery: Galerie
+    channel: Vidéo
+    html: Page
+    form: Formulaire
+    dir: Dossier
+    root: Racine
+    preview: Aperçu
+    edit: Éditer le contenu
+    coming.soon: Prochainement
     title: Titre
     description: Description
     new: Nouvelle section
@@ -36,22 +47,9 @@ section:
     visibility.public: Section publique
     visibility.private: Section privée
     visibility.hidden: Section masquée
+    visibility.closed: Section fermée
     unavailable: La section demandée est indisponible.
     define.as.homepage: Définir comme page d'accueil
-
-content:
-    content: Contenu
-    type: Type de contenu
-    slideshow: Diaporama
-    gallery: Galerie
-    video: Vidéo
-    page: Page
-    form: Formulaire
-    dir: Dossier
-    root: Racine
-    preview: Aperçu
-    edit: Éditer le contenu
-    coming.soon: Prochainement
 
 gallery:
     upload: Télécharger des images
@@ -71,7 +69,7 @@ gallery:
         vertical: Défilement vertical
         masonry: Miniatures imbriquées
 
-video:
+channel:
     delete.section: Supprimer la vidéo
     section.deleted: Une vidéo a été supprimée
 
@@ -101,7 +99,7 @@ form:
         radio: Choix à puces
         html.insert: Insertion HTML
 
-page:
+html:
     page: Page
     pages: Pages
     no.page: Aucunes pages dans cette section

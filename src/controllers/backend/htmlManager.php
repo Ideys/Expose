@@ -1,24 +1,25 @@
 <?php
 
+use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
-$pageManagerController = $app['controllers_factory'];
+$htmlManagerController = $app['controllers_factory'];
 
-$pageManagerController->get('/{id}/preview', function (Request $request, $id) use ($app) {
+$htmlManagerController->get('/{id}/preview', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/pageManager/_pagePreview.html.twig', array(
+    return $app['twig']->render('backend/htmlManager/_pagePreview.html.twig', array(
         'section' => $section,
     ));
 })
 ->assert('id', '\d+')
-->bind('admin_page_manager_preview')
+->bind('admin_html_manager_preview')
 ;
 
-$pageManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
+$htmlManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
@@ -48,17 +49,17 @@ $pageManagerController->match('/{id}/edit', function (Request $request, $id) use
         $contentFactory->editItem($data);
     }
 
-    return $app['twig']->render('backend/pageManager/_pageEdit.html.twig', array(
+    return $app['twig']->render('backend/htmlManager/_pageEdit.html.twig', array(
         'form' => $form->createView(),
         'section_id' => $id,
     ));
 })
 ->assert('id', '\d+')
-->bind('admin_page_manager_edit')
+->bind('admin_html_manager_edit')
 ->method('GET|POST')
 ;
 
-$pageManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
+$htmlManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
     $contentFactory = new ContentFactory($app);
@@ -75,10 +76,10 @@ $pageManagerController->post('/{id}/delete', function (Request $request, $id) us
     return $app->redirect($app['url_generator']->generate('admin_content_manager'));
 })
 ->assert('id', '\d+')
-->bind('admin_page_manager_delete')
+->bind('admin_html_manager_delete')
 ;
 
-$pageManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
+$htmlManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
@@ -93,17 +94,17 @@ $pageManagerController->match('/{id}/settings', function (Request $request, $id)
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 
-    return $app['twig']->render('backend/pageManager/_pageSettings.html.twig', array(
+    return $app['twig']->render('backend/htmlManager/_htmlSettings.html.twig', array(
         'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         'section' => $section,
     ));
 })
 ->assert('id', '\d+')
-->bind('admin_page_manager_settings')
+->bind('admin_html_manager_settings')
 ->method('GET|POST')
 ;
 
-$pageManagerController->assert('_locale', implode('|', $app['languages']));
+$htmlManagerController->assert('_locale', implode('|', $app['languages']));
 
-return $pageManagerController;
+return $htmlManagerController;

@@ -1,19 +1,13 @@
 <?php
 
-/**
- * Contents parent class.
- */
-class ContentItem implements ContentInterface
-{
-    use \ContentParametersTrait;
+namespace Ideys\Content\Item;
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array();
-    }
+/**
+ * Items prototype class.
+ */
+abstract class Item
+{
+    use \Ideys\Content\ContentTrait;
 
     /**
      * Constructor.

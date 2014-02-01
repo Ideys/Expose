@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Settings;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 

@@ -1,27 +1,22 @@
 <?php
 
-/**
- * Forms content manager.
- */
-class ContentForm extends ContentPrototype implements ContentInterface
-{
-    const TYPE_TEXT     = 'text';
-    const TYPE_EMAIL    = 'email';
-    const TYPE_INTEGER  = 'integer';
-    const TYPE_TEXTAREA = 'textarea';
-    const TYPE_SELECT   = 'select';
-    const TYPE_MULTIPLE_SELECT = 'multiple.select';
-    const TYPE_CHECKBOX = 'checkbox';
-    const TYPE_RADIO    = 'radio';
-    const TYPE_HTML     = 'html.insert';
+namespace Ideys\Content\Section;
 
+use Ideys\Content\ContentInterface;
+use Ideys\Content\Item\Field;
+
+/**
+ * Form content manager.
+ */
+class Form extends Section implements ContentInterface
+{
     /**
      * {@inheritdoc}
      */
     public static function getParameters()
     {
         return array(
-            'validation_message' => $this->translator->trans('form.validation.message.default'),
+            'validation_message' => '',
         );
     }
 
@@ -35,31 +30,31 @@ class ContentForm extends ContentPrototype implements ContentInterface
         $form = $formFactory->createBuilder('form');
 
         foreach ($this->items as $item) {
-            if (self::TYPE_HTML == $item['type']) {
+            if (Field::HTML == $item->category) {
                 continue;
             }
-            $type = static::typeEquivalent($item['type']);
+            $fieldType = Field::getSymfonyEquivalent($item->category);
             $options =  array(
-                'label' => $item['title'],
-                'required' => (boolean) $item['parameters']['required'],
+                'label' => $item->title,
+                'required' => (boolean) $item->required,
             );
-            if ('choice' == $type) {
-                $choices = array_map('trim', explode("\n", $item['parameters']['options']));
+            if ('choice' == $fieldType) {
+                $choices = array_map('trim', explode("\n", $item->options));
                 $options += array(
                     'choices' => array_combine($choices, $choices),
                 );
             }
-            if (self::TYPE_MULTIPLE_SELECT == $item['type']) {
+            if (Field::MULTIPLE_SELECT == $item->category) {
                 $options += array(
                     'multiple' => true,
                 );
             }
-            if (self::TYPE_RADIO == $item['type']) {
+            if (Field::RADIO == $item->category) {
                 $options += array(
                     'expanded' => true,
                 );
             }
-            $form->add($item['slug'], $type, $options);
+            $form->add($item->slug, $fieldType, $options);
         }
 
         return $form->getForm();
@@ -130,7 +125,7 @@ class ContentForm extends ContentPrototype implements ContentInterface
      */
     public function deleteSection($id)
     {
-        $formDeleted = parent::deleteSection($id);
+        $formDeleted = \Ideys\Content\ContentFactory::deleteSection($id);
 
         if ($formDeleted) {
             $this->db->delete('expose_form_result', array('expose_section_id' => $id));
@@ -155,61 +150,5 @@ class ContentForm extends ContentPrototype implements ContentInterface
         ;
 
         return $form->getForm();
-    }
-
-    /**
-     * Return fields types keys
-     *
-     * @return array
-     */
-    public static function getFieldTypes()
-    {
-        return array(
-            self::TYPE_TEXT,
-            self::TYPE_EMAIL,
-            self::TYPE_INTEGER,
-            self::TYPE_TEXTAREA,
-            self::TYPE_SELECT,
-            self::TYPE_MULTIPLE_SELECT,
-            self::TYPE_CHECKBOX,
-            self::TYPE_RADIO,
-            self::TYPE_HTML,
-        );
-    }
-
-    /**
-     * Return field types keys and trans values
-     *
-     * @return array
-     */
-    public static function getFieldTypesChoice()
-    {
-        $keys = static::getFieldTypes();
-        $values = array_map(function($item){
-            return 'form.field.'.$item;
-        }, $keys);
-        return array_combine($keys, $values);
-    }
-
-    /**
-     * Return Symfony form type equivalent.
-     *
-     * @param  string $type
-     * @return string
-     */
-    public static function typeEquivalent($type)
-    {
-        $equivalents = array(
-            self::TYPE_TEXT     => 'text',
-            self::TYPE_EMAIL    => 'email',
-            self::TYPE_INTEGER  => 'integer',
-            self::TYPE_TEXTAREA => 'textarea',
-            self::TYPE_SELECT   => 'choice',
-            self::TYPE_MULTIPLE_SELECT => 'choice',
-            self::TYPE_CHECKBOX => 'checkbox',
-            self::TYPE_RADIO    => 'choice',
-        );
-
-        return $equivalents[$type];
     }
 }

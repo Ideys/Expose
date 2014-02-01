@@ -29,6 +29,17 @@ contact:
 
 section:
     sections: Sections
+    content: Content
+    type: Content type
+    gallery: Gallery
+    channel: Video
+    html: Page
+    form: Form
+    dir: Directory
+    root: Root
+    preview: Preview
+    edit: Edit content
+    coming.soon: Coming soon
     title: Title
     description: Description
     new: New section
@@ -39,20 +50,6 @@ section:
     visibility.closed: Closed section
     unavailable: The requested section is unavailable.
     define.as.homepage: Define as the homepage
-
-content:
-    content: Content
-    type: Content type
-    slideshow: Slideshow
-    gallery: Gallery
-    video: Video
-    page: Page
-    form: Form
-    dir: Directory
-    root: Root
-    preview: Preview
-    edit: Edit content
-    coming.soon: Coming soon
 
 gallery:
     upload: Upload pictures
@@ -72,7 +69,7 @@ gallery:
         vertical: Vertical scroll
         masonry: Imbricated thumbs
 
-video:
+channel:
     delete.section: Delete this video
     section.deleted: A video was deleted
 
@@ -102,7 +99,7 @@ form:
         radio: Bullet selector
         html.insert: HTML insert
 
-page:
+html:
     page: Page
     pages: Pages
     no.page: Aucunes pages dans cette section

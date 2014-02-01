@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
 $galleryManagerController = $app['controllers_factory'];
@@ -83,7 +84,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 
     foreach ($uploadedFiles['files'] as $file) {
         $item = array(
-            'type' => $file->getMimeType(),
+            'category' => $file->getMimeType(),
             'title' => null,
             'description' => null,
             'content' => null,

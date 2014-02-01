@@ -61,7 +61,8 @@ if (!$schema->tablesExist('expose_section_item')) {
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('type', 'string', array('length' => 55));
-    $table->addColumn('slug', 'string', array('length' => 255));
+    $table->addColumn('category', 'string', array('length' => 55, 'default' => null, 'notnull' => false));
+    $table->addColumn('slug', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('path', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('hierarchy', 'smallint');
     blameAndTimestampSchema($table);

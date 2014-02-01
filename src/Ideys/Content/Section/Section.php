@@ -1,11 +1,15 @@
 <?php
 
+namespace Ideys\Content\Section;
+
+use Ideys\Content\ContentFactory;
+
 /**
- * Contents parent class.
+ * Sections prototype class.
  */
-abstract class ContentPrototype
+abstract class Section
 {
-    use \ContentParametersTrait;
+    use \Ideys\Content\ContentTrait;
 
     /**
      * @var \Doctrine\DBAL\Connection
@@ -31,7 +35,13 @@ abstract class ContentPrototype
     {
         $this->db = $db;
         $this->attributes = $entity;
-        $this->parameters = unserialize($entity['parameters']);
+
+        if (is_string($entity['parameters'])) {
+            $this->parameters = unserialize($entity['parameters']);
+        } elseif (is_array($entity['parameters'])) {
+            $this->parameters = $entity['parameters'];
+        }
+
         $this->hydrateItems();
     }
 
@@ -98,10 +108,18 @@ abstract class ContentPrototype
             ON t.expose_section_item_id = i.id
             WHERE i.expose_section_id = ?
             ORDER BY i.hierarchy ASC';
-        $entities = $this->db->fetchAll($sql, array($this->id));
+        $itemTranslations = $this->db->fetchAll($sql, array($this->id));
 
-        foreach ($entities as $entity) {
-            $this->items[$entity['id']] = new \ContentItem($entity);
+        if (empty($itemTranslations)) {
+            return false;
+        }
+
+        foreach ($itemTranslations as $itemData) {
+            if (!in_array($itemData['type'], ContentFactory::getItemTypes())) {
+                $itemData['type'] = ContentFactory::getDefaultSectionItemType($this->type);
+            }
+            $itemClass = '\Ideys\Content\Item\\'.ucfirst($itemData['type']);
+            $this->items[$itemData['id']] = new $itemClass($itemData);
         }
     }
 }

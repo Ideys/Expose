@@ -1,5 +1,7 @@
 <?php
 
+namespace Ideys\Content;
+
 /**
  * Contents interface.
  */

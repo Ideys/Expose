@@ -2,26 +2,26 @@
 <dd data-id="{{ section.id }}"
     class="section {{ section.visibility }}-section">
   {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
-  <div class="content page" id="panel{{ section.id }}">
+  <div class="content html" id="panel{{ section.id }}">
     <p>{{ section.description|nl2br }}</p>
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-preview"
-           data-inject-call="{{ path('admin_page_manager_preview', {'id': section.id}) }}"
+           data-inject-call="{{ path('admin_html_manager_preview', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-preview">
-          {{ 'content.preview'|trans }}
+          {{ 'section.preview'|trans }}
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-edit"
-           data-inject-call="{{ path('admin_page_manager_edit', {'id': section.id}) }}"
+           data-inject-call="{{ path('admin_html_manager_edit', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-edit">
-          {{ 'content.edit'|trans }}
+          {{ 'section.edit'|trans }}
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-settings"
-           data-inject-call="{{ path('admin_page_manager_settings', {'id': section.id}) }}"
+           data-inject-call="{{ path('admin_html_manager_settings', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-settings">
           {{ 'settings'|trans }}
         </a>

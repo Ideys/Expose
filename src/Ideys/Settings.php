@@ -1,5 +1,7 @@
 <?php
 
+namespace Ideys;
+
 use Doctrine\DBAL\Connection;
 
 /**
