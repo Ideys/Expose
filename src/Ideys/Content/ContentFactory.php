@@ -26,11 +26,6 @@ class ContentFactory
     protected $security;
 
     /**
-     * @var \Symfony\Component\Form\FormFactory
-     */
-    protected $formFactory;
-
-    /**
      * @var string
      */
     protected $language;
@@ -71,13 +66,12 @@ class ContentFactory
     {
         $this->db = $app['db'];
         $this->translator = $app['translator'];
-        $this->formFactory = $app['form.factory'];
         $this->security = $app['security'];
         $this->language = $this->translator->getLocale();
     }
 
     /**
-     * Return default section model
+     * Return default section model.
      *
      * @return array
      */
@@ -96,7 +90,7 @@ class ContentFactory
     }
 
     /**
-     * Return default item model
+     * Return default item model.
      *
      * @param \ContentPrototype $section
      * @return array
@@ -160,7 +154,8 @@ class ContentFactory
      * Return a section.
      *
      * @param integer $id
-     * @return array
+     *
+     * @return \Ideys\Content\Section\Section
      */
     public function findSection($id)
     {
@@ -176,7 +171,8 @@ class ContentFactory
      * Return a section.
      *
      * @param string $slug Section slug
-     * @return array
+     *
+     * @return \Ideys\Content\Section\Section
      */
     public function findSectionBySlug($slug)
     {
@@ -191,7 +187,7 @@ class ContentFactory
     /**
      * Return a section.
      *
-     * @return array
+     * @return \Ideys\Content\Section\Section
      */
     public function findHomepage()
     {
@@ -242,7 +238,7 @@ class ContentFactory
     /**
      * Create a new section.
      *
-     * @return array $section
+     * @return \Ideys\Content\Section\Section
      */
     public function addSection($section)
     {
@@ -293,7 +289,9 @@ class ContentFactory
     /**
      * Create a new section.
      *
-     * @return integer Section id
+     * @param integer   $id
+     *
+     * @return boolean
      */
     public function deleteSection($id)
     {
@@ -316,6 +314,7 @@ class ContentFactory
      * new-section / new-section-2 / new-section-4 => new-section-5
      *
      * @param string $title
+     *
      * @return string
      */
     protected function uniqueSlug($title, $id = 0)
@@ -445,80 +444,6 @@ class ContentFactory
     }
 
     /**
-     * Return the create section form.
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    public function createForm()
-    {
-        $form = $this->sectionForm($this->getSectionModel());
-
-        return $form->getForm();
-    }
-
-    /**
-     * Return the section edit form.
-     *
-     * @param array $section
-     * @return \Symfony\Component\Form\Form
-     */
-    public function editForm($section)
-    {
-        $form = $this->sectionForm($section)
-            ->remove('type')
-        ;
-
-        return $form->getForm();
-    }
-
-    /**
-     * Return section form builder.
-     *
-     * @return \Symfony\Component\Form\FormBuilder
-     */
-    protected function sectionForm($entity)
-    {
-        $dirsChoice = array();
-        foreach ($this->findSections() as $section) {
-            if ('dir' === $section['type']) {
-                $dirsChoice[$section['id']] = $section['title'];
-            }
-        }
-
-        $form = $this->formFactory->createBuilder('form', $entity)
-            ->add('type', 'choice', array(
-                'choices'       => static::getSectionTypesChoice(),
-                'label'         => 'content.type',
-            ))
-            ->add('title', 'text', array(
-                'label'         => 'section.title',
-                'attr' => array(
-                    'placeholder' => 'section.title',
-                ),
-            ))
-            ->add('description', 'textarea', array(
-                'required'      => false,
-                'label'         => 'section.description',
-                'attr' => array(
-                    'placeholder' => 'section.description',
-                ),
-            ))
-            ->add('expose_section_id', 'choice', array(
-                'choices'       => $dirsChoice,
-                'required'      => false,
-                'label'         => 'section.dir',
-                'empty_value'   => 'section.root',
-            ))
-            ->add('visibility', 'choice', array(
-                'choices'       => static::getSectionVisibilityChoice(),
-                'label'         => 'section.visibility',
-            ))
-        ;
-
-        return $form;
-    }
-
-    /**
      * Return section types keys.
      *
      * @return array
@@ -566,21 +491,6 @@ class ContentFactory
     }
 
     /**
-     * Return content types keys and trans values
-     * Used on select forms.
-     *
-     * @return array
-     */
-    public static function getSectionTypesChoice()
-    {
-        $keys = static::getSectionTypes();
-        $values = array_map(function($item){
-            return 'section.'.$item;
-        }, $keys);
-        return array_combine($keys, $values);
-    }
-
-    /**
      * Return content visibility states.
      *
      * @return array
@@ -588,21 +498,6 @@ class ContentFactory
     public static function getSectionVisibilities()
     {
         return array('public', 'private' ,'hidden' ,'closed');
-    }
-
-    /**
-     * Return content visibility choices.
-     *
-     * @return array
-     */
-    public static function getSectionVisibilityChoice()
-    {
-        return array(
-            'public' => 'section.visibility.public',
-            'private' => 'section.visibility.private',
-            'hidden' => 'section.visibility.hidden',
-            'closed' => 'section.visibility.closed',
-        );
     }
 
     /**

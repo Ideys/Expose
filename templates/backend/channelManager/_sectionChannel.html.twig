@@ -7,12 +7,12 @@
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-preview">
-          {{ 'content.video'|trans }}
+          {{ 'section.channel'|trans }}
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-settings"
-           data-inject-call="{{ path('admin_video_manager_settings', {'id': section.id}) }}"
+           data-inject-call="{{ path('admin_channel_manager_settings', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-settings">
           {{ 'settings'|trans }}
         </a>

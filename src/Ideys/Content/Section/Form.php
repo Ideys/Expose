@@ -4,6 +4,7 @@ namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
 use Ideys\Content\Item\Field;
+use Symfony\Component\Form\FormFactory;
 
 /**
  * Form content manager.
@@ -135,20 +136,16 @@ class Form extends Section implements ContentInterface
     }
 
     /**
-     * Return the form section edit form.
-     *
-     * @param array $section
-     * @return \Symfony\Component\Form\Form
+     * {@inheritdoc}
      */
-    public function editForm($section)
+    public function settingsForm(FormFactory $formFactory)
     {
-        $form = $this->sectionForm($section)
-            ->remove('type')
-            ->add('parameter_validation_message', 'textarea', array(
+        $formBuilder = $this->settingsFormBuilder($formFactory)
+            ->add('validation_message', 'textarea', array(
                 'label' => 'form.validation.message',
             ))
         ;
 
-        return $form->getForm();
+        return $formBuilder->getForm();
     }
 }

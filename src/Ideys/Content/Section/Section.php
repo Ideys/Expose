@@ -3,6 +3,8 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentFactory;
+use Ideys\Content\SectionType;
+use Symfony\Component\Form\FormFactory;
 
 /**
  * Sections prototype class.
@@ -94,6 +96,35 @@ abstract class Section
     public function hasItems()
     {
         return count($this->items) > 0;
+    }
+
+    /**
+     * Return section settings form builder used to extends standard form.
+     *
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     *
+     * @return \Symfony\Component\Form\FormBuilder
+     */
+    protected function settingsFormBuilder(FormFactory $formFactory)
+    {
+        $sectionType = new SectionType($this->db, $formFactory);
+
+        $formBuilder = $sectionType->formBuilder($this);
+        $formBuilder->remove('type');
+
+        return $formBuilder;
+    }
+
+    /**
+     * Return section settings form.
+     *
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function settingsForm(FormFactory $formFactory)
+    {
+        return $this->settingsFormBuilder($formFactory)->getForm();
     }
 
     /**

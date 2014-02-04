@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Content\SectionType;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -9,7 +10,8 @@ $contentManagerController = $app['controllers_factory'];
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $contentFactory = new ContentFactory($app);
-    $form = $contentFactory->createForm();
+    $sectionType = new SectionType($app['db'], $app['form.factory']);
+    $form = $sectionType->createForm($contentFactory->getSectionModel());
 
     $form->handleRequest($request);
     if ($form->isValid()) {

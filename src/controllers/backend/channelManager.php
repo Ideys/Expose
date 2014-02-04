@@ -11,9 +11,18 @@ $channelManagerController->match('/{id}/settings', function (Request $request, $
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
+    $editForm = $section->settingsForm($app['form.factory']);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
-    return $app['twig']->render('backend/channelManager/_videoSettings.html.twig', array(
+    $editForm->handleRequest($request);
+    if ($editForm->isValid()) {
+        $section = $editForm->getData();
+        $contentFactory->updateSection($section);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    }
+
+    return $app['twig']->render('backend/channelManager/_channelSettings.html.twig', array(
+        'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         'section' => $section,
     ));

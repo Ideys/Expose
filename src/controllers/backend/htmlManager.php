@@ -84,7 +84,7 @@ $htmlManagerController->match('/{id}/settings', function (Request $request, $id)
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    $editForm = $contentFactory->editForm($section);
+    $editForm = $section->settingsForm($app['form.factory']);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     $editForm->handleRequest($request);

@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
+use Symfony\Component\Form\FormFactory;
 
 /**
  * Gallery content manager.
@@ -21,15 +22,11 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
-     * Return the form section edit form.
-     *
-     * @param array $section
-     * @return \Symfony\Component\Form\Form
+     * {@inheritdoc}
      */
-    public function editForm($section)
+    public function settingsForm(FormFactory $formFactory)
     {
-        $form = $this->sectionForm($section)
-            ->remove('type')
+        $formBuilder = $this->settingsFormBuilder($formFactory)
             ->add('gallery_mode', 'choice', array(
                 'label' => 'gallery.mode.mode',
                 'choices' => static::getGalleryModeChoice(),
@@ -40,7 +37,7 @@ class Gallery extends Section implements ContentInterface
             ))
         ;
 
-        return $form->getForm();
+        return $formBuilder->getForm();
     }
 
     /**
