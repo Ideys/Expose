@@ -1,2 +1,10 @@
 {% spaceless %}
+<ul class="gallery-slideshow" data-orbit>
+  {% for item in section.items %}
+    <li>
+      <div class="slide"
+           style="background-image: url('{{ app.request.basepath }}/gallery/{{ item.path }}');"></div>
+     </li>
+  {% endfor %}
+</ul>
 {% endspaceless %}

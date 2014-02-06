@@ -1,6 +1,6 @@
 {% extends "frontend/layout.html.twig" %}
 
-{% block body_class parent()~' content-gallery' %}
+{% block body_class parent()~' content-gallery gallery-'~section.gallery_mode %}
 
 {% block javascripts %}
 {% if 'masonry' == section.gallery_mode %}
@@ -11,7 +11,7 @@
 {% endblock javascripts %}
 
 {% block foundation_js %}
-{% if 'slideshow' == section.gallery_mode %}
+{% if section.isSlidable %}
   {% include "frontend/gallery/_slideshow.js.twig" %}
 {% else %}
   {{ parent() }}

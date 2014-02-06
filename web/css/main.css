@@ -97,6 +97,10 @@ textarea {
    Author's custom styles
    ========================================================================== */
 
+/*
+ * Menu
+ */
+
 .top-bar {
     z-index: 100;
 }
@@ -111,14 +115,9 @@ textarea {
    right: 30px;
 }
 
-#homepage {
-    position: fixed;
-    top: 40%;
-    left: 0px;
-    height: 180px;
-    width: 100%;
-    text-align: center;
-}
+/*
+ * UI main elements
+ */
 
 #content {
     margin-top: 30px;
@@ -140,8 +139,60 @@ textarea {
     margin-top: 10%;
 }
 
+/*
+ * Homepage
+ */
+
+#homepage {
+    position: fixed;
+    top: 40%;
+    left: 0px;
+    height: 180px;
+    width: 100%;
+    text-align: center;
+}
+
 .content-homepage.hide-menu-on-homepage .top-bar {
     display: none;
+}
+
+/*
+ * Gallery sections
+ */
+
+body.gallery-fullscreen,
+body.gallery-extended {
+    height: 100vh;
+    overflow: hidden;
+}
+
+.gallery-fullscreen #content,
+.gallery-fullscreen .slide,
+.gallery-extended #content,
+.gallery-extended .slide {
+    background-attachment: fixed;
+    background-clip: border-box;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-origin: padding-box;
+    background-position: center center;
+    height: 100%;
+    width: 100%;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.gallery-fullscreen #content,
+.gallery-fullscreen .slide {
+    background-size: contain;
+}
+
+.gallery-extended #content,
+.gallery-extended .slide {
+    background-size: cover;
 }
 
 /* ==========================================================================

@@ -95,6 +95,20 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
+     * Test if gallery is in a slideshow mode
+     *
+     * @return boolean
+     */
+    public function isSlidable()
+    {
+        return in_array($this->getParameter('gallery_mode'), array(
+            'slideshow',
+            'fullscreen',
+            'extended',
+        ));
+    }
+
+    /**
      * Return gallery modes choices.
      *
      * @return array
