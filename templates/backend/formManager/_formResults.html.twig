@@ -40,7 +40,7 @@
               type="button"
               id="delete-result-{{ result.id }}"
               class="tiny alert button hidden"
-              data-delete-ajax="{{ path('admin_form_manager_remove_result', {'id': result.id}) }}"
+              data-delete-ajax="{{ path('admin_form_manager_remove_result', {'id': section.id, 'resultId': result.id}) }}"
               data-target="#result-{{ result.id }}">
             {{ 'confirm'|trans }}
           </button>

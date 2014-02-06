@@ -42,23 +42,36 @@ trait ContentTrait
     {
         if (array_key_exists($name, (array)$this->attributes)) {
             return $this->attributes[$name];
-        } elseif (array_key_exists($name, (array)$this->parameters)) {
-            return $this->parameters[$name];
-        } elseif (array_key_exists($name, static::getParameters())) {
-            return static::getParameters()[$name];
-        } else {
-            throw new \Exception('Unable to find object taxon');
         }
+        return $this->getParameter($name);
     }
 
     public function __set($name, $value)
     {
         if (array_key_exists($name, (array)$this->attributes)) {
             $this->attributes[$name] = $value;
-        } elseif (array_key_exists($name, (array)$this->parameters)) {
-            $this->parameters[$name] = $value;
         } elseif (array_key_exists($name, static::getParameters())) {
-            $this->parameters[$name] = $value;
+            $this->setParameter($name, $value);
+        }
+    }
+
+    public function setParameter($name, $value)
+    {
+        if (!is_array($this->parameters)) {
+            $this->parameters = (array) unserialize($this->parameters);
+        }
+        $this->parameters[$name] = $value;
+        $this->attributes['parameters'] = $this->parameters;
+    }
+
+    public function getParameter($name)
+    {
+        if (array_key_exists($name, (array)$this->parameters)) {
+            return $this->parameters[$name];
+        } elseif (array_key_exists($name, static::getParameters())) {
+            return static::getParameters()[$name];
+        } else {
+            throw new \Exception(sprintf('Unable to find content parameter named "%s".', $name));
         }
     }
 }

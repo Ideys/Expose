@@ -93,10 +93,11 @@ $formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
 ->bind('admin_form_manager_remove_field')
 ;
 
-$formManagerController->post('/{id}/remove/result', function ($id) use ($app) {
+$formManagerController->post('/{id}/remove/result/{resultId}', function ($id, $resultId) use ($app) {
 
     $contentFactory = new ContentFactory($app);
-    $isDeleted = $contentFactory->deleteResult($id);
+    $section = $contentFactory->findSection($id);
+    $isDeleted = $section->deleteResult($resultId);
 
     return $app->json($isDeleted);
 })
@@ -114,7 +115,6 @@ $formManagerController->match('/{id}/settings', function (Request $request, $id)
 
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
-        $section = $editForm->getData();
         $contentFactory->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }

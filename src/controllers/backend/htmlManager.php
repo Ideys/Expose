@@ -89,7 +89,6 @@ $htmlManagerController->match('/{id}/settings', function (Request $request, $id)
 
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
-        $section = $editForm->getData();
         $contentFactory->updateSection($section);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }

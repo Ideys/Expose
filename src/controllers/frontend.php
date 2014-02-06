@@ -28,11 +28,12 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
     if ($section instanceof Ideys\Content\Section\Form) {
         $form = $section->generateFormFields($app['form.factory']);
         if ($section->checkSubmitedForm($request, $form)) {
+            $validationMessage = $section->getParameter('validation_message');
             $app['session']
                 ->getFlashBag()
-                ->add('success', empty($section->validation_message) ?
+                ->add('success', empty($validationMessage) ?
                         $app['translator']->trans('form.validation.message.default'):
-                    $section->validation_message);
+                    $validationMessage);
             return $app->redirect($app['url_generator']->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();
