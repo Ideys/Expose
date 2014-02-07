@@ -1,8 +1,24 @@
 {% spaceless %}
-<div id="slides-actions-{{ section.id }}" class="hidden">
+<div data-selectable-actions class="hidden stack-actions">
   <ul class="button-group">
     <li>
       <h3 class="selectable-counter">&nbsp;</h3>
+    </li>
+    <li>
+      <button
+          type="button"
+         class="secondary button small"
+         data-select="all">
+        {{ 'select.all'|trans }}
+      </button>
+    </li>
+    <li>
+      <button
+          type="button"
+         class="secondary button small"
+         data-select="none">
+        {{ 'select.none'|trans }}
+      </button>
     </li>
     <li>
       <button
@@ -24,11 +40,12 @@
     </li>
     <li>
       <a href="#"
-         data-dropdown="drop"
+         data-dropdown="move-selection-{{ section.id }}"
+         data-dropdown-ajax
          class="button dropdown small">
         {{ 'move'|trans }}
       </a><br>
-      <ul id="drop" data-dropdown-content class="f-dropdown">
+      <ul id="move-selection-{{ section.id }}" data-dropdown-content class="f-dropdown">
         {% for sectionMove in sections
             if 'gallery' == sectionMove.type
             and sectionMove.id != section.id %}
@@ -41,11 +58,10 @@
 {% if section.items|length %}
 <ul id="slides-{{ section.id }}"
     class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid"
-    data-selectable="#slides-actions-{{ section.id }}"
     data-selected=""
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
   {% for slide in section.items %}
-  <li data-id="{{ slide.id }}">
+  <li data-selectable data-id="{{ slide.id }}">
     <img class="th handle"
          src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">
   </li>

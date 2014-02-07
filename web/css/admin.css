@@ -4,6 +4,7 @@
 
 .tabs-content .content {
     width: 100%;
+    position: relative;
 }
 
 .content-section.single-section,
@@ -72,6 +73,15 @@
 /*
  * Selectable widget
  */
+
+.stack-actions {
+    position: absolute;
+    top: -50px;
+    top: -60px;
+    left: -10px;
+    width: 100%;
+    background: #fff;
+}
 
 .slides-grid .selected .th {
     border-color: #0088cc;

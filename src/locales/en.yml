@@ -152,3 +152,6 @@ edit: Edit
 delete: Delete
 move: Move
 settings: Settings
+select:
+    all: Select all
+    none: Cancel

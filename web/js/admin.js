@@ -55,45 +55,43 @@ $(function(){
             list.addClass('sort-active');
         }
     })
-    .on('click', '[data-id]', function() {
+    .on('click', '[data-selectable]', function() {
         var item = $(this)
-          , id = item.data('id')
-          , list = item.parent('[data-selectable]')
-          , stackActionPanel = $(list.data('selectable'))
-          , counterInfo = stackActionPanel.find('.selectable-counter')
+          , section = item.parents('.content-section')
           ;
 
         item.toggleClass('selected');
 
-        var selectedEntities = list.find('.selected')
-          , totalSelection = selectedEntities.length
-          , selectedIds = new Array()
-          ;
-
-        selectedEntities.each(function(){
-            selectedIds.push($(this).data('id'));
-        });
-        list.data('selected', selectedIds.concat(','));
-
-        counterInfo.text(totalSelection);
-        if (totalSelection > 0) {
-            stackActionPanel.removeClass('hidden');
-        } else {
-            stackActionPanel.addClass('hidden');
-        }
+        itemsSelection(section);
     })
-    .on('click', '[data-toggle-section]', function(){
-        var section = $(this).parents('.section')
-          , toggleUrl = $(this).data('toggle-section')
+    .on('click', '[data-select]', function(){
+        var section = $(this).parents('.content-section')
+          , items = section.find('[data-selectable]')
+          , mode = $(this).data('select')
           ;
 
-        $.post(toggleUrl, {}, function(done) {
-            if (done === true) {
-                section.toggleClass('hidden-section');
-            } else {
-                console.warn('Toggle section error');
-            }
-        } );
+        if ('all' === mode) {
+            items.addClass('selected');
+        } else if ('none' === mode) {
+            items.removeClass('selected');
+        }
+
+        itemsSelection(section);
+    })
+    // Foundation dropdown fix after ajax injection
+    .on('click', '[data-dropdown-ajax]', function(){
+        event.stopPropagation();
+        var link = $(this)
+          , menu = $('#'+link.data('dropdown'))
+          ;
+
+        menu.toggleClass('open');
+        if (menu.hasClass('open')) {
+            menu.css('top', '50px');
+        } else {
+            menu.css('top', '-99999px');
+        }
+        return false;
     })
     .on('click', '[data-delete]', function(event) {
         event.stopPropagation();
@@ -125,4 +123,28 @@ $(function(){
         }
     });
 });
+
+var itemsSelection = function(section) {
+    var list = section.find('[data-selected]')
+      , stackActionPanel = section.find('[data-selectable-actions]')
+      , counterInfo = stackActionPanel.find('.selectable-counter')
+      , selectedEntities = section.find('.selected')
+      , totalSelection = selectedEntities.length
+      , selectedIds = new Array()
+      ;
+
+    selectedEntities.each(function(){
+        selectedIds.push($(this).data('id'));
+    });
+    list.data('selected', selectedIds.concat(','));
+
+    counterInfo.text(totalSelection);
+
+    if (totalSelection > 0) {
+        stackActionPanel.removeClass('hidden');
+    } else {
+        stackActionPanel.addClass('hidden');
+    }
+};
+
 }(window.jQuery);

@@ -152,3 +152,6 @@ edit: Éditer
 delete: Supprimer
 move: Déplacer
 settings: Paramétrages
+select:
+    all: Tout sélectionner
+    none: Annuler
