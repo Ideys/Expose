@@ -122,6 +122,21 @@ $(function(){
             $.post(sortUrl, {hierarchy: result}, function(json) {console.log(json)} );
         }
     });
+
+  $('#new-section')
+    .on('change', '#form_type', function() {
+        var field = $(this)
+          , type = $(this).val()
+          , form = field.parents('form')
+          , sectionRelatedBlocks = form.find('.section-fields')
+          ;
+
+        if ('dir' === type) {
+            sectionRelatedBlocks.addClass('hidden');
+        } else {
+            sectionRelatedBlocks.removeClass('hidden');
+        }
+    });
 });
 
 var itemsSelection = function(section) {
