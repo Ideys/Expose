@@ -1,4 +1,5 @@
 {% spaceless %}
+{% set fields = section.items %}
 <table>
   <thead>
     <tr>
@@ -41,7 +42,7 @@
             type="button"
             id="delete-field-{{ field.id }}"
             class="tiny alert button hidden"
-            data-delete-ajax="{{ path('admin_form_manager_remove_field', {'id': field.id}) }}"
+            data-delete-ajax="{{ path('admin_form_manager_remove_field', {'id': section.id, 'itemId': field.id}) }}"
             data-target="#field-line-{{ field.id }}">
           {{ 'confirm'|trans }}
         </button>

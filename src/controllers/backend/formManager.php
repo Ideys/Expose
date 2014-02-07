@@ -80,10 +80,11 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
 ->bind('admin_form_manager_results')
 ;
 
-$formManagerController->post('/{id}/remove/field', function ($id) use ($app) {
+$formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $itemId) use ($app) {
 
     $contentFactory = new ContentFactory($app);
-    $isDeleted = $contentFactory->deleteItem($id);
+    $section = $contentFactory->findSection($id);
+    $isDeleted = $section->deleteItem($itemId);
 
     $jsonResponse = $isDeleted;
 

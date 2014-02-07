@@ -2,6 +2,7 @@
 
 namespace Ideys\Content\Section;
 
+use Ideys\Content\Item\Slide;
 use Ideys\Content\ContentInterface;
 use Symfony\Component\Form\FormFactory;
 
@@ -43,18 +44,16 @@ class Gallery extends Section implements ContentInterface
     /**
      * Delete a selection of slides.
      *
-     * @param integer  $sectionId
      * @param array    $itemIds
      * @return array
      */
-    public function deleteSlides($sectionId, $itemIds)
+    public function deleteSlides($itemIds)
     {
-        $sectionItems = $this->findSectionItems($sectionId);
         $deletedIds = array();
 
         foreach ($itemIds as $id) {
             if (is_numeric($id)
-                && $this->deleteItemAndRelatedFile($sectionItems[$id])) {
+                && $this->deleteItemAndRelatedFile($this->items[$id])) {
                 $deletedIds[] = $id;
             }
         }
@@ -84,11 +83,11 @@ class Gallery extends Section implements ContentInterface
      * @param array $item
      * @return boolean
      */
-    private function deleteItemAndRelatedFile($item)
+    private function deleteItemAndRelatedFile(Slide $slide)
     {
-        if (parent::deleteItem($item['id'])) {
-            @unlink(WEB_DIR.'/gallery/'.$item['path']);
-            @unlink(WEB_DIR.'/gallery/220/'.$item['path']);
+        if (parent::deleteItem($slide->id)) {
+            @unlink(WEB_DIR.'/gallery/'.$slide->path);
+            @unlink(WEB_DIR.'/gallery/220/'.$slide->path);
             return true;
         }
         return false;
