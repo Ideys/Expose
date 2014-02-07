@@ -3,7 +3,6 @@
     class="section {{ section.visibility }}-section">
   {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
   <div class="content html" id="panel{{ section.id }}">
-    <p>{{ section.description|nl2br }}</p>
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-preview"
