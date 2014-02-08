@@ -1,6 +1,7 @@
 <?php
 
 use Ideys\Content\SectionType;
+use Ideys\Content\DirType;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -88,6 +89,30 @@ $contentManagerController->get('/{id}/homepage', function ($id) use ($app) {
 })
 ->assert('id', '\d+')
 ->bind('admin_content_manager_define_homepage')
+;
+
+$contentManagerController->match('/{id}/edit/dir', function (Request $request, $id) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+
+    $dirType = new DirType($app['form.factory']);
+    $form = $dirType->editForm($section);
+
+    $form->handleRequest($request);
+    if ($form->isValid()) {
+        $contentFactory->updateSection($section);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    }
+
+    return $app['twig']->render('backend/dirManager/_dirForm.html.twig', array(
+        'section' => $section,
+        'form' => $form->createView(),
+    ));
+})
+->assert('id', '\d+')
+->method('GET|POST')
+->bind('admin_content_manager_edit_dir')
 ;
 
 $contentManagerController->assert('_locale', implode('|', $app['languages']));

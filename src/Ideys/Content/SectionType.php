@@ -108,6 +108,8 @@ class SectionType
         foreach ($sections as $section) {
             $choice[$section['id']] = $section['title'];
         }
+
+        return $choice;
     }
 
     /**

@@ -22,6 +22,12 @@
     padding-left: 8px;
 }
 
+.dir-sections h3 button.tiny.secondary {
+    padding: 7px 6px;
+    font-size: 0.67em;
+    color: #888;
+}
+
 /*
  * Sort widgets
  */
@@ -140,7 +146,7 @@ td.muted {
 }
 
 /* ==========================================================================
-   Settings section
+   Icons
    ========================================================================== */
 
 .type-icon {
