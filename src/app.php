@@ -44,7 +44,7 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
     $settings = new \Ideys\Settings($app['db']);
-    $twig->addGlobal('semver', '0.7');
+    $twig->addGlobal('semver', '0.7.5');
     $twig->addGlobal('site', $settings->getAll());
     $contentFactory = new \Ideys\Content\ContentFactory($app);
     $twig->addGlobal('sections', $contentFactory->findSections());

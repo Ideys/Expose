@@ -82,7 +82,7 @@ $(function(){
     .on('click', '[data-dropdown-ajax]', function(){
         event.stopPropagation();
         var link = $(this)
-          , menu = $('#'+link.data('dropdown'))
+          , menu = $('#'+link.data('dropdown-ajax'))
           ;
 
         menu.toggleClass('open');
@@ -93,21 +93,33 @@ $(function(){
         }
         return false;
     })
-    .on('click', '[data-delete]', function(event) {
+    .on('click', '[data-move]', function(event) {
         event.stopPropagation();
-        var list = $($(this).data('target'))
-          , stackActionPanel = $(list.data('selectable'))
-          , deleteUrl = $(this).data('delete')
+
+        var link = $(this)
+          , list = $(link.data('target'))
+          , moveUrl = link.attr('href')
           , selection = list.data('selected')
           ;
 
-        $.post(deleteUrl, {items: selection}, function(json) {
-            for (i in json) {
-                $('[data-id="'+json[i]+'"]').remove();
-                list.data('selected', '');
-                stackActionPanel.addClass('hidden');
-            }
-            console.log(json);
+        $.post(moveUrl, {items: selection}, function(items) {
+            removeEditedItems(items);
+            resetStackSelection(list);
+        } );
+        return false;
+    })
+    .on('click', '[data-delete]', function(event) {
+        event.stopPropagation();
+
+        var button = $(this)
+          , list = $(button.data('target'))
+          , deleteUrl = button.data('delete')
+          , selection = list.data('selected')
+          ;
+
+        $.post(deleteUrl, {items: selection}, function(items) {
+            removeEditedItems(items);
+            resetStackSelection(list);
         } );
         return false;
     });
@@ -160,6 +172,22 @@ var itemsSelection = function(section) {
     } else {
         stackActionPanel.addClass('hidden');
     }
+};
+
+var removeEditedItems = function(items) {
+    for (var i in items) {
+        $('[data-id="'+items[i]+'"]').remove();
+    }
+    console.log(items);
+};
+
+var resetStackSelection = function(list) {
+    var stackActionPanel = list
+            .parents('.content')
+            .find('[data-selectable-actions]');
+
+    list.data('selected', '');
+    stackActionPanel.addClass('hidden');
 };
 
 }(window.jQuery);

@@ -170,4 +170,21 @@ abstract class Section
 
         return (0 < $rows);
     }
+
+    /**
+     * Attach an item from another section to this section.
+     *
+     * @param integer $id The item id
+     *
+     * @return boolean
+     */
+    public function attachItem($id)
+    {
+        $affectedRows = $this->db->update('expose_section_item',
+                array('expose_section_id' => $this->id),
+                array('id' => $id)
+        );
+
+        return (boolean) $affectedRows;
+    }
 }

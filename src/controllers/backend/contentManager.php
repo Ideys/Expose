@@ -64,20 +64,22 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
 ->bind('admin_content_manager_sort_items')
 ;
 
-$contentManagerController->post('/delete/items', function (Request $request) use ($app) {
+$contentManagerController->post('/move/items/{id}', function (Request $request, $id) use ($app) {
 
-    $items = $request->get('items');
+    $itemIds = $request->get('items');
     $contentFactory = new ContentFactory($app);
-    $response = array();
+    $section = $contentFactory->findSection($id);
 
-    foreach ($items as $item) {
-        $contentFactory->deleteItem($item);
-        $response[] = $item;
+    $response = array();
+    foreach ($itemIds as $id) {
+        if ($section->attachItem($id)) {
+            $response[] = $id;
+        }
     }
 
     return $app->json($response);
 })
-->bind('admin_content_manager_delete_items')
+->bind('admin_content_manager_move_items')
 ;
 
 $contentManagerController->get('/{id}/homepage', function ($id) use ($app) {

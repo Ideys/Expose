@@ -40,16 +40,21 @@
     </li>
     <li>
       <a href="#"
-         data-dropdown="move-selection-{{ section.id }}"
-         data-dropdown-ajax
+         data-dropdown-ajax="move-selection-{{ section.id }}"
          class="button dropdown small">
         {{ 'move'|trans }}
       </a><br>
-      <ul id="move-selection-{{ section.id }}" data-dropdown-content class="f-dropdown">
+      <ul id="move-selection-{{ section.id }}" class="f-dropdown">
         {% for sectionMove in sections
             if 'gallery' == sectionMove.type
             and sectionMove.id != section.id %}
-        <li><a href="#">{{ sectionMove.title }}</a></li>
+          <li>
+            <a href="{{ path('admin_content_manager_move_items', {'id': sectionMove.id}) }}"
+               data-target="#slides-{{ section.id }}"
+               data-move>
+              {{ sectionMove.title }}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     </li>
