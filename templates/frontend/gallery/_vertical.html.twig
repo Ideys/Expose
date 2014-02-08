@@ -1,2 +1,13 @@
 {% spaceless %}
+<div class="row-fluid">
+  <div class="large-12 columns">
+    <ul class="small-block-grid-1 medium-block-grid-{{ section.grid_rows }}">
+      {% for item in section.items %}
+        <li>
+          <img src="{{ app.request.basepath }}/gallery/{{ item.path }}">
+         </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 {% endspaceless %}

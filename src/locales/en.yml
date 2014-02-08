@@ -68,6 +68,20 @@ gallery:
         horizontal: Horizontal scroll
         vertical: Vertical scroll
         masonry: Imbricated thumbs
+    grid:
+        rows: Gallery rows
+        rows1: One picture by line
+        rows2: Two pictures by line
+        rows3: Three pictures by line
+        rows4: Four pictures by line
+        rows5: Five pictures by line
+        rows6: Six pictures by line
+        rows7: Seven pictures by line
+        rows8: Eight pictures by line
+        rows9: Nine pictures by line
+        rows10: Ten pictures by line
+        rows11: Eleven pictures by line
+        rows12: Twelve pictures by line
 
 channel:
     delete.section: Delete this video

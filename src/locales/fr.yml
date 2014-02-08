@@ -68,6 +68,20 @@ gallery:
         horizontal: Défilement horizontal
         vertical: Défilement vertical
         masonry: Miniatures imbriquées
+    grid:
+        rows: Images par ligne
+        rows1: Une image
+        rows2: Deux images
+        rows3: Trois images
+        rows4: Quatre images
+        rows5: Cinq images
+        rows6: Six images
+        rows7: Sept images
+        rows8: Huit images
+        rows9: Neuf images
+        rows10: Dix images
+        rows11: Onze images
+        rows12: Douze images
 
 channel:
     delete.section: Supprimer la vidéo

@@ -1,2 +1,9 @@
 {% spaceless %}
+<ul class="inline-list">
+  {% for item in section.items %}
+    <li>
+      <img src="{{ app.request.basepath }}/gallery/{{ item.path }}">
+     </li>
+  {% endfor %}
+</ul>
 {% endspaceless %}

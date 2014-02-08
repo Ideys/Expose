@@ -19,6 +19,7 @@ class Gallery extends Section implements ContentInterface
         return array(
             'gallery_mode' => 'slideshow',
             'thumb_list' => '0',
+            'grid_rows' => '1',
         );
     }
 
@@ -35,6 +36,10 @@ class Gallery extends Section implements ContentInterface
             ->add('thumb_list', 'choice', array(
                 'label' => 'gallery.thumb.list.display',
                 'choices' => \Ideys\Settings::getIOChoices(),
+            ))
+            ->add('grid_rows', 'choice', array(
+                'label' => 'gallery.grid.rows',
+                'choices' => static::getGalleryGridRowsChoice(),
             ))
         ;
 
@@ -122,5 +127,19 @@ class Gallery extends Section implements ContentInterface
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',
         );
+    }
+
+    /**
+     * Return gallery grid rows choices.
+     *
+     * @return array
+     */
+    public static function getGalleryGridRowsChoice()
+    {
+        $rows = array();
+        foreach (range(1, 12) as $row) {
+            $rows[(string)$row] = 'gallery.grid.rows'.$row;
+        }
+        return $rows;
     }
 }
