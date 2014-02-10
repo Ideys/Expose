@@ -1,0 +1,9 @@
+{% spaceless %}
+<ul class="no-bullet text-center">
+  {% for provider in section.getProviderChoice %}
+  <li>
+    <img src="{{ app.request.basepath }}/img/video_{{ provider }}.jpg">
+  </li>
+  {% endfor %}
+</ul>
+{% endspaceless %}

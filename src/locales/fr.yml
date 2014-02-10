@@ -86,6 +86,8 @@ gallery:
 channel:
     delete.section: Supprimer la vidéo
     section.deleted: Une vidéo a été supprimée
+    provider:
+        choice: Choix du fournisseur
 
 form:
     results: Résultats
@@ -165,6 +167,8 @@ actions: Actions
 edit: Éditer
 delete: Supprimer
 move: Déplacer
+add: Ajouter
+remove: Retirer
 settings: Paramétrages
 select:
     all: Tout sélectionner

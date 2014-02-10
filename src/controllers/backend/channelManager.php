@@ -6,6 +6,30 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $channelManagerController = $app['controllers_factory'];
 
+$channelManagerController->match('/{id}/add', function (Request $request, $id) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+    $newVideo = $contentFactory->getItemModel($section);
+
+    $form = $section->addForm($app['form.factory'], $newVideo);
+
+    $form->handleRequest($request);
+    if ($form->isValid()) {
+        $contentFactory->updateSection($section);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    }
+
+    return $app['twig']->render('backend/channelManager/_formAdd.html.twig', array(
+        'form' => $form->createView(),
+        'section' => $section,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_channel_manager_add')
+->method('GET|POST')
+;
+
 $channelManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);

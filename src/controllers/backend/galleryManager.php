@@ -85,6 +85,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     foreach ($uploadedFiles['files'] as $file) {
         $item = array(
             'category' => $file->getMimeType(),
+            'type' => ContentFactory::ITEM_SLIDE,
             'title' => null,
             'description' => null,
             'content' => null,

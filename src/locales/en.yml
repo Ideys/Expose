@@ -86,6 +86,8 @@ gallery:
 channel:
     delete.section: Delete this video
     section.deleted: A video was deleted
+    provider:
+        choice: Provider selection
 
 form:
     results: Results
@@ -165,6 +167,8 @@ actions: Actions
 edit: Edit
 delete: Delete
 move: Move
+add: Add
+remove: Remove
 settings: Settings
 select:
     all: Select all

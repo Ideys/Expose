@@ -9,11 +9,17 @@ use Ideys\Content\ContentInterface;
  */
 class Video extends Item implements ContentInterface
 {
+    const PROVIDER_VIMEO = 'vimeo';
+    const PROVIDER_DAILYMOTION = 'dailymotion';
+    const PROVIDER_YOUTUBE = 'youtube';
+
     /**
      * {@inheritdoc}
      */
     public static function getParameters()
     {
-        return array();
+        return array(
+            'provider' => 'vimeo',
+        );
     }
 }
