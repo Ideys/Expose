@@ -244,12 +244,16 @@ class ContentFactory
     {
         $section = array_merge($this->getSectionModel(), $section);
 
+        $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
+        $incr = $count['total']++;
+
         $this->db->insert('expose_section', array(
             'expose_section_id' => $section['expose_section_id'],
             'type' => $section['type'],
             'slug' => $this->uniqueSlug($section['title']),
             'homepage' => $section['homepage'],
             'visibility' => $section['visibility'],
+            'hierarchy' => $incr,
         ) + $this->blameAndTimestampData(0));
 
         $section['id'] = $this->db->lastInsertId();

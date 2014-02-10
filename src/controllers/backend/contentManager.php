@@ -12,7 +12,8 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $sectionType = new SectionType($app['db'], $app['form.factory']);
-    $form = $sectionType->createForm($contentFactory->getSectionModel());
+    $newSection = $contentFactory->getSectionModel();
+    $form = $sectionType->createForm($newSection);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
