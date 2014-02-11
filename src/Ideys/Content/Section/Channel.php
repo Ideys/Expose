@@ -22,15 +22,10 @@ class Channel extends Section implements ContentInterface
     /**
      * Add form
      */
-    public function addForm(FormFactory $formFactory, $item)
+    public function addForm(FormFactory $formFactory, Video $video)
     {
-        $newVideo = new Video(array_merge($item, array(
-            'type' => \Ideys\Content\ContentFactory::ITEM_VIDEO,
-            'parameters' => serialize(Video::getParameters()),
-        )));
-
         $formBuilder = $formFactory
-            ->createBuilder('form', $newVideo)
+            ->createBuilder('form', $video)
             ->add('provider', 'choice', array(
                 'label' => 'channel.provider.choice',
                 'choices' => static::getProviderChoice(),

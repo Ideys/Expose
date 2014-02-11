@@ -1,6 +1,7 @@
 <?php
 
 use Ideys\Content\ContentFactory;
+use Ideys\Content\Item\Video;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,13 +11,13 @@ $channelManagerController->match('/{id}/add', function (Request $request, $id) u
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $newVideo = $contentFactory->getItemModel($section);
+    $video = new Video(array('type' => ContentFactory::ITEM_VIDEO));
 
-    $form = $section->addForm($app['form.factory'], $newVideo);
+    $form = $section->addForm($app['form.factory'], $video);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $contentFactory->updateSection($section);
+        $contentFactory->addItem($section, $video);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

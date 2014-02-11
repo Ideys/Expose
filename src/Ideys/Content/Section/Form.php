@@ -40,7 +40,7 @@ class Form extends Section implements ContentInterface
                 'required' => (boolean) $item->required,
             );
             if ('choice' == $fieldType) {
-                $choices = array_map('trim', explode("\n", $item->options));
+                $choices = array_map('trim', explode("\n", $item->choices));
                 $options += array(
                     'choices' => array_combine($choices, $choices),
                 );

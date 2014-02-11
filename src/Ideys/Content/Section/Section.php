@@ -19,6 +19,23 @@ abstract class Section
     protected $db;
 
     /**
+     * Section main attributes
+     *
+     * @var array
+     */
+    protected $attributes = array(
+        'id' => null,
+        'expose_section_id' => null,
+        'type' => null,
+        'title' => null,
+        'description' => null,
+        'parameters' => 'N;',
+        'visibility' => 'public',
+        'homepage' => '0',
+        'language' => null,
+    );
+
+    /**
      * @var array
      */
     protected $items = array();
@@ -31,18 +48,14 @@ abstract class Section
     /**
      * Constructor.
      *
-     * @param array $entity
+     * @param \Doctrine\DBAL\Connection $db
+     * @param array                     $entity
      */
-    public function __construct(\Doctrine\DBAL\Connection $db, array $entity)
+    public function __construct(\Doctrine\DBAL\Connection $db, array $entity = array())
     {
         $this->db = $db;
-        $this->attributes = $entity;
-
-        if (is_string($entity['parameters'])) {
-            $this->parameters = unserialize($entity['parameters']);
-        } elseif (is_array($entity['parameters'])) {
-            $this->parameters = $entity['parameters'];
-        }
+        $this->attributes = array_merge($this->attributes, $entity);
+        $this->parameters = (array) unserialize($this->attributes['parameters']);
 
         $this->hydrateItems();
     }

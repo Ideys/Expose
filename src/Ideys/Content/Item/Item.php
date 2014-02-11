@@ -10,13 +10,31 @@ abstract class Item
     use \Ideys\Content\ContentTrait;
 
     /**
+     * Item main attributes
+     *
+     * @var array
+     */
+    protected $attributes = array(
+        'id' => null,
+        'expose_section_id' => null,
+        'type' => null,
+        'category' => null,
+        'title' => null,
+        'description' => null,
+        'content' => null,
+        'path' => null,
+        'parameters' => '',
+        'language' => null,
+    );
+
+    /**
      * Constructor.
      *
      * @param array $entity
      */
-    public function __construct(array $entity)
+    public function __construct(array $entity = array())
     {
-        $this->attributes = $entity;
-        $this->parameters = unserialize($entity['parameters']);
+        $this->attributes = array_merge($this->attributes, $entity);
+        $this->parameters = (array) unserialize($this->attributes['parameters']);
     }
 }

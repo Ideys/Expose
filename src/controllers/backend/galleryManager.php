@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Content\Item\Slide;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -83,33 +84,29 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
-        $item = array(
+        $slide = new Slide(array(
             'category' => $file->getMimeType(),
             'type' => ContentFactory::ITEM_SLIDE,
-            'title' => null,
-            'description' => null,
-            'content' => null,
-            'parameters' => array(),
-        );
+        ));
         $fileExt = $file->guessClientExtension();
         $realExt = $file->guessExtension();// from mime type
         $fileSize = $file->getClientSize();
-        $item['path'] = uniqid('expose').'.'.$fileExt;
-        $item['parameters']['real_ext'] = $realExt;
-        $item['parameters']['file_size'] = $fileSize;
-        $item['parameters']['original_name'] = $file->getClientOriginalName();
+        $slide->path = uniqid('expose').'.'.$fileExt;
+        $slide->setParameter('real_ext', $realExt);
+        $slide->setParameter('file_size', $fileSize);
+        $slide->setParameter('original_name', $file->getClientOriginalName());
 
-        $file->move($app['gallery.dir'], $item['path']);
+        $file->move($app['gallery.dir'], $slide->path);
 
-        $contentFactory->addItem($section, $item);
+        $contentFactory->addItem($section, $slide);
         $transformation = new \Imagine\Filter\Transformation();
         $transformation->thumbnail(new \Imagine\Image\Box(220, 220))
-            ->save($app['gallery.dir'].'/220/'.$item['path']);
+            ->save($app['gallery.dir'].'/220/'.$slide->path);
         $transformation->apply($app['imagine']
-            ->open($app['gallery.dir'].'/'.$item['path']));
+            ->open($app['gallery.dir'].'/'.$slide->path));
 
         $jsonResponse[] = array(
-            'path' => $item['path'],
+            'path' => $slide->path,
             'id' => $sectionId,
         );
     }

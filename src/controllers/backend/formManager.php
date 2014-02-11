@@ -12,33 +12,34 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
+    $field = new Field(array('type' => ContentFactory::ITEM_FIELD));
 
-    $form = $app['form.factory']->createBuilder('form')
+    $form = $app['form.factory']->createBuilder('form', $field)
         ->add('category', 'choice', array(
-            'choices'       => Field::getTypesChoice(),
-            'label'         => 'form.field.type',
+            'choices' => Field::getTypesChoice(),
+            'label' => 'form.field.type',
         ))
         ->add('title', 'text', array(
-            'label'         => 'form.label',
+            'label' => 'form.label',
             'attr' => array(
                 'placeholder' => 'form.label',
             ),
         ))
-        ->add('required', 'checkbox', array(
-            'label'         => 'form.required',
-            'required' => false,
+        ->add('required', 'choice', array(
+            'label' => 'form.required',
+            'choices' => \Ideys\Settings::getIOChoices(),
         ))
         ->add('description', 'textarea', array(
-            'label'         => 'form.help',
+            'label' => 'form.help',
             'attr' => array(
                 'placeholder' => 'form.help',
             ),
             'required' => false,
         ))
-        ->add('options', 'textarea', array(
-            'label'         => 'form.specs',
+        ->add('choices', 'textarea', array(
+            'label' => 'form.choices',
             'attr' => array(
-                'placeholder' => 'form.specs',
+                'placeholder' => 'form.choices',
             ),
             'required' => false,
         ))
@@ -46,14 +47,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $data = $form->getData();
-        $data['path'] = null;
-        $data['content'] = $data['options'];
-        $data['parameters'] = array(
-            'required' => $data['required'],
-            'options' => $data['options'],
-        );
-        $contentFactory->addItem($section, $data);
+        $contentFactory->addItem($section, $field);
         return $app->redirect($app['url_generator']->generate('admin_form_manager_edit', array('id' => $id)));
     }
 

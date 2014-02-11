@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Content\Item\Page;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -25,7 +26,8 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
     $section = $contentFactory->findSection($id);
     $page = $section->getFirstPage();
     if (empty($page)) {
-        $page = $contentFactory->addItem($section);
+        $page = new Page(array('type' => ContentFactory::ITEM_PAGE));
+        $contentFactory->addItem($section, $page);
     }
 
     $form = $app['form.factory']->createBuilder('form', $page)
@@ -45,8 +47,7 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $data = $form->getData();
-        $contentFactory->editItem($data);
+        $contentFactory->editItem($page);
     }
 
     return $app['twig']->render('backend/htmlManager/_pageEdit.html.twig', array(

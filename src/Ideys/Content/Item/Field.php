@@ -24,7 +24,10 @@ class Field extends Item implements ContentInterface
      */
     public static function getParameters()
     {
-        return array();
+        return array(
+            'required' => '0',
+            'choices' => '',
+        );
     }
 
     /**

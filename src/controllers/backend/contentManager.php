@@ -12,13 +12,12 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $sectionType = new SectionType($app['db'], $app['form.factory']);
-    $newSection = $contentFactory->getSectionModel();
+    $newSection = new Ideys\Content\Section\Gallery($app['db']);
     $form = $sectionType->createForm($newSection);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $data = $form->getData();
-        $contentFactory->addSection($data);
+        $contentFactory->addSection($newSection);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 

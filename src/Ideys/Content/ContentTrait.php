@@ -8,13 +8,6 @@ namespace Ideys\Content;
 trait ContentTrait
 {
     /**
-     * Entity main attributes
-     *
-     * @var array
-     */
-    protected $attributes = array();
-
-    /**
      * Custom content type parameters
      *
      * @var array

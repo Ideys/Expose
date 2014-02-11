@@ -71,53 +71,6 @@ class ContentFactory
     }
 
     /**
-     * Return default section model.
-     *
-     * @return array
-     */
-    public function getSectionModel()
-    {
-        return array(
-            'expose_section_id' => null,
-            'type' => self::SECTION_GALLERY,
-            'title' => null,
-            'description' => null,
-            'parameters' => array(),
-            'visibility' => 'public',
-            'homepage' => '0',
-            'language' => $this->language,
-        );
-    }
-
-    /**
-     * Return default item model.
-     *
-     * @param \ContentPrototype $section
-     * @return array
-     */
-    public function getItemModel(Section\Section $section = null)
-    {
-        $itemModel =  array(
-            'expose_section_id' => null,
-            'type' => self::SECTION_HTML,
-            'category' => null,
-            'title' => null,
-            'description' => null,
-            'content' => null,
-            'path' => null,
-            'parameters' => array(),
-            'language' => $this->language,
-        );
-
-        if (null !== $section) {
-            $itemModel['expose_section_id'] = $section->id;
-            $itemModel['title'] = $section->title;
-        }
-
-        return $itemModel;
-    }
-
-    /**
      * Return sections.
      *
      * @return array
@@ -200,16 +153,17 @@ class ContentFactory
         // Generate default homepage
         if (!$section) {
             $settings = new \Ideys\Settings($this->db);
-            $section = $this->addSection(array(
+            $section = $this->addSection(new Section\Gallery($this->db, array(
                 'type' => self::SECTION_HTML,
                 'title' => $settings->name,
                 'homepage' => '1',
-            ));
-            $this->addItem($section, array(
+            )));
+            $page = new Item\Page(array(
                 'type' => self::ITEM_PAGE,
                 'title' => $settings->name,
                 'content' => '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
             ));
+            $this->addItem($section, $page);
         }
 
         return $section;
@@ -236,35 +190,36 @@ class ContentFactory
     }
 
     /**
-     * Create a new section.
+     * Persist a new section.
+     *
+     * @param \Ideys\Content\Section\Section $section
      *
      * @return \Ideys\Content\Section\Section
      */
-    public function addSection($section)
+    public function addSection(Section\Section $section)
     {
-        $section = array_merge($this->getSectionModel(), $section);
-
         $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
         $incr = $count['total']++;
 
         $this->db->insert('expose_section', array(
-            'expose_section_id' => $section['expose_section_id'],
-            'type' => $section['type'],
-            'slug' => $this->uniqueSlug($section['title']),
-            'homepage' => $section['homepage'],
-            'visibility' => $section['visibility'],
+            'expose_section_id' => $section->expose_section_id,
+            'type' => $section->type,
+            'slug' => $this->uniqueSlug($section->title),
+            'homepage' => $section->homepage,
+            'visibility' => $section->visibility,
             'hierarchy' => $incr,
         ) + $this->blameAndTimestampData(0));
 
-        $section['id'] = $this->db->lastInsertId();
+        $section->id = $this->db->lastInsertId();
         $this->db->insert('expose_section_trans', array(
-            'expose_section_id' => $section['id'],
-            'title' => $section['title'],
-            'description' => $section['description'],
+            'expose_section_id' => $section->id,
+            'title' => $section->title,
+            'description' => $section->description,
             'language' => $this->language,
+            'parameters' => serialize($section->parameters),
         ));
 
-        return $this->hydrateSection(array($section));
+        return $section;
     }
 
     /**
@@ -349,27 +304,28 @@ class ContentFactory
     /**
      * Insert a new content.
      *
-     * @return array $item
+     * @param \Ideys\Content\Section\Section    $section
+     * @param \Ideys\Content\Item\Item          $item
+     *
+     * @return \Ideys\Content\Item\Item $item
      */
-    public function addItem(Section\Section $section, array $item = array())
+    public function addItem(Section\Section $section, Item\Item $item)
     {
-        $item = array_merge($this->getItemModel($section), $item);
-
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $section->id,
-            'type' => $item['type'],
-            'category' => $item['category'],
-            'slug' => static::slugify($item['title']),
-            'path' => $item['path'],
+            'type' => $item->type,
+            'category' => $item->category,
+            'slug' => static::slugify($item->title),
+            'path' => $item->path,
         ) + $this->blameAndTimestampData(0));
 
-        $item['id'] = $this->db->lastInsertId();
+        $item->id = $this->db->lastInsertId();
         $this->db->insert('expose_section_item_trans', array(
-            'expose_section_item_id' => $item['id'],
-            'title' => $item['title'],
-            'description' => $item['description'],
-            'content' => $item['content'],
-            'parameters' => serialize($item['parameters']),
+            'expose_section_item_id' => $item->id,
+            'title' => $item->title,
+            'description' => $item->description,
+            'content' => $item->content,
+            'parameters' => serialize($item->parameters),
             'language' => $this->language,
         ));
 
@@ -379,32 +335,34 @@ class ContentFactory
     /**
      * Update a content.
      *
-     * @return integer Item id
+     * @param \Ideys\Content\Item\Item $item
+     *
+     * @return \Ideys\Content\Item\Item
      */
-    public function editItem($item)
+    public function editItem(Item\Item $item)
     {
-        $item = array_merge($this->getItemModel(), $item);
-
         $this->db->update(
             'expose_section_item',
             array(
-                'path' => $item['path'],
-            ) + $this->blameAndTimestampData($item['id']),
-            array('id' => $item['id'])
+                'path' => $item->path,
+            ) + $this->blameAndTimestampData($item->id),
+            array('id' => $item->id)
         );
         $this->db->update(
             'expose_section_item_trans',
             array(
-                'title' => $item['title'],
-                'description' => $item['description'],
-                'parameters' => serialize($item['parameters']),
-                'content' => $item['content'],
+                'title' => $item->title,
+                'description' => $item->description,
+                'parameters' => serialize($item->parameters),
+                'content' => $item->content,
             ),
             array(
-                'expose_section_item_id' => $item['id'],
+                'expose_section_item_id' => $item->id,
                 'language' => $this->language,
             )
         );
+
+        return $item;
     }
 
     /**
