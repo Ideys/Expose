@@ -88,6 +88,9 @@ channel:
     section.deleted: A video was deleted
     provider:
         choice: Provider selection
+    video:
+        code: Embedding code
+        title: Video title
 
 form:
     results: Results

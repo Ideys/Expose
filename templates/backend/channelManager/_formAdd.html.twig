@@ -1,9 +1,21 @@
 {% spaceless %}
-<ul class="no-bullet text-center">
+<ul class="no-bullet text-center provider-selector">
   {% for provider in section.getProviderChoice %}
-  <li>
+  <li data-select-video-provider="{{ provider }}">
     <img src="{{ app.request.basepath }}/img/video_{{ provider }}.jpg">
   </li>
   {% endfor %}
 </ul>
+{{ form_start(form, {
+    'action': path('admin_channel_manager_add', {'id': section.id}),
+    'attr': {'class': 'hidden'}
+}) }}
+  <div class="hidden">
+    {{ form_row(form.category) }}
+  </div>
+  {{ form_row(form.title) }}
+  {{ form_row(form.content) }}
+  <button type="submit"
+          class="button small">{{ 'submit'|trans }}</button>
+{{ form_end(form) }}
 {% endspaceless %}

@@ -88,6 +88,9 @@ channel:
     section.deleted: Une vidéo a été supprimée
     provider:
         choice: Choix du fournisseur
+    video:
+        code: Code d'inclusion
+        title: Titre de la vidéo
 
 form:
     results: Résultats

@@ -18,8 +18,6 @@ class Video extends Item implements ContentInterface
      */
     public static function getParameters()
     {
-        return array(
-            'provider' => 'vimeo',
-        );
+        return array();
     }
 }

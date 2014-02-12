@@ -17,6 +17,7 @@ $channelManagerController->match('/{id}/add', function (Request $request, $id) u
 
     $form->handleRequest($request);
     if ($form->isValid()) {
+        $section->guessVideoCode($video);
         $contentFactory->addItem($section, $video);
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }

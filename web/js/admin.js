@@ -1,6 +1,20 @@
 !function($) {
 $(function(){
   $('body')
+    .on('click', '[data-inject-call]', function() {
+        var url = $(this).data('inject-call')
+          , target = $(this).data('target')
+          ;
+        $.ajax({
+            url: url
+        })
+        .done(function(response) {
+            $(target).html(response);
+        })
+        .fail(function() {
+            console.warn('AJAX injection error.');
+        });
+    })
     .on('click', '[data-gallery-upload]', function(){
         var uploadForm = $($(this).data('gallery-upload'))
           , uploadProgress = uploadForm.find('.progress .meter')
@@ -122,7 +136,56 @@ $(function(){
             resetStackSelection(list);
         } );
         return false;
-    });
+    })
+    .on('click', '[data-delete-ajax]', function(event) {
+        event.stopImmediatePropagation();
+        var url = $(this).data('delete-ajax')
+          , target = $(this).data('target')
+          ;
+        $.ajax({
+            url: url,
+            type: 'POST'
+        })
+        .done(function(response) {
+            $(target).remove();
+        })
+        .fail(function() {
+            console.warn('AJAX deletion error.');
+        });
+        return false;
+    })
+    .on('click', '[data-submit-ajax]', function(event) {
+        event.stopImmediatePropagation();
+        var form = $(this).parents('form')
+          , url = form.prop('action')
+          , formData = form.serialize()
+          , target = $(this).data('target')
+          ;
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData
+        })
+        .done(function(response) {
+            $(target).html(response);
+        })
+        .fail(function() {
+            console.warn('AJAX injection error.');
+        });
+        return false;
+    })
+    .on('click', '[data-select-video-provider]', function(event) {
+        var container = $(this).parents('.content')
+          , form = container.find('form')
+          , selector = container.find('.provider-selector')
+          , formSelector = container.find('#form_provider')
+          , provider = $(this).data('select-video-provider')
+          ;
+        form.removeClass('hidden');
+        selector.addClass('hidden');
+        formSelector.val(provider);
+    })
+    ;
 
     $('#content-sections, .dir-sections .accordion').sortable({
         handle: ".handle-section",
