@@ -3,5 +3,6 @@
 {% block body_class parent()~' content-video' %}
 
 {% block main -%}
-  {{ section.title }}
+{% set video = section.items|first %}
+{% include "frontend/channel/_"~ video.provider ~".html.twig" %}
 {%- endblock main %}

@@ -174,17 +174,6 @@ $(function(){
         });
         return false;
     })
-    .on('click', '[data-select-video-provider]', function(event) {
-        var container = $(this).parents('.content')
-          , form = container.find('form')
-          , selector = container.find('.provider-selector')
-          , formSelector = container.find('#form_provider')
-          , provider = $(this).data('select-video-provider')
-          ;
-        form.removeClass('hidden');
-        selector.addClass('hidden');
-        formSelector.val(provider);
-    })
     ;
 
     $('#content-sections, .dir-sections .accordion').sortable({

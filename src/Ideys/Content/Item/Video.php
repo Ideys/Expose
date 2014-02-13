@@ -20,4 +20,14 @@ class Video extends Item implements ContentInterface
     {
         return array();
     }
+
+    /**
+     * Alias of category.
+     *
+     * @return string
+     */
+    public function getProvider()
+    {
+        return $this->category;
+    }
 }
