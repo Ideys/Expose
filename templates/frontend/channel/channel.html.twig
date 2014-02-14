@@ -3,6 +3,12 @@
 {% block body_class parent()~' content-video' %}
 
 {% block main -%}
-{% set video = section.items|first %}
-{% include "frontend/channel/_"~ video.provider ~".html.twig" %}
+{% if section.hasItems %}
+  {% set video = section.items|first %}
+  {% include "frontend/channel/_"~ video.provider ~".html.twig" %}
+{% else %}
+<p class="coming-soon">
+  {{ 'section.coming.soon'|trans }}
+</p>
+{% endif %}
 {%- endblock main %}
