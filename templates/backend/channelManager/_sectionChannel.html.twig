@@ -5,7 +5,9 @@
   <div class="content video" id="panel{{ section.id }}">
     <dl class="tabs" data-tab>
       <dd>
-        <a href="#panel{{ section.id }}-preview">
+        <a href="#panel{{ section.id }}-list"
+           data-inject-call="{{ path('admin_channel_manager_list', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-list">
           {{ 'section.channel'|trans }}
         </a>
       </dd>
@@ -25,7 +27,7 @@
       </dd>
     </dl>
     <div class="tabs-content">
-      <div class="content" id="panel{{ section.id }}-preview">
+      <div class="content" id="panel{{ section.id }}-list">
       </div>
       <div class="content" id="panel{{ section.id }}-add">
       </div>

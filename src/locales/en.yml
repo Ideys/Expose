@@ -91,6 +91,7 @@ channel:
     video:
         code: Embedding code
         title: Video title
+        none: No videos in this section
 
 form:
     results: Results

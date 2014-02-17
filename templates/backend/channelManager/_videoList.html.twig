@@ -1,0 +1,27 @@
+{% spaceless %}
+{% if section.hasItems %}
+<ul id="videos-{{ section.id }}"
+    class="medium-block-grid-3 small-block-grid-1 videos-grid"
+    data-sortable="{{ path('admin_content_manager_sort_items') }}">
+  {% for video in section.items %}
+  <li data-selectable data-id="{{ video.id }}">
+    <div class="flex-video {{ video.provider }} handle">
+        <iframe src="{{ video.path }}" frameborder="0"></iframe>
+    </div>
+    <div class="video-controls row">
+      <div>
+        <div class="large-4 small-6 columns">
+          <img src="{{ app.request.basepath }}/img/video_{{ video.provider }}.jpg">
+        </div>
+        <div class="large-8 small-6 columns text-right">
+          
+        </div>
+      </div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="notice-empty">{{ 'channel.video.none'|trans }}</p>
+{% endif %}
+{% endspaceless %}

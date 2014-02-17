@@ -7,6 +7,19 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 $channelManagerController = $app['controllers_factory'];
 
+$channelManagerController->get('/{id}/list', function (Request $request, $id) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+
+    return $app['twig']->render('backend/channelManager/_videoList.html.twig', array(
+        'section' => $section,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_channel_manager_list')
+;
+
 $channelManagerController->match('/{id}/add', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);

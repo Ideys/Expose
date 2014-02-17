@@ -91,6 +91,7 @@ channel:
     video:
         code: Code d'inclusion
         title: Titre de la vidéo
+        none: Aucune vidéos dans cette section
 
 form:
     results: Résultats

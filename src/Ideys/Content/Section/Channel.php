@@ -81,10 +81,14 @@ class Channel extends Section implements ContentInterface
                 $video->path = $this->extractIframeSrc($video->content);
             break;
 
-            case (strpos($video->content, Video::PROVIDER_YOUTUBE) > -1) :
+            case (strpos(str_replace('.', '', $video->content), Video::PROVIDER_YOUTUBE) > -1) :
                 $video->category = Video::PROVIDER_YOUTUBE;
+                //http://youtu.be/ABC_123...
+                if (strpos($video->content, 'http://youtu.be/') === 0) {
+                    $video->path = str_replace('http://youtu.be/', '//www.youtube.com/embed/', $video->content);
+                    break;
                 //http://www.youtube.com/watch?v=ABC_123...
-                if (strpos($video->content, 'http') === 0) {
+                } elseif (strpos($video->content, 'http') === 0) {
                     $parse = explode('?v=', $video->content);
                     $code = preg_filter('!([^&]+)(.*)?!', '$1', $parse[1]);
                     $video->path = '//www.youtube.com/embed/'.$code;
