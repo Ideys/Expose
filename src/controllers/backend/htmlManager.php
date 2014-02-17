@@ -91,7 +91,7 @@ $htmlManagerController->match('/{id}/settings', function (Request $request, $id)
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $contentFactory->updateSection($section);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
     }
 
     return $app['twig']->render('backend/htmlManager/_htmlSettings.html.twig', array(

@@ -2,7 +2,8 @@
 <dd data-id="{{ section.id }}"
     class="section {{ section.visibility }}-section">
   {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
-  <div class="content form" id="panel{{ section.id }}">
+  <div id="panel{{ section.id }}"
+       class="content panel-section form">
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-result"

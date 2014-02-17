@@ -201,6 +201,12 @@ $(function(){
             sectionRelatedBlocks.removeClass('hidden');
         }
     });
+
+    // Open panel from url hashtag
+    var url = window.location.href.split('#');
+    if (url[1] != undefined) {
+        $('[href=#'+url[1]+']').click();
+    }
 });
 
 var itemsSelection = function(section) {

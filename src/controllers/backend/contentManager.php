@@ -18,7 +18,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $form->handleRequest($request);
     if ($form->isValid()) {
         $contentFactory->addSection($newSection);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$newSection->id);
     }
 
     return $app['twig']->render('backend/contentManager/contentManager.html.twig', array(

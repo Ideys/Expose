@@ -196,7 +196,7 @@ class ContentFactory
      *
      * @return \Ideys\Content\Section\Section
      */
-    public function addSection(Section\Section $section)
+    public function addSection(Section\Section &$section)
     {
         $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
         $incr = $count['total']++;

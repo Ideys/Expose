@@ -161,7 +161,7 @@ $galleryManagerController->match('/{id}/settings', function (Request $request, $
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $contentFactory->updateSection($section);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
     }
 
     return $app['twig']->render('backend/galleryManager/_gallerySettings.html.twig', array(
