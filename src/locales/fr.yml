@@ -54,6 +54,8 @@ section:
 gallery:
     upload: Télécharger des images
     drop.here: Déposez vos images dans cette zone
+    or.click.here: Ou cliquez ici
+    upload.more: Ajouter d'autres images
     upload.info: %i images en cours d'envoi
     no.pics: Aucune images dans cette section
     delete: Supprimer la section et ses photos

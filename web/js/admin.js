@@ -20,6 +20,8 @@ $(function(){
           , uploadProgress = uploadForm.find('.progress .meter')
           , uploadGrid = uploadForm.find('.upload-grid')
           , uploadInfo = uploadForm.find('.upload-info')
+          , uploadLink = uploadForm.find('.upload-link')
+          , uploadMoreText = uploadLink.data('more-text')
           , uploadProgressText = uploadInfo.data('upload-info')
           , picsCounter = 0
           ;
@@ -36,6 +38,7 @@ $(function(){
                     picsCounter++;
                     var uploadText = uploadProgressText.replace('%i', picsCounter);
                     uploadInfo.text(uploadText);
+                    uploadLink.find('span').text(uploadMoreText);
                     data.submit();
                 },
                 done: function (e, data) {
