@@ -23,6 +23,7 @@ user:
         role: Statut
         ROLE_SUPER_ADMIN: Super administrateur
         ROLE_ADMIN: Administrateur
+        ROLE_EDITOR: Editeur
         ROLE_USER: Utilisateur
 
 contact:
