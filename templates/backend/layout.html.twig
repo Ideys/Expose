@@ -36,13 +36,13 @@
     <ul class="right">
       <li class="divider show-for-small"></li>
       <li>
-        <a href="{{ path('admin_user_profile') }}">
+        <a href="{{ path('user_profile') }}">
           <i class="fi-torso{% if 'f' == profile.gender %}-female{% endif %}"></i>
           {{ profile.firstname }}
         </a>
       </li>
       <li>
-        <a href="{{ path('admin_logout') }}"
+        <a href="{{ path('logout') }}"
            title="{{ 'user.logout'|trans }}">
           <i class="fi-power"></i>
         </a>

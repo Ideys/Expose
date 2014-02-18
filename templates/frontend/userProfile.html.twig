@@ -1,4 +1,4 @@
-{% extends "backend/layout.html.twig" %}
+{% extends "frontend/layout.html.twig" %}
 
 {% block main -%}
 {{ form_start(form) }}
@@ -17,7 +17,7 @@
     <fieldset>
       <legend>{{ 'user.access'|trans }}</legend>
       {{ form_row(form.username) }}
-      {{ form_row(form.password) }}
+      {{ form_row(form.plainPassword) }}
     </fieldset>
     <div class="hidden">
       {{ form_rest(form) }}

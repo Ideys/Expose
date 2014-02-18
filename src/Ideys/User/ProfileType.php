@@ -93,7 +93,7 @@ class ProfileType
                 'required'      => false,
                 'label'         => 'user.email',
             ))
-            ->add('password', 'password', array(
+            ->add('plainPassword', 'password', array(
                 'constraints'   => ($profile->getId() > 0) ? array() : array(
                     new Assert\NotBlank()
                 ),

@@ -1,6 +1,8 @@
 <?php
 
 use Ideys\Content\ContentFactory;
+use Ideys\User\UserProvider;
+use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -16,7 +18,7 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
         $section = $contentFactory->findSectionBySlug($slug);
     }
 
-    if ($section->isPrivate() && (null == $app['security']->getToken())
+    if ($section->isPrivate() && (false === $app['security']->isGranted('ROLE_USER'))
      || $section->isClosed()) {
         $app['session']
             ->getFlashBag()
@@ -107,6 +109,35 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
 })
 ->bind('contact')
 ->method('GET|POST')
+;
+
+$frontendController->match('/profile', function (Request $request, $id = null) use ($app) {
+
+    $userProvider = new UserProvider($app['db'], $app['session']);
+    
+    $profile = $app['session']->get('profile');
+
+    $profileType = new ProfileType($app['form.factory']);
+    $form = $profileType->form($profile);
+
+    $form->handleRequest($request);
+    if ($form->isValid()) {
+        $userProvider->persist($app['security.encoder_factory'], $profile);
+        $app['session']
+            ->getFlashBag()
+            ->add('default', $app['translator']->trans('user.updated'));
+        return $app->redirect($app['url_generator']->generate('user_profile'));
+    }
+
+    return $app['twig']->render('frontend/userProfile.html.twig', array(
+        'form' => $form->createView(),
+    ));
+})
+->value('id', null)
+->assert('id', '\d+')
+->bind('user_profile')
+->method('GET|POST')
+->secure('ROLE_USER')
 ;
 
 $frontendController->assert('_locale', implode('|', $app['languages']));

@@ -26,13 +26,30 @@ $app->get('/admin', function () use ($app) {
 ->bind('admin')
 ;
 
+$app->get('/admin-redirect', function () use ($app) {
+
+    $language = client_language_guesser($app);
+
+    if ($app['security']->isGranted('ROLE_EDITOR')) {
+        $redirectRoute = $app['url_generator']->generate('admin_content_manager', array('_locale' => $language));
+    } elseif ($app['security']->isGranted('ROLE_USER')) {
+        $redirectRoute = $app['url_generator']->generate('user_profile', array('_locale' => $language));
+    } else {
+        $redirectRoute = $app['url_generator']->generate('login');
+    }
+
+    return $app->redirect($redirectRoute);
+})
+->bind('admin_redirection')
+;
+
 $app->get('/login', function(Request $request) use ($app) {
     return $app['twig']->render('backend/login.html.twig', array(
         'error'         => $app['security.last_error']($request),
         'last_username' => $app['session']->get('_security.last_username'),
     ));
 })
-->bind('admin_login')
+->bind('login')
 ;
 
 $app->mount('/{_locale}', include 'controllers/frontend.php');
@@ -52,8 +69,6 @@ $app->mount('/admin/{_locale}/messaging', include 'controllers/backend/messaging
 $app->mount('/admin/{_locale}/settings', include 'controllers/backend/siteSettings.php');
 
 $app->mount('/admin/{_locale}/users', include 'controllers/backend/usersManager.php');
-
-$app->mount('/admin/{_locale}/profile', include 'controllers/backend/userProfile.php');
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {

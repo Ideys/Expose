@@ -32,6 +32,7 @@ $app->register(new SwiftmailerServiceProvider());
 $app->register(new TranslationServiceProvider());
 $app->register(new ImagineServiceProvider());
 $app->register(new TwigServiceProvider());
+$app['route_class'] = 'Ideys\Route';
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
 

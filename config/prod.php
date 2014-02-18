@@ -19,14 +19,14 @@ $app['swiftmailer.options'] = array(
 );
 
 $app['security.firewalls'] = array(
-    'admin' => array(
-        'pattern' => '^/admin',
+    'website' => array(
+        'anonymous' => true,
         'form' => array(
             'login_path'  => '/login',
-            'check_path'  => '/admin/login_check',
+            'check_path'  => '/login_check',
         ),
         'logout' => array(
-            'logout_path' => '/admin/logout',
+            'logout_path' => '/logout',
         ),
         'remember_me' => array(
             'key' => '2QRXS92PSXZ5SWGF5UB1LS901ZDPGYNNLG98H2BU',
@@ -40,12 +40,12 @@ $app['security.firewalls'] = array(
 
 $app['security.role_hierarchy'] = array(
     'ROLE_SUPER_ADMIN' => array('ROLE_ADMIN', 'ROLE_ALLOWED_TO_SWITCH'),
-    'ROLE_ADMIN' => array('ROLE_USER'),
+    'ROLE_ADMIN' => array('ROLE_EDITOR'),
+    'ROLE_EDITOR' => array('ROLE_USER'),
 );
 
 $app['security.access_rules'] = array(
-    array('^/admin', 'ROLE_ADMIN'),
-    array('^/private', 'ROLE_USER'),
+    array('^/admin/', 'ROLE_EDITOR'),
 );
 
 $app['twig.path'] = array(__DIR__.'/../templates');
