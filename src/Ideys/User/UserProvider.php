@@ -1,6 +1,6 @@
 <?php
 
-namespace Ideys;
+namespace Ideys\User;
 
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -8,10 +8,11 @@ use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\SecurityContext;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\DBAL\Connection;
 
 /**
- * User provider for the secured backend access.
+ * User provider.
  */
 class UserProvider implements UserProviderInterface
 {
@@ -20,13 +21,16 @@ class UserProvider implements UserProviderInterface
      */
     private $db;
 
-    const ROLE_SUPER_ADMIN  = 'ROLE_SUPER_ADMIN';
-    const ROLE_ADMIN        = 'ROLE_ADMIN';
-    const ROLE_USER         = 'ROLE_USER';
+    /**
+     * @var \Symfony\Component\HttpFoundation\Session\Session
+     */
+    private $session;
 
-    public function __construct(Connection $connection)
+
+    public function __construct(Connection $connection, Session $session)
     {
         $this->db = $connection;
+        $this->session = $session;
     }
 
     public function loadUserByUsername($username)
@@ -37,52 +41,87 @@ class UserProvider implements UserProviderInterface
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
         }
 
+        $profile = new Profile($user);
+
         // Check and update user last login
-        if (null !== $user['last_login']) {
-            $user['last_login'] = new \DateTime($user['last_login']);
-        }
-        if (null === $user['last_login']
-                  || $user['last_login']->diff(new \DateTime('now'))->h > 0) {
-            $user['last_login'] = new \DateTime('now');
-            $lastLogin = $user['last_login']->format('Y-m-d H:i:s');
-            $this->db->update('expose_user', array('last_login' => $lastLogin), array('id' => $user['id']));
+        if (null === $profile->getLastLogin()
+                  || $profile->getLastLogin()->diff(new \DateTime('now'))->h > 0) {
+            $profile->setLastLogin('now');
+            $lastLogin = $profile->getLastLogin()->format('Y-m-d H:i:s');
+            $this->db->update('expose_user', array('lastLogin' => $lastLogin), array('id' => $user['id']));
         }
 
-        return new User($user['username'], $user['password'], explode(',', $user['roles']), true, true, true, true);
+        $this->session->set('profile', $profile);
+
+        return new User($profile->getUsername(), $profile->getPassword(), $profile->getRoles(), true, true, true, true);
     }
 
+    /**
+     * Find a user profile.
+     *
+     * @param integer $id
+     *
+     * @return \Ideys\User\Profile
+     */
     public function find($id)
     {
         $user = $this->db->fetchAssoc('SELECT * FROM expose_user WHERE id = ?', array((int)$id));
 
-        return $user;
+        $profile = new Profile($user);
+
+        return $profile;
     }
 
+    /**
+     * Find all users profile.
+     *
+     * @return array
+     */
     public function findAll()
     {
         $users = $this->db->fetchAll('SELECT * FROM expose_user');
+        $profiles = array();
 
-        return $users;
-    }
-
-    public function persistUser($security, $username, $password, array $roles = array('ROLE_USER'), $id = null)
-    {
-        $user = new User($username, $password, $roles);
-        $data = array(
-            'username' => $username,
-            'roles' => implode(',', $roles),
-        );
-
-        if (!empty($password)) {
-            $encoder = $security->getEncoder($user);
-            $password = $encoder->encodePassword($password, $user->getSalt());
-            $data += array('password' => $password);
+        foreach ($users as $user) {
+            $profiles[] = new Profile($user);
         }
 
-        if (empty($id)) {
+        return $profiles;
+    }
+
+    /**
+     * Persist a user profile.
+     *
+     * @param type $security
+     * @param \Ideys\User\Profile $profile
+     *
+     * @return \Symfony\Component\Security\Core\User\User
+     */
+    public function persist($security, Profile $profile)
+    {
+        $user = new User($profile->getUsername(), $profile->getPassword(), $profile->getRoles());
+
+        if (null !== $profile->getPlainPassword()) {
+            $encoder = $security->getEncoder($user);
+            $profile->setPassword(
+                    $encoder->encodePassword($profile->getPlainPassword(), $user->getSalt())
+            );
+        }
+
+        $data = array(
+            'username' => $profile->getUsername(),
+            'password' => $profile->getPassword(),
+            'email' => $profile->getEmail(),
+            'gender' => $profile->getGender(),
+            'firstname' => $profile->getFirstname(),
+            'lastname' => $profile->getLastname(),
+            'roles' => serialize($profile->getRoles()),
+        );
+
+        if (null === $profile->getId()) {
             $this->db->insert('expose_user', $data);
         } else {
-            $this->db->update('expose_user', $data, array('id' => $id));
+            $this->db->update('expose_user', $data, array('id' => $profile->getId()));
         }
 
         return $user;
@@ -117,24 +156,6 @@ class UserProvider implements UserProviderInterface
         }
 
         return $this->loadUserByUsername($user->getUsername());
-    }
-
-    public static function getRoles()
-    {
-        return array(
-            self::ROLE_SUPER_ADMIN,
-            self::ROLE_ADMIN,
-            self::ROLE_USER
-        );
-    }
-
-    public static function getRolesChoice()
-    {
-        $keys = static::getRoles();
-        $values = array_map(function($item){
-            return 'user.role.'.$item;
-        }, $keys);
-        return array_combine($keys, $values);
     }
 
     public function supportsClass($class)

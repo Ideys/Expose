@@ -56,6 +56,14 @@
         </a>
       </li>
       {% endif %}
+      {% if profile|length %}
+      <li>
+        <a href="{{ path('admin_logout') }}"
+           title="{{ 'user.logout'|trans }}">
+          <i class="fi-power"></i>
+        </a>
+      </li>
+      {% endif %}
     </ul>
   </section>
 </nav>

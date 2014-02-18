@@ -3,7 +3,6 @@
 use Ideys\Content\Item\Page;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 $htmlManagerController = $app['controllers_factory'];
 

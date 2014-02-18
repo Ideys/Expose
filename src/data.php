@@ -9,18 +9,26 @@ if (!$schema->tablesExist('expose_user')) {
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('username', 'string', array('length' => 32));
+    $table->addColumn('email', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
+    $table->addColumn('gender', 'string', array('length' => 1));
+    $table->addColumn('firstname', 'string', array('length' => 255));
+    $table->addColumn('lastname', 'string', array('length' => 255));
     $table->addUniqueIndex(array('username'));
     $table->addColumn('password', 'string', array('length' => 255));
     $table->addColumn('roles', 'string', array('length' => 255));
-    $table->addColumn('last_login', 'datetime', array('default' => null, 'notnull' => false));
+    $table->addColumn('lastLogin', 'datetime', array('default' => null, 'notnull' => false));
 
     $schema->createTable($table);
 
     // Admin demo: admin admin
     $app['db']->insert('expose_user', array(
       'username' => 'admin',
+      'email' => 'expose@ideys.com',
+      'gender' => 'm',
+      'firstname' => 'John',
+      'lastname' => 'Doe',
       'password' => 'nhDr7OyKlXQju+Ge/WKGrPQ9lPBSUFfpK+B1xqx/+8zLZqRNX0+5G1zBQklXUFy86lCpkAofsExlXiorUcKSNQ==',
-      'roles' => 'ROLE_ADMIN'
+      'roles' => serialize(array('ROLE_ADMIN')),
     ));
 }
 

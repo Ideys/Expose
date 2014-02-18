@@ -3,7 +3,6 @@
 use Ideys\Content\ContentFactory;
 use Ideys\Content\Item\Video;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 $channelManagerController = $app['controllers_factory'];
 

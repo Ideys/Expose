@@ -1,55 +1,31 @@
 <?php
 
-use Ideys\UserProvider;
+use Ideys\User\UserProvider;
+use Ideys\User\Profile;
+use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 $usersManagerController = $app['controllers_factory'];
 
 $usersManagerController->match('/{id}', function (Request $request, $id = null) use ($app) {
 
-    $userProvider = new UserProvider($app['db']);
+    $userProvider = new UserProvider($app['db'], $app['session']);
 
     if ($id > 0) {
-        $user = $userProvider->find($id);
+        $profile = $userProvider->find($id);
     } else {
-        $user = array('roles' => UserProvider::ROLE_USER);
+        $profile = new Profile();
     }
 
-    $form = $app['form.factory']->createBuilder('form', $user)
-        ->add('username', 'text', array(
-            'constraints'   => array(
-                new Assert\Length(array('min' => 5)),
-                new Assert\NotBlank(),
-            ),
-            'label'         => 'user.name',
-        ))
-        ->add('password', 'password', array(
-            'constraints'   => ($id > 0) ? array() : array(
-                new Assert\NotBlank()
-            ),
-            'required'      => false,
-            'label'         => 'user.password',
-        ))
-        ->add('roles', 'choice', array(
-            'choices' => UserProvider::getRolesChoice(),
-            'constraints'   => array(
-                new Assert\Choice(UserProvider::getRoles())
-            ),
-            'label'         => 'user.role.role',
-        ))
-        ->getForm();
+    $profileType = new ProfileType($app['form.factory'], true);
+    $form = $profileType->form($profile);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $data = $form->getData();
-        $userProvider->persistUser(
-            $app['security.encoder_factory'],
-            $data['username'],
-            $data['password'],
-            array($data['roles']),
-            $id
-        );
+        $userProvider->persist($app['security.encoder_factory'], $profile);
+        $app['session']
+            ->getFlashBag()
+            ->add('default', $app['translator']->trans('user.updated'));
         return $app->redirect($app['url_generator']->generate('admin_users_manager'));
     }
 
@@ -57,6 +33,7 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
 
     return $app['twig']->render('backend/usersManager/usersManager.html.twig', array(
         'users' => $users,
+        'edited_profile' => $profile,
         'form'  => $form->createView(),
     ));
 })
@@ -68,11 +45,16 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
 
 $usersManagerController->get('/{id}/delete', function ($id) use ($app) {
 
-    $userProvider = new UserProvider($app['db']);
+    $userProvider = new UserProvider($app['db'], $app['session']);
+
     if (false === $userProvider->deleteUser($id, $app['security'])) {
         $app['session']
             ->getFlashBag()
             ->add('alert', $app['translator']->trans('user.deletion.error'));
+    } else {
+        $app['session']
+            ->getFlashBag()
+            ->add('default', $app['translator']->trans('user.deleted'));
     }
 
     return $app->redirect($app['url_generator']->generate('admin_users_manager'));

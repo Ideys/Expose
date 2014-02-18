@@ -46,6 +46,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $settings = new \Ideys\Settings($app['db']);
     $twig->addGlobal('semver', '0.7.5');
     $twig->addGlobal('site', $settings->getAll());
+    $twig->addGlobal('profile', $app['session']->get('profile'));
     $contentFactory = new \Ideys\Content\ContentFactory($app);
     $twig->addGlobal('sections', $contentFactory->findSections());
     $twig->addExtension(new Twig_Extension_StringLoader());

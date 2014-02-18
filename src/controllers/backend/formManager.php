@@ -4,7 +4,6 @@ use Ideys\Content\ContentFactory;
 use Ideys\Content\Section\Form;
 use Ideys\Content\Item\Field;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 $formManagerController = $app['controllers_factory'];
 

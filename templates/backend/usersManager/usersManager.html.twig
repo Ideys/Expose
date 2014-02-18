@@ -7,12 +7,20 @@
       <tbody>
       {% for user in users %}
         <tr>
-          <td>{{ user.username }}</td>
           <td>
-            {{ ('user.role.'~user.roles)|trans }}
+            <i class="fi-torso{% if 'f' == user.gender %}-female{% endif %}"></i>
+            {{ user.firstname }}
+            {{ user.lastname }}
             <br>
-            {% if user.last_login|length %}
-              {{ user.last_login|date('d/m/y H:i') }}
+            {{ user.username }}
+          </td>
+          <td>
+            {% for role in user.roles %}
+              {{ ('user.role.'~role)|trans }}
+            {% endfor %}
+            <br>
+            {% if user.lastLogin|length %}
+              {{ user.lastLogin|date('d/m/y H:i') }}
             {% else %}
               {{ 'user.never.connected'|trans }}
             {% endif %}
@@ -35,6 +43,15 @@
     {{ form_start(form) }}
       {{ form_errors(form) }}
       <fieldset>
+        {% if edited_profile.id > 0 %}
+        <legend>{{ 'user.edit'|trans }}</legend>
+        {% else %}
+        <legend>{{ 'user.new'|trans }}</legend>
+        {% endif %}
+        {{ form_row(form.gender) }}
+        {{ form_row(form.firstname) }}
+        {{ form_row(form.lastname) }}
+        {{ form_row(form.email) }}
         {{ form_row(form.username) }}
         {{ form_row(form.password) }}
         {{ form_row(form.roles) }}

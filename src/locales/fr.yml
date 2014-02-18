@@ -1,7 +1,18 @@
 ## Français.
 
 user:
+    you: Vous
     name: Nom d'utilisateur
+    gender: Civilité
+    f: Madame
+    m: Monsieur
+    firstname: Prénom
+    lastname: Nom
+    email: Email
+    new: Nouvel accès
+    edit: Modifier l'utilisateur
+    updated: Profil mis à jour
+    deleted: Profil supprimé
     login: Connexion
     logout: Déconnexion
     password: Mot de passe

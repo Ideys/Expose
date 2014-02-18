@@ -4,7 +4,6 @@ use Ideys\Content\SectionType;
 use Ideys\Content\DirType;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 $contentManagerController = $app['controllers_factory'];
 

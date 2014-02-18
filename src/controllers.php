@@ -53,6 +53,8 @@ $app->mount('/admin/{_locale}/settings', include 'controllers/backend/siteSettin
 
 $app->mount('/admin/{_locale}/users', include 'controllers/backend/usersManager.php');
 
+$app->mount('/admin/{_locale}/profile', include 'controllers/backend/userProfile.php');
+
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
         return;

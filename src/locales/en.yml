@@ -1,7 +1,18 @@
 ## English.
 
 user:
+    you: You
     name: Username
+    gender: Title
+    f: Mrs.
+    m: Mr.
+    firstname: First name
+    lastname: Last name
+    email: Email
+    new: New access
+    edit: Edit user
+    updated: Profile updated
+    deleted: Profile deleted
     login: Login
     logout: Logout
     password: Password
@@ -12,6 +23,7 @@ user:
         role: Role
         ROLE_SUPER_ADMIN: Super admin
         ROLE_ADMIN: Administrator
+        ROLE_EDITOR: Editeur
         ROLE_USER: User
 
 contact:

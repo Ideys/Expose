@@ -33,7 +33,7 @@ $app['security.firewalls'] = array(
             'always_remember_me' => true,
         ),
         'users' => $app->share(function () use ($app) {
-            return new \Ideys\UserProvider($app['db']);
+            return new \Ideys\User\UserProvider($app['db'], $app['session']);
         }),
     ),
 );
