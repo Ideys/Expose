@@ -1,13 +1,6 @@
 <?php
 
-$app['db.options'] = array(
-    'driver' => 'pdo_mysql',
-    'host' => 'localhost',
-    'port' => null,
-    'dbname' => 'exposedb',
-    'user' => 'root',
-    'password' => null,
-);
+require __DIR__.'/db.php';
 
 $app['swiftmailer.options'] = array(
     'host' => 'localhost',
@@ -54,3 +47,5 @@ $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 $app['languages'] = array('en', 'fr');
 $app['locale_fallback'] = 'fr';
 $app['gallery.dir'] = WEB_DIR.'/gallery';
+
+$app['semver'] = '0.8.1';
