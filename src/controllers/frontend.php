@@ -18,6 +18,10 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
         $section = $contentFactory->findSectionBySlug($slug);
     }
 
+    if (!$section) {
+        throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+
     if ($section->isPrivate() && (false === $app['security']->isGranted('ROLE_USER'))
      || $section->isClosed()) {
         $app['session']
