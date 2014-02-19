@@ -35,7 +35,7 @@ class Gallery extends Section implements ContentInterface
             ))
             ->add('thumb_list', 'choice', array(
                 'label' => 'gallery.thumb.list.display',
-                'choices' => \Ideys\Settings::getIOChoices(),
+                'choices' => \Ideys\Settings\Settings::getIOChoices(),
             ))
             ->add('grid_rows', 'choice', array(
                 'label' => 'gallery.grid.rows',

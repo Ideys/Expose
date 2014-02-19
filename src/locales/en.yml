@@ -38,6 +38,7 @@ contact:
     enabled: Visible
     no.form: Hide the form
     disabled: Disabled the section
+    send.to.email: Send messages to this email
 
 section:
     sections: Sections
@@ -147,6 +148,7 @@ messaging:
 site:
     site: Website
     settings: Settings
+    settings.updated: The settings are updated.
     name: Site name
     description: Site description
     author: Author

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ideys;
+namespace Ideys\Settings;
 
 use Doctrine\DBAL\Connection;
 
@@ -34,6 +34,7 @@ class Settings
                 'adminLink' => 'contact.section',
                 'contactContent' => 'Contact me',
                 'contactSection' => 'enabled',
+                'contactSendToEmail' => '',
                 'menuPosition' => 'top',
                 'hideMenuOnHomepage' => '0',
             );

@@ -26,7 +26,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
         ))
         ->add('required', 'choice', array(
             'label' => 'form.required',
-            'choices' => \Ideys\Settings::getIOChoices(),
+            'choices' => \Ideys\Settings\Settings::getIOChoices(),
         ))
         ->add('description', 'textarea', array(
             'label' => 'form.help',

@@ -152,7 +152,7 @@ class ContentFactory
 
         // Generate default homepage
         if (!$section) {
-            $settings = new \Ideys\Settings($this->db);
+            $settings = new \Ideys\Settings\Settings($this->db);
             $section = $this->addSection(new Section\Gallery($this->db, array(
                 'type' => self::SECTION_HTML,
                 'title' => $settings->name,

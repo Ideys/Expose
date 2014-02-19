@@ -38,6 +38,7 @@ contact:
     enabled: Visible
     no.form: Masquer le formulaire
     disabled: Désactiver la section
+    send.to.email: Envoyer les messages vers cette email
 
 section:
     sections: Sections
@@ -147,6 +148,7 @@ messaging:
 site:
     site: Site Internet
     settings: Paramétrages
+    settings.updated: Les paramètres du site sont enregistrés.
     name: Nom du site
     description: Description du site
     author: Auteur
