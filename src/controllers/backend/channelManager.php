@@ -31,7 +31,7 @@ $channelManagerController->match('/{id}/add', function (Request $request, $id) u
     if ($form->isValid()) {
         $section->guessVideoCode($video);
         $contentFactory->addItem($section, $video);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
     }
 
     return $app['twig']->render('backend/channelManager/_formAdd.html.twig', array(
@@ -73,10 +73,11 @@ $channelManagerController->post('/{id}/delete', function (Request $request, $id)
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
     $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {
-        $contentFactory->deleteSection($id);
+        $section->delete();
 
         $app['session']
             ->getFlashBag()

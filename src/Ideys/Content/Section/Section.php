@@ -200,4 +200,24 @@ abstract class Section
 
         return (boolean) $affectedRows;
     }
+
+    /**
+     * Delete section and this items in database.
+     *
+     * @return boolean
+     */
+    public function delete()
+    {
+        // Delete section items
+        foreach ($this->items as $item) {
+            $this->deleteItem($item->id);
+        }
+
+        // Delete section's translations
+        $this->db->delete('expose_section_trans', array('expose_section_id' => $this->id));
+        // Delete section
+        $rows = $this->db->delete('expose_section', array('id' => $this->id));
+
+        return (0 < $rows);
+    }
 }

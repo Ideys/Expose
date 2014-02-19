@@ -63,10 +63,11 @@ $htmlManagerController->post('/{id}/delete', function (Request $request, $id) us
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
     $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
 
     $deleteForm->handleRequest($request);
     if ($deleteForm->isValid()) {
-        $contentFactory->deleteSection($id);
+        $section->delete();
 
         $app['session']
             ->getFlashBag()

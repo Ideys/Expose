@@ -246,29 +246,6 @@ class ContentFactory
     }
 
     /**
-     * Create a new section.
-     *
-     * @param integer   $id
-     *
-     * @return boolean
-     */
-    public function deleteSection($id)
-    {
-        // Delete section items
-        $items = $this->findSectionItems($id);
-        foreach ($items as $item) {
-            $this->deleteItem($item['id']);
-        }
-
-        // Delete section's translations
-        $this->db->delete('expose_section_trans', array('expose_section_id' => $id));
-        // Delete section
-        $rows = $this->db->delete('expose_section', array('id' => $id));
-
-        return (0 < $rows);
-    }
-
-    /**
      * Increments slugs for identical name sections:
      * new-section / new-section-2 / new-section-4 => new-section-5
      *

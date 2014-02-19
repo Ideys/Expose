@@ -109,6 +109,7 @@ class Form extends Section implements ContentInterface
      * Delete a form result.
      *
      * @param integer $id
+     *
      * @return boolean
      */
     public function deleteResult($id)
@@ -121,15 +122,14 @@ class Form extends Section implements ContentInterface
     /**
      * Delete a form and its result.
      *
-     * @param integer $id
      * @return boolean
      */
-    public function deleteSection($id)
+    public function delete()
     {
-        $formDeleted = \Ideys\Content\ContentFactory::deleteSection($id);
+        $formDeleted = parent::delete();
 
         if ($formDeleted) {
-            $this->db->delete('expose_form_result', array('expose_section_id' => $id));
+            $this->db->delete('expose_form_result', array('expose_section_id' => $this->id));
         }
 
         return $formDeleted;

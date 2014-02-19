@@ -66,20 +66,18 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
-     * Overwrite Content deleteSection method
-     * to take into account pics deletion.
+     * Delete the gallery from database
+     * and remove this pictures.
      *
-     * @param integer $id
+     * @return boolean
      */
-    public function deleteSection($id)
+    public function delete()
     {
-        $items = $this->findSectionItems($id);
-
-        foreach ($items as $item) {
-            $this->deleteItemAndRelatedFile($item);
+        foreach ($this->items as $slide) {
+            $this->deleteItemAndRelatedFile($slide);
         }
 
-        return parent::deleteSection($id);
+        return parent::delete();
     }
 
     /**
