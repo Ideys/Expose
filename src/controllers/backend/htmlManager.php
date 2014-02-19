@@ -71,7 +71,7 @@ $htmlManagerController->post('/{id}/delete', function (Request $request, $id) us
 
         $app['session']
             ->getFlashBag()
-            ->add('default', $app['translator']->trans('page.section.deleted'));
+            ->add('default', $app['translator']->trans('html.section.deleted'));
     }
 
     return $app->redirect($app['url_generator']->generate('admin_content_manager'));
