@@ -1,24 +1,30 @@
 {% extends "backend/layout.html.twig" %}
 
 {% block main -%}
-{% for message in messages %}
 <div class="row">
-  <div class="large-3 columns">
-    <h3>{{ message.name }}</h3>
-    <strong>{{ message.email }}</strong>
-    <br>
-    {{ message.date|date('d/m/Y') }}
-    <a href="#" data-dropdown="message_action{{ message.id }}" class="tiny button dropdown">
-      {{ 'actions'|trans }}
-    </a>
-    <br>
-    <ul id="message_action{{ message.id }}" data-dropdown-content="" class="f-dropdown">
-      <li><a href="{{ path('admin_messaging_manager_delete', {'id': message.id}) }}">{{ 'delete'|trans }}</a></li>
-    </ul>
-  </div>
-  <div class="large-9 columns">
-    <p>{{ message.message|nl2br }}</p>
+  <div class="large-12 columns">
+    {% for message in messages %}
+    <div class="row">
+      <div class="large-3 columns">
+        <h3>{{ message.name }}</h3>
+        <strong>{{ message.email }}</strong>
+        <br>
+        {{ message.date|date('d/m/Y') }}
+        <a href="#" data-dropdown="message_action{{ message.id }}" class="tiny button dropdown">
+          {{ 'actions'|trans }}
+        </a>
+        <br>
+        <ul id="message_action{{ message.id }}" data-dropdown-content="" class="f-dropdown">
+          <li><a href="{{ path('admin_messaging_manager_delete', {'id': message.id}) }}">{{ 'delete'|trans }}</a></li>
+        </ul>
+      </div>
+      <div class="large-9 columns">
+        <p>{{ message.message|nl2br }}</p>
+      </div>
+    </div>
+    {% else %}
+    <p class="notice-empty">{{ 'messaging.no.messages'|trans }}</p>
+    {% endfor %}
   </div>
 </div>
-{% endfor %}
 {%- endblock main %}

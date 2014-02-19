@@ -142,6 +142,7 @@ html:
 
 messaging:
     messaging: Messagerie
+    no.messages: Aucun message
 
 site:
     site: Site Internet

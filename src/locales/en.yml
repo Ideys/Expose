@@ -142,6 +142,7 @@ html:
 
 messaging:
     messaging: Messaging
+    no.messages: No messages
 
 site:
     site: Website
