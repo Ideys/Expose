@@ -4,7 +4,6 @@ use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints as Assert;
 
 $frontendController = $app['controllers_factory'];
 
@@ -67,40 +66,16 @@ $frontendController->match('/private/theme/{slug}', $frontendContent)
 
 $frontendController->match('/contact', function (Request $request) use ($app) {
 
-    $messaging = new \Ideys\Messaging($app['db']);
-
-    $form = $app['form.factory']->createBuilder('form')
-        ->add('name', 'text', array(
-            'constraints'   => array(
-                new Assert\Length(array('min' => 3)),
-                new Assert\NotBlank(),
-            ),
-            'label'         => 'contact.name',
-        ))
-        ->add('email', 'email', array(
-            'constraints'   => array(
-                new Assert\Email(),
-                new Assert\NotBlank(),
-            ),
-            'label'         => 'contact.email',
-        ))
-        ->add('message', 'textarea', array(
-            'constraints'   => array(
-                new Assert\Length(array('min' => 10)),
-                new Assert\NotBlank(),
-            ),
-            'label'         => 'contact.message',
-        ))
-        ->getForm();
+    $messaging = new \Ideys\Messaging\Messaging($app['db']);
+    $message = new \Ideys\Messaging\Message();
+    $messageType = new \Ideys\Messaging\MessageType($app['form.factory']);
+    $form = $messageType->form($message);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $data = $form->getData();
-        $messaging->create(
-            $data['name'],
-            $data['email'],
-            $data['message']
-        );
+        $messaging->create($message);
+        $settings = new \Ideys\Settings\Settings($app['db']);
+        $messaging->sendByEmail($settings, $app['translator'], $message);
         $app['session']
             ->getFlashBag()
             ->add('success', $app['translator']->trans('contact.info.sent'));

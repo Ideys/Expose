@@ -39,6 +39,7 @@ contact:
     no.form: Hide the form
     disabled: Disabled the section
     send.to.email: Send messages to this email
+    send.to.email.subject: New message from %sitename% by %sender_name% (%sender_email%)
 
 section:
     sections: Sections

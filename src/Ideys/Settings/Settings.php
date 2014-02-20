@@ -40,9 +40,9 @@ class Settings
             );
 
     /**
-     * Constructor: inject required Silex dependencies.
+     * Constructor: inject database connexion.
      *
-     * @param array $app
+     * @param \Doctrine\DBAL\Connection $connection
      */
     public function __construct(Connection $connection)
     {

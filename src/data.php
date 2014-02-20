@@ -111,7 +111,8 @@ if (!$schema->tablesExist('expose_messaging')) {
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('name', 'string', array('length' => 255));
-    $table->addColumn('email', 'string', array('length' => 255));
+    $table->addColumn('email', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
+    $table->addColumn('subject', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('message', 'text');
     $table->addColumn('date', 'datetime');
 

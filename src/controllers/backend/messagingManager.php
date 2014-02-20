@@ -1,6 +1,6 @@
 <?php
 
-use Ideys\Messaging;
+use Ideys\Messaging\Messaging;
 
 $messagingManagerController = $app['controllers_factory'];
 

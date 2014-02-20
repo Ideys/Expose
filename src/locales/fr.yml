@@ -39,6 +39,7 @@ contact:
     no.form: Masquer le formulaire
     disabled: Désactiver la section
     send.to.email: Envoyer les messages vers cette email
+    send.to.email.subject: Nouveau message depuis %sitename% de la part de %sender_name% (%sender_email%)
 
 section:
     sections: Sections
