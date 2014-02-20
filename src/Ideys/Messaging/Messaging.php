@@ -28,11 +28,11 @@ class Messaging
     }
 
     /**
-     * Add a message.
+     * Save a message on database.
      *
      * @param Message
      */
-    public function create(Message $message)
+    public function persist(Message $message)
     {
         $this->db->insert('expose_messaging', array(
             'name' => $message->getName(),

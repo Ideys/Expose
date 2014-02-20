@@ -18,7 +18,7 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
     }
 
     if (!$section) {
-        throw new Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
     if ($section->isPrivate() && (false === $app['security']->isGranted('ROLE_USER'))
@@ -66,15 +66,20 @@ $frontendController->match('/private/theme/{slug}', $frontendContent)
 
 $frontendController->match('/contact', function (Request $request) use ($app) {
 
+    $settings = new \Ideys\Settings\Settings($app['db']);
     $messaging = new \Ideys\Messaging\Messaging($app['db']);
     $message = new \Ideys\Messaging\Message();
     $messageType = new \Ideys\Messaging\MessageType($app['form.factory']);
+
+    if ('disabled' === $settings->contactSection) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+
     $form = $messageType->form($message);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $messaging->create($message);
-        $settings = new \Ideys\Settings\Settings($app['db']);
+        $messaging->persist($message);
         $messaging->sendByEmail($settings, $app['translator'], $message);
         $app['session']
             ->getFlashBag()
