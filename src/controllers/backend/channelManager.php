@@ -69,6 +69,19 @@ $channelManagerController->match('/{id}/settings', function (Request $request, $
 ->method('GET|POST')
 ;
 
+$channelManagerController->get('/{id}/remove/video/{itemId}', function ($id, $itemId) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+    $isDeleted = $section->deleteItem($itemId);
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
+})
+->assert('id', '\d+')
+->assert('itemId', '\d+')
+->bind('admin_channel_manager_remove_video')
+;
+
 $channelManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();

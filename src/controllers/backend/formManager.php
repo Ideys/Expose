@@ -84,6 +84,7 @@ $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $item
     return $app->json($jsonResponse);
 })
 ->assert('id', '\d+')
+->assert('itemId', '\d+')
 ->bind('admin_form_manager_remove_field')
 ;
 
@@ -96,6 +97,7 @@ $formManagerController->post('/{id}/remove/result/{resultId}', function ($id, $r
     return $app->json($isDeleted);
 })
 ->assert('id', '\d+')
+->assert('resultId', '\d+')
 ->bind('admin_form_manager_remove_result')
 ;
 
