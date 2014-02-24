@@ -84,26 +84,8 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
-        $slide = new Slide(array(
-            'category' => $file->getMimeType(),
-            'type' => ContentFactory::ITEM_SLIDE,
-        ));
-        $fileExt = $file->guessClientExtension();
-        $realExt = $file->guessExtension();// from mime type
-        $fileSize = $file->getClientSize();
-        $slide->path = uniqid('expose').'.'.$fileExt;
-        $slide->setParameter('real_ext', $realExt);
-        $slide->setParameter('file_size', $fileSize);
-        $slide->setParameter('original_name', $file->getClientOriginalName());
-
-        $file->move($app['gallery.dir'], $slide->path);
-
+        $slide = $section->addSlide($app['imagine'], $file);
         $contentFactory->addItem($section, $slide);
-        $transformation = new \Imagine\Filter\Transformation();
-        $transformation->thumbnail(new \Imagine\Image\Box(220, 220))
-            ->save($app['gallery.dir'].'/220/'.$slide->path);
-        $transformation->apply($app['imagine']
-            ->open($app['gallery.dir'].'/'.$slide->path));
 
         $jsonResponse[] = array(
             'path' => $slide->path,

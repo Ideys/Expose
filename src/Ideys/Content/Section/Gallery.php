@@ -5,12 +5,16 @@ namespace Ideys\Content\Section;
 use Ideys\Content\Item\Slide;
 use Ideys\Content\ContentInterface;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Imagine\Image\ImagineInterface;
 
 /**
  * Gallery content manager.
  */
 class Gallery extends Section implements ContentInterface
 {
+    private $thumbSizes = array(1200, 220);
+
     /**
      * {@inheritdoc}
      */
@@ -21,6 +25,77 @@ class Gallery extends Section implements ContentInterface
             'thumb_list' => '0',
             'grid_rows' => '1',
         );
+    }
+
+    /**
+     * Return the gallery directory path.
+     *
+     * @return string
+     */
+    public static function getGalleryDir()
+    {
+        return WEB_DIR.'/gallery';
+    }
+
+    /**
+     * Add a slide into gallery.
+     *
+     * @param \Imagine\Image\ImagineInterface                       $imagine
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile   $file
+     *
+     * @return \Ideys\Content\Item\Slide
+     */
+    public function addSlide(ImagineInterface $imagine, UploadedFile $file)
+    {
+        $fileExt = $file->guessClientExtension();
+        $realExt = $file->guessExtension();// from mime type
+        $fileSize = $file->getClientSize();
+
+        $slide = new Slide(array(
+            'category' => $file->getMimeType(),
+            'type' => \Ideys\Content\ContentFactory::ITEM_SLIDE,
+        ));
+
+        $slide->path = uniqid('expose').'.'.$fileExt;
+        $slide->setParameter('real_ext', $realExt);
+        $slide->setParameter('file_size', $fileSize);
+        $slide->setParameter('original_name', $file->getClientOriginalName());
+
+        $file->move(static::getGalleryDir(), $slide->path);
+
+        foreach ($this->thumbSizes as $thumbSize){
+            $this->createResizedSlide($imagine, $slide, $thumbSize);
+        }
+
+        return $slide;
+    }
+
+    /**
+     * Create a resized slide file into dedicated directory.
+     *
+     * @param \Imagine\Image\ImagineInterface   $imagine
+     * @param \Ideys\Content\Item\Slide         $slide
+     * @param integer                           $maxWidth
+     * @param integer                           $maxHeight
+     *
+     * @return \Ideys\Content\Item\Slide
+     */
+    public function createResizedSlide(ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
+    {
+        $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
+
+        $thumbDir = static::getGalleryDir().'/'.$maxWidth;
+        if (!is_dir($thumbDir)) {
+            mkdir($thumbDir);
+        }
+
+        $transformation = new \Imagine\Filter\Transformation();
+        $transformation->thumbnail(new \Imagine\Image\Box($maxWidth, $maxHeight))
+            ->save($thumbDir.'/'.$slide->path);
+        $transformation->apply($imagine
+            ->open(static::getGalleryDir().'/'.$slide->path));
+
+        return $slide;
     }
 
     /**
@@ -90,7 +165,9 @@ class Gallery extends Section implements ContentInterface
     {
         if (parent::deleteItem($slide->id)) {
             @unlink(WEB_DIR.'/gallery/'.$slide->path);
-            @unlink(WEB_DIR.'/gallery/220/'.$slide->path);
+            foreach ($this->thumbSizes as $thumbSize){
+                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->path);
+            }
             return true;
         }
         return false;
