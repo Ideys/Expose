@@ -13,4 +13,8 @@ $(function(){
     })
     ;
 });
+$(window).load(function() {
+    $('#gallery').removeClass('hidden');
+    $('.sandglass').remove();
+});
 }(window.jQuery);

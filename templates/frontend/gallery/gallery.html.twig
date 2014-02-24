@@ -2,6 +2,11 @@
 
 {% block body_class parent()~' content-gallery gallery-'~section.gallery_mode %}
 
+{% block head %}
+  {{ parent() }}
+  {% include "frontend/gallery/preloader.css.twig" %}
+{% endblock head %}
+
 {% block javascripts %}
 {% if 'masonry' == section.gallery_mode %}
   {% include "frontend/gallery/_masonry.js.twig" %}
@@ -20,7 +25,14 @@
 
 {% block main -%}
 {% if section.hasItems %}
+  <div id="gallery" class="hidden">
     {% include "frontend/gallery/_"~ section.gallery_mode ~".html.twig" %}
+  </div>
+  <div class="sandglass">
+    <span id="sandglass_1"></span>
+    <span id="sandglass_2"></span>
+    <span id="sandglass_3"></span>
+  </div>
 {% else %}
 <p class="coming-soon">
   {{ 'section.coming.soon'|trans }}

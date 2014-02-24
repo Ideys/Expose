@@ -1,0 +1,134 @@
+<style>
+.sandglass {
+    text-align: center;
+    width:160px;
+    height:100px;
+    position: fixed;
+    margin: -50px 0 0 -80px;
+    top: 50%;
+    left: 50%;
+}
+
+.sandglass span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 20px;
+    height: 20px;
+    margin: 50px auto;
+    background: #000000;
+    -moz-border-radius: 100px;
+    -moz-animation: sandglass 0.9s infinite alternate;
+    -webkit-border-radius: 100px;
+    -webkit-animation: sandglass 0.9s infinite alternate;
+    -ms-border-radius: 100px;
+    -ms-animation: sandglass 0.9s infinite alternate;
+    -o-border-radius: 100px;
+    -o-animation: sandglass 0.9s infinite alternate;
+    border-radius: 100px;
+    animation: sandglass 0.9s infinite alternate;
+}
+
+#sandglass_1 {
+    -moz-animation-delay: 0s;
+    -webkit-animation-delay: 0s;
+    -ms-animation-delay: 0s;
+    -o-animation-delay: 0s;
+    animation-delay: 0s;
+}
+
+#sandglass_2 {
+    -moz-animation-delay: 0.27s;
+    -webkit-animation-delay: 0.27s;
+    -ms-animation-delay: 0.27s;
+    -o-animation-delay: 0.27s;
+    animation-delay: 0.27s;
+}
+
+#sandglass_3 {
+    -moz-animation-delay: 0.54s;
+    -webkit-animation-delay: 0.54s;
+    -ms-animation-delay: 0.54s;
+    -o-animation-delay: 0.54s;
+    animation-delay: 0.54s;
+}
+
+@-moz-keyframes sandglass {
+    0% {
+        width: 20px;
+        height: 20px;
+        background-color:#000000;
+        -moz-transform: translateY(0);
+    }
+
+    100% {
+        width: 48px;
+        height: 48px;
+        background-color:#ffffff;
+        -moz-transform: translateY(-42px);
+    }
+}
+
+@-webkit-keyframes sandglass {
+    0% {
+        width: 20px;
+        height: 20px;
+        background-color:#000000;
+        -webkit-transform: translateY(0);
+    }
+
+    100% {
+        width: 48px;
+        height: 48px;
+        background-color:#ffffff;
+        -webkit-transform: translateY(-42px);
+    }
+}
+
+@-ms-keyframes sandglass {
+    0% {
+        width: 20px;
+        height: 20px;
+        background-color:#000000;
+        -ms-transform: translateY(0);
+    }
+
+    100% {
+        width: 48px;
+        height: 48px;
+        background-color:#ffffff;
+        -ms-transform: translateY(-42px);
+    }
+}
+
+@-o-keyframes sandglass {
+    0% {
+        width: 20px;
+        height: 20px;
+        background-color:#000000;
+        -o-transform: translateY(0);
+    }
+
+    100% {
+        width: 48px;
+        height: 48px;
+        background-color:#ffffff;
+        -o-transform: translateY(-42px);
+    }
+}
+
+@keyframes sandglass {
+    0% {
+        width: 20px;
+        height: 20px;
+        background-color:#000000;
+        transform: translateY(0);
+    }
+
+    100% {
+        width: 48px;
+        height: 48px;
+        background-color:#ffffff;
+        transform: translateY(-42px);
+    }
+}
+</style>
