@@ -29,6 +29,9 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
-$siteSettingsController->assert('_locale', implode('|', $app['languages']));
+$siteSettingsController
+->assert('_locale', implode('|', $app['languages']))
+->secure('ROLE_ADMIN')
+;
 
 return $siteSettingsController;

@@ -60,7 +60,7 @@ class ProfileType
             ->createBuilder('form', $profile)
             ->add('username', 'text', array(
                 'constraints'   => array(
-                    new Assert\Length(array('min' => 5)),
+                    new Assert\Length(array('min' => 4)),
                     new Assert\NotBlank(),
                 ),
                 'label'         => 'user.name',

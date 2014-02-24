@@ -62,6 +62,9 @@ $usersManagerController->get('/{id}/delete', function ($id) use ($app) {
 ->bind('admin_user_manager_delete')
 ;
 
-$usersManagerController->assert('_locale', implode('|', $app['languages']));
+$usersManagerController
+->assert('_locale', implode('|', $app['languages']))
+->secure('ROLE_SUPER_ADMIN')
+;
 
 return $usersManagerController;

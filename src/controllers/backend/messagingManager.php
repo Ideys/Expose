@@ -27,6 +27,9 @@ $messagingManagerController->get('/{id}/delete', function ($id) use ($app) {
 ->bind('admin_messaging_manager_delete')
 ;
 
-$messagingManagerController->assert('_locale', implode('|', $app['languages']));
+$messagingManagerController
+->assert('_locale', implode('|', $app['languages']))
+->secure('ROLE_ADMIN')
+;
 
 return $messagingManagerController;

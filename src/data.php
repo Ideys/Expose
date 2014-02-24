@@ -20,15 +20,42 @@ if (!$schema->tablesExist('expose_user')) {
 
     $schema->createTable($table);
 
-    // Admin demo: admin admin
+    // User profiles demo (password: hello world)
+    $app['db']->insert('expose_user', array(
+      'username' => 'user',
+      'email' => 'user@expose.ideys.com',
+      'gender' => 'm',
+      'firstname' => 'Marc',
+      'lastname' => 'Assein',
+      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'roles' => serialize(array('ROLE_USER')),
+    ));
+    $app['db']->insert('expose_user', array(
+      'username' => 'editor',
+      'email' => 'editor@expose.ideys.com',
+      'gender' => 'f',
+      'firstname' => 'Mathilde',
+      'lastname' => 'Sellier',
+      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'roles' => serialize(array('ROLE_EDITOR')),
+    ));
     $app['db']->insert('expose_user', array(
       'username' => 'admin',
-      'email' => 'expose@ideys.com',
+      'email' => 'admin@expose.ideys.com',
+      'gender' => 'f',
+      'firstname' => 'Nathalie',
+      'lastname' => 'Chamitang',
+      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'roles' => serialize(array('ROLE_ADMIN')),
+    ));
+    $app['db']->insert('expose_user', array(
+      'username' => 'superadmin',
+      'email' => 'superadmin@expose.ideys.com',
       'gender' => 'm',
       'firstname' => 'John',
       'lastname' => 'Doe',
-      'password' => 'nhDr7OyKlXQju+Ge/WKGrPQ9lPBSUFfpK+B1xqx/+8zLZqRNX0+5G1zBQklXUFy86lCpkAofsExlXiorUcKSNQ==',
-      'roles' => serialize(array('ROLE_ADMIN')),
+      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'roles' => serialize(array('ROLE_SUPER_ADMIN')),
     ));
 }
 
