@@ -8,24 +8,24 @@
       {% if section.sections|length %}
         <li class="heading">{{ section.title }}</li>
         {% for child in section.sections if child.visibility not in ['hidden', 'closed'] %}
-        <li>
-          {% set path_name = (section.visibility == 'private')
-                           ? 'section_private' : 'section' %}
-          <a href="{{ path(path_name, {'slug': child.slug}) }}">
-            {{ child.title }}
-          </a>
-        </li>
+          {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
+            <li>
+              <a href="{{ path('section', {'slug': child.slug}) }}">
+                {{ child.title }}
+              </a>
+            </li>
+          {% endif %}
         {% endfor %}
 
       {# An empty dir is not a content #}
       {% elseif section.type != 'dir' %}
-        <li>
-        {% set path_name = (section.visibility == 'private')
-                         ? 'section_private' : 'section' %}
-          <a href="{{ path(path_name, {'slug': section.slug}) }}">
-            {{ section.title }}
-          </a>
-        </li>
+        {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
+          <li>
+            <a href="{{ path('section', {'slug': section.slug}) }}">
+              {{ section.title }}
+            </a>
+          </li>
+        {% endif %}
       {% endif %}
     {% endfor %}
     <li class="divider"></li>

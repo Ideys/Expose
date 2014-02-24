@@ -59,11 +59,6 @@ $frontendController->match('/theme/{slug}', $frontendContent)
 ->method('GET|POST')
 ;
 
-$frontendController->match('/private/theme/{slug}', $frontendContent)
-->bind('section_private')
-->method('GET|POST')
-;
-
 $frontendController->match('/contact', function (Request $request) use ($app) {
 
     $settings = new \Ideys\Settings\Settings($app['db']);
