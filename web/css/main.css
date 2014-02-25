@@ -199,6 +199,19 @@ body.gallery-extended {
     background-size: cover;
 }
 
+.gallery-fullscreen .top-bar,
+.gallery-extended .top-bar {
+    background: none;
+    position: fixed;
+    width: 100%;
+}
+
+.gallery-fullscreen .top-bar ul,
+.gallery-extended .top-bar ul {
+    background: #333;
+    opacity: 0.4;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
