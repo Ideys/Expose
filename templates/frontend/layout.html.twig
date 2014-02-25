@@ -3,6 +3,9 @@
 {% import _self as widgets %}
 
 {% block head %}
+{% if site.googleFonts|length %}
+<link href="//fonts.googleapis.com/css?family={{ site.googleFonts }}" rel="stylesheet" type="text/css">
+{% endif %}
 <style>
 {{ site.customStyle|raw }}
 </style>

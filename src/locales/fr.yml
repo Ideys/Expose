@@ -168,6 +168,7 @@ site:
 google:
     analytics.key: Clé de Google Analytics
     verification.key: Clé de vérification Google
+    fonts: Typos Google Fonts
 
 admin:
     admin: Admin

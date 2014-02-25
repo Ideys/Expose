@@ -28,6 +28,7 @@ class Settings
                 'authorName' => 'Your Name',
                 'analyticsKey' => '',
                 'verificationKey' => '',
+                'googleFonts' => '',
                 'layoutBackground' => 'white',
                 'customStyle' => '',
                 'customJavascript' => '',

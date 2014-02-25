@@ -86,6 +86,13 @@ class SettingsType
                 'required'      => false,
                 'label'         => 'google.verification.key',
             ))
+            ->add('googleFonts', 'text', array(
+                'constraints'   => array(
+                    new Assert\Length(array('min' => 5)),
+                ),
+                'required'      => false,
+                'label'         => 'google.fonts',
+            ))
             ->add('layoutBackground', 'choice', array(
                 'choices'   => array(
                     'black' => 'site.background.black',
