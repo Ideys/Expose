@@ -37,5 +37,6 @@
 {%- endblock content%}
 
 {% macro section_body_classes(section) %}
-{{ ' content-'~section.type~section.isHomepage?' content-homepage':'' }}
+{% if section.isHomepage %}{{ ' content-homepage' }}{% endif %}
+{{ ' content-'~section.type }}
 {% endmacro %}
