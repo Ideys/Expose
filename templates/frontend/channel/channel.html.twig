@@ -1,11 +1,15 @@
 {% extends "frontend/layout.html.twig" %}
 
-{% block body_class parent()~' content-video' %}
+{% block body_class parent()~widgets.section_body_classes(section) %}
 
 {% block main -%}
 {% if section.hasItems %}
   {% set video = section.items|first %}
-  {% include "frontend/channel/_"~ video.provider ~".html.twig" %}
+  <div class="row">
+    <div class="large-12 columns">
+      {% include "frontend/channel/_"~ video.provider ~".html.twig" %}
+    </div>
+  </div>
 {% else %}
 <p class="coming-soon">
   {{ 'section.coming.soon'|trans }}

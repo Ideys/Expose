@@ -102,6 +102,16 @@ abstract class Section
     }
 
     /**
+     * Define if the section is the homepage.
+     *
+     * @return boolean
+     */
+    public function isHomepage()
+    {
+        return 1 == $this->homepage;
+    }
+
+    /**
      * Define if content has some items or not.
      *
      * @return boolean

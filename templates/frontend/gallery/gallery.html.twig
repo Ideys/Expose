@@ -1,6 +1,6 @@
 {% extends "frontend/layout.html.twig" %}
 
-{% block body_class parent()~' content-gallery gallery-'~section.gallery_mode %}
+{% block body_class parent()~widgets.section_body_classes(section)~' gallery-'~section.gallery_mode %}
 
 {% block head %}
   {{ parent() }}

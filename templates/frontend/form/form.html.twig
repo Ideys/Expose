@@ -1,6 +1,6 @@
 {% extends "frontend/layout.html.twig" %}
 
-{% block body_class parent()~' content-form' %}
+{% block body_class parent()~widgets.section_body_classes(section) %}
 
 {% block main -%}
 {% if section.hasItems %}

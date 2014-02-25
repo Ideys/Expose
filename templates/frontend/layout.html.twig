@@ -1,5 +1,7 @@
 {% extends "layout.html.twig" %}
 
+{% import _self as widgets %}
+
 {% block head %}
 <style>
 {{ site.customStyle|raw }}
@@ -30,3 +32,7 @@
     {% block main %}{% endblock %}
   </div>
 {%- endblock content%}
+
+{% macro section_body_classes(section) %}
+{{ ' content-'~section.type~section.isHomepage?' content-homepage':'' }}
+{% endmacro %}
