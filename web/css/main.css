@@ -212,6 +212,11 @@ body.gallery-extended {
     opacity: 0.4;
 }
 
+.gallery-fullscreen .top-bar ul ul,
+.gallery-extended .top-bar ul ul {
+    opacity: 1;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
