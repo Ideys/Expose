@@ -22,6 +22,7 @@ class Gallery extends Section implements ContentInterface
     {
         return array(
             'gallery_mode' => 'slideshow',
+            'slide_mode' => 'slide',
             'thumb_list' => '0',
             'grid_rows' => '1',
         );
@@ -107,6 +108,10 @@ class Gallery extends Section implements ContentInterface
             ->add('gallery_mode', 'choice', array(
                 'label' => 'gallery.mode.mode',
                 'choices' => static::getGalleryModeChoice(),
+            ))
+            ->add('slide_mode', 'choice', array(
+                'label' => 'gallery.slide.mode',
+                'choices' => static::getSlideModeChoice(),
             ))
             ->add('thumb_list', 'choice', array(
                 'label' => 'gallery.thumb.list.display',
@@ -200,6 +205,19 @@ class Gallery extends Section implements ContentInterface
             'extended' => 'gallery.mode.slideshow.extended',
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',
+        );
+    }
+
+    /**
+     * Return slide modes choices.
+     *
+     * @return array
+     */
+    public static function getSlideModeChoice()
+    {
+        return array(
+            'slide' => 'gallery.slide.slide',
+            'fade' => 'gallery.slide.fade',
         );
     }
 

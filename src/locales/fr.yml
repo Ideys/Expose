@@ -83,6 +83,10 @@ gallery:
         slideshow.extended: Diaporama plein écran étendu
         vertical: Défilement vertical
         masonry: Miniatures imbriquées
+    slide:
+        mode: Type de défilement
+        slide: Défilement
+        fade: Fondu
     grid:
         rows: Images par ligne
         rows1: Une image

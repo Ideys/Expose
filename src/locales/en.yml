@@ -83,6 +83,10 @@ gallery:
         slideshow.extended: Extended slideshow
         vertical: Vertical scroll
         masonry: Imbricated thumbs
+    slide:
+        mode: Slider mode
+        slide: Slide
+        fade: Fade
     grid:
         rows: Gallery rows
         rows1: One picture by line
