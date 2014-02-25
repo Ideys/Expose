@@ -81,7 +81,6 @@ gallery:
         slideshow: Slideshow
         slideshow.full.screen: Full screen slideshow
         slideshow.extended: Extended slideshow
-        horizontal: Horizontal scroll
         vertical: Vertical scroll
         masonry: Imbricated thumbs
     grid:

@@ -198,7 +198,6 @@ class Gallery extends Section implements ContentInterface
             'slideshow' => 'gallery.mode.slideshow',
             'fullscreen' => 'gallery.mode.slideshow.full.screen',
             'extended' => 'gallery.mode.slideshow.extended',
-            'horizontal' => 'gallery.mode.horizontal',
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',
         );
