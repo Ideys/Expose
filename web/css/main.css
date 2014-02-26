@@ -217,6 +217,31 @@ body.gallery-extended {
     opacity: 1;
 }
 
+.gallery-thumb.gallery-fullscreen #content,
+.gallery-thumb.gallery-fullscreen .slide,
+.gallery-thumb.gallery-extended #content,
+.gallery-thumb.gallery-extended .slide {
+    height: 85vh;
+}
+
+.thumb-list {
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    margin: 0px;
+    width: 100%;
+    background: #000;
+    z-index: 20;
+}
+
+.thumb-list img {
+    height: 15vh;
+}
+
+.background-black .thumb-list {
+    background: #000;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
