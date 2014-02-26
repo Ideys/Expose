@@ -42,6 +42,16 @@ class Channel extends Section implements ContentInterface
     }
 
     /**
+     * Define if channel has more than one video.
+     *
+     * @return boolean
+     */
+    public function hasMultiplePages()
+    {
+        return (count($this->items) > 1);
+    }
+
+    /**
      * @return array
      */
     public static function getProviderChoice()

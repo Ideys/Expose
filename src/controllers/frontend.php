@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 $frontendController = $app['controllers_factory'];
 
-$frontendContent = function (Request $request, $slug = null) use ($app) {
+$frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $contentFactory = new ContentFactory($app);
 
@@ -29,6 +29,28 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
         return $app->redirect($app['url_generator']->generate('homepage'));
     }
 
+    // Multiple page sections logic
+    $item = null;
+    if (null !== $itemSlug) {
+        $item = $section->getItemFromSlug($itemSlug);
+
+        if (!$item) {
+            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        }
+
+    } elseif ($section->hasMultiplePages()) {
+
+        $items = $section->getItems();
+        $firstItem = array_shift($items);
+        $itemSlug = $firstItem->slug;
+
+        return $app->redirect($app['url_generator']->generate('section_item', array(
+            'slug' => $slug,
+            'itemSlug' => $itemSlug,
+        )));
+    }
+
+    // Form sections logic
     $formView = null;
     if ($section instanceof Ideys\Content\Section\Form) {
         $form = $section->generateFormFields($app['form.factory']);
@@ -46,6 +68,7 @@ $frontendContent = function (Request $request, $slug = null) use ($app) {
 
     return $app['twig']->render('frontend/'.$section->type.'/'.$section->type.'.html.twig', array(
       'section' => $section,
+      'item' => $item,
       'form' => $formView,
     ));
 };
@@ -56,6 +79,11 @@ $frontendController->get('/', $frontendContent)
 
 $frontendController->match('/theme/{slug}', $frontendContent)
 ->bind('section')
+->method('GET|POST')
+;
+
+$frontendController->match('/theme/{slug}/{itemSlug}', $frontendContent)
+->bind('section_item')
 ->method('GET|POST')
 ;
 

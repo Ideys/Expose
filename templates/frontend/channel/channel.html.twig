@@ -4,12 +4,31 @@
 
 {% block main -%}
 {% if section.hasItems %}
-  {% set video = section.items|first %}
+  {% if item|length %}
+    {% set video = item %}
+  {% else %}
+    {% set video = section.items|first %}
+  {% endif %}
   <div class="row">
     <div class="large-12 columns">
       {% include "frontend/channel/_"~ video.provider ~".html.twig" %}
     </div>
   </div>
+  {% if section.hasMultiplePages %}
+  <div class="row">
+    <div class="large-12 columns">
+      <dl class="sub-nav">
+      {% for videos in section.items %}
+      <dd{% if videos.id == video.id %} class="active"{% endif %}>
+        <a href="{{ path('section_item', {'slug': section.slug, 'itemSlug': videos.slug}) }}">
+          {{ videos.title }}
+        </a>
+      </dd>
+      {% endfor %}
+      </dl>
+    </div>
+  </div>
+  {% endif %}
 {% else %}
 <p class="coming-soon">
   {{ 'section.coming.soon'|trans }}

@@ -72,6 +72,35 @@ abstract class Section
     }
 
     /**
+     * Return section item finded by slug.
+     *
+     * @param string $slug
+     *
+     * @return \Ideys\Content\Item\Item|false
+     */
+    public function getItemFromSlug($slug)
+    {
+        foreach ($this->items as $item) {
+            if ($slug == $item->slug) {
+                return $item;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Define if the section has more than one page.
+     * Method extended by section childs.
+     *
+     * @return boolean
+     */
+    public function hasMultiplePages()
+    {
+        return false;
+    }
+
+    /**
      * Define content translation language.
      *
      * @param string $name
