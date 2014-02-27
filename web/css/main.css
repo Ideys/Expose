@@ -164,6 +164,22 @@ textarea {
  * Gallery sections
  */
 
+.hold-on {
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+}
+
+.background-black .hold-on {
+    background: #000;
+}
+
+.orbit-container .orbit-slides-container img {
+    display: inline-block;
+}
+
 body.gallery-fullscreen,
 body.gallery-extended {
     height: 100vh;

@@ -14,7 +14,6 @@ $(function(){
     ;
 });
 $(window).load(function() {
-    $('#gallery').removeClass('hidden');
-    $('.sandglass').remove();
+    $('.hold-on').remove();
 });
 }(window.jQuery);

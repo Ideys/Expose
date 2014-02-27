@@ -3,7 +3,7 @@
   <div class="large-12 columns">
     <ul class="gallery-slideshow" data-orbit>
       {% for item in section.items %}
-      <li>
+      <li class="text-center">
         <img src="{{ app.request.basepath }}/gallery/1200/{{ item.path }}" alt="{{ item.title|e }}">
         {% if item.title|length or item.description|length %}
         <div class="orbit-caption">

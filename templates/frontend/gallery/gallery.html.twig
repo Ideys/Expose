@@ -26,13 +26,15 @@
 
 {% block main -%}
 {% if section.hasItems %}
-  <div id="gallery" class="hidden">
+  <div id="gallery">
     {% include "frontend/gallery/_"~ section.gallery_mode ~".html.twig" %}
   </div>
-  <div class="sandglass">
-    <span id="sandglass_1"></span>
-    <span id="sandglass_2"></span>
-    <span id="sandglass_3"></span>
+  <div class="hold-on">
+    <div class="sandglass">
+      <span id="sandglass_1"></span>
+      <span id="sandglass_2"></span>
+      <span id="sandglass_3"></span>
+    </div>
   </div>
 {% else %}
 <p class="coming-soon">
