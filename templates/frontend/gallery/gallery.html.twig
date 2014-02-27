@@ -3,6 +3,14 @@
 {% if section.thumb_list %}{% set thumb_class = ' gallery-thumb' %}{% else %}{% set thumb_class = '' %}{% endif %}
 {% block body_class parent()~widgets.section_body_classes(section)~' gallery-'~section.gallery_mode~thumb_class %}
 
+{% block description %}
+{% if section.description|length %}
+{{ section.description|e }}
+{% else %}
+{{ parent() }}
+{% endif %}
+{% endblock description %}
+
 {% block head %}
   {{ parent() }}
   {% include "frontend/gallery/preloader.css.twig" %}
