@@ -76,6 +76,8 @@ gallery:
     deleted: A gallery was deleted
     labels: Labels
     thumb.list.display: Display thumbs at the bottom of the screen
+    picture:
+        alt: Alt attribute (SEO)
     mode:
         mode: Gallery display mode
         slideshow: Slideshow

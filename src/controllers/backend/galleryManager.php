@@ -28,10 +28,10 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     $formBuilder
         ->add('title'.$slide->id, 'text', array(
             'required'      => false,
-            'label'         => 'section.title',
+            'label'         => 'gallery.picture.alt',
             'data'          => $slide->title,
             'attr' => array(
-                'placeholder' => 'section.title',
+                'placeholder' => 'gallery.picture.alt',
             ),
         ))
         ->add('description'.$slide->id, 'textarea', array(

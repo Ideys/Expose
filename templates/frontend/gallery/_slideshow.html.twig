@@ -7,8 +7,7 @@
         <img src="{{ app.request.basepath }}/gallery/1200/{{ item.path }}" alt="{{ item.title|e }}">
         {% if item.title|length or item.description|length %}
         <div class="orbit-caption">
-          {{ item.title|nl2br }}
-          {{ item.description|raw|nl2br }}
+          {{ item.description|raw }}
         </div>
         {% endif %}
       </li>

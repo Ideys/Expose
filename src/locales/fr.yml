@@ -76,6 +76,8 @@ gallery:
     deleted: Une galerie a été supprimée
     labels: Labels
     thumb.list.display: Afficher les miniatures en bas d'écran
+    picture:
+        alt: Titre alternatif (référencement)
     mode:
         mode: Mode d'affichage de la galerie
         slideshow: Diaporama

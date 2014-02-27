@@ -11,7 +11,8 @@
 <ul class="inline-list thumb-list">
   {% for row, item in section.items %}
   <li>
-    <a data-orbit-link="pic-{{ row }}">
+    <a data-orbit-link="pic-{{ row }}"
+       title="{{ item.title|e }}">
       <img src="{{ app.request.basepath }}/gallery/220/{{ item.path }}">
     </a>
   </li>
