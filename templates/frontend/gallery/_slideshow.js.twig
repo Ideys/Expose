@@ -14,7 +14,16 @@ $(document).foundation({
       circular: true,
       timer: false,
       variable_height: false,
-      swipe: true
+      swipe: false
   }
 });
+
+!function($) {
+  $(function(){
+      $('#gallery').on('click', '.orbit-container', function() {
+          $(this).trigger("orbit.next");
+          $(this).find('.orbit-next').click();
+      });
+  });
+}(window.jQuery);
 </script>

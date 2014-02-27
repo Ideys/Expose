@@ -180,6 +180,11 @@ textarea {
     display: inline-block;
 }
 
+.orbit-next,
+.orbit-prev {
+    display: none;
+}
+
 body.gallery-fullscreen,
 body.gallery-extended {
     height: 100vh;
