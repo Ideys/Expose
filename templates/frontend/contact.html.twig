@@ -3,9 +3,6 @@
 {% block main -%}
 <div class="row">
 {% if 'enabled' == site.contactSection %}
-  <div class="large-4 columns">
-    {{ site.contactContent|raw }}
-  </div>
   <div class="large-8 columns">
     {{ form_start(form) }}
         {{ form_errors(form) }}
@@ -17,9 +14,14 @@
         <div class="hidden">
           {{ form_rest(form) }}
         </div>
-        <input type="submit" name="submit"
-               value="{{ 'contact.send'|trans }}" class="tiny button">
+        <div class="text-right">
+          <input type="submit" name="submit"
+                 value="{{ 'contact.send'|trans }}" class="tiny secondary button">
+        </div>
     {{ form_end(form) }}
+  </div>
+  <div class="large-4 columns">
+    {{ site.contactContent|raw }}
   </div>
 {% else %}
   <div class="large-12 columns">
