@@ -185,6 +185,17 @@ textarea {
     display: none;
 }
 
+.orbit-container .orbit-slides-container > * .orbit-caption {
+    position: initial;
+    background: none;
+    color: #333;
+}
+
+.background-black
+.orbit-container .orbit-slides-container > * .orbit-caption {
+    color: #eee;
+}
+
 body.gallery-fullscreen,
 body.gallery-extended {
     height: 100vh;
