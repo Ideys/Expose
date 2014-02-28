@@ -72,6 +72,20 @@ class SectionType
                     'placeholder' => 'section.description',
                 ),
             ))
+            ->add('custom_css', 'textarea', array(
+                'required'      => false,
+                'label'         => 'section.custom.css',
+                'attr' => array(
+                    'placeholder' => 'section.custom.css',
+                ),
+            ))
+            ->add('custom_js', 'textarea', array(
+                'required'      => false,
+                'label'         => 'section.custom.js',
+                'attr' => array(
+                    'placeholder' => 'section.custom.js',
+                ),
+            ))
             ->add('expose_section_id', 'choice', array(
                 'choices'       => $this->getDirChoices(),
                 'required'      => false,

@@ -67,6 +67,8 @@ if (!$schema->tablesExist('expose_section')) {
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('type', 'string', array('length' => 32));
     $table->addColumn('slug', 'string', array('length' => 255));
+    $table->addColumn('custom_css', 'text', array('default' => null, 'notnull' => false));
+    $table->addColumn('custom_js', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('homepage', 'boolean');
     $table->addColumn('visibility', 'string', array('length' => 32));
     $table->addColumn('hierarchy', 'smallint');

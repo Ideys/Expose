@@ -29,6 +29,8 @@ abstract class Section
         'type' => null,
         'title' => null,
         'description' => null,
+        'custom_css' => null,
+        'custom_js' => null,
         'parameters' => 'N;',
         'visibility' => 'public',
         'homepage' => '0',

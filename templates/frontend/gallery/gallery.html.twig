@@ -14,6 +14,11 @@
 {% block head %}
   {{ parent() }}
   {% include "frontend/gallery/preloader.css.twig" %}
+  {% if section.custom_css|length %}
+    <style>
+      {{ section.custom_css }}
+    </style>
+  {% endif %}
 {% endblock head %}
 
 {% block javascripts %}
@@ -21,6 +26,11 @@
   {% include "frontend/gallery/_masonry.js.twig" %}
 {% else %}
   {{ parent() }}
+{% endif %}
+{% if section.custom_js|length %}
+<script>
+  {{ section.custom_js }}
+</script>
 {% endif %}
 {% endblock javascripts %}
 

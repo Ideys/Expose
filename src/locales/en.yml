@@ -62,6 +62,9 @@ section:
     visibility.private: Private section
     visibility.hidden: Hidden section
     visibility.closed: Closed section
+    custom:
+        css: CSS
+        js: Javascript
     unavailable: The requested section is unavailable.
     define.as.homepage: Define as the homepage
 

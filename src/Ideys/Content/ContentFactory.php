@@ -40,6 +40,7 @@ class ContentFactory
      */
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
+               s.custom_css, s.custom_js,
                s.homepage, s.visibility, s.hierarchy,
                t.title, t.description, t.parameters, t.language
         FROM expose_section AS s
@@ -205,6 +206,8 @@ class ContentFactory
             'expose_section_id' => $section->expose_section_id,
             'type' => $section->type,
             'slug' => $this->uniqueSlug($section->title),
+            'custom_css' => $section->custom_css,
+            'custom_js' => $section->custom_js,
             'homepage' => $section->homepage,
             'visibility' => $section->visibility,
             'hierarchy' => $incr,
@@ -232,6 +235,8 @@ class ContentFactory
         // Update section
         $this->db->update('expose_section', array(
             'slug' => $this->uniqueSlug($section->title, $section->id),
+            'custom_css' => $section->custom_css,
+            'custom_js' => $section->custom_js,
             'visibility' => $section->visibility,
             'expose_section_id' => $section->expose_section_id,
         ) + $this->blameAndTimestampData($section->id),
