@@ -132,6 +132,12 @@ textarea {
     z-index: 1000;
 }
 
+#to-top {
+    position: fixed;
+    bottom: 0px;
+    right: 20px;
+}
+
 .background-black {
     background: #000;
 }
