@@ -197,6 +197,9 @@ delete: Supprimer
 move: Déplacer
 add: Ajouter
 remove: Retirer
+process: Traitement
+saved: Sauvegardé
+failed: Echec
 settings: Paramétrages
 select:
     all: Tout sélectionner

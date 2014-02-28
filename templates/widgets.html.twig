@@ -1,0 +1,30 @@
+
+{% macro section_body_classes(section) %}
+{% if section.isHomepage %}{{ ' content-homepage' }}{% endif %}
+{{ ' content-'~section.type }}
+{% endmacro %}
+
+{% macro btn_ajax(target, title) %}
+<button type="submit" class="small button"
+        data-submit-ajax data-target="{{ target }}">
+  <div class="btn-msg btn-ajax-submit">
+    <span>{{ title|default('submit')|trans }}</span>
+  </div>
+  <div class="btn-msg btn-ajax-process hidden">
+    <div class="btn-preloader">
+      <div class="btn-preloader-elem btn-preloader-1"></div>
+      <div class="btn-preloader-elem btn-preloader-2"></div>
+      <div class="btn-preloader-elem btn-preloader-3"></div>
+    </div>
+    <span>{{ 'process'|trans }}</span>
+  </div>
+  <div class="btn-msg btn-ajax-saved hidden">
+    <i class="fi-check"></i>
+    <span>{{ 'saved'|trans }}</span>
+  </div>
+  <div class="btn-msg btn-ajax-failed hidden">
+    <i class="fi-alert"></i>
+    <span>{{ 'failed'|trans }}</span>
+  </div>
+</button>
+{% endmacro %}

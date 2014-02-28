@@ -1,21 +1,22 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 <div class="row">
   <div class="large-12 columns">
-    {{ form_start(form, {'action': path('admin_html_manager_edit', {'id': section_id})}) }}
+    {{ form_start(form, {'action': path('admin_html_manager_edit', {'id': section.id})}) }}
       {{ form_errors(form) }}
       <div class="row">
         <div class="medium-8 medium-centered columns">
           {{ form_row(form.title) }}
         </div>
+      </div>
+      <div class="row">
         <div class="medium-8 medium-centered columns">
           {{ form_row(form.content) }}
         </div>
+      </div>
+      <div class="row">
         <div class="medium-8 medium-centered columns text-right">
-          <input type="submit" name="submit"
-                 value="{{ 'submit'|trans }}"
-                 data-submit-ajax
-                 data-target="#panel{{ section_id }}-edit"
-                 class="tiny button">
+          {{ widgets.btn_ajax() }}
         </div>
       </div>
       <div class="hidden">

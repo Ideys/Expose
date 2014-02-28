@@ -1,3 +1,4 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 <div class="row">
   <div class="medium-6 medium-push-6 columns"
@@ -12,12 +13,7 @@
       {{ form_row(form.choices) }}
       {{ form_row(form.required) }}
       <div class="text-right">
-        <button type="submit"
-                class="tiny button"
-                data-submit-ajax
-                data-target="#panel{{ section.id }}-edit">
-          {{ 'form.field.add'|trans }}
-        </button>
+        {{ widgets.btn_ajax('#panel'~section.id~'-edit', 'form.field.add') }}
       </div>
     {{ form_end(form) }}
   </div>

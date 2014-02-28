@@ -51,7 +51,7 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     return $app['twig']->render('backend/htmlManager/_pageEdit.html.twig', array(
         'form' => $form->createView(),
-        'section_id' => $id,
+        'section' => $section,
     ));
 })
 ->assert('id', '\d+')

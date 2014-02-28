@@ -197,6 +197,9 @@ delete: Delete
 move: Move
 add: Add
 remove: Remove
+process: Process
+saved: Saved
+failed: Failed
 settings: Settings
 select:
     all: Select all

@@ -159,21 +159,42 @@ $(function(){
     })
     .on('click', '[data-submit-ajax]', function(event) {
         event.stopImmediatePropagation();
-        var form = $(this).parents('form')
+        var button = $(this)
+          , form = button.parents('form')
           , url = form.prop('action')
           , formData = form.serialize()
-          , target = $(this).data('target')
+          , target = button.data('target')
+          , btnMessages = button.find('.btn-msg')
+          , submitMessage = button.find('.btn-ajax-submit')
+          , processMessage = button.find('.btn-ajax-process')
+          , savedMessage = button.find('.btn-ajax-saved')
+          , failedMessage = button.find('.btn-ajax-failed')
           ;
+
+        btnMessages.addClass('hidden');
+        processMessage.removeClass('hidden');
+
         $.ajax({
             url: url,
             type: 'POST',
             data: formData
         })
         .done(function(response) {
-            $(target).html(response);
+            if (target.length) {
+                $(target).html(response);
+            }
+            btnMessages.addClass('hidden');
+            savedMessage.removeClass('hidden');
         })
         .fail(function() {
-            console.warn('AJAX injection error.');
+            btnMessages.addClass('hidden');
+            failedMessage.removeClass('hidden');
+        })
+        .always(function() {
+            window.setTimeout(function(){
+                btnMessages.addClass('hidden');
+                submitMessage.removeClass('hidden');
+            }, 2000);
         });
         return false;
     })

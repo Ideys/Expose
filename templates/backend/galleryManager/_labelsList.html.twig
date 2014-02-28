@@ -1,10 +1,8 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {% if section.hasItems %}
 {{ form_start(form, {'action': path('admin_gallery_manager_labels', {'id': section.id})}) }}
-<button type="submit" class="button small"
-        data-submit-ajax data-target="#panel{{ section.id }}-labels">
-  {{ 'submit'|trans }}
-</button>
+{{ widgets.btn_ajax() }}
 <ul class="small-block-grid-2 large-block-grid-2">
   {% for slide in section.items %}
   <li>
@@ -17,10 +15,7 @@
   </li>
   {% endfor %}
 </ul>
-<button type="submit" class="button small"
-        data-submit-ajax data-target="panel{{ section.id }}-labels">
-  {{ 'submit'|trans }}
-</button>
+{{ widgets.btn_ajax() }}
 {{ form_end(form) }}
 {% else %}
 <p class="notice-empty">{{ 'gallery.no.pics'|trans }}</p>

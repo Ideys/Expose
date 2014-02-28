@@ -1,6 +1,6 @@
 {% extends "layout.html.twig" %}
 
-{% import _self as widgets %}
+{% import "widgets.html.twig" as widgets %}
 
 {% block head %}
 {% if site.googleFonts|length %}
@@ -35,8 +35,3 @@
     {% block main %}{% endblock %}
   </div>
 {%- endblock content%}
-
-{% macro section_body_classes(section) %}
-{% if section.isHomepage %}{{ ' content-homepage' }}{% endif %}
-{{ ' content-'~section.type }}
-{% endmacro %}
