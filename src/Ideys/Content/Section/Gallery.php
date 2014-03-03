@@ -25,6 +25,7 @@ class Gallery extends Section implements ContentInterface
             'slide_mode' => 'slide',
             'thumb_list' => '0',
             'grid_rows' => '1',
+            'global_legend' => '',
         );
     }
 
@@ -120,6 +121,10 @@ class Gallery extends Section implements ContentInterface
             ->add('grid_rows', 'choice', array(
                 'label' => 'gallery.grid.rows',
                 'choices' => static::getGalleryGridRowsChoice(),
+            ))
+            ->add('global_legend', 'textarea', array(
+                'label' => 'gallery.global.legend',
+                'required' => false,
             ))
         ;
 

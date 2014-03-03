@@ -79,6 +79,7 @@ gallery:
     deleted: A gallery was deleted
     labels: Labels
     thumb.list.display: Display thumbs at the bottom of the screen
+    global.legend: Slides legend
     picture:
         alt: Alt attribute (SEO)
     mode:

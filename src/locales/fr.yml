@@ -79,6 +79,7 @@ gallery:
     deleted: Une galerie a été supprimée
     labels: Labels
     thumb.list.display: Afficher les miniatures en bas d'écran
+    global.legend: Légende des slides
     picture:
         alt: Titre alternatif (référencement)
     mode:

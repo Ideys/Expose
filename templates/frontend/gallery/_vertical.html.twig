@@ -2,15 +2,11 @@
 <div class="row-fluid">
   <div class="large-12 columns">
     <ul class="small-block-grid-1 medium-block-grid-{{ section.grid_rows }}">
-      {% for item in section.items %}
+      {% for slide in section.items %}
         <li class="text-center">
-          <img src="{{ app.request.basepath }}/gallery/1200/{{ item.path }}"
-               alt="{{ item.title|e }}">
-          {% if item.description|length %}
-          <div class="caption">
-            {{ item.description|raw }}
-          </div>
-          {% endif %}
+          <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
+               alt="{{ slide.title|e }}">
+          {{ widgets.gallery_slide_legend(slide, section) }}
         </li>
       {% endfor %}
     </ul>

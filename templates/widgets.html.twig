@@ -5,6 +5,7 @@
 {% endmacro %}
 
 {% macro btn_ajax(target, title) %}
+{% spaceless %}
 <button type="submit" class="small button"
         data-submit-ajax data-target="{{ target }}">
   <div class="btn-msg btn-ajax-submit">
@@ -27,4 +28,15 @@
     <span>{{ 'failed'|trans }}</span>
   </div>
 </button>
+{% endspaceless %}
+{% endmacro %}
+
+{% macro gallery_slide_legend(slide, section, wrapper_class) %}
+{% spaceless %}
+{% if slide.description|length or section.global_legend|length %}
+  <div class="{{ wrapper_class|default('caption') }}">
+    {{ section.global_legend|default('%s')|replace({'%s': slide.description})|raw }}
+  </div>
+{% endif %}
+{% endspaceless %}
 {% endmacro %}
