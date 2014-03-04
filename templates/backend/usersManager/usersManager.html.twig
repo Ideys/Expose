@@ -3,41 +3,33 @@
 {% block main -%}
 <div class="row">
   <div class="small-12 large-6 columns">
-    <table>
-      <tbody>
-      {% for user in users %}
-        <tr>
-          <td>
-            <i class="fi-torso{% if 'f' == user.gender %}-female{% endif %}"></i>
-            {{ user.firstname }}
-            {{ user.lastname }}
-            <br>
-            {{ user.username }}
-          </td>
-          <td>
-            {% for role in user.roles %}
-              {{ ('user.role.'~role)|trans }}
-            {% endfor %}
-            <br>
-            {% if user.lastLogin|length %}
-              {{ user.lastLogin|date('d/m/y H:i') }}
-            {% else %}
-              {{ 'user.never.connected'|trans }}
-            {% endif %}
-          </td>
-          <td>
-            <a href="#" data-dropdown="user_action{{ user.id }}" class="tiny button dropdown">
-              {{ 'actions'|trans }}
-            </a>
-            <ul id="user_action{{ user.id }}" data-dropdown-content="" class="f-dropdown">
-              <li><a href="{{ path('admin_users_manager', {'id': user.id}) }}">{{ 'edit'|trans }}</a></li>
-              <li><a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}">{{ 'delete'|trans }}</a></li>
-            </ul>
-          </td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
+    {% for user in users %}
+      <div class="user panel">
+      <h5>
+        <i class="fi-torso{% if 'f' == user.gender %}-female{% endif %}"></i>
+        {{ user.firstname }} {{ user.lastname }}
+      </h5>
+      <p>
+        <em>{{ user.username }}</em>
+        {% for role in user.roles %}
+          <span class="label">{{ ('user.role.'~role)|trans }}</span>
+        {% endfor %}
+        <br>
+        {% if user.lastLogin|length %}
+          {{ user.lastLogin|date('d/m/y H:i') }}
+        {% else %}
+          {{ 'user.never.connected'|trans }}
+        {% endif %}
+        <a href="#" data-dropdown="user_action{{ user.id }}" class="tiny button dropdown">
+          {{ 'actions'|trans }}
+        </a>
+        <ul id="user_action{{ user.id }}" data-dropdown-content="" class="f-dropdown">
+          <li><a href="{{ path('admin_users_manager', {'id': user.id}) }}">{{ 'edit'|trans }}</a></li>
+          <li><a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}">{{ 'delete'|trans }}</a></li>
+        </ul>
+      </p>
+      </div><br>
+    {% endfor %}
   </div>
   <div class="small-12 large-6 columns">
     {{ form_start(form) }}
