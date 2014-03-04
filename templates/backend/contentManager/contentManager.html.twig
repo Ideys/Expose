@@ -16,17 +16,15 @@
           {{ form_widget(form.type) }}
         </div>
       </div>
-      <div class="row section-fields">
-        <div class="medium-12 columns">
-          {{ form_widget(form.description) }}
-        </div>
-      </div>
-      <div class="row section-fields">
-        <div class="medium-8 columns">
+      <div class="row">
+        <div class="medium-4 columns section-fields">
           {{ form_widget(form.expose_section_id) }}
         </div>
-        <div class="medium-4 columns">
+        <div class="medium-4 columns section-fields">
           {{ form_widget(form.visibility) }}
+        </div>
+        <div class="medium-4 columns">
+          {{ form_widget(form.menu_pos) }}
         </div>
       </div>
       <div class="hidden">
