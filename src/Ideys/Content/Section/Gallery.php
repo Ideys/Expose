@@ -23,6 +23,7 @@ class Gallery extends Section implements ContentInterface
         return array(
             'gallery_mode' => 'slideshow',
             'slide_mode' => 'slide',
+            'extended' => '0',
             'thumb_list' => '0',
             'grid_rows' => '1',
             'global_legend' => '',
@@ -114,6 +115,10 @@ class Gallery extends Section implements ContentInterface
                 'label' => 'gallery.slide.mode',
                 'choices' => static::getSlideModeChoice(),
             ))
+            ->add('extended', 'choice', array(
+                'label' => 'gallery.mode.slideshow.extended',
+                'choices' => \Ideys\Settings\Settings::getIOChoices(),
+            ))
             ->add('thumb_list', 'choice', array(
                 'label' => 'gallery.thumb.list.display',
                 'choices' => \Ideys\Settings\Settings::getIOChoices(),
@@ -193,7 +198,6 @@ class Gallery extends Section implements ContentInterface
         return in_array($this->getParameter('gallery_mode'), array(
             'slideshow',
             'fullscreen',
-            'extended',
         ));
     }
 
@@ -207,7 +211,6 @@ class Gallery extends Section implements ContentInterface
         return array(
             'slideshow' => 'gallery.mode.slideshow',
             'fullscreen' => 'gallery.mode.slideshow.full.screen',
-            'extended' => 'gallery.mode.slideshow.extended',
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',
         );
