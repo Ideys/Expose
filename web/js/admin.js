@@ -198,6 +198,14 @@ $(function(){
         });
         return false;
     })
+    .on('change', '#form_gallery_mode', function() {
+        var mode = $(this).val()
+          , form = $(this).parents('form')
+          ;
+
+        form.find('.for-mode').addClass('hidden');
+        form.find('.for-'+mode).removeClass('hidden');
+    })
     ;
 
     $('#content-sections, .dir-sections .accordion').sortable({
