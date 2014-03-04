@@ -1,0 +1,32 @@
+{% spaceless %}
+{% for section in sections
+    if section.visibility not in ['hidden', 'closed']
+   and section.menu_pos == menu_pos
+   and section.homepage == 0 %}
+    {% if section.sections|length %}
+    <li class="has-dropdown">
+      <a href="#">{{ section.title }}</a>
+      <ul class="dropdown">
+        {% for child in section.sections if child.visibility not in ['hidden', 'closed'] %}
+          {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
+            <li>
+              <a href="{{ path('section', {'slug': child.slug}) }}">
+                {{ child.title }}
+              </a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </li>
+    {# An empty dir is not a content #}
+    {% elseif section.type != 'dir' %}
+      {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
+        <li>
+          <a href="{{ path('section', {'slug': section.slug}) }}">
+            {{ section.title }}
+          </a>
+        </li>
+      {% endif %}
+    {% endif %}
+{% endfor %}
+{% endspaceless %}

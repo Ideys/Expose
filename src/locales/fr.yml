@@ -57,11 +57,16 @@ section:
     title: Titre
     description: Description
     new: Nouvelle section
-    visibility: Visibilité de la section
-    visibility.public: Section publique
-    visibility.private: Section privée
-    visibility.hidden: Section masquée
-    visibility.closed: Section fermée
+    visibility:
+        visibility: Visibilité de la section
+        public: Section publique
+        private: Section privée
+        hidden: Section masquée
+        closed: Section fermée
+    menu:
+        menu: Menu
+        main: Principal
+        second: Secondaire
     custom:
         css: CSS
         js: Javascript

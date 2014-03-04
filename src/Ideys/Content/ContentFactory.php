@@ -41,7 +41,7 @@ class ContentFactory
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.custom_css, s.custom_js,
-               s.homepage, s.visibility, s.hierarchy,
+               s.homepage, s.menu_pos, s.visibility, s.hierarchy,
                t.title, t.description, t.parameters, t.language
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
@@ -209,6 +209,7 @@ class ContentFactory
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
             'homepage' => $section->homepage,
+            'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
             'hierarchy' => $incr,
         ) + $this->blameAndTimestampData(0));
@@ -237,6 +238,7 @@ class ContentFactory
             'slug' => $this->uniqueSlug($section->title, $section->id),
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
+            'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
             'expose_section_id' => $section->expose_section_id,
         ) + $this->blameAndTimestampData($section->id),

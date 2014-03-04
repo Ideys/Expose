@@ -1,0 +1,43 @@
+{% spaceless %}
+<nav class="top-bar" data-topbar>
+  <ul class="title-area">
+    <li class="name">
+      <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
+    </li>
+    <li class="toggle-topbar menu-icon">
+      <a href="#"><span></span></a>
+    </li>
+  </ul>
+  <section class="top-bar-section">
+    <ul class="left">
+      {% include "frontend/menu/_menuTopLinks.html.twig" with {'menu_pos': 'main'} only %}
+    </ul>
+    <ul class="right">
+      <li class="divider show-for-small"></li>
+      {% include "frontend/menu/_menuTopLinks.html.twig" with {'menu_pos': 'second'} only %}
+      {% if 'menu' == site.adminLink %}
+      <li>
+        <a href="{{ path('admin_content_manager') }}">
+          {{ 'admin.admin'|trans }}
+        </a>
+      </li>
+      {% endif %}
+      {% if 'disabled' != site.contactSection %}
+      <li>
+        <a href="{{ path('contact') }}">
+          {{ 'contact.contact'|trans }}
+        </a>
+      </li>
+      {% endif %}
+      {% if profile|length %}
+      <li>
+        <a href="{{ path('logout') }}"
+           title="{{ 'user.logout'|trans }}">
+          <i class="fi-power"></i>
+        </a>
+      </li>
+      {% endif %}
+    </ul>
+  </section>
+</nav>
+{% endspaceless %}

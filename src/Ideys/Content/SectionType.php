@@ -92,9 +92,13 @@ class SectionType
                 'label'         => 'section.dir',
                 'empty_value'   => 'section.root',
             ))
+            ->add('menu_pos', 'choice', array(
+                'choices'       => static::getMenuPosChoice(),
+                'label'         => 'section.menu.menu',
+            ))
             ->add('visibility', 'choice', array(
                 'choices'       => static::getSectionVisibilityChoice(),
-                'label'         => 'section.visibility',
+                'label'         => 'section.visibility.visibility',
             ))
         ;
 
@@ -138,6 +142,19 @@ class SectionType
             return 'section.'.$item;
         }, $keys);
         return array_combine($keys, $values);
+    }
+
+    /**
+     * Return menu position choices.
+     *
+     * @return array
+     */
+    public static function getMenuPosChoice()
+    {
+        return array(
+            'main' => 'section.menu.main',
+            'second' => 'section.menu.second',
+        );
     }
 
     /**

@@ -32,6 +32,7 @@ abstract class Section
         'custom_css' => null,
         'custom_js' => null,
         'parameters' => 'N;',
+        'menu_pos' => 'main',
         'visibility' => 'public',
         'homepage' => '0',
         'language' => null,
