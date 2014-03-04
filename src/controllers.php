@@ -64,6 +64,8 @@ $app->mount('/admin/{_locale}/html', include 'controllers/backend/htmlManager.ph
 
 $app->mount('/admin/{_locale}/channel', include 'controllers/backend/channelManager.php');
 
+$app->mount('/admin/{_locale}/files', include 'controllers/backend/filesManager.php');
+
 $app->mount('/admin/{_locale}/messaging', include 'controllers/backend/messagingManager.php');
 
 $app->mount('/admin/{_locale}/settings', include 'controllers/backend/siteSettings.php');

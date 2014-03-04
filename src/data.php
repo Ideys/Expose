@@ -149,6 +149,31 @@ if (!$schema->tablesExist('expose_messaging')) {
     $schema->createTable($table);
 }
 
+if (!$schema->tablesExist('expose_files')) {
+    $table = new Table('expose_files');
+    $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+    $table->setPrimaryKey(array('id'));
+    $table->addColumn('title', 'string', array('length' => 255));
+    $table->addColumn('name', 'string', array('length' => 255));
+    $table->addColumn('slug', 'string', array('length' => 255));
+    blameAndTimestampSchema($table);
+
+    $schema->createTable($table);
+}
+
+if (!$schema->tablesExist('expose_files_recipients')) {
+    $table = new Table('expose_files_recipients');
+    $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+    $table->setPrimaryKey(array('id'));
+    $table->addColumn('expose_files_id', 'integer', array('unsigned' => true));
+    $table->addIndex(array('expose_files_id'));
+    $table->addColumn('name', 'string', array('length' => 255));
+    $table->addColumn('token', 'string', array('length' => 255));
+    $table->addColumn('download_logs', 'text');
+
+    $schema->createTable($table);
+}
+
 if (!$schema->tablesExist('expose_settings')) {
     $table = new Table('expose_settings');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));

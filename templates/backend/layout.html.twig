@@ -19,6 +19,11 @@
       </li>
       {% if is_granted('ROLE_ADMIN') %}
       <li>
+        <a href="{{ path('admin_files_manager') }}">
+          {{ 'file.manager'|trans }}
+        </a>
+      </li>
+      <li>
         <a href="{{ path('admin_messaging_manager') }}">
           {{ 'messaging.messaging'|trans }}
         </a>

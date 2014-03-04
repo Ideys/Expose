@@ -1,0 +1,12 @@
+{% extends "backend/layout.html.twig" %}
+
+{% block main -%}
+<div class="row">
+  <div class="large-12 columns">
+    {% for file in files %}
+    {% else %}
+    <p class="notice-empty">{{ 'file.no.files'|trans }}</p>
+    {% endfor %}
+  </div>
+</div>
+{%- endblock main %}

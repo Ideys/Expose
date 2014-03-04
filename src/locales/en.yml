@@ -156,6 +156,12 @@ html:
     delete.section: Delete this section and all its content
     section.deleted: A section was deleted
 
+file:
+    manager: Files manager
+    title: File title
+    recipient: Recipient
+    no.files: No shared files
+
 messaging:
     messaging: Messaging
     no.messages: No messages

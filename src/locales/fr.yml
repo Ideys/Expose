@@ -156,6 +156,12 @@ html:
     delete.section: Supprimer la section et tous ses contenus
     section.deleted: Une section a été supprimée
 
+file:
+    manager: Gestion des fichiers
+    title: Titre du document
+    recipient: Destinataire
+    no.files: Aucun fichiers mis à disposition
+
 messaging:
     messaging: Messagerie
     no.messages: Aucun message

@@ -121,7 +121,7 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
 $frontendController->match('/profile', function (Request $request, $id = null) use ($app) {
 
     $userProvider = new UserProvider($app['db'], $app['session']);
-    
+
     $profile = $app['session']->get('profile');
 
     $profileType = new ProfileType($app['form.factory']);
@@ -146,6 +146,27 @@ $frontendController->match('/profile', function (Request $request, $id = null) u
 ->method('GET|POST')
 ->secure('ROLE_USER')
 ;
+
+$frontendController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
+
+    $filesHandeler = new \Ideys\Files\FilesHandeler($app['db']);
+    $file = $filesHandeler->findBySlugAndToken($slug, $token);
+
+    if (!file_exists($file->getPath())) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+
+    $forceDownload = (null !== $app['request']->query->get('d'));
+
+    if ($forceDownload) {
+        $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_ATTACHMENT;
+    } else {
+        $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_INLINE;
+    }
+
+    return $app->sendFile($file->getPath())
+               ->setContentDisposition($mode, $file->getName());
+});
 
 $frontendController->assert('_locale', implode('|', $app['languages']));
 
