@@ -143,6 +143,7 @@ class Form extends Section implements ContentInterface
         $formBuilder = $this->settingsFormBuilder($formFactory)
             ->add('validation_message', 'textarea', array(
                 'label' => 'form.validation.message',
+                'required' => false,
             ))
         ;
 
