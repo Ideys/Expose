@@ -65,8 +65,8 @@ section:
         closed: Closed section
     menu:
         menu: Menu
-        main: Main
-        second: Secondary
+        main: Main menu
+        second: Secondary menu
     custom:
         css: CSS
         js: Javascript
