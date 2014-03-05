@@ -158,6 +158,7 @@ html:
 
 file:
     manager: Gestion des fichiers
+    file: Fichier
     title: Titre du document
     recipient: Destinataire
     no.files: Aucun fichiers mis à disposition

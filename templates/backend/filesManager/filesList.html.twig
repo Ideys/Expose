@@ -2,11 +2,21 @@
 
 {% block main -%}
 <div class="row">
-  <div class="large-12 columns">
+  <div class="large-6 columns">
     {% for file in files %}
     {% else %}
     <p class="notice-empty">{{ 'file.no.files'|trans }}</p>
     {% endfor %}
+  </div>
+  <div class="large-6 columns">
+    {{ form_start(form, {
+      'action': path('admin_files_manager')
+    }) }}
+      {{ form_row(form.title) }}
+      {{ form_row(form.file) }}
+      <input type="submit" name="submit"
+             value="{{ 'submit'|trans }}" class="tiny right button">
+    {{ form_end(form) }}
   </div>
 </div>
 {%- endblock main %}

@@ -262,7 +262,7 @@ class ContentFactory
      */
     protected function uniqueSlug($title, $id = 0)
     {
-        $slug = static::slugify($title);
+        $slug = \Ideys\String::slugify($title);
 
         $sections = $this->db->fetchAll(
             'SELECT slug FROM expose_section WHERE slug LIKE ? AND id != ?',
@@ -299,7 +299,7 @@ class ContentFactory
             'expose_section_id' => $section->id,
             'type' => $item->type,
             'category' => $item->category,
-            'slug' => static::slugify($item->title),
+            'slug' => \Ideys\String::slugify($item->title),
             'path' => $item->path,
         ) + $this->blameAndTimestampData(0));
 
@@ -500,31 +500,5 @@ class ContentFactory
             'created_by' => $userId,
             'created_at' => $datetime,
         ) : array());
-    }
-
-    /**
-     * Slugify strings.
-     *
-     * @param string $string
-     * @return string
-     */
-    public static function slugify($string) {
-        return
-            preg_replace('#[^-\w]+#', '',
-            // to lowercase
-            strtolower(
-                // remove accents
-                iconv('utf-8', 'us-ascii//TRANSLIT',
-                    // trim and replace spaces by an hyphen
-                    trim(
-                        // replace non letter or digits by an hyphen
-                        preg_replace('#[^\\pL\d]+#u', '-',
-                            $string
-                        ),
-                        '-'
-                    )
-                )
-            )
-        );
     }
 }

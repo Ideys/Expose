@@ -158,6 +158,7 @@ html:
 
 file:
     manager: Files manager
+    file: File
     title: File title
     recipient: Recipient
     no.files: No shared files

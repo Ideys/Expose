@@ -26,18 +26,18 @@ class FilesHandeler
     }
 
     /**
-     * Save a message on database.
+     * Save a file on database.
      *
      * @param Message
      */
-    public function persist(Message $message)
+    public function addFile(File $file)
     {
+        $file->persist();
+
         $this->db->insert('expose_files', array(
-            'name' => $message->getName(),
-            'email' => $message->getEmail(),
-            'subject' => $message->getSubject(),
-            'message' => $message->getMessage(),
-            'date' => $message->getDate()->format('Y-m-d H:i:s'),
+            'title' => $file->getTitle(),
+            'name' => $file->getFile()->getBasename(),
+            'slug' => \Ideys\String::slugify($file->getName()),
         ));
     }
 
@@ -58,7 +58,7 @@ class FilesHandeler
      */
     private function baseQuery()
     {
-        return 'SELECT * '
+        return 'SELECT f.id, f.title, f.name, f.slug '
              . 'FROM expose_files AS f '
              . 'LEFT JOIN expose_files_recipients AS r '
              . 'ON f.id = r.expose_files_id ';
@@ -69,11 +69,22 @@ class FilesHandeler
      */
     public function findAll()
     {
-        $messages = $this->db->fetchAll(
+        $entities = $this->db->fetchAll(
                 $this->baseQuery()
         );
 
-        return $messages;
+        $files = array();
+        foreach ($entities as $row => $entity) {
+            $files[$row] = new File();
+            $files[$row]
+                    ->setId($entity['id'])
+                    ->setName($entity['name'])
+                    ->setTitle($entity['title'])
+                    ->setSlug($entity['slug'])
+            ;
+        }
+
+        return $files;
     }
 
     /**
@@ -86,13 +97,19 @@ class FilesHandeler
      */
     public function findBySlugAndToken($slug, $token)
     {
-        $result = $this->db->fetchAssoc(
+        $entity = $this->db->fetchAssoc(
                 $this->baseQuery()
               . 'WHERE f.slug = ?'
               . 'AND r.token = ?',
         array($slug, $token));
 
-        $file = new File($result);
+        $file = new File();
+        $file
+                ->setId($entity['id'])
+                ->setTitle($entity['title'])
+                ->setName($entity['name'])
+                ->setSlug($entity['slug'])
+        ;
 
         return $file;
     }

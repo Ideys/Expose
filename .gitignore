@@ -13,6 +13,7 @@ Desktop.ini
 composer.lock
 
 # User assets
+/downloads/*
 /web/gallery/*
 
 # Others

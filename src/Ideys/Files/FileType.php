@@ -55,6 +55,9 @@ class FileType
                 'label'         => 'file.title',
                 'required'      => false,
             ))
+            ->add('file', 'file', array(
+                'label'         => 'file.file',
+            ))
         ;
 
         return $formBuilder;
