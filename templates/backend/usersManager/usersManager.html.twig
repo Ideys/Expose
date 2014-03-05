@@ -8,13 +8,12 @@
       <h5>
         <i class="fi-torso{% if 'f' == user.gender %}-female{% endif %}"></i>
         {{ user.firstname }} {{ user.lastname }}
+        <small>{{ user.username }}</small>
       </h5>
       <p>
-        <em>{{ user.username }}</em>
         {% for role in user.roles %}
           <span class="label">{{ ('user.role.'~role)|trans }}</span>
         {% endfor %}
-        <br>
         {% if user.lastLogin|length %}
           {{ user.lastLogin|date('d/m/y H:i') }}
         {% else %}

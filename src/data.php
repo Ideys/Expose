@@ -153,6 +153,8 @@ if (!$schema->tablesExist('expose_files')) {
     $table = new Table('expose_files');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
+    $table->addColumn('file', 'string', array('length' => 255));
+    $table->addColumn('mime', 'string', array('length' => 55));
     $table->addColumn('title', 'string', array('length' => 255));
     $table->addColumn('name', 'string', array('length' => 255));
     $table->addColumn('slug', 'string', array('length' => 255));
@@ -169,6 +171,7 @@ if (!$schema->tablesExist('expose_files_recipients')) {
     $table->addIndex(array('expose_files_id'));
     $table->addColumn('name', 'string', array('length' => 255));
     $table->addColumn('token', 'string', array('length' => 255));
+    $table->addColumn('download_counter', 'integer');
     $table->addColumn('download_logs', 'text');
 
     $schema->createTable($table);

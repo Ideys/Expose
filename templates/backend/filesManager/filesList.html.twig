@@ -4,6 +4,11 @@
 <div class="row">
   <div class="large-6 columns">
     {% for file in files %}
+    <div class="file panel">
+        <h5>{{ file.title }} <small>{{ file.name }}</small></h5>
+        <ul class="no-bullet">
+        </ul>
+    </div>
     {% else %}
     <p class="notice-empty">{{ 'file.no.files'|trans }}</p>
     {% endfor %}

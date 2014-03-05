@@ -22,7 +22,17 @@ class File
     /**
      * @var string
      */
+    private $mime;
+
+    /**
+     * @var string
+     */
     private $title;
+
+    /**
+     * @var string
+     */
+    private $fileName;
 
     /**
      * @var string
@@ -33,7 +43,6 @@ class File
      * @var string
      */
     private $slug;
-
 
 
     /**
@@ -79,6 +88,26 @@ class File
     /**
      * @return string
      */
+    public function getMime()
+    {
+        return $this->mime;
+    }
+
+    /**
+     * @param string $mime
+     *
+     * @return \Ideys\Files\File
+     */
+    public function setMime($mime)
+    {
+        $this->mime = $mime;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getTitle()
     {
         return $this->title;
@@ -94,6 +123,26 @@ class File
         $this->title = $title;
 
         return $this;
+    }
+
+    /**
+     * @param string $fileName
+     *
+     * @return \Ideys\Files\File
+     */
+    public function setFileName($fileName)
+    {
+        $this->fileName = $fileName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileName()
+    {
+        return $this->fileName;
     }
 
     /**
@@ -141,7 +190,7 @@ class File
      */
     public function getPath()
     {
-        return $this->getDir().'/'.$this->name;
+        return $this->getDir().'/'.$this->fileName;
     }
 
     /**
@@ -157,6 +206,10 @@ class File
      */
     public function persist()
     {
-        $this->getFile()->move($this->getDir());
+        $this->setFileName(uniqid('expose').'.'.$this->file->guessClientExtension());
+        $this->setMime($this->file->getMimeType());
+        $this->setName($this->file->getClientOriginalName());
+        $this->setSlug(\Ideys\String::slugify($this->title));
+        $this->getFile()->move($this->getDir(), $this->fileName);
     }
 }

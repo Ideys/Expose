@@ -35,9 +35,13 @@ class FilesHandeler
         $file->persist();
 
         $this->db->insert('expose_files', array(
+            'file' => $file->getFileName(),
+            'mime' => $file->getMime(),
             'title' => $file->getTitle(),
-            'name' => $file->getFile()->getBasename(),
-            'slug' => \Ideys\String::slugify($file->getName()),
+            'name' => $file->getName(),
+            'slug' => $file->getSlug(),
+            'updated_at' => new \DateTime(),
+            'created_at' => new \DateTime(),
         ));
     }
 
@@ -58,7 +62,7 @@ class FilesHandeler
      */
     private function baseQuery()
     {
-        return 'SELECT f.id, f.title, f.name, f.slug '
+        return 'SELECT f.id, f.file, f.mime, f.title, f.name, f.slug '
              . 'FROM expose_files AS f '
              . 'LEFT JOIN expose_files_recipients AS r '
              . 'ON f.id = r.expose_files_id ';
@@ -75,13 +79,7 @@ class FilesHandeler
 
         $files = array();
         foreach ($entities as $row => $entity) {
-            $files[$row] = new File();
-            $files[$row]
-                    ->setId($entity['id'])
-                    ->setName($entity['name'])
-                    ->setTitle($entity['title'])
-                    ->setSlug($entity['slug'])
-            ;
+            $files[$row] = $this->hydrateFile($entity);
         }
 
         return $files;
@@ -103,14 +101,27 @@ class FilesHandeler
               . 'AND r.token = ?',
         array($slug, $token));
 
+        return $this->hydrateFile($entity);
+    }
+
+    /**
+     * Hydrate a File with db results.
+     *
+     * @param array $entity
+     *
+     * @return \Ideys\Files\File
+     */
+    private function hydrateFile($entity)
+    {
         $file = new File();
         $file
-                ->setId($entity['id'])
-                ->setTitle($entity['title'])
-                ->setName($entity['name'])
-                ->setSlug($entity['slug'])
+            ->setId($entity['id'])
+            ->setFileName($entity['file'])
+            ->setMime($entity['mime'])
+            ->setName($entity['name'])
+            ->setTitle($entity['title'])
+            ->setSlug($entity['slug'])
         ;
-
         return $file;
     }
 }

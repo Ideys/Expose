@@ -18,15 +18,28 @@ class Recipient
     private $token;
 
     /**
+     * @var integer
+     */
+    private $downloadCounter = 0;
+
+    /**
      * @var array
      */
-    private $download_logs;
+    private $downloadLogs = array();
+
+    /**
+     * @return integer
+     */
+    public function getDownloadCounter()
+    {
+        return $this->downloadCounter;
+    }
 
     /**
      * @return array
      */
     public function getDownloadLogs()
     {
-        return $this->download_logs;
+        return $this->downloadLogs;
     }
 }

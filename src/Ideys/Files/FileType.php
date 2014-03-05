@@ -53,7 +53,6 @@ class FileType
             ->createBuilder('form', $file)
             ->add('title', 'text', array(
                 'label'         => 'file.title',
-                'required'      => false,
             ))
             ->add('file', 'file', array(
                 'label'         => 'file.file',
