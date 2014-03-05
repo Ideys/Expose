@@ -44,6 +44,11 @@ class File
      */
     private $slug;
 
+    /**
+     * @var array
+     */
+    private $recipients;
+
 
     /**
      * @return integer
@@ -181,6 +186,26 @@ class File
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRecipients()
+    {
+        return $this->recipients;
+    }
+
+    /**
+     * @param \Ideys\Files\Recipient $recipient
+     *
+     * @return \Ideys\Files\File
+     */
+    public function addRecipient(Recipient $recipient)
+    {
+        $this->recipients[] = $recipient;
 
         return $this;
     }

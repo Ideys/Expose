@@ -7,6 +7,12 @@
     <div class="file panel">
         <h5>{{ file.title }} <small>{{ file.name }}</small></h5>
         <ul class="no-bullet">
+          {% for recipient in file.recipients %}
+            <li>
+              {{ recipient.name }}
+              <small>{{ recipient.token }}</small>
+            </li>
+          {% endfor %}
         </ul>
     </div>
     {% else %}

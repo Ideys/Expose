@@ -28,7 +28,7 @@ class FilesHandeler
     /**
      * Save a file on database.
      *
-     * @param Message
+     * @param \Ideys\Files\File
      */
     public function addFile(File $file)
     {
@@ -44,6 +44,28 @@ class FilesHandeler
             'slug' => $file->getSlug(),
             'updated_at' => $timestamp,
             'created_at' => $timestamp,
+        ));
+        $file->setId($this->db->lastInsertId());
+
+        $recipient = new Recipient();
+        $recipient->setName('URL');
+        $recipient->setFile($file);
+        $this->addRecipient($recipient);
+    }
+
+    /**
+     * Save a file recipient on database.
+     *
+     * @param \Ideys\Files\Recipient
+     */
+    public function addRecipient(Recipient $recipient)
+    {
+        $this->db->insert('expose_files_recipients', array(
+            'expose_files_id' => $recipient->getFile()->getId(),
+            'name' => $recipient->getName(),
+            'token' => $recipient->getToken(),
+            'download_counter' => $recipient->getDownloadCounter(),
+            'download_logs' => serialize($recipient->getDownloadLogs()),
         ));
     }
 
@@ -64,7 +86,9 @@ class FilesHandeler
      */
     private function baseQuery()
     {
-        return 'SELECT f.id, f.file, f.mime, f.title, f.name, f.slug '
+        return 'SELECT f.id, f.file, f.mime, f.title, f.name, f.slug, '
+             . 'r.id AS rid, r.name AS recipient, r.token, '
+             . 'r.download_counter, r.download_logs '
              . 'FROM expose_files AS f '
              . 'LEFT JOIN expose_files_recipients AS r '
              . 'ON f.id = r.expose_files_id ';
@@ -80,8 +104,11 @@ class FilesHandeler
         );
 
         $files = array();
-        foreach ($entities as $row => $entity) {
-            $files[$row] = $this->hydrateFile($entity);
+        foreach ($entities as $entity) {
+            $files[$entity['id']] = $this->hydrateFile($entity);
+        }
+        foreach ($entities as $entity) {
+            $this->insertRecipient($files[$entity['id']], $entity);
         }
 
         return $files;
@@ -125,5 +152,27 @@ class FilesHandeler
             ->setSlug($entity['slug'])
         ;
         return $file;
+    }
+
+    /**
+     * Insert a recipient to a file.
+     *
+     * @param \Ideys\Files\File $file
+     * @param array             $entity
+     *
+     * @return \Ideys\Files\File
+     */
+    private function insertRecipient(File $file, $entity)
+    {
+        $recipient = new Recipient();
+        $recipient
+            ->setId($entity['rid'])
+            ->setName($entity['recipient'])
+            ->setToken($entity['token'])
+            ->setDownloadCounter($entity['download_counter'])
+            ->setDownloadLogs($entity['download_logs'])
+        ;
+
+        return $file->addRecipient($recipient);
     }
 }
