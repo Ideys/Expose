@@ -34,14 +34,16 @@ class FilesHandeler
     {
         $file->persist();
 
+        $timestamp = (new \DateTime())->format('c');
+
         $this->db->insert('expose_files', array(
             'file' => $file->getFileName(),
             'mime' => $file->getMime(),
             'title' => $file->getTitle(),
             'name' => $file->getName(),
             'slug' => $file->getSlug(),
-            'updated_at' => new \DateTime(),
-            'created_at' => new \DateTime(),
+            'updated_at' => $timestamp,
+            'created_at' => $timestamp,
         ));
     }
 
