@@ -158,6 +158,7 @@ html:
 
 file:
     manager: Files manager
+    enabled: Enable files share
     file: File
     title: File title
     recipient: Recipient

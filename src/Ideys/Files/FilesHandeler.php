@@ -50,7 +50,7 @@ class FilesHandeler
         $recipient = new Recipient();
         $recipient->setName('URL');
         $recipient->setFile($file);
-        $this->addRecipient($recipient);
+        $this->persistRecipient($recipient);
     }
 
     /**
@@ -58,15 +58,37 @@ class FilesHandeler
      *
      * @param \Ideys\Files\Recipient
      */
-    public function addRecipient(Recipient $recipient)
+    public function persistRecipient(Recipient $recipient)
     {
-        $this->db->insert('expose_files_recipients', array(
+        $data = array(
             'expose_files_id' => $recipient->getFile()->getId(),
             'name' => $recipient->getName(),
             'token' => $recipient->getToken(),
             'download_counter' => $recipient->getDownloadCounter(),
             'download_logs' => serialize($recipient->getDownloadLogs()),
-        ));
+        );
+
+        if ($recipient->getId() > 0) {
+            $this->db->update('expose_files_recipients', $data, array(
+                'id' => $recipient->getId()
+            ));
+        } else {
+            $this->db->insert('expose_files_recipients', $data);
+        }
+    }
+
+    /**
+     * Save a file recipient on database.
+     *
+     * @param \Ideys\Files\Recipient
+     */
+    public function logDownload(Recipient $recipient)
+    {
+        $recipient
+                ->incrDownloadCounter()
+                ->addDownloadLogs();
+
+        $this->persistRecipient($recipient);
     }
 
     /**
@@ -108,7 +130,7 @@ class FilesHandeler
             $files[$entity['id']] = $this->hydrateFile($entity);
         }
         foreach ($entities as $entity) {
-            $this->insertRecipient($files[$entity['id']], $entity);
+            $this->addRecipient($files[$entity['id']], $entity);
         }
 
         return $files;
@@ -130,7 +152,9 @@ class FilesHandeler
               . 'AND r.token = ?',
         array($slug, $token));
 
-        return $this->hydrateFile($entity);
+        $file = $this->hydrateFile($entity);
+
+        return $this->addRecipient($file, $entity);
     }
 
     /**
@@ -162,15 +186,16 @@ class FilesHandeler
      *
      * @return \Ideys\Files\File
      */
-    private function insertRecipient(File $file, $entity)
+    private function addRecipient(File $file, $entity)
     {
         $recipient = new Recipient();
         $recipient
             ->setId($entity['rid'])
+            ->setFile($file)
             ->setName($entity['recipient'])
             ->setToken($entity['token'])
             ->setDownloadCounter($entity['download_counter'])
-            ->setDownloadLogs($entity['download_logs'])
+            ->setDownloadLogs(unserialize($entity['download_logs']))
         ;
 
         return $file->addRecipient($recipient);

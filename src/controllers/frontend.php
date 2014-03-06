@@ -161,17 +161,21 @@ $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use (
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    $forceDownload = (null !== $app['request']->query->get('d'));
+    $filesHandeler->logDownload($file->getRecipients()[0]);
 
-    if ($forceDownload) {
-        $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_ATTACHMENT;
-    } else {
+    if (null !== $app['request']->query->get('preview')) {
         $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_INLINE;
+    } else {
+        $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_ATTACHMENT;
     }
 
     return $app->sendFile($file->getPath())
                ->setContentDisposition($mode, $file->getName());
-});
+})
+->bind('file_share')
+->assert('token', '\w+')
+->assert('slug', '[\w-\.]+')
+;
 
 $frontendController->assert('_locale', implode('|', $app['languages']));
 

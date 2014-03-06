@@ -134,6 +134,18 @@ class Recipient
     }
 
     /**
+     * Increments download counter.
+     *
+     * @return \Ideys\Files\Recipient
+     */
+    public function incrDownloadCounter()
+    {
+        $this->downloadCounter++;
+
+        return $this;
+    }
+
+    /**
      * @return integer
      */
     public function getDownloadCounter()
@@ -149,6 +161,18 @@ class Recipient
     public function setDownloadLogs($downloadLogs)
     {
         $this->downloadLogs = $downloadLogs;
+
+        return $this;
+    }
+
+    /**
+     * Add a download log timestamp.
+     *
+     * @return \Ideys\Files\Recipient
+     */
+    public function addDownloadLogs()
+    {
+        $this->downloadLogs[] = (new \DateTime())->format('Y-m-d H:i:s');
 
         return $this;
     }

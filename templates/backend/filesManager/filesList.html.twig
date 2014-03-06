@@ -10,7 +10,12 @@
           {% for recipient in file.recipients %}
             <li>
               {{ recipient.name }}
-              <small>{{ recipient.token }}</small>
+              <small>{{ recipient.downloadCounter }}</small>
+              <input class="clipboard"
+                     onclick="this.select();"
+                     readonly="readonly"
+                     type="text"
+                     value="{{ url('file_share', {'token': recipient.token, 'slug': file.slug}) }}">
             </li>
           {% endfor %}
         </ul>
@@ -31,3 +36,15 @@
   </div>
 </div>
 {%- endblock main %}
+
+{% block head %}
+{{ parent() }}
+<style>
+input.clipboard {
+    background: none;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+</style>
+{% endblock head %}
