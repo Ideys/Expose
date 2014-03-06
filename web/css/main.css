@@ -138,8 +138,18 @@ textarea {
     right: 20px;
 }
 
-.background-black {
+.background-black,
+.background-black .top-bar,
+.background-black .top-bar-section li:not(.has-form) a:not(.button),
+.background-black .top-bar-section li:not(.has-form) a:not(.button):hover {
     background: #000;
+    color: #efefef;
+}
+
+.background-black h1, .background-black h2, .background-black h3,
+.background-black h4, .background-black h5, .background-black h6,
+.background-black label {
+    color: #efefef;
 }
 
 .coming-soon {
