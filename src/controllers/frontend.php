@@ -149,8 +149,13 @@ $frontendController->match('/profile', function (Request $request, $id = null) u
 
 $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
 
+    $settings = new \Ideys\Settings\Settings($app['db']);
     $filesHandeler = new \Ideys\Files\FilesHandeler($app['db']);
     $file = $filesHandeler->findBySlugAndToken($slug, $token);
+
+    if ('0' === $settings->shareFiles) {
+        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+    }
 
     if (!file_exists($file->getPath())) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();

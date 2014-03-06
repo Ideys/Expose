@@ -132,6 +132,10 @@ class SettingsType
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'site.menu.hide.on.homepage',
             ))
+            ->add('shareFiles', 'choice', array(
+                'choices'       => Settings::getIOChoices(),
+                'label'         => 'file.enabled',
+            ))
         ;
 
         return $formBuilder;

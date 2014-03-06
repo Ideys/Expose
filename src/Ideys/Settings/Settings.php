@@ -38,6 +38,7 @@ class Settings
                 'contactSendToEmail' => '',
                 'menuPosition' => 'top',
                 'hideMenuOnHomepage' => '0',
+                'shareFiles' => '0',
             );
 
     /**

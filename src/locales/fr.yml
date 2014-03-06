@@ -158,6 +158,7 @@ html:
 
 file:
     manager: Gestion des fichiers
+    enabled: Activer le partage de fichiers
     file: Fichier
     title: Titre du document
     recipient: Destinataire

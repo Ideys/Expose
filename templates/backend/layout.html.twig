@@ -18,28 +18,30 @@
         </a>
       </li>
       {% if is_granted('ROLE_ADMIN') %}
-      <li>
-        <a href="{{ path('admin_files_manager') }}">
-          {{ 'file.manager'|trans }}
-        </a>
-      </li>
-      <li>
-        <a href="{{ path('admin_messaging_manager') }}">
-          {{ 'messaging.messaging'|trans }}
-        </a>
-      </li>
-      <li>
-        <a href="{{ path('admin_site_settings') }}">
-          {{ 'site.settings'|trans }}
-        </a>
-      </li>
+        {% if site.shareFiles %}
+          <li>
+            <a href="{{ path('admin_files_manager') }}">
+              {{ 'file.manager'|trans }}
+            </a>
+          </li>
+        {% endif %}
+        <li>
+          <a href="{{ path('admin_messaging_manager') }}">
+            {{ 'messaging.messaging'|trans }}
+          </a>
+        </li>
+        <li>
+          <a href="{{ path('admin_site_settings') }}">
+            {{ 'site.settings'|trans }}
+          </a>
+        </li>
       {% endif %}
       {% if is_granted('ROLE_SUPER_ADMIN') %}
-      <li>
-        <a href="{{ path('admin_users_manager') }}">
-          {{ 'user.access'|trans }}
-        </a>
-      </li>
+        <li>
+          <a href="{{ path('admin_users_manager') }}">
+            {{ 'user.access'|trans }}
+          </a>
+        </li>
       {% endif %}
     </ul>
     <ul class="right">
