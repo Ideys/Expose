@@ -202,8 +202,11 @@ textarea {
     color: #eee;
 }
 
-body.gallery-fullscreen,
-body.gallery-extended {
+body.gallery-slideshow .orbit-slides-container img {
+    max-height: 80vh;
+}
+
+body.gallery-fullscreen {
     height: 100vh;
     overflow: hidden;
 }
@@ -246,23 +249,19 @@ body.gallery-extended {
     opacity: 1;
 }
 
-.gallery-thumb.gallery-fullscreen #content,
-.gallery-thumb.gallery-fullscreen .slide {
-    height: 85vh;
-}
-
 .thumb-list {
     position: fixed;
     bottom: 0px;
     left: 0px;
     margin: 0px;
     width: 100%;
-    background: #000;
+    background: #fff;
     z-index: 20;
 }
 
 .thumb-list img {
     height: 15vh;
+    max-width: none;
 }
 
 .background-black .thumb-list {
