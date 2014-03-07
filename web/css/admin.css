@@ -12,6 +12,10 @@
     position: relative;
 }
 
+small.counter {
+    color: #555;
+}
+
 /*
  * Links
  */

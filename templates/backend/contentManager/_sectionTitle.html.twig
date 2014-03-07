@@ -10,6 +10,7 @@
   <span class="handle-section">&nbsp;</span>
   <i class="fi-{{ icons[section.type] }} type-icon"></i>
   {{ section.title }}
+  <small class="counter">{{ section.total_items }}</small>
   {% if section.homepage %}
     <i class="fi-home state-icon"></i>
   {% elseif 'public' == section.visibility %}

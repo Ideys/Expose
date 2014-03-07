@@ -29,6 +29,7 @@ abstract class Section
         'type' => null,
         'title' => null,
         'description' => null,
+        'total_items' => 0,
         'custom_css' => null,
         'custom_js' => null,
         'parameters' => 'N;',

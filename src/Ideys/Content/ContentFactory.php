@@ -82,9 +82,10 @@ class ContentFactory
             return $this->sections;
         }
 
-        $sql = $this->sqlSelectSection .
-           'WHERE t.language = ?
-            ORDER BY s.hierarchy ASC';
+        $sql = $this->sqlSelectSection
+           . 'WHERE t.language = ? '
+           . 'GROUP BY t.id '
+           . 'ORDER BY s.hierarchy ASC ';
         $sections = $this->db->fetchAll($sql, array($this->language));
 
         // Use sql primary keys as array keys and add sections tree
@@ -113,9 +114,9 @@ class ContentFactory
      */
     public function findSection($id)
     {
-        $sql = $this->sqlSelectSection .
-           'WHERE s.id = ?
-            ORDER BY s.hierarchy ASC';
+        $sql = $this->sqlSelectSection
+           . 'WHERE s.id = ? '
+           . 'ORDER BY s.hierarchy ASC ';
         $sectionTranslations = $this->db->fetchAll($sql, array($id));
 
         return $this->hydrateSection($sectionTranslations);
@@ -130,9 +131,9 @@ class ContentFactory
      */
     public function findSectionBySlug($slug)
     {
-        $sql = $this->sqlSelectSection .
-           'WHERE s.slug = ?
-            ORDER BY s.hierarchy ASC';
+        $sql = $this->sqlSelectSection
+           . 'WHERE s.slug = ? '
+           . 'ORDER BY s.hierarchy ASC ';
         $sectionTranslations = $this->db->fetchAll($sql, array($slug));
 
         return $this->hydrateSection($sectionTranslations);
@@ -145,9 +146,9 @@ class ContentFactory
      */
     public function findHomepage()
     {
-        $sql = $this->sqlSelectSection .
-           'WHERE s.homepage = 1
-            ORDER BY s.hierarchy ASC';
+        $sql = $this->sqlSelectSection
+           . 'WHERE s.homepage = 1 '
+           . 'ORDER BY s.hierarchy ASC ';
         $sectionTranslations = $this->db->fetchAll($sql);
         $section = $this->hydrateSection($sectionTranslations);
 
