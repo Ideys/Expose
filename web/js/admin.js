@@ -15,6 +15,25 @@ $(function(){
             console.warn('AJAX injection error.');
         });
     })
+    .on('click', '[data-dir-toggle]', function(){
+        var contentSection = $(this).parents('.content-section')
+          , dirContent = contentSection.find('.dir-content')
+          , toggleIndicator = contentSection.find('.dir-toggle-indicator')
+          ;
+
+        dirContent.toggleClass('hidden');
+        $({deg: 0}).animate({deg: 180}, {
+            duration: 300,
+            step: function(now) {
+                toggleIndicator.css({
+                    transform: 'rotate(' + now + 'deg)'
+                });
+            }
+        });
+        toggleIndicator
+                .toggleClass('fi-plus')
+                .toggleClass('fi-minus');
+    })
     .on('click', '[data-gallery-upload]', function(){
         var uploadForm = $($(this).data('gallery-upload'))
           , uploadProgress = uploadForm.find('.progress .meter')
@@ -237,7 +256,14 @@ $(function(){
     // Open panel from url hashtag
     var url = window.location.href.split('#');
     if (url[1] != undefined) {
-        $('[href=#'+url[1]+']').click();
+        var sectionLink = $('[href=#'+url[1]+']')
+          , sectionDir = sectionLink.parents('.dir-sections')
+          ;
+
+        if (sectionDir != undefined) {
+            sectionDir.find('[data-dir-toggle]').click();
+        }
+        sectionLink.click();
     }
 });
 

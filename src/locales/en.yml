@@ -49,8 +49,6 @@ section:
     channel: Video
     html: Page
     form: Form
-    dir: Directory
-    root: Root
     preview: Preview
     edit: Edit content
     coming.soon: Coming soon
@@ -72,6 +70,11 @@ section:
         js: Javascript
     unavailable: The requested section is unavailable.
     define.as.homepage: Define as the homepage
+
+dir:
+    dir: Directory
+    root: Root
+    empty: Empty directory
 
 gallery:
     upload: Upload pictures

@@ -1,0 +1,28 @@
+{% spaceless %}
+<div class="dir-title">
+  <span class="handle-section handle-dir">&nbsp;</span>
+  <h3 data-dir-toggle>
+    {{ section.title }}
+    <small class="counter">{{ section.sections|length }}</small>
+  </h3>
+  <ul class="inline-list dir-actions right">
+    <li>
+      <i class="fi-plus dir-toggle-indicator"></i>
+    </li>
+    <li>
+      <button class="tiny secondary button"
+              type="button"
+              data-inject-call="{{ path('admin_content_manager_edit_dir', {'id': section.id}) }}"
+              data-target="#title-form-{{ section.id }}"
+              data-dropdown="title-form-{{ section.id }}"
+              title="{{ 'edit'|trans }}">
+        <i class="fi-pencil"></i>
+      </button>
+    </li>
+  </ul>
+  <div id="title-form-{{ section.id }}"
+       data-dropdown-content
+       class="f-dropdown content">
+  </div>
+</div>
+{% endspaceless %}

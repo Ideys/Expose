@@ -89,8 +89,8 @@ class SectionType
             ->add('expose_section_id', 'choice', array(
                 'choices'       => $this->getDirChoices(),
                 'required'      => false,
-                'label'         => 'section.dir',
-                'empty_value'   => 'section.root',
+                'label'         => 'dir.dir',
+                'empty_value'   => 'dir.root',
             ))
             ->add('menu_pos', 'choice', array(
                 'choices'       => static::getMenuPosChoice(),

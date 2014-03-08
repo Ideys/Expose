@@ -26,10 +26,33 @@ small.counter {
     padding-left: 8px;
 }
 
-.dir-sections h3 button.tiny.secondary {
+/*
+ * Dir title
+ */
+
+.dir-title {
+    height: 45px;
+}
+
+.dir-title h3 {
+    width: 70%;
+    float: left;
+    cursor: pointer;
+}
+
+.dir-title .dir-actions {
+    font-size: 25px;
+    margin: 0px;
+}
+
+.dir-title .dir-actions button.tiny.secondary {
     padding: 7px 6px;
-    font-size: 0.67em;
-    color: #888;
+    font-size: 14px;
+    margin: 4px 0px;
+}
+
+.dir-title .dir-actions .dir-toggle-indicator {
+    color: #e3e3e3;
 }
 
 /*
@@ -59,8 +82,8 @@ small.counter {
 .handle-section.handle-dir {
     position: relative;
     float: left;
-    margin: 5px 5px 0px 0px;
-    height: 30px;
+    margin-right: 5px;
+    height: 40px;
 }
 
 .section-sort-placeholder {
@@ -122,6 +145,10 @@ iframe.page-preview {
 td.muted {
     background-color: #ccc;
 }
+
+/*
+ * Galleries slide upload
+ */
 
 .gallery-upload {
     min-height: 200px;

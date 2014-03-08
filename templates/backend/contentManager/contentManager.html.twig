@@ -39,26 +39,13 @@
     {% for section in sections %}
       {% if 'dir' == section.type %}
       <div class="content-section dir-sections" data-id="{{ section.id }}">
-        <span class="handle-section handle-dir">&nbsp;</span>
-        <h3>
-          {{ section.title }}
-          <button class="tiny secondary button right"
-                  type="button"
-                  data-inject-call="{{ path('admin_content_manager_edit_dir', {'id': section.id}) }}"
-                  data-target="#title-form-{{ section.id }}"
-                  data-dropdown="title-form-{{ section.id }}"
-                  title="{{ 'edit'|trans }}">
-            <i class="fi-pencil"></i>
-          </button>
-        </h3>
-        <div id="title-form-{{ section.id }}"
-             data-dropdown-content
-             class="f-dropdown content">
-        </div>
-        <dl class="accordion" data-accordion>
+        {% include "backend/dirManager/_dirTitle.html.twig" with {'section': section} only %}
+        <dl class="accordion dir-content hidden" data-accordion>
           {% for section in section.sections %}
             {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
                   with {'section': section} only %}
+          {% else %}
+            <p class="notice-empty">{{ 'dir.empty'|trans }}</p>
           {% endfor %}
         </dl>
         <hr>

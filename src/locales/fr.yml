@@ -49,8 +49,6 @@ section:
     channel: Vidéo
     html: Page
     form: Formulaire
-    dir: Dossier
-    root: Racine
     preview: Aperçu
     edit: Éditer le contenu
     coming.soon: Prochainement
@@ -72,6 +70,11 @@ section:
         js: Javascript
     unavailable: La section demandée est indisponible.
     define.as.homepage: Définir comme page d'accueil
+
+dir:
+    dir: Dossier
+    root: Racine
+    empty: Le dossier est vide
 
 gallery:
     upload: Télécharger des images
