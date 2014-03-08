@@ -36,7 +36,7 @@ $(function(){
     })
     .on('click', '[data-gallery-upload]', function(){
         var uploadForm = $($(this).data('gallery-upload'))
-          , sectionSlidesCounter = $(this).parents('.content-section').find('.counter')
+          , sectionSlidesCounter = $(this).parents('.section').find('.counter')
           , currentCount = parseInt(sectionSlidesCounter.text())
           , uploadProgress = uploadForm.find('.progress .meter')
           , uploadGrid = uploadForm.find('.upload-grid')
@@ -300,7 +300,7 @@ var itemsSelection = function(section) {
 
 var removeEditedItems = function(list, items) {
 
-    var sectionSlidesCounter = list.parents('.content-section').find('.counter')
+    var sectionSlidesCounter = list.parents('.section').find('.counter')
       , currentCount = parseInt(sectionSlidesCounter.text())
       , newCount = (currentCount - items.length)
       ;
