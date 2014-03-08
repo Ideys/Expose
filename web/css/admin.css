@@ -26,6 +26,11 @@ small.counter {
     padding-left: 8px;
 }
 
+.f-dropdown /* Foundation fix */ {
+    left: initial;
+    top: -99999px;
+}
+
 /*
  * Dir title
  */
