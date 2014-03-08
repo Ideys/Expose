@@ -3,7 +3,7 @@
 {% if section.hasItems %}
 {{ form_start(form, {'action': path('admin_gallery_manager_labels', {'id': section.id})}) }}
 {{ widgets.btn_ajax() }}
-<ul class="small-block-grid-2 large-block-grid-2">
+<ul class="label-list small-block-grid-1 medium-block-grid-2">
   {% for slide in section.items %}
   <li>
     <div class="th">

@@ -36,9 +36,12 @@ $(function(){
     })
     .on('click', '[data-gallery-upload]', function(){
         var uploadForm = $($(this).data('gallery-upload'))
+          , sectionSlidesCounter = $(this).parents('.content-section').find('.counter')
+          , currentCount = parseInt(sectionSlidesCounter.text())
           , uploadProgress = uploadForm.find('.progress .meter')
           , uploadGrid = uploadForm.find('.upload-grid')
           , uploadInfo = uploadForm.find('.upload-info')
+          , uploadOk = uploadForm.find('.upload-ok')
           , uploadLink = uploadForm.find('.upload-link')
           , uploadMoreText = uploadLink.data('more-text')
           , uploadProgressText = uploadInfo.data('upload-info')
@@ -52,6 +55,9 @@ $(function(){
                 progressall: function (e, data) {
                     var progress = parseInt(data.loaded / data.total * 100, 10);
                     uploadProgress.css('width', progress + '%');
+                    if (progress === 100) {
+                        uploadOk.removeClass('hidden');
+                    }
                 },
                 add: function (e, data) {
                     picsCounter++;
@@ -61,6 +67,8 @@ $(function(){
                     data.submit();
                 },
                 done: function (e, data) {
+                    currentCount += 1;
+                    sectionSlidesCounter.text(currentCount);
                     $.each(data.result, function (index, file) {
                         var item = $('<li class="new"></li>')
                           , slide = $('<img/>')
@@ -139,7 +147,7 @@ $(function(){
           ;
 
         $.post(moveUrl, {items: selection}, function(items) {
-            removeEditedItems(items);
+            removeEditedItems(list, items);
             resetStackSelection(list);
         } );
         return false;
@@ -154,7 +162,7 @@ $(function(){
           ;
 
         $.post(deleteUrl, {items: selection}, function(items) {
-            removeEditedItems(items);
+            removeEditedItems(list, items);
             resetStackSelection(list);
         } );
         return false;
@@ -279,7 +287,7 @@ var itemsSelection = function(section) {
     selectedEntities.each(function(){
         selectedIds.push($(this).data('id'));
     });
-    list.data('selected', selectedIds.concat(','));
+    list.data('selected', selectedIds.concat());
 
     counterInfo.text(totalSelection);
 
@@ -290,11 +298,17 @@ var itemsSelection = function(section) {
     }
 };
 
-var removeEditedItems = function(items) {
+var removeEditedItems = function(list, items) {
+
+    var sectionSlidesCounter = list.parents('.content-section').find('.counter')
+      , currentCount = parseInt(sectionSlidesCounter.text())
+      , newCount = (currentCount - items.length)
+      ;
+
     for (var i in items) {
         $('[data-id="'+items[i]+'"]').remove();
     }
-    console.log(items);
+    sectionSlidesCounter.text(newCount);
 };
 
 var resetStackSelection = function(list) {

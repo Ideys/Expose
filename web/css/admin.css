@@ -147,17 +147,31 @@ td.muted {
 }
 
 /*
+ * Galleries slide labels list
+ */
+
+.label-list .th {
+    width: 100%;
+}
+
+/*
  * Galleries slide upload
  */
 
 .gallery-upload {
     min-height: 200px;
     background: #efefef;
-    border: 3px dotted #0088cc;
+    border: 1px dashed #0088cc;
 }
 
 .gallery-upload .upload-info {
     color: #999;
+}
+
+.gallery-upload .upload-ok {
+    float: right;
+    margin: -22px 10px 0px 0px;
+    color: #fff;
 }
 
 .gallery-upload .upload-link {
