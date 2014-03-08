@@ -177,7 +177,7 @@ textarea {
 }
 
 /*
- * Gallery sections
+ * Gallery preloader
  */
 
 .hold-on {
@@ -191,6 +191,10 @@ textarea {
 .background-black .hold-on {
     background: #000;
 }
+
+/*
+ * Gallery slideshow
+ */
 
 .orbit-container .orbit-slides-container img {
     display: inline-block;
@@ -215,6 +219,10 @@ textarea {
 body.gallery-slideshow .orbit-slides-container img {
     max-height: 80vh;
 }
+
+/*
+ * Gallery fullscreen
+ */
 
 body.gallery-fullscreen {
     height: 100vh;
@@ -276,6 +284,27 @@ body.gallery-fullscreen {
 
 .background-black .thumb-list {
     background: #000;
+}
+
+/*
+ * Gallery masonry
+ */
+
+.slide-block {
+    width: 220px;
+    padding: 5px;
+}
+
+.slide-block .caption {
+    display: none;
+}
+
+.slide-block.big-slide {
+    width: 440px;
+}
+
+.slide-block.big-slide .caption {
+    display: block;
 }
 
 /* ==========================================================================

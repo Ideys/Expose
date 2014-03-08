@@ -1,2 +1,12 @@
+<script src="{{ app.request.basepath }}/js/vendor/masonry.pkgd.min.js?v={{ semver }}"></script>
 <script>
+var $container = $('#gallery');
+$container.masonry({
+  columnWidth: 220,
+  itemSelector: '.slide-block'
+});
+$container.on('click', '.slide-block', function(){
+    $(this).toggleClass('big-slide');
+    $container.masonry();
+});
 </script>
