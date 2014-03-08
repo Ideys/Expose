@@ -42,10 +42,13 @@ class ContentFactory
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.custom_css, s.custom_js,
                s.homepage, s.menu_pos, s.visibility, s.hierarchy,
-               t.title, t.description, t.parameters, t.language
+               t.title, t.description, t.parameters, t.language,
+               COUNT(i.id) AS total_items
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
-        ON t.expose_section_id = s.id ';
+        ON t.expose_section_id = s.id
+        LEFT JOIN expose_section_item AS i
+        ON i.expose_section_id = s.id ';
 
     const SECTION_GALLERY   = 'gallery';
     const SECTION_CHANNEL   = 'channel';
