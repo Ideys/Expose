@@ -46,15 +46,29 @@
       </a><br>
       <ul id="move-selection-{{ section.id }}" class="f-dropdown">
         {% for sectionMove in sections
-            if 'gallery' == sectionMove.type
+            if sectionMove.type in ['gallery', 'dir']
             and sectionMove.id != section.id %}
-          <li>
-            <a href="{{ path('admin_content_manager_move_items', {'id': sectionMove.id}) }}"
-               data-target="#slides-{{ section.id }}"
-               data-move>
-              {{ sectionMove.title }}
-            </a>
-          </li>
+            {% if 'dir' == sectionMove.type  %}
+              {% for subsectionMove in sectionMove.sections
+                 if 'gallery' == subsectionMove.type
+                 and subsectionMove.id != section.id %}
+                <li>
+                  <a href="{{ path('admin_content_manager_move_items', {'id': subsectionMove.id}) }}"
+                     data-target="#slides-{{ section.id }}"
+                     data-move>
+                    {{ subsectionMove.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% else  %}
+            <li>
+              <a href="{{ path('admin_content_manager_move_items', {'id': sectionMove.id}) }}"
+                 data-target="#slides-{{ section.id }}"
+                 data-move>
+                {{ sectionMove.title }}
+              </a>
+            </li>
+          {% endif  %}
         {% endfor %}
       </ul>
     </li>
