@@ -39,6 +39,7 @@ class Settings
                 'menuPosition' => 'top',
                 'hideMenuOnHomepage' => '0',
                 'shareFiles' => '0',
+                'newSectiondefaultVisibility' => 'public',
             );
 
     /**

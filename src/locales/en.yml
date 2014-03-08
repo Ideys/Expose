@@ -57,6 +57,7 @@ section:
     new: New section
     visibility:
         visibility: Section visibility
+        default: Default visibility
         public: Public section
         private: Private section
         hidden: Hidden section

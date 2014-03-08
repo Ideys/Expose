@@ -136,6 +136,10 @@ class SettingsType
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'file.enabled',
             ))
+            ->add('newSectiondefaultVisibility', 'choice', array(
+                'choices'       => \Ideys\Content\SectionType::getSectionVisibilityChoice(),
+                'label'         => 'section.visibility.default',
+            ))
         ;
 
         return $formBuilder;

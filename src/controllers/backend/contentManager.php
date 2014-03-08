@@ -3,6 +3,7 @@
 use Ideys\Content\SectionType;
 use Ideys\Content\DirType;
 use Ideys\Content\ContentFactory;
+use Ideys\Settings\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
 $contentManagerController = $app['controllers_factory'];
@@ -11,7 +12,10 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $sectionType = new SectionType($app['db'], $app['form.factory']);
+    $settings = new Settings($app['db']);
+
     $newSection = new Ideys\Content\Section\Gallery($app['db']);
+    $newSection->visibility = $settings->newSectiondefaultVisibility;
     $form = $sectionType->createForm($newSection);
 
     $form->handleRequest($request);
