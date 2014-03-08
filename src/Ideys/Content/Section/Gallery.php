@@ -54,9 +54,11 @@ class Gallery extends Section implements ContentInterface
         $realExt = $file->guessExtension();// from mime type
         $fileSize = $file->getClientSize();
 
+        $this->total_items += 1;
         $slide = new Slide(array(
             'category' => $file->getMimeType(),
             'type' => \Ideys\Content\ContentFactory::ITEM_SLIDE,
+            'hierarchy' => $this->total_items,
         ));
 
         $slide->path = uniqid('expose').'.'.$fileExt;
