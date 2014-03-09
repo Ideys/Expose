@@ -164,6 +164,9 @@ file:
     manager: Files manager
     enabled: Enable files share
     file: File
+    size: File size
+    original.name: Original name
+    html.include: HTML inclusion
     title: File title
     recipient: Recipient
     no.files: No shared files

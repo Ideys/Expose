@@ -6,11 +6,28 @@
 <ul class="label-list small-block-grid-1 medium-block-grid-2">
   {% for slide in section.items %}
   <li>
-    <div class="th">
-      <img src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}"
-           class="left">
-      {{ form_widget(form['description'~slide.id]) }}
-      {{ form_widget(form['title'~slide.id]) }}
+    <div class="row">
+      <div class="small-6 columns">
+        <img src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">
+      </div>
+      <div class="small-6 columns">
+        <ul class="no-bullet slide-meta">
+          <li><em>{{ 'file.size'|trans }}</em>:<br>
+            {{ widgets.bytes_format(slide.file_size) }}</li>
+          <li><em>{{ 'file.original.name'|trans }}</em>:<br>
+            {{ slide.original_name }}</li>
+          <li><em>{{ 'file.html.include'|trans }}</em>:
+            {{ widgets.clipboard_text('<img src="__path:gallery__/220/'~ slide.path~'">') }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="small-12 columns">
+        <fieldset>
+          {{ form_widget(form['description'~slide.id], {'attr': {'rows': '2'} }) }}
+          {{ form_widget(form['title'~slide.id]) }}
+        </fieldset>
+      </div>
     </div>
   </li>
   {% endfor %}

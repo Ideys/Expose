@@ -6,15 +6,13 @@
 {% if section.hasItems %}
 <div class="row">
   <div class="large-12 columns">
-    {% set content = (section.items|first).content|replace({
-      '__path:gallery__': app.request.basepath~'/gallery',
-    }) %}
+    {% set content = (section.items|first).content %}
     {% if not content|length %}
       <p class="coming-soon">
         {{ 'section.coming.soon'|trans }}
       </p>
     {% else %}
-      {% include template_from_string(content) %}
+      {% include template_from_string(widgets.inclusion_replace_keys(content)) %}
     {% endif %}
   {# Pagination #}
   {% if section.items|length > 1 %}

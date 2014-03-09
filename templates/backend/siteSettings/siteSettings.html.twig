@@ -8,7 +8,7 @@
     <fieldset>
       <legend>{{ 'site.site'|trans }}</legend>
       {{ form_row(form.name) }}
-      {{ form_row(form.description) }}
+      {{ form_row(form.description, {'attr': {'rows': '4'} }) }}
       {{ form_row(form.authorName) }}
     </fieldset>
     <fieldset>
@@ -28,16 +28,24 @@
     <fieldset>
       <legend>{{ 'site.style.layout'|trans }}</legend>
       {{ form_row(form.layoutBackground) }}
-      {{ form_row(form.customStyle, {'attr': {'rows': '12'} }) }}
-      {{ form_row(form.customJavascript, {'attr': {'rows': '12'} }) }}
-      {{ form_row(form.googleFonts) }}
       {{ form_row(form.menuPosition) }}
       {{ form_row(form.hideMenuOnHomepage) }}
       {{ form_row(form.adminLink) }}
+      <div class="text-right">
+        <button type="button" class="tiny secondary button"
+                data-display="#advanced-layout">
+          {{ 'advanced'|trans }}
+        </button>
+      </div>
+      <div id="advanced-layout" class="hidden">
+        {{ form_row(form.customStyle, {'attr': {'rows': '12'} }) }}
+        {{ form_row(form.customJavascript, {'attr': {'rows': '12'} }) }}
+        {{ form_row(form.googleFonts) }}
+      </div>
     </fieldset>
     <fieldset>
       <legend>{{ 'contact.contact'|trans }}</legend>
-      {{ form_row(form.contactContent) }}
+      {{ form_row(form.contactContent, {'attr': {'rows': '12'} }) }}
       {{ form_row(form.contactSendToEmail) }}
       {{ form_row(form.contactSection) }}
     </fieldset>

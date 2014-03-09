@@ -31,6 +31,12 @@
 {% endspaceless %}
 {% endmacro %}
 
+{% macro inclusion_replace_keys(content) %}
+{{ content|replace({
+    '__path:gallery__': app.request.basepath~'/gallery',
+})|raw }}
+{% endmacro %}
+
 {% macro gallery_slide_legend(slide, section, wrapper_class) %}
 {% spaceless %}
 {% if slide.description|length or section.global_legend|length %}
@@ -38,5 +44,36 @@
     {{ section.global_legend|default('%s')|replace({'%s': slide.description})|raw }}
   </div>
 {% endif %}
+{% endspaceless %}
+{% endmacro %}
+
+{% macro clipboard_text(text) %}
+{% spaceless %}
+<input class="clipboard"
+       onclick="this.select();"
+       readonly="readonly"
+       type="text"
+       value="{{ text }}">
+{% endspaceless %}
+{% endmacro %}
+
+{% macro bytes_format(bytes) %}
+{% spaceless %}
+    {% set kilobyte = 1024 %}
+    {% set megabyte = kilobyte * 1024 %}
+    {% set gigabyte = megabyte * 1024 %}
+    {% set terabyte = gigabyte * 1024 %}
+
+    {% if bytes < kilobyte %}
+        {{ bytes ~ ' B' }}
+    {% elseif bytes < megabyte %}
+        {{ (bytes / kilobyte)|number_format(2, '.') ~ ' KB' }}
+    {% elseif bytes < gigabyte %}
+        {{ (bytes / megabyte)|number_format(2, '.') ~ ' MB' }}
+    {% elseif bytes < terabyte %}
+        {{ (bytes / gigabyte)|number_format(2, '.') ~ ' GB' }}
+    {% else %}
+        {{ (bytes / terabyte)|number_format(2, '.') ~ ' TB' }}
+    {% endif %}
 {% endspaceless %}
 {% endmacro %}

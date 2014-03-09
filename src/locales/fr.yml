@@ -164,6 +164,9 @@ file:
     manager: Gestion des fichiers
     enabled: Activer le partage de fichiers
     file: Fichier
+    size: Taille du fichier
+    original.name: Titre original
+    html.include: Inclusion HTML
     title: Titre du document
     recipient: Destinataire
     no.files: Aucun fichiers mis à disposition

@@ -16,6 +16,15 @@ small.counter {
     color: #555;
 }
 
+input.clipboard {
+    background: none;
+    border: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin: 0px;
+    padding: 0px;
+}
+
 /*
  * Links
  */
@@ -155,8 +164,18 @@ td.muted {
  * Galleries slide labels list
  */
 
-.label-list .th {
-    width: 100%;
+.label-list .row {
+    margin-bottom: 10px;
+}
+
+.slide-meta {
+    font-size: 0.7em;
+    color: #333;
+}
+
+.slide-meta input {
+    font-size: 1em;
+    height: 15px;
 }
 
 /*
