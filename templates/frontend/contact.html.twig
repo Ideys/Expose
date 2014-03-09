@@ -1,5 +1,7 @@
 {% extends "frontend/layout.html.twig" %}
 
+{% block body_class parent() ~ ' contact-section' %}
+
 {% block main -%}
 <div class="row">
 {% if 'enabled' == site.contactSection %}
