@@ -49,6 +49,7 @@ section:
     channel: Video
     html: Page
     form: Form
+    dir: Directory
     preview: Preview
     edit: Edit content
     coming.soon: Coming soon

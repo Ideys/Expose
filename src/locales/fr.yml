@@ -49,6 +49,7 @@ section:
     channel: Vidéo
     html: Page
     form: Formulaire
+    dir: Dossier
     preview: Aperçu
     edit: Éditer le contenu
     coming.soon: Prochainement
