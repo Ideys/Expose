@@ -49,7 +49,7 @@
 {{ parent() }}
 {% if section.custom_js|length %}
 <script>
-  {{ section.custom_js }}
+  {{ section.custom_js|raw }}
 </script>
 {% endif %}
 {% endblock javascripts %}

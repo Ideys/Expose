@@ -62,6 +62,8 @@ $app->mount('/admin/{_locale}/gallery', include 'controllers/backend/galleryMana
 
 $app->mount('/admin/{_locale}/html', include 'controllers/backend/htmlManager.php');
 
+$app->mount('/admin/{_locale}/maps', include 'controllers/backend/mapsManager.php');
+
 $app->mount('/admin/{_locale}/channel', include 'controllers/backend/channelManager.php');
 
 $app->mount('/admin/{_locale}/files', include 'controllers/backend/filesManager.php');

@@ -1,0 +1,35 @@
+{% spaceless %}
+<dd data-id="{{ section.id }}"
+    class="section {{ section.visibility }}-section">
+  {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
+  <div id="panel{{ section.id }}"
+       class="content panel-section html">
+    <dl class="tabs" data-tab>
+      <dd>
+        <a href="#panel{{ section.id }}-preview"
+           title="{{ 'section.preview'|trans }}"
+           data-inject-call="{{ path('admin_maps_manager_preview', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-preview">
+          <i class="fi-eye"></i>
+          <span class="hide-for-small-only">{{ 'section.preview'|trans }}</span>
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-settings"
+           title="{{ 'settings'|trans }}"
+           data-inject-call="{{ path('admin_maps_manager_settings', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-settings">
+          <i class="fi-wrench"></i>
+          <span class="hide-for-small-only">{{ 'settings'|trans }}</span>
+        </a>
+      </dd>
+    </dl>
+    <div class="tabs-content">
+      <div class="content" id="panel{{ section.id }}-preview">
+      </div>
+      <div class="content" id="panel{{ section.id }}-settings">
+      </div>
+    </div>
+  </div>
+</dd>
+{% endspaceless %}

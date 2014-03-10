@@ -49,6 +49,7 @@ section:
     channel: Vidéo
     html: Page
     form: Formulaire
+    maps: Carte
     dir: Dossier
     preview: Aperçu
     edit: Éditer le contenu
@@ -160,6 +161,9 @@ html:
     no.page: Aucunes pages dans cette section
     delete.section: Supprimer la section et tous ses contenus
     section.deleted: Une section a été supprimée
+
+maps:
+    no.map: Aucunes cartes dans cette section
 
 file:
     manager: Gestion des fichiers

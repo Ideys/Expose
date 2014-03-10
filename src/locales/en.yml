@@ -49,6 +49,7 @@ section:
     channel: Video
     html: Page
     form: Form
+    maps: Maps
     dir: Directory
     preview: Preview
     edit: Edit content
@@ -160,6 +161,9 @@ html:
     no.page: Aucunes pages dans cette section
     delete.section: Delete this section and all its content
     section.deleted: A section was deleted
+
+maps:
+    no.map: Aucunes cartes dans cette section
 
 file:
     manager: Files manager

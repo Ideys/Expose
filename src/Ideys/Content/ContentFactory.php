@@ -54,12 +54,14 @@ class ContentFactory
     const SECTION_CHANNEL   = 'channel';
     const SECTION_HTML      = 'html';
     const SECTION_FORM      = 'form';
+    const SECTION_MAPS      = 'maps';
     const SECTION_DIR       = 'dir';
 
     const ITEM_SLIDE        = 'slide';
     const ITEM_VIDEO        = 'video';
     const ITEM_PAGE         = 'page';
     const ITEM_FIELD        = 'field';
+    const ITEM_MAP          = 'map';
 
     /**
      * Constructor: inject required Silex dependencies.
@@ -389,6 +391,7 @@ class ContentFactory
             self::SECTION_CHANNEL,
             self::SECTION_HTML,
             self::SECTION_FORM,
+            self::SECTION_MAPS,
             self::SECTION_DIR,
         );
     }
@@ -405,6 +408,7 @@ class ContentFactory
             self::ITEM_VIDEO,
             self::ITEM_PAGE,
             self::ITEM_FIELD,
+            self::ITEM_MAP,
         );
     }
 

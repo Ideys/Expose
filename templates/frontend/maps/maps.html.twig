@@ -1,0 +1,22 @@
+{% extends "frontend/layout.html.twig" %}
+
+{% block body_class parent()~widgets.section_body_classes(section) %}
+
+{% block main -%}
+{% if section.hasItems %}
+
+{% else %}
+<p class="coming-soon">
+  {{ 'section.coming.soon'|trans }}
+</p>
+{% endif %}
+{%- endblock main %}
+
+{% block javascripts %}
+{{ parent() }}
+{% if section.custom_js|length %}
+<script>
+  {{ section.custom_js|raw }}
+</script>
+{% endif %}
+{% endblock javascripts %}

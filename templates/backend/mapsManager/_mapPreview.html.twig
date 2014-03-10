@@ -1,0 +1,6 @@
+{% spaceless %}
+{% if section.hasItems %}
+{% else %}
+  <p class="notice-empty">{{ 'maps.no.map'|trans }}</p>
+{% endif %}
+{% endspaceless %}
