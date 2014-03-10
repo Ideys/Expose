@@ -6,20 +6,14 @@
     }) }}
     <div class="row">
       <div class="medium-6 columns">
-      {{ form_row(edit_form.title) }}
-      {{ form_row(edit_form.description) }}
-      {{ form_row(edit_form.validation_message) }}
-      {{ form_row(edit_form.expose_section_id) }}
+        {{ form_row(edit_form.title) }}
+        {{ form_row(edit_form.description) }}
       </div>
       <div class="medium-6 columns">
-      {{ form_row(edit_form.visibility) }}
-      {{ form_row(edit_form.menu_pos) }}
-      {{ form_row(edit_form.custom_css) }}
-      {{ form_row(edit_form.custom_js) }}
-      <input type="submit" name="submit"
-             value="{{ 'submit'|trans }}" class="tiny right button">
+        {{ form_row(edit_form.validation_message, {'attr': {'rows': '3'} }) }}
       </div>
     </div>
+    {% include 'backend/contentManager/_commonSettings.html.twig' with {'edit_form': edit_form} only %}
     {{ form_end(edit_form) }}
   </div>
 </div>

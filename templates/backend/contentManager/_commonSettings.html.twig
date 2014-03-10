@@ -1,0 +1,23 @@
+{% spaceless %}
+<div class="row">
+  <div class="medium-6 columns">
+    {{ form_row(edit_form.expose_section_id) }}
+    {{ form_row(edit_form.visibility) }}
+  </div>
+  <div class="medium-6 columns">
+    <div class="text-right">
+      <button type="button" class="tiny secondary button"
+              data-display=".advanced-settings">
+        {{ 'advanced.settings'|trans }}
+      </button>
+    </div>
+    <div class="hidden advanced-settings">
+      {{ form_row(edit_form.menu_pos) }}
+      {{ form_row(edit_form.custom_css, {'attr': {'rows': '12'} }) }}
+      {{ form_row(edit_form.custom_js, {'attr': {'rows': '12'} }) }}
+    </div>
+    <input type="submit" name="submit"
+           value="{{ 'submit'|trans }}" class="tiny right button">
+  </div>
+</div>
+{% endspaceless %}

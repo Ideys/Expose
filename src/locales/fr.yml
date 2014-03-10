@@ -226,6 +226,7 @@ process: Traitement
 saved: Sauvegardé
 failed: Echec
 settings: Paramétrages
+advanced.settings: Options avancées
 select:
     all: Tout sélectionner
     none: Annuler
