@@ -26,6 +26,10 @@
     position: relative;
 }
 
+.section-title {
+    margin-right: 5px;
+}
+
 small.counter {
     color: #555;
 }

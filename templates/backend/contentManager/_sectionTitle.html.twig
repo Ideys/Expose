@@ -1,26 +1,26 @@
 {% spaceless %}
-{% set icons = {
+{% set typeIcons = {
     'gallery': 'photo',
     'channel': 'play-video',
     'html': 'page-filled',
     'form': 'checkbox'
 } %}
+{% set visibilityIcons = {
+    'public': 'link',
+    'private': 'lock',
+    'hidden': 'unlink',
+    'closed': 'prohibited'
+} %}
 <a href="#panel{{ section.id }}"
    data-click="#panel{{ section.id }} .tabs dd:first-child a">
   <span class="handle-section">&nbsp;</span>
-  <i class="fi-{{ icons[section.type] }} type-icon"></i>
-  {{ section.title }}
+  <i class="fi-{{ typeIcons[section.type] }} type-icon"></i>
+  <span class="section-title">{{ section.title }}</span>
   <small class="counter">{{ section.total_items }}</small>
   {% if section.homepage %}
     <i class="fi-home state-icon"></i>
-  {% elseif 'public' == section.visibility %}
-    <i class="fi-link state-icon"></i>
-  {% elseif 'private' == section.visibility %}
-    <i class="fi-lock state-icon"></i>
-  {% elseif 'hidden' == section.visibility %}
-    <i class="fi-unlink state-icon"></i>
-  {% elseif 'closed' == section.visibility %}
-    <i class="fi-prohibited state-icon"></i>
+  {% else %}
+    <i class="state-icon fi-{{ visibilityIcons[section.visibility] }}"></i>
   {% endif %}
 </a>
 {% endspaceless %}

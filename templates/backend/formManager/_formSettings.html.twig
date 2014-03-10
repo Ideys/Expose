@@ -1,3 +1,4 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 <div class="row">
   <div class="medium-12 columns">
@@ -13,7 +14,10 @@
         {{ form_row(edit_form.validation_message, {'attr': {'rows': '3'} }) }}
       </div>
     </div>
-    {% include 'backend/contentManager/_commonSettings.html.twig' with {'edit_form': edit_form} only %}
+    {% include 'backend/contentManager/_commonSettings.html.twig' with {
+        'edit_form': edit_form,
+        'widgets': widgets
+    } only %}
     {{ form_end(edit_form) }}
   </div>
 </div>

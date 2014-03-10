@@ -225,6 +225,27 @@ $(function(){
         });
         return false;
     })
+    .on('keyup', '#form_title', function() {
+        var sectionTitle = $(this).parents('.section').find('.section-title')
+          , newTitle = $(this).val()
+          ;
+
+        sectionTitle.text(newTitle);
+    })
+    .on('change', '#form_visibility', function() {
+        var section = $(this).parents('.section')
+          , stateIcon = section.find('.state-icon')
+          , visibility = $(this).val()
+          , visibilityIcons = {
+                'public': 'link',
+                'private': 'lock',
+                'hidden': 'unlink',
+                'closed': 'prohibited'
+            }
+          ;
+        section.prop('class', 'section active '+visibility+'-section');
+        stateIcon.prop('class', 'state-icon fi-'+visibilityIcons[visibility]);
+    })
     .on('change', '#form_gallery_mode', function() {
         var mode = $(this).val()
           , form = $(this).parents('form')

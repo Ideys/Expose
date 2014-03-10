@@ -16,8 +16,9 @@
       {{ form_row(edit_form.custom_css, {'attr': {'rows': '12'} }) }}
       {{ form_row(edit_form.custom_js, {'attr': {'rows': '12'} }) }}
     </div>
-    <input type="submit" name="submit"
-           value="{{ 'submit'|trans }}" class="tiny right button">
+    <div class="text-right">
+      {{ widgets.btn_ajax() }}
+    </div>
   </div>
 </div>
 {% endspaceless %}
