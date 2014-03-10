@@ -200,12 +200,22 @@ textarea {
     display: inline-block;
 }
 
-.orbit-next,
-.orbit-prev {
+.orbit-container .orbit-prev {
     display: none;
 }
 
-.orbit-container .orbit-slides-container > * .orbit-caption {
+.orbit-container .orbit-next {
+    display: block;
+    opacity: 0;
+    top: 0%;
+    left: 0%;
+    right: auto;
+    width: 100%;
+    height: 100%;
+    cursor: default;
+}
+
+body.gallery-slideshow .orbit-container .orbit-slides-container > * .orbit-caption {
     position: initial;
     background: none;
     color: #333;
@@ -265,6 +275,11 @@ body.gallery-fullscreen {
 
 .gallery-fullscreen .top-bar ul ul {
     opacity: 1;
+}
+
+body.gallery-fullscreen .orbit-container .orbit-slides-container > * .orbit-caption {
+    background: #333;
+    opacity: 0.4;
 }
 
 .thumb-list {
