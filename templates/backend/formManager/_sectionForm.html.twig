@@ -7,23 +7,29 @@
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-result"
+           title="{{ 'form.results'|trans }}"
            data-inject-call="{{ path('admin_form_manager_results', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-result">
-          {{ 'form.results'|trans }}
+          <i class="fi-results"></i>
+          <span class="hide-for-small-only">{{ 'form.results'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-edit"
+           title="{{ 'form.edit'|trans }}"
            data-inject-call="{{ path('admin_form_manager_edit', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-edit">
-          {{ 'form.edit'|trans }}
+          <i class="fi-pencil"></i>
+          <span class="hide-for-small-only">{{ 'form.edit'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-settings"
+           title="{{ 'settings'|trans }}"
            data-inject-call="{{ path('admin_form_manager_settings', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-settings">
-          {{ 'settings'|trans }}
+          <i class="fi-wrench"></i>
+          <span class="hide-for-small-only">{{ 'settings'|trans }}</span>
         </a>
       </dd>
     </dl>

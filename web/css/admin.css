@@ -7,6 +7,20 @@
     position: relative;
 }
 
+.tabs dd a {
+    display: inline-block;
+}
+
+.tabs dd a i {
+    margin: 0px 6px;
+    color: #555;
+}
+
+.tabs dd a span {
+    margin-right: 6px;
+    color: #555;
+}
+
 .content-section.single-section,
 .content-section dd a {
     position: relative;

@@ -7,29 +7,37 @@
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-list"
+           title="{{ 'section.gallery'|trans }}"
            data-inject-call="{{ path('admin_gallery_manager_list', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-list">
-          {{ 'section.gallery'|trans }}
+          <i class="fi-thumbnails"></i>
+          <span class="hide-for-small-only">{{ 'section.gallery'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-labels"
+           title="{{ 'gallery.labels'|trans }}"
            data-inject-call="{{ path('admin_gallery_manager_labels', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-labels">
-          {{ 'gallery.labels'|trans }}
+          <i class="fi-quote"></i>
+          <span class="hide-for-small-only">{{ 'gallery.labels'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-upload"
+           title="{{ 'gallery.upload'|trans }}"
            data-gallery-upload="#gallery-upload{{ section.id }}">
-          {{ 'gallery.upload'|trans }}
+          <i class="fi-upload-cloud"></i>
+          <span class="hide-for-small-only">{{ 'gallery.upload'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-settings"
+           title="{{ 'settings'|trans }}"
            data-inject-call="{{ path('admin_gallery_manager_settings', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-settings">
-          {{ 'settings'|trans }}
+          <i class="fi-wrench"></i>
+          <span class="hide-for-small-only">{{ 'settings'|trans }}</span>
         </a>
       </dd>
     </dl>

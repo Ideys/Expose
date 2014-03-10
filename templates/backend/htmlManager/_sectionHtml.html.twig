@@ -7,23 +7,29 @@
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-preview"
+           title="{{ 'section.preview'|trans }}"
            data-inject-call="{{ path('admin_html_manager_preview', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-preview">
-          {{ 'section.preview'|trans }}
+          <i class="fi-eye"></i>
+          <span class="hide-for-small-only">{{ 'section.preview'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-edit"
+           title="{{ 'section.edit'|trans }}"
            data-inject-call="{{ path('admin_html_manager_edit', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-edit">
-          {{ 'section.edit'|trans }}
+          <i class="fi-pencil"></i>
+          <span class="hide-for-small-only">{{ 'section.edit'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-settings"
+           title="{{ 'settings'|trans }}"
            data-inject-call="{{ path('admin_html_manager_settings', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-settings">
-          {{ 'settings'|trans }}
+          <i class="fi-wrench"></i>
+          <span class="hide-for-small-only">{{ 'settings'|trans }}</span>
         </a>
       </dd>
     </dl>
