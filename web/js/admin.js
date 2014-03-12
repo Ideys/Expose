@@ -232,6 +232,15 @@ $(function(){
 
         sectionTitle.text(newTitle);
     })
+    .on('change', '#form_maintenance', function() {
+        if ('1' === $(this).val()) {
+            $(this).addClass('active1');
+            $('#maintenance-indicator').removeClass('hidden');
+        } else {
+            $(this).removeClass('active1');
+            $('#maintenance-indicator').addClass('hidden');
+        }
+    })
     .on('change', '#form_visibility', function() {
         var section = $(this).parents('.section')
           , stateIcon = section.find('.state-icon')

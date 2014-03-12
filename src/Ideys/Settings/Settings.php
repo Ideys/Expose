@@ -26,6 +26,8 @@ class Settings
                 'name' => 'Ideys Expose',
                 'description' => 'Smart gallery',
                 'authorName' => 'Your Name',
+                'authorName' => 'Your Name',
+                'maintenance' => '0',
                 'analyticsKey' => '',
                 'verificationKey' => '',
                 'googleFonts' => '',

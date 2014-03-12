@@ -187,6 +187,11 @@ site:
     name: Nom du site
     description: Description du site
     author: Auteur
+    maintenance:
+        mode: Site en maintenance
+        message: |
+            Le site est actuellement en maintenance,
+            merci de revenir ultérieurement.
     style:
         layout: Mise en forme
         custom: Style personnalisé

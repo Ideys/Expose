@@ -72,6 +72,10 @@ class SettingsType
                 ),
                 'label'         => 'site.author',
             ))
+            ->add('maintenance', 'choice', array(
+                'choices'       => Settings::getIOChoices(),
+                'label'         => 'site.maintenance.mode',
+            ))
             ->add('analyticsKey', 'text', array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 6)),

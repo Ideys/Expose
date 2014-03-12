@@ -10,6 +10,7 @@ $frontendController = $app['controllers_factory'];
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $contentFactory = new ContentFactory($app);
+    $settings = new \Ideys\Settings\Settings($app['db']);
 
     if (null === $slug) {
         $section = $contentFactory->findHomepage($slug);
@@ -19,6 +20,14 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
 
     if (!$section) {
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+
+    if (!$section->isHomepage() && $settings->maintenance
+            && (false === $app['security']->isGranted('ROLE_ADMIN')) ) {
+        $app['session']
+            ->getFlashBag()
+            ->add('warning', $app['translator']->trans('site.maintenance.message'));
+        return $app->redirect($app['url_generator']->generate('homepage'));
     }
 
     if ($section->isPrivate() && (false === $app['security']->isGranted('ROLE_USER'))

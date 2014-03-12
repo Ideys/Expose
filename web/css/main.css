@@ -115,6 +115,10 @@ textarea {
    right: 30px;
 }
 
+#maintenance-indicator {
+    color: #d8432e;
+}
+
 /*
  * UI main elements
  */

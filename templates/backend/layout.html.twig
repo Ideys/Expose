@@ -34,6 +34,8 @@
         <li>
           <a href="{{ path('admin_site_settings') }}">
             {{ 'site.settings'|trans }}
+            <i id="maintenance-indicator"
+               class="fi-flag{% if not site.maintenance %} hidden{% endif %}"></i>
           </a>
         </li>
       {% endif %}

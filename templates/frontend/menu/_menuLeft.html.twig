@@ -2,6 +2,7 @@
 <div class="sidebar">
   <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
   <ul class="side-nav">
+    {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
     {% for section in sections
         if section.visibility not in ['hidden', 'closed']
        and section.homepage == 0 %}
@@ -28,6 +29,7 @@
         {% endif %}
       {% endif %}
     {% endfor %}
+    {% endif %}
     <li class="divider"></li>
     {% if 'menu' == site.adminLink %}
     <li>
