@@ -61,7 +61,7 @@ class ContentFactory
     const ITEM_VIDEO        = 'video';
     const ITEM_PAGE         = 'page';
     const ITEM_FIELD        = 'field';
-    const ITEM_MAP          = 'map';
+    const ITEM_PLACE        = 'place';
 
     /**
      * Constructor: inject required Silex dependencies.
@@ -408,7 +408,7 @@ class ContentFactory
             self::ITEM_VIDEO,
             self::ITEM_PAGE,
             self::ITEM_FIELD,
-            self::ITEM_MAP,
+            self::ITEM_PLACE,
         );
     }
 

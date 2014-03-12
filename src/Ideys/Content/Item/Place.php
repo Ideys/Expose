@@ -5,9 +5,9 @@ namespace Ideys\Content\Item;
 use Ideys\Content\ContentInterface;
 
 /**
- * Map item class.
+ * Maps places item class.
  */
-class Map extends Item implements ContentInterface
+class Place extends Item implements ContentInterface
 {
     /**
      * {@inheritdoc}
