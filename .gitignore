@@ -8,13 +8,13 @@ Desktop.ini
 .DS_Store
 
 # Silex
-/var/*
-/vendor/*
+/var/
+/vendor/
 composer.lock
 
 # User assets
-/downloads/*
-/web/gallery/*
+/downloads/
+/web/gallery/
 
 # Others
 [Bb]in
