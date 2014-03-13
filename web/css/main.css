@@ -105,6 +105,10 @@ textarea {
     z-index: 100;
 }
 
+.top-bar-section ul {
+    background: transparent;
+}
+
 .side-nav li.divider {
     border-top-color: #fff;
 }
