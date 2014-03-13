@@ -242,8 +242,8 @@ $(function(){
         }
     })
     .on('change', '#form_contactSection', function() {
-        var contactContentWrapper = $('#form_contactContent').parent('div')
-          , sendToWrapper = $('#form_contactSendToEmail').parent('div')
+        var contactContentWrapper = $('#contact-content-wrapper')
+          , sendToWrapper = $('#contact-sendto-wrapper')
           ;
         contactContentWrapper.removeClass('hidden');
         sendToWrapper.removeClass('hidden');

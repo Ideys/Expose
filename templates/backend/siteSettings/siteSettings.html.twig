@@ -49,15 +49,11 @@
     <fieldset>
       <legend>{{ 'contact.contact'|trans }}</legend>
       {{ form_row(form.contactSection) }}
-      {% set contact_section_class = (site.contactSection == 'disabled') ? 'hidden' : '' %}
-      {% set contact_sendto_class = (site.contactSection in ['no.form', 'disabled']) ? 'hidden' : '' %}
-      {{ form_row(form.contactContent, {'attr': {
-        'rows': '12',
-        'class': contact_section_class
-      }, 'label_attr': {'class': contact_section_class} }) }}
-      {{ form_row(form.contactSendToEmail, {'attr': {
-        'class': contact_sendto_class
-      }, 'label_attr': {'class': contact_sendto_class} }) }}
+      <div id="contact-content-wrapper"{% if site.contactSection == 'disabled' %} class="hidden"{% endif %}>
+        {{ form_row(form.contactContent, {'attr': {'rows': '12'} }) }}
+      </div>
+      <div id="contact-sendto-wrapper"{% if site.contactSection in ['no.form', 'disabled'] %} class="hidden"{% endif %}>
+        {{ form_row(form.contactSendToEmail) }}
       </div>
     </fieldset>
     <div class="hidden">
