@@ -241,6 +241,20 @@ $(function(){
             $('#maintenance-indicator').addClass('hidden');
         }
     })
+    .on('change', '#form_contactSection', function() {
+        var contactContentWrapper = $('#form_contactContent').parent('div')
+          , sendToWrapper = $('#form_contactSendToEmail').parent('div')
+          ;
+        contactContentWrapper.removeClass('hidden');
+        sendToWrapper.removeClass('hidden');
+
+        switch ($(this).val()) {
+            case 'disabled':
+                contactContentWrapper.addClass('hidden');
+            case 'no.form':
+                sendToWrapper.addClass('hidden');
+        }
+    })
     .on('change', '#form_visibility', function() {
         var section = $(this).parents('.section')
           , stateIcon = section.find('.state-icon')

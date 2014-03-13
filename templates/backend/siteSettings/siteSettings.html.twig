@@ -1,7 +1,9 @@
 {% extends "backend/layout.html.twig" %}
 
 {% block main -%}
-{{ form_start(form) }}
+{{ form_start(form, {
+      'action': path('admin_site_settings')
+}) }}
 <div class="row">
   <div class="small-12 large-6 columns">
     {{ form_errors(form) }}
@@ -46,9 +48,17 @@
     </fieldset>
     <fieldset>
       <legend>{{ 'contact.contact'|trans }}</legend>
-      {{ form_row(form.contactContent, {'attr': {'rows': '12'} }) }}
-      {{ form_row(form.contactSendToEmail) }}
       {{ form_row(form.contactSection) }}
+      {% set contact_section_class = (site.contactSection == 'disabled') ? 'hidden' : '' %}
+      {% set contact_sendto_class = (site.contactSection in ['no.form', 'disabled']) ? 'hidden' : '' %}
+      {{ form_row(form.contactContent, {'attr': {
+        'rows': '12',
+        'class': contact_section_class
+      }, 'label_attr': {'class': contact_section_class} }) }}
+      {{ form_row(form.contactSendToEmail, {'attr': {
+        'class': contact_sendto_class
+      }, 'label_attr': {'class': contact_sendto_class} }) }}
+      </div>
     </fieldset>
     <div class="hidden">
       {{ form_rest(form) }}
