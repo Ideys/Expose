@@ -40,7 +40,7 @@
 {{ parent() }}
 {% if section.custom_css|length %}
   <style>
-    {{ section.custom_css }}
+    {{ section.custom_css|raw }}
   </style>
 {% endif %}
 {% endblock head %}
