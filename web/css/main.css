@@ -229,7 +229,7 @@ body.gallery-slideshow .orbit-container .orbit-slides-container > * .orbit-capti
     color: #333;
 }
 
-.background-black
+body.gallery-slideshow.background-black
 .orbit-container .orbit-slides-container > * .orbit-caption {
     color: #eee;
 }
