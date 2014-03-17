@@ -96,6 +96,17 @@ $contentManagerController->get('/{id}/homepage', function ($id) use ($app) {
 ->bind('admin_content_manager_define_homepage')
 ;
 
+$contentManagerController->get('/{id}/archive', function ($id) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $contentFactory->switchArchive($id);
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+})
+->assert('id', '\d+')
+->bind('admin_content_manager_archive')
+;
+
 $contentManagerController->match('/{id}/edit/dir', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);

@@ -1,40 +1,55 @@
 {% spaceless %}
 {% if not section.homepage %}
-<a class="button tiny secondary"
-   href="{{ path('admin_content_manager_define_homepage', {'id': section.id}) }}">
-  {{ 'section.define.as.homepage'|trans }}
-</a>
-{{ form_start(delete_form, {
-  'action': action_path
-}) }}
-  <ul id="delete-safety-pin{{ section.id }}"
-      class="button-group">
-    <li>
-      <button type="button"
-              data-display="#delete-form{{ section.id }},#delete-safety-pin{{ section.id }}"
-              class="tiny alert button">
-        {{ 'delete'|trans }}
-      </button>
-    </li>
-    <li>
-      <p class="safety-pin-info">{{ info|trans }}</p>
-    </li>
-  </ul>
-  <ul id="delete-form{{ section.id }}"
-      class="button-group hidden">
-    <li>
-      <button type="button"
-              data-display="#delete-form{{ section.id }},#delete-safety-pin{{ section.id }}"
-              class="tiny secondary button">
-        {{ 'cancel'|trans }}
-      </button>
-    </li>
-    <li>
-      <input type="submit"
-             value="{{ 'delete'|trans }}"
-             class="tiny alert button">
-    </li>
-  </ul>
-{{ form_end(delete_form) }}
+<ul class="button-group">
+  <li>
+    <a class="button tiny secondary"
+       title="{{ 'section.define.as.homepage'|trans }}"
+       href="{{ path('admin_content_manager_define_homepage', {'id': section.id}) }}">
+        <i class="fi-home"></i>
+    </a>
+  </li>
+  <li>
+    <a class="button tiny secondary"
+       title="{{ 'archive'|trans }}"
+       href="{{ path('admin_content_manager_archive', {'id': section.id}) }}">
+        <i class="fi-archive"></i>
+    </a>
+  </li>
+  <li>
+    {{ form_start(delete_form, {
+      'action': action_path
+    }) }}
+      <ul id="delete-safety-pin{{ section.id }}"
+          class="button-group">
+        <li>
+          <button type="button"
+                  title="{{ 'delete'|trans }}"
+                  data-display="#delete-form{{ section.id }},#delete-safety-pin{{ section.id }}"
+                  class="tiny alert button">
+            <i class="fi-x"></i>
+          </button>
+        </li>
+        <li>
+          <p class="safety-pin-info">{{ info|trans }}</p>
+        </li>
+      </ul>
+      <ul id="delete-form{{ section.id }}"
+          class="button-group hidden">
+        <li>
+          <button type="button"
+                  data-display="#delete-form{{ section.id }},#delete-safety-pin{{ section.id }}"
+                  class="tiny secondary button">
+            {{ 'cancel'|trans }}
+          </button>
+        </li>
+        <li>
+          <input type="submit"
+                 value="{{ 'delete'|trans }}"
+                 class="tiny alert button">
+        </li>
+      </ul>
+    {{ form_end(delete_form) }}
+  </li>
+</ul>
 {% endif %}
 {% endspaceless %}

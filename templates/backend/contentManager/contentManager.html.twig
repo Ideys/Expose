@@ -36,7 +36,7 @@
   <div id="content-sections"
        data-sort-url="{{ path('admin_content_manager_sort_sections') }}"
        class="large-12 columns">
-    {% for section in sections %}
+    {% for section in sections if section.archive == 0 %}
       {% if 'dir' == section.type %}
       <div class="content-section dir-sections" data-id="{{ section.id }}">
         {% include "backend/dirManager/_dirTitle.html.twig" with {'section': section} only %}

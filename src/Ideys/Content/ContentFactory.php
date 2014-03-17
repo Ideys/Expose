@@ -41,7 +41,8 @@ class ContentFactory
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.custom_css, s.custom_js,
-               s.homepage, s.menu_pos, s.visibility, s.hierarchy,
+               s.homepage, s.menu_pos, s.visibility,
+               s.hierarchy, s.archive,
                t.title, t.description, t.parameters, t.language,
                COUNT(i.id) AS total_items
         FROM expose_section AS s
@@ -197,6 +198,19 @@ class ContentFactory
     }
 
     /**
+     * Archive or restore a section.
+     *
+     * @param integer $sectionId
+     */
+    public function switchArchive($sectionId)
+    {
+        $this->db->executeQuery('UPDATE expose_section SET archive = NOT archive '
+          . 'WHERE id = :id',
+            array('id' => $sectionId)
+        );
+    }
+
+    /**
      * Persist a new section.
      *
      * @param \Ideys\Content\Section\Section $section
@@ -217,6 +231,7 @@ class ContentFactory
             'homepage' => $section->homepage,
             'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
+            'archive' => 0,
             'hierarchy' => $incr,
         ) + $this->blameAndTimestampData(0));
 

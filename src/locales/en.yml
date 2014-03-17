@@ -228,6 +228,7 @@ cancel: Cancel
 actions: Actions
 edit: Edit
 delete: Delete
+archive: Archive
 move: Move
 add: Add
 remove: Remove
