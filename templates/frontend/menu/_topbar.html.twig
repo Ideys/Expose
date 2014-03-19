@@ -11,13 +11,13 @@
   <section class="top-bar-section">
     {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
     <ul class="left">
-      {% include "frontend/menu/_menuTopLinks.html.twig" with {'menu_pos': 'main'} only %}
+      {% include "frontend/menu/_topLinks.html.twig" with {'menu_pos': 'main'} only %}
     </ul>
     {% endif %}
     <ul class="right">
       <li class="divider show-for-small"></li>
       {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
-        {% include "frontend/menu/_menuTopLinks.html.twig" with {'menu_pos': 'second'} only %}
+        {% include "frontend/menu/_topLinks.html.twig" with {'menu_pos': 'second'} only %}
       {% endif %}
       {% if 'menu' == site.adminLink %}
       <li>

@@ -22,16 +22,21 @@
 
 {% block content -%}
 {% if 'top' == site.menuPosition %}
-  {% set content_classes = '' %}
-  {% include "frontend/menu/_menuTop.html.twig" only %}
+  {% include "frontend/menu/_topbar.html.twig" only %}
+{% elseif 'left' == site.menuPosition %}
+  <div class="off-canvas-wrap">
+    <div class="inner-wrap">
+    {% include "frontend/menu/_sidebar.html.twig" only %}
 {% endif %}
+    <section id="content"
+             {% if 'left' == site.menuPosition %}
+             class="main-section large-10 medium-9 columns"
+             {% endif %}>
+      {% block main %}{% endblock %}
+    </section>
 {% if 'left' == site.menuPosition %}
-  {% set content_classes = 'large-9 medium-8 columns' %}
-  <div class="large-3 medium-4 columns">
-    {% include "frontend/menu/_menuLeft.html.twig" only %}
+    <a class="exit-off-canvas"></a>
+    </div>
   </div>
 {% endif %}
-  <div id="content" class="{{ content_classes }}">
-    {% block main %}{% endblock %}
-  </div>
 {%- endblock content%}
