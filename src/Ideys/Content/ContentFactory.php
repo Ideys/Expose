@@ -225,7 +225,7 @@ class ContentFactory
         $this->db->insert('expose_section', array(
             'expose_section_id' => $section->expose_section_id,
             'type' => $section->type,
-            'slug' => $this->uniqueSlug($section->title),
+            'slug' => $this->uniqueSlug($section),
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
             'homepage' => $section->homepage,
@@ -256,7 +256,7 @@ class ContentFactory
     {
         // Update section
         $this->db->update('expose_section', array(
-            'slug' => $this->uniqueSlug($section->title, $section->id),
+            'slug' => $this->uniqueSlug($section),
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
             'menu_pos' => $section->menu_pos,
@@ -281,13 +281,20 @@ class ContentFactory
      *
      * @return string
      */
-    protected function uniqueSlug($title, $id = 0)
+    protected function uniqueSlug(Section\Section $section)
     {
+        $title = $section->title;
+
+        // Add a "-dir" suffix to dir sections.
+        if ($section->type === self::SECTION_DIR) {
+            $title .= '-dir';
+        }
+
         $slug = \Ideys\String::slugify($title);
 
         $sections = $this->db->fetchAll(
             'SELECT slug FROM expose_section WHERE slug LIKE ? AND id != ?',
-            array($slug.'%', $id)
+            array($slug.'%', $section->id)
         );
 
         $namesakes = array();
