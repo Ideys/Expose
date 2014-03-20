@@ -86,12 +86,12 @@ $frontendController->get('/', $frontendContent)
 ->bind('homepage')
 ;
 
-$frontendController->match('/theme/{slug}', $frontendContent)
+$frontendController->match('/c/{slug}', $frontendContent)
 ->bind('section')
 ->method('GET|POST')
 ;
 
-$frontendController->match('/theme/{slug}/{itemSlug}', $frontendContent)
+$frontendController->match('/c/{slug}/{itemSlug}', $frontendContent)
 ->bind('section_item')
 ->method('GET|POST')
 ;
