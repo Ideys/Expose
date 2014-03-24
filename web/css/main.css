@@ -208,18 +208,9 @@ textarea {
     display: inline-block;
 }
 
-.orbit-container .orbit-prev {
-    display: none;
-}
-
-.orbit-container .orbit-next {
-    display: block;
-    opacity: 0;
-    top: 0%;
-    left: 0%;
-    right: auto;
-    width: 100%;
-    height: 100%;
+.orbit-next,
+.orbit-prev {
+    visibility: hidden;
     cursor: default;
 }
 
