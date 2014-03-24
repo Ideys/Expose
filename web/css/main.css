@@ -290,23 +290,51 @@ body.gallery-fullscreen .orbit-container .orbit-slides-container > * .orbit-capt
     opacity: 0.4;
 }
 
-.thumb-list {
+/* Gallery fullscreen thumbs */
+#slide-thumbs {
+    width: 100%;
     position: fixed;
     bottom: 0px;
-    left: 0px;
-    margin: 0px;
-    width: 100%;
-    background: #fff;
-    z-index: 20;
+    z-index: 100;
 }
 
-.thumb-list img {
+#slide-thumbs .scroll-link {
+    min-width: 75px;
+    width: 10%;
+    height: 100%;
+    position: absolute;
+    z-index: 200;
+}
+
+#slide-thumbs .scroll-left {
+    background-color: #ccc;
+    left: 0;
+    cursor: url("cursors/cursor_arrow_left.png"),
+        url("cursors/cursor_arrow_left.cur"), w-resize;
+}
+
+#slide-thumbs .scroll-right {
+    background-color: #ccc;
+    right: 0;
+    cursor: url("cursors/cursor_arrow_right.png"),
+        url("cursors/cursor_arrow_right.cur"), e-resize;
+}
+
+#slide-thumbs div.scroll-area a {
+    display: block;
+    position: relative;
+    float: left;
+    margin: 0;
+    padding: 0;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+}
+
+#slide-thumbs div.scroll-area a img {
     height: 15vh;
-    max-width: none;
-}
-
-.background-black .thumb-list {
-    background: #000;
 }
 
 /*
