@@ -38,6 +38,7 @@ class Gallery extends Section implements ContentInterface
             'extended' => '0',
             'thumb_list' => '0',
             'grid_rows' => '1',
+            'grid_rows_small' => '1',
             'global_legend' => '',
             'shuffle' => '0',
         );
@@ -173,6 +174,10 @@ class Gallery extends Section implements ContentInterface
                 'label' => 'gallery.grid.rows',
                 'choices' => static::getGalleryGridRowsChoice(),
             ))
+            ->add('grid_rows_small', 'choice', array(
+                'label' => 'gallery.grid.rows.small',
+                'choices' => static::getGalleryGridRowsChoice(3),
+            ))
             ->add('global_legend', 'textarea', array(
                 'label' => 'gallery.global.legend',
                 'required' => false,
@@ -296,10 +301,10 @@ class Gallery extends Section implements ContentInterface
      *
      * @return array
      */
-    public static function getGalleryGridRowsChoice()
+    public static function getGalleryGridRowsChoice($max = 12)
     {
         $rows = array();
-        foreach (range(1, 12) as $row) {
+        foreach (range(1, $max) as $row) {
             $rows[(string)$row] = 'gallery.grid.rows'.$row;
         }
         return $rows;

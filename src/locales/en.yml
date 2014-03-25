@@ -108,6 +108,7 @@ gallery:
         link: Image link
     grid:
         rows: Gallery rows
+        rows.small: Gallery rows (Small screens)
         rows1: One picture by line
         rows2: Two pictures by line
         rows3: Three pictures by line
