@@ -104,6 +104,7 @@ gallery:
         mode: Slider mode
         slide: Slide
         fade: Fade
+        shuffle: Random order
     grid:
         rows: Gallery rows
         rows1: One picture by line

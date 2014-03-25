@@ -68,6 +68,7 @@ abstract class Section
      * Return section items.
      *
      * @param string $name
+     *
      * @return array
      */
     public function getItems()

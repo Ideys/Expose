@@ -104,6 +104,7 @@ gallery:
         mode: Type de défilement
         slide: Défilement
         fade: Fondu
+        shuffle: Ordre aléatoire
     grid:
         rows: Images par ligne
         rows1: Une image

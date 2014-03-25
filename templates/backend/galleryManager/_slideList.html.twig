@@ -74,12 +74,20 @@
     </li>
   </ul>
 </div>
-{% if section.items|length %}
+<div class="text-right section-info">
+{% if section.shuffle %}
+  <span class="secondary round label">
+    <i class="fi-shuffle"></i>
+    {{ 'gallery.slide.shuffle'|trans }}
+  </span>
+{% endif %}
+</div>
+{% if section.hasItems %}
 <ul id="slides-{{ section.id }}"
     class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid"
     data-selected=""
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
-  {% for slide in section.items %}
+  {% for slide in section.itemsRealHierarchy %}
   <li data-selectable data-id="{{ slide.id }}">
     <img class="th handle"
          src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">

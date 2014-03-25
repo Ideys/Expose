@@ -23,6 +23,7 @@
         <div class="for-mode for-vertical{% if section.gallery_mode != 'vertical' %} hidden{% endif %}">
           {{ form_row(edit_form.grid_rows) }}
         </div>
+        {{ form_row(edit_form.shuffle) }}
       </div>
     </div>
     {% include 'backend/contentManager/_commonSettings.html.twig' with {

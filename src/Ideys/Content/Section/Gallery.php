@@ -13,7 +13,19 @@ use Imagine\Image\ImagineInterface;
  */
 class Gallery extends Section implements ContentInterface
 {
+    /**
+     * Slides thumbs sizes.
+     *
+     * @var array
+     */
     private $thumbSizes = array(1200, 220);
+
+    /**
+     * Define if shuffle mode is activated.
+     *
+     * @var boolean
+     */
+    private $shuffleOn = false;
 
     /**
      * {@inheritdoc}
@@ -27,6 +39,7 @@ class Gallery extends Section implements ContentInterface
             'thumb_list' => '0',
             'grid_rows' => '1',
             'global_legend' => '',
+            'shuffle' => '0',
         );
     }
 
@@ -38,6 +51,37 @@ class Gallery extends Section implements ContentInterface
     public static function getGalleryDir()
     {
         return WEB_DIR.'/gallery';
+    }
+
+    /**
+     * Return gallery slides,
+     * trigger shuffle mode if set.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        if ($this->shuffle && !$this->shuffleOn) {
+            shuffle($this->items);
+            $this->shuffleOn = true;
+        }
+
+        return $this->items;
+    }
+
+    /**
+     * Return gallery slides without shuffle mode
+     * even if it was set.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    public function getItemsRealHierarchy()
+    {
+        return $this->items;
     }
 
     /**
@@ -132,6 +176,10 @@ class Gallery extends Section implements ContentInterface
             ->add('global_legend', 'textarea', array(
                 'label' => 'gallery.global.legend',
                 'required' => false,
+            ))
+            ->add('shuffle', 'choice', array(
+                'label' => 'gallery.slide.shuffle',
+                'choices' => \Ideys\Settings\Settings::getIOChoices(),
             ))
         ;
 
