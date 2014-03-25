@@ -239,7 +239,7 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
-     * Test if gallery is in a slideshow mode
+     * Test if gallery is in a slideshow mode.
      *
      * @return boolean
      */
@@ -248,6 +248,18 @@ class Gallery extends Section implements ContentInterface
         return in_array($this->getParameter('gallery_mode'), array(
             'slideshow',
             'fullscreen',
+        ));
+    }
+
+    /**
+     * Test if gallery slides could have a link on current mode.
+     *
+     * @return boolean
+     */
+    public function isLinkable()
+    {
+        return in_array($this->getParameter('gallery_mode'), array(
+            'vertical',
         ));
     }
 

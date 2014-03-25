@@ -41,6 +41,14 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
             'attr' => array(
                 'placeholder' => 'section.description',
             ),
+        ))
+        ->add('link'.$slide->id, 'text', array(
+            'required'      => false,
+            'label'         => 'gallery.slide.link',
+            'data'          => $slide->link,
+            'attr' => array(
+                'placeholder' => 'gallery.slide.link',
+            ),
         ));
     }
     $form = $formBuilder->getForm();
@@ -52,7 +60,8 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
             $contentFactory->updateItemTitle(
                 $slide->id,
                 $data['title'.$slide->id],
-                $data['description'.$slide->id]
+                $data['description'.$slide->id],
+                $data['link'.$slide->id]
             );
         }
         return $app->redirect(

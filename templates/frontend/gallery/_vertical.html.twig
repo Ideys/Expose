@@ -4,9 +4,15 @@
     <ul class="small-block-grid-1 medium-block-grid-{{ section.grid_rows }}">
       {% for slide in section.items %}
         <li class="text-center">
+          {% if slide.link|length %}
+          <a href="{{ slide.link }}" title="{{ slide.title|e }}" target="_blank">
+          {% endif %}
           <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
                alt="{{ slide.title|e }}">
+          {% if slide.link|length %}
+          </a>
           {{ widgets.gallery_slide_legend(slide, section) }}
+          {% endif %}
         </li>
       {% endfor %}
     </ul>

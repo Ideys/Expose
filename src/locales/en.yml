@@ -105,6 +105,7 @@ gallery:
         slide: Slide
         fade: Fade
         shuffle: Random order
+        link: Image link
     grid:
         rows: Gallery rows
         rows1: One picture by line

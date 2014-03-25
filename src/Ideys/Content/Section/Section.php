@@ -190,7 +190,8 @@ abstract class Section
     private function hydrateItems()
     {
         $sql =
-           'SELECT i.*, t.title, t.description, t.content, t.parameters, t.language
+           'SELECT i.*, t.title, t.description, t.content,
+            t.link, t.parameters, t.language
             FROM expose_section_item AS i
             LEFT JOIN expose_section_item_trans AS t
             ON t.expose_section_item_id = i.id

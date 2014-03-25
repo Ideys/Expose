@@ -26,6 +26,9 @@
         <fieldset>
           {{ form_widget(form['description'~slide.id], {'attr': {'rows': '2'} }) }}
           {{ form_widget(form['title'~slide.id]) }}
+          {% if section.isLinkable %}
+          {{ form_widget(form['link'~slide.id]) }}
+          {% endif %}
         </fieldset>
       </div>
     </div>

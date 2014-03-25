@@ -384,16 +384,15 @@ class ContentFactory
      * @param string  $title
      * @param string  $description
      */
-    public function updateItemTitle($id, $title, $description = null)
+    public function updateItemTitle($id, $title, $description, $link)
     {
-        $data = array('title' => $title);
-        if (null !== $description) {
-            $data += array('description' => $description);
-        }
-
         $this->db->update(
             'expose_section_item_trans',
-            $data,
+            array(
+                'title' => $title,
+                'description' => $description,
+                'link' => $link,
+            ),
             array(
                 'expose_section_item_id' => $id,
                 'language' => $this->language,

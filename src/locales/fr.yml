@@ -105,6 +105,7 @@ gallery:
         slide: Défilement
         fade: Fondu
         shuffle: Ordre aléatoire
+        link: Lien de l'image
     grid:
         rows: Images par ligne
         rows1: Une image

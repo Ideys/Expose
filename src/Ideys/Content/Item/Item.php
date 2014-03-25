@@ -22,6 +22,7 @@ abstract class Item
         'title' => null,
         'description' => null,
         'content' => null,
+        'link' => null,
         'path' => null,
         'parameters' => '',
         'language' => null,
