@@ -30,6 +30,10 @@
     margin-right: 5px;
 }
 
+.section-info {
+    margin-bottom: 8px;
+}
+
 small.counter {
     color: #555;
 }
@@ -62,14 +66,16 @@ input.clipboard {
  * Dir title
  */
 
-.dir-title {
+.dir-title.row {
     height: 45px;
 }
 
-.dir-title h3 {
-    width: 60%;
-    float: left;
+.dir-title .dir-toggle {
     cursor: pointer;
+}
+
+.dir-title .dir-toggle-indicator {
+    color: #e3e3e3;
 }
 
 .dir-title .dir-actions {
@@ -81,10 +87,6 @@ input.clipboard {
     padding: 7px 6px;
     font-size: 14px;
     margin: 4px 0px;
-}
-
-.dir-title .dir-actions .dir-toggle-indicator {
-    color: #e3e3e3;
 }
 
 /*
