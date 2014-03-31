@@ -19,6 +19,19 @@ $htmlManagerController->get('/{id}/preview', function (Request $request, $id) us
 ->bind('admin_html_manager_preview')
 ;
 
+$htmlManagerController->get('/{id}/display-preview', function ($id) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+
+    return $app['twig']->render('frontend/html/html.html.twig', array(
+      'section' => $section,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_html_manager_display_preview')
+;
+
 $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);

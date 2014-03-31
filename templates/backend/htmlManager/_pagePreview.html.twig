@@ -13,7 +13,7 @@
 {% endif %}
 {% if section.hasItems %}
   <iframe class="page-preview"
-          src="{{ path('section', {'slug': section.slug}) }}"
+          src="{{ path('admin_html_manager_display_preview', {'id': section.id}) }}"
           seamless></iframe>
 {% else %}
   <p class="notice-empty">{{ 'html.no.page'|trans }}</p>
