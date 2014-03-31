@@ -37,30 +37,13 @@
        data-sort-url="{{ path('admin_content_manager_sort_sections') }}"
        class="large-12 columns">
     {% for section in sections if section.archive == 0 %}
-      {% if 'dir' == section.type %}
-      <div class="content-section dir-sections" data-id="{{ section.id }}">
-        {% include "backend/dirManager/_dirTitle.html.twig" with {'section': section} only %}
-        <dl class="accordion dir-content hidden" data-accordion>
-          {% for section in section.sections %}
-            {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
-                  with {'section': section} only %}
-          {% else %}
-            <p class="notice-empty">{{ 'dir.empty'|trans }}</p>
-          {% endfor %}
-        </dl>
-        <hr>
-      </div>
-      {% else %}
-      <div class="content-section single-section" data-id="{{ section.id }}">
-        <span class="handle-section">&nbsp;</span>
-        <dl class="accordion" data-accordion>
-          {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
-                with {'section': section} only %}
-        </dl>
-        <hr>
-      </div>
-      {% endif %}
+      {% include "backend/contentManager/_sectionRow.html.twig" with {'section': section} only %}
     {% endfor %}
+    <a href="{{ path('admin_content_manager_archives') }}"
+       style="color: #aaa">
+      <i class="fi-archive"></i>&nbsp;
+      {{ 'archives'|trans }}
+    </a>
   </div>
 </div>
 {%- endblock main %}

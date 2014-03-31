@@ -32,6 +32,14 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
+$contentManagerController->match('/archives', function () use ($app) {
+
+    return $app['twig']->render('backend/contentManager/archives.html.twig');
+})
+->bind('admin_content_manager_archives')
+->method('GET')
+;
+
 $contentManagerController->post('/sort/sections', function (Request $request) use ($app) {
 
     $hierarchy = $request->get('hierarchy');

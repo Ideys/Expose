@@ -1,0 +1,25 @@
+{% spaceless%}
+{% if 'dir' == section.type %}
+<div class="content-section dir-sections" data-id="{{ section.id }}">
+  {% include "backend/dirManager/_dirTitle.html.twig" with {'section': section} only %}
+  <dl class="accordion dir-content hidden" data-accordion>
+    {% for section in section.sections %}
+      {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
+            with {'section': section} only %}
+    {% else %}
+      <p class="notice-empty">{{ 'dir.empty'|trans }}</p>
+    {% endfor %}
+  </dl>
+  <hr>
+</div>
+{% else %}
+<div class="content-section single-section" data-id="{{ section.id }}">
+  <span class="handle-section">&nbsp;</span>
+  <dl class="accordion" data-accordion>
+    {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
+          with {'section': section} only %}
+  </dl>
+  <hr>
+</div>
+{% endif %}
+{% endspaceless %}

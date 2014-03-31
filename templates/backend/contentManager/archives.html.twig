@@ -1,0 +1,25 @@
+{% extends "backend/layout.html.twig" %}
+
+{% block main -%}
+<div class="row">
+  <div class="large-12 columns">
+    <h3>{{ 'archives'|trans }}</h3>
+  </div>
+</div>
+<div class="row">
+  <div id="content-sections"
+       data-sort-url="{{ path('admin_content_manager_sort_sections') }}"
+       class="large-12 columns">
+    {% for section in sections if section.archive == 1 %}
+      {% include "backend/contentManager/_sectionRow.html.twig" with {'section': section} only %}
+    {% endfor %}
+  </div>
+</div>
+{%- endblock main %}
+
+{% block javascripts %}
+{{ parent() }}
+<script src="{{ app.request.basepath }}/js/vendor/jquery.ui.widget.js"></script>
+<script src="{{ app.request.basepath }}/js/vendor/jquery.iframe-transport.js"></script>
+<script src="{{ app.request.basepath }}/js/vendor/jquery.fileupload.js"></script>
+{% endblock javascripts %}
