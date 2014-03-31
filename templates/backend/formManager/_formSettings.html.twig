@@ -3,6 +3,7 @@
 <div class="row">
   <div class="medium-12 columns">
     {{ form_start(edit_form, {
+      'attr': {'id': 'section-settings'},
       'action': path('admin_form_manager_settings', {'id': section.id})
     }) }}
     <div class="row">

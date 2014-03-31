@@ -225,7 +225,7 @@ $(function(){
         });
         return false;
     })
-    .on('keyup', '#form_title', function() {
+    .on('keyup', '#section-settings #form_title', function() {
         var sectionTitle = $(this).parents('.section').find('.section-title')
           , newTitle = $(this).val()
           ;

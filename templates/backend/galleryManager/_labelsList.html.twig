@@ -35,6 +35,9 @@
   </li>
   {% endfor %}
 </ul>
+<div class="hide">
+  {{ form_rest(form) }}
+</div>
 {{ widgets.btn_ajax() }}
 {{ form_end(form) }}
 {% else %}
