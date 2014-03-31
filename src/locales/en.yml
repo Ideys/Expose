@@ -233,6 +233,7 @@ edit: Edit
 delete: Delete
 archive: Archive
 archives: Archives
+restore: Restore
 move: Move
 add: Add
 remove: Remove

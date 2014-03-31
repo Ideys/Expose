@@ -44,6 +44,19 @@ class Messaging
     }
 
     /**
+     * Archive / Restore a message.
+     *
+     * @param integer $id
+     */
+    public function archive($id)
+    {
+        $this->db->executeQuery('UPDATE expose_messaging SET archive = NOT archive '
+          . 'WHERE id = :id',
+            array('id' => $id)
+        );
+    }
+
+    /**
      * Delete a message.
      *
      * @param integer $id
@@ -54,11 +67,25 @@ class Messaging
     }
 
     /**
-     * Retrieve all messages.
+     * Retrieve active messages.
      */
     public function findAll()
     {
-        $messages = $this->db->fetchAll('SELECT * FROM expose_messaging');
+        $messages = $this->db->fetchAll(
+                'SELECT * FROM expose_messaging ' .
+                'WHERE archive = 0');
+
+        return $messages;
+    }
+
+    /**
+     * Retrieve all messages.
+     */
+    public function findArchived()
+    {
+        $messages = $this->db->fetchAll(
+                'SELECT * FROM expose_messaging ' .
+                'WHERE archive = 1');
 
         return $messages;
     }
