@@ -19,7 +19,8 @@
       {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
         {% include "frontend/menu/_topLinks.html.twig" with {'menu_pos': 'second'} only %}
       {% endif %}
-      {% if 'menu' == site.adminLink %}
+      {% if 'menu' == site.adminLink
+         or is_granted('ROLE_ADMIN') %}
       <li>
         <a href="{{ path('admin_content_manager') }}">
           {{ 'admin.admin'|trans }}
@@ -44,7 +45,8 @@
       <li>
         <a href="{{ path('logout') }}"
            title="{{ 'user.logout'|trans }}">
-          <i class="fi-power"></i>
+          <i class="fi-power hide-for-small-only"></i>
+          <span class="show-for-small-only">{{ 'user.logout'|trans }}</span>
         </a>
       </li>
       {% endif %}
