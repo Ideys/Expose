@@ -21,24 +21,6 @@
       </button>
     </li>
     <li>
-      <button
-          type="button"
-         class="button small"
-         data-display="#delete-slides-{{ section.id }}">
-        {{ 'delete'|trans }}
-      </button>
-    </li>
-    <li>
-      <button
-         type="button"
-         data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section.id}) }}"
-         data-target="#slides-{{ section.id }}"
-         id="delete-slides-{{ section.id }}"
-         class="button small alert hidden">
-        {{ 'confirm'|trans }}
-      </button>
-    </li>
-    <li>
       <a href="#"
          data-dropdown-ajax="move-selection-{{ section.id }}"
          class="button dropdown small">
@@ -71,6 +53,16 @@
           {% endif  %}
         {% endfor %}
       </ul>
+    </li>
+    <li>
+      <button
+         type="button"
+         data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section.id}) }}"
+         data-confirm-message="{{ 'confirm'|trans }}"
+         data-target="#slides-{{ section.id }}"
+         class="button small alert">
+        {{ 'delete'|trans }}
+      </button>
     </li>
   </ul>
 </div>

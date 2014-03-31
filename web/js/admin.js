@@ -152,19 +152,28 @@ $(function(){
         } );
         return false;
     })
+    .on('click', '[data-confirm-action]', function(event) {
+        event.stopImmediatePropagation();
+        var message = $(this).data('confirm-action');
+
+        return confirm(message);
+    })
     .on('click', '[data-delete]', function(event) {
         event.stopPropagation();
 
         var button = $(this)
           , list = $(button.data('target'))
           , deleteUrl = button.data('delete')
+          , confirmMessage = button.data('confirm-message')
           , selection = list.data('selected')
           ;
 
-        $.post(deleteUrl, {items: selection}, function(items) {
-            removeEditedItems(list, items);
-            resetStackSelection(list);
-        } );
+        if (confirm(confirmMessage)) {
+            $.post(deleteUrl, {items: selection}, function(items) {
+                removeEditedItems(list, items);
+                resetStackSelection(list);
+            } );
+        }
         return false;
     })
     .on('click', '[data-delete-ajax]', function(event) {

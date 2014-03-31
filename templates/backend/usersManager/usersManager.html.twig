@@ -23,8 +23,17 @@
           {{ 'actions'|trans }}
         </a>
         <ul id="user_action{{ user.id }}" data-dropdown-content="" class="f-dropdown">
-          <li><a href="{{ path('admin_users_manager', {'id': user.id}) }}">{{ 'edit'|trans }}</a></li>
-          <li><a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}">{{ 'delete'|trans }}</a></li>
+          <li>
+            <a href="{{ path('admin_users_manager', {'id': user.id}) }}">
+              {{ 'edit'|trans }}
+            </a>
+          </li>
+          <li>
+            <a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}"
+               data-confirm-action="{{ 'confirm'|trans }}">
+              {{ 'delete'|trans }}
+            </a>
+          </li>
         </ul>
       </p>
       </div><br>

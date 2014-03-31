@@ -5,49 +5,29 @@
     <a class="button tiny secondary"
        title="{{ 'section.define.as.homepage'|trans }}"
        href="{{ path('admin_content_manager_define_homepage', {'id': section.id}) }}">
-        <i class="fi-home"></i>
+        <i class="fi-home"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'section.define.as.homepage'|trans }}</span>
     </a>
   </li>
   <li>
     <a class="button tiny secondary"
        title="{{ 'archive'|trans }}"
        href="{{ path('admin_content_manager_archive', {'id': section.id}) }}">
-        <i class="fi-archive"></i>
+        <i class="fi-archive"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'archive'|trans }}</span>
     </a>
   </li>
   <li>
     {{ form_start(delete_form, {
       'action': action_path
     }) }}
-      <ul id="delete-safety-pin{{ section.id }}"
-          class="button-group">
-        <li>
-          <button type="button"
-                  title="{{ 'delete'|trans }}"
-                  data-display="#delete-form{{ section.id }},#delete-safety-pin{{ section.id }}"
-                  class="tiny alert button">
-            <i class="fi-x"></i>
-          </button>
-        </li>
-        <li>
-          <p class="safety-pin-info">{{ info|trans }}</p>
-        </li>
-      </ul>
-      <ul id="delete-form{{ section.id }}"
-          class="button-group hidden">
-        <li>
-          <button type="button"
-                  data-display="#delete-form{{ section.id }},#delete-safety-pin{{ section.id }}"
-                  class="tiny secondary button">
-            {{ 'cancel'|trans }}
-          </button>
-        </li>
-        <li>
-          <input type="submit"
-                 value="{{ 'delete'|trans }}"
-                 class="tiny alert button">
-        </li>
-      </ul>
+    <button type="submit"
+            title="{{ 'delete'|trans }}"
+            data-confirm-action="{{ info|trans|escape('html_attr') }}"
+            class="tiny alert button">
+      <i class="fi-x"></i>&nbsp;
+      <span class="hide-for-small-only">{{ 'delete'|trans }}</span>
+    </button>
     {{ form_end(delete_form) }}
   </li>
 </ul>

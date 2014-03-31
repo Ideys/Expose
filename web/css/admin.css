@@ -51,12 +51,6 @@ input.clipboard {
  * Links
  */
 
-.safety-pin-info {
-    color: #dc322f;
-    line-height: 35px;
-    padding-left: 8px;
-}
-
 .f-dropdown /* Foundation fix */ {
     left: initial;
     top: -99999px;

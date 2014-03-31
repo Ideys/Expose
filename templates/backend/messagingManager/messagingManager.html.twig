@@ -10,12 +10,21 @@
         <strong>{{ message.email }}</strong>
         <br>
         {{ message.date|date('d/m/Y') }}
-        <a href="#" data-dropdown="message_action{{ message.id }}" class="tiny button dropdown">
+        <a href="#"
+           data-dropdown="message_action{{ message.id }}"
+           class="tiny button dropdown">
           {{ 'actions'|trans }}
         </a>
         <br>
-        <ul id="message_action{{ message.id }}" data-dropdown-content="" class="f-dropdown">
-          <li><a href="{{ path('admin_messaging_manager_delete', {'id': message.id}) }}">{{ 'delete'|trans }}</a></li>
+        <ul id="message_action{{ message.id }}"
+            data-dropdown-content=""
+            class="f-dropdown">
+          <li>
+            <a href="{{ path('admin_messaging_manager_delete', {'id': message.id}) }}"
+               data-confirm-action="{{ 'confirm'|trans }}">
+              {{ 'delete'|trans }}
+            </a>
+          </li>
         </ul>
       </div>
       <div class="large-9 columns">
