@@ -17,24 +17,34 @@
 </script>
 {% endblock javascripts %}
 
-{% set hideMenuOnHomepage = site.hideMenuOnHomepage ? ' hide-menu-on-homepage' : ''%}
-{% block body_class parent()~' background-'~site.layoutBackground~hideMenuOnHomepage %}
+{% block body_class parent()~' background-'~site.layoutBackground %}
 
 {% block content -%}
-{% if 'top' == site.menuPosition %}
+{# Hide menu on homepage option #}
+{% if site.hideMenuOnHomepage
+  and section|default('')|length
+  and section.isHomepage %}
+  {% set hideMenu = true %}
+{% else %}
+  {% set hideMenu = false %}
+{% endif %}
+{% if 'top' == site.menuPosition
+  and not hideMenu %}
   {% include "frontend/menu/_topbar.html.twig" only %}
-{% elseif 'left' == site.menuPosition %}
+{% elseif 'left' == site.menuPosition
+  and not hideMenu %}
   <div class="off-canvas-wrap">
     <div class="inner-wrap">
     {% include "frontend/menu/_sidebar.html.twig" only %}
 {% endif %}
     <section id="content"
-             {% if 'left' == site.menuPosition %}
+             {% if 'left' == site.menuPosition and not hideMenu %}
              class="main-section large-10 medium-9 columns"
              {% endif %}>
       {% block main %}{% endblock %}
     </section>
-{% if 'left' == site.menuPosition %}
+{% if 'left' == site.menuPosition
+  and not hideMenu %}
     <a class="exit-off-canvas"></a>
     </div>
   </div>

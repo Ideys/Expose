@@ -2,7 +2,8 @@
 
 namespace Ideys\Content;
 
-use Ideys\Content\Section;
+use Ideys\Content\Section\Section;
+use Ideys\Content\Section\Html;
 use Ideys\Content\Item;
 
 /**
@@ -94,16 +95,16 @@ class ContentFactory
            . 'ORDER BY s.hierarchy ASC ';
         $sections = $this->db->fetchAll($sql, array($this->language));
 
-        // Use sql primary keys as array keys and add sections tree
+        // Use sql primary keys as array keys and objectise entity
         foreach ($sections as $section) {
-            $this->sections[$section['id']] = $section + array('sections' => array());
+            $this->sections[$section['id']] = static::instantiateSection($this->db, $section);
         }
 
         // Generate tree structure from raw datas
         foreach ($this->sections as $id => $section) {
-            $parentSectionId = $section['expose_section_id'];
+            $parentSectionId = $section->expose_section_id;
             if ($parentSectionId > 0) {
-                $this->sections[$parentSectionId]['sections'][] = $section;
+                $this->sections[$parentSectionId]->addSection($section);
                 unset($this->sections[$id]);
             }
         }
@@ -161,7 +162,7 @@ class ContentFactory
         // Generate default homepage
         if (!$section) {
             $settings = new \Ideys\Settings\Settings($this->db);
-            $section = $this->addSection(new Section\Gallery($this->db, array(
+            $section = $this->addSection(new Html($this->db, array(
                 'type' => self::SECTION_HTML,
                 'title' => $settings->name,
                 'homepage' => '1',
@@ -217,7 +218,7 @@ class ContentFactory
      *
      * @return \Ideys\Content\Section\Section
      */
-    public function addSection(Section\Section &$section)
+    public function addSection(Section &$section)
     {
         $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
         $incr = $count['total']++;
@@ -252,7 +253,7 @@ class ContentFactory
      *
      * @return array Section
      */
-    public function updateSection(Section\Section $section)
+    public function updateSection(Section $section)
     {
         // Update section
         $this->db->update('expose_section', array(
@@ -281,7 +282,7 @@ class ContentFactory
      *
      * @return string
      */
-    protected function uniqueSlug(Section\Section $section)
+    protected function uniqueSlug(Section $section)
     {
         $title = $section->title;
 
@@ -321,7 +322,7 @@ class ContentFactory
      *
      * @return \Ideys\Content\Item\Item $item
      */
-    public function addItem(Section\Section $section, Item\Item $item)
+    public function addItem(Section $section, Item\Item $item)
     {
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $section->id,
@@ -434,6 +435,27 @@ class ContentFactory
     }
 
     /**
+     * Return instantiated Section from array data.
+     *
+     * @param \Doctrine\DBAL\Connection $db
+     * @param array                     $data
+     *
+     * @return Section
+     */
+    public static function instantiateSection(\Doctrine\DBAL\Connection $db, $data)
+    {
+        $type = $data['type'];
+
+        if (!in_array($type, static::getSectionTypes())) {
+            $type = self::SECTION_HTML;
+        }
+
+        $sectionClass = '\Ideys\Content\Section\\'.ucfirst($type);
+
+        return new $sectionClass($db, $data);
+    }
+
+    /**
      * Return item types keys.
      *
      * @param  string $type The section type
@@ -472,13 +494,8 @@ class ContentFactory
         }
 
         $sectionData = $this->retrieveLanguage($sectionTranslations, $this->language);
-
-        if (!in_array($sectionData['type'], self::getSectionTypes())) {
-            $sectionData['type'] = self::SECTION_HTML;
-        }
-
-        $sectionClass = '\Ideys\Content\Section\\'.ucfirst($sectionData['type']);
-        $section = new $sectionClass($this->db, $sectionData);
+        $section = static::instantiateSection($this->db, $sectionData);
+        $section->hydrateItems();
         $section->setLanguage($this->language);
 
         return $section;

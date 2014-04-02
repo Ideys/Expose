@@ -2,6 +2,7 @@
 
 namespace Ideys\Content;
 
+use Ideys\Content\Section\Section;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Form\FormFactory;
 
@@ -165,10 +166,10 @@ class SectionType
     public static function getSectionVisibilityChoice()
     {
         return array(
-            'public' => 'section.visibility.public',
-            'private' => 'section.visibility.private',
-            'hidden' => 'section.visibility.hidden',
-            'closed' => 'section.visibility.closed',
+            Section::VISIBILITY_PUBLIC  => 'section.visibility.public',
+            Section::VISIBILITY_PRIVATE => 'section.visibility.private',
+            Section::VISIBILITY_HIDDEN  => 'section.visibility.hidden',
+            Section::VISIBILITY_CLOSED  => 'section.visibility.closed',
         );
     }
 }

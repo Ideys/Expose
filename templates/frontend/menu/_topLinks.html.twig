@@ -1,42 +1,35 @@
 {% spaceless %}
 {% for section in sections
-    if section.visibility not in ['hidden', 'closed']
-   and section.menu_pos == menu_pos
-   and section.homepage == 0 %}
+   if  section.isMenuEnabled(is_granted('ROLE_USER'))
+   and section.menu_pos == menu_pos %}
     {% if section.sections|length %}
     {% set activeSubsectionsCount = 0 %}
     {% if section.sections|length %}
-      {% for row, child in section.sections if child.visibility not in ['hidden', 'closed'] %}
-        {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
-          {% set activeSubsectionsCount = activeSubsectionsCount + 1 %}
-        {% endif %}
+      {% for row, child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
+        {% set activeSubsectionsCount = activeSubsectionsCount + 1 %}
       {% endfor %}
     {% endif %}
     {% if activeSubsectionsCount > 0 %}
     <li class="has-dropdown">
       <a href="#">{{ section.title }}</a>
       <ul class="dropdown">
-        {% for child in section.sections if child.visibility not in ['hidden', 'closed'] %}
-          {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
-            <li>
-              <a href="{{ path('section', {'slug': child.slug}) }}">
-                {{ child.title }}
-              </a>
-            </li>
-          {% endif %}
+        {% for child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
+          <li>
+            <a href="{{ path('section', {'slug': child.slug}) }}">
+              {{ child.title }}
+            </a>
+          </li>
         {% endfor %}
       </ul>
     </li>
     {% endif %}
     {# An empty dir is not a content #}
     {% elseif section.type != 'dir' %}
-      {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
-        <li>
-          <a href="{{ path('section', {'slug': section.slug}) }}">
-            {{ section.title }}
-          </a>
-        </li>
-      {% endif %}
+    <li>
+      <a href="{{ path('section', {'slug': section.slug}) }}">
+        {{ section.title }}
+      </a>
+    </li>
     {% endif %}
 {% endfor %}
 {% endspaceless %}

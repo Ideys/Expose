@@ -37,6 +37,7 @@ abstract class Section
         'visibility' => 'public',
         'homepage' => '0',
         'language' => null,
+        'archive' => '0',
     );
 
     /**
@@ -45,9 +46,22 @@ abstract class Section
     protected $items = array();
 
     /**
+     * @var array
+     */
+    protected $sections = array();
+
+    /**
      * @var string
      */
     protected $language = 'en';
+
+    /**
+     * Visibility states.
+     */
+    const VISIBILITY_PUBLIC     = 'public';
+    const VISIBILITY_PRIVATE    = 'private';
+    const VISIBILITY_HIDDEN     = 'hidden';
+    const VISIBILITY_CLOSED     = 'closed';
 
     /**
      * Constructor.
@@ -60,8 +74,30 @@ abstract class Section
         $this->db = $db;
         $this->attributes = array_merge($this->attributes, $entity);
         $this->parameters = (array) unserialize($this->attributes['parameters']);
+    }
 
-        $this->hydrateItems();
+    /**
+     * Add a child section to section.
+     *
+     * @param Section $section
+     *
+     * @return Section
+     */
+    public function addSection(Section $section)
+    {
+        $this->sections[] = $section;
+
+        return $this;
+    }
+
+    /**
+     * Return section child sections.
+     *
+     * @return array
+     */
+    public function getSections()
+    {
+        return $this->sections;
     }
 
     /**
@@ -146,6 +182,36 @@ abstract class Section
     }
 
     /**
+     * Define if the section is archived.
+     *
+     * @return boolean
+     */
+    public function isArchived()
+    {
+        return 1 == $this->archive;
+    }
+
+    /**
+     * Define if the section have to be displayed into menu.
+     *
+     * @param boolean $userHasCredentials
+     *
+     * @return boolean
+     */
+    public function isMenuEnabled($userHasCredentials = false)
+    {
+        return !$this->isHomepage()
+            && !$this->isArchived()
+            && !in_array($this->visibility, array(
+                self::VISIBILITY_HIDDEN,
+                self::VISIBILITY_CLOSED
+            ))
+            && (
+                ($this->visibility !== self::VISIBILITY_PRIVATE)
+              || $userHasCredentials);
+    }
+
+    /**
      * Define if content has some items or not.
      *
      * @return boolean
@@ -187,7 +253,7 @@ abstract class Section
     /**
      * Fill items attribute with section's persisted items.
      */
-    private function hydrateItems()
+    public function hydrateItems()
     {
         $sql =
            'SELECT i.*, t.title, t.description, t.content,

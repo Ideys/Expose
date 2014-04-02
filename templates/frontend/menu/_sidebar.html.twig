@@ -1,19 +1,23 @@
 {% spaceless %}
-<nav class="tab-bar hide-for-medium-up">
+<nav class="main-nav tab-bar hide-for-medium-up">
   <section class="left-small">
     <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
   </section>
   <section class="middle tab-bar-section">
-    <h1 class="title">{{ site.name }}</h1>
+    <h1 class="title">
+      <a href="{{ path('homepage') }}">
+        {{ site.name }}
+      </a>
+    </h1>
   </section>
 </nav>
-<aside class="left-off-canvas-menu hide-for-medium-up">
+<aside class="main-nav left-off-canvas-menu hide-for-medium-up">
   {% include "frontend/menu/_sidenav.html.twig" with {
     'class': 'off-canvas-list',
     'follow': ' rel="no-follow"'
   } only %}
 </aside>
-<div class="sidebar show-for-medium-up large-2 medium-3 columns">
+<div class="main-nav sidebar show-for-medium-up large-2 medium-3 columns">
   <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
   {% include "frontend/menu/_sidenav.html.twig" with {
     'class': 'side-nav',

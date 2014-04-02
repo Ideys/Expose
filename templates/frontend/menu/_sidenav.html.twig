@@ -1,41 +1,18 @@
 {% spaceless %}
 <ul class="{{ class }}">
   {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
-  {% for section in sections
-      if section.visibility not in ['hidden', 'closed']
-     and section.homepage == 0 %}
-    {% if section.sections|length %}
-      <li class="heading">{{ section.title }}</li>
-      {% for child in section.sections if child.visibility not in ['hidden', 'closed'] %}
-        {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
-          <li>
-            <a href="{{ path('section', {'slug': child.slug}) }}"{{ follow }}>
-              {{ child.title }}
-            </a>
-          </li>
-        {% endif %}
-      {% endfor %}
-
-    {# An empty dir is not a content #}
-    {% elseif section.type != 'dir' %}
-      {% if not ('private' == section.visibility) or is_granted('ROLE_USER') %}
-        <li>
-          <a href="{{ path('section', {'slug': section.slug}) }}"{{ follow }}>
-            {{ section.title }}
-          </a>
-        </li>
-      {% endif %}
-    {% endif %}
-  {% endfor %}
+    {% include "frontend/menu/_sideLinks.html.twig" with {
+        'menu_pos': 'main',
+        'follow': follow
+    } only %}
   {% endif %}
-  <li class="divider"></li>
-  {% if 'menu' == site.adminLink %}
-  <li>
-    <a href="{{ path('admin_content_manager') }}"{{ follow }}>
-      {{ 'admin.admin'|trans }}
-    </a>
-  </li>
-  {% endif %}
+  </ul>
+  <ul class="{{ class }}">
+  {% include "frontend/menu/_sideLinks.html.twig" with {
+        'menu_pos': 'second',
+        'follow': follow
+  } only %}
+  {% include "frontend/menu/_adminLinks.html.twig" only %}
   {% if 'disabled' != site.contactSection %}
   <li>
     <a href="{{ path('contact') }}"{{ follow }}>
