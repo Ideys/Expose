@@ -269,6 +269,7 @@ $(function(){
           , stateIcon = section.find('.state-icon')
           , visibility = $(this).val()
           , visibilityIcons = {
+                'homepage': 'home',
                 'public': 'link',
                 'private': 'lock',
                 'hidden': 'unlink',

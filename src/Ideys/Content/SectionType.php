@@ -166,10 +166,11 @@ class SectionType
     public static function getSectionVisibilityChoice()
     {
         return array(
-            Section::VISIBILITY_PUBLIC  => 'section.visibility.public',
-            Section::VISIBILITY_PRIVATE => 'section.visibility.private',
-            Section::VISIBILITY_HIDDEN  => 'section.visibility.hidden',
-            Section::VISIBILITY_CLOSED  => 'section.visibility.closed',
+            Section::VISIBILITY_HOMEPAGE    => 'section.visibility.homepage',
+            Section::VISIBILITY_PUBLIC      => 'section.visibility.public',
+            Section::VISIBILITY_PRIVATE     => 'section.visibility.private',
+            Section::VISIBILITY_HIDDEN      => 'section.visibility.hidden',
+            Section::VISIBILITY_CLOSED      => 'section.visibility.closed',
         );
     }
 }

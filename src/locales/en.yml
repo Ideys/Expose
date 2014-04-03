@@ -60,6 +60,7 @@ section:
     visibility:
         visibility: Section visibility
         default: Default visibility
+        homepage: Homepage
         public: Public section
         private: Private section
         hidden: Hidden section

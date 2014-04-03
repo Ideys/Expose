@@ -69,7 +69,6 @@ if (!$schema->tablesExist('expose_section')) {
     $table->addColumn('slug', 'string', array('length' => 255));
     $table->addColumn('custom_css', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('custom_js', 'text', array('default' => null, 'notnull' => false));
-    $table->addColumn('homepage', 'boolean');
     $table->addColumn('archive', 'boolean');
     $table->addColumn('menu_pos', 'string', array('length' => 32));
     $table->addColumn('visibility', 'string', array('length' => 32));

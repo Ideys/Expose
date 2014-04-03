@@ -35,7 +35,6 @@ abstract class Section
         'parameters' => 'N;',
         'menu_pos' => 'main',
         'visibility' => 'public',
-        'homepage' => '0',
         'language' => null,
         'archive' => '0',
     );
@@ -58,6 +57,7 @@ abstract class Section
     /**
      * Visibility states.
      */
+    const VISIBILITY_HOMEPAGE   = 'homepage';
     const VISIBILITY_PUBLIC     = 'public';
     const VISIBILITY_PRIVATE    = 'private';
     const VISIBILITY_HIDDEN     = 'hidden';
@@ -158,7 +158,7 @@ abstract class Section
      */
     public function isPrivate()
     {
-        return 'private' === $this->visibility;
+        return self::VISIBILITY_PRIVATE === $this->visibility;
     }
 
     /**
@@ -168,7 +168,7 @@ abstract class Section
      */
     public function isClosed()
     {
-        return 'closed' === $this->visibility;
+        return self::VISIBILITY_CLOSED === $this->visibility;
     }
 
     /**
@@ -178,7 +178,7 @@ abstract class Section
      */
     public function isHomepage()
     {
-        return 1 == $this->homepage;
+        return self::VISIBILITY_HOMEPAGE === $this->visibility;
     }
 
     /**
@@ -200,9 +200,9 @@ abstract class Section
      */
     public function isMenuEnabled($userHasCredentials = false)
     {
-        return !$this->isHomepage()
-            && !$this->isArchived()
+        return !$this->isArchived()
             && !in_array($this->visibility, array(
+                self::VISIBILITY_HOMEPAGE,
                 self::VISIBILITY_HIDDEN,
                 self::VISIBILITY_CLOSED
             ))

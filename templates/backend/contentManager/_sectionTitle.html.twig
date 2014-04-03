@@ -7,6 +7,7 @@
     'maps': 'map'
 } %}
 {% set visibilityIcons = {
+    'homepage': 'home',
     'public': 'link',
     'private': 'lock',
     'hidden': 'unlink',
@@ -18,10 +19,6 @@
   <i class="fi-{{ typeIcons[section.type] }} type-icon"></i>
   <span class="section-title">{{ section.title }}</span>
   <small class="counter">{{ section.total_items }}</small>
-  {% if section.homepage %}
-    <i class="fi-home state-icon"></i>
-  {% else %}
-    <i class="state-icon fi-{{ visibilityIcons[section.visibility] }}"></i>
-  {% endif %}
+  <i class="state-icon fi-{{ visibilityIcons[section.visibility] }}"></i>
 </a>
 {% endspaceless %}

@@ -42,7 +42,7 @@ class ContentFactory
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.custom_css, s.custom_js,
-               s.homepage, s.menu_pos, s.visibility,
+               s.menu_pos, s.visibility,
                s.hierarchy, s.archive,
                t.title, t.description, t.parameters, t.language,
                COUNT(i.id) AS total_items
@@ -154,9 +154,9 @@ class ContentFactory
     public function findHomepage()
     {
         $sql = $this->sqlSelectSection
-           . 'WHERE s.homepage = 1 '
+           . 'WHERE s.visibility = ? '
            . 'ORDER BY s.hierarchy ASC ';
-        $sectionTranslations = $this->db->fetchAll($sql);
+        $sectionTranslations = $this->db->fetchAll($sql, array(Section::VISIBILITY_HOMEPAGE));
         $section = $this->hydrateSection($sectionTranslations);
 
         // Generate default homepage
@@ -165,7 +165,7 @@ class ContentFactory
             $section = $this->addSection(new Html($this->db, array(
                 'type' => self::SECTION_HTML,
                 'title' => $settings->name,
-                'homepage' => '1',
+                'visibility' => Section::VISIBILITY_HOMEPAGE,
             )));
             $page = new Item\Page(array(
                 'type' => self::ITEM_PAGE,
@@ -176,26 +176,6 @@ class ContentFactory
         }
 
         return $section;
-    }
-
-    /**
-     * Define the homepage section.
-     *
-     * @param integer $sectionId
-     */
-    public function defindHomepage($sectionId)
-    {
-        // Reset old homepage
-        $this->db->update(
-            'expose_section',
-            array('homepage' => 0, 'visibility' => 'hidden'),
-            array('homepage' => 1)
-        );
-        $this->db->update(
-            'expose_section',
-            array('homepage' => 1, 'visibility' => 'public'),
-            array('id' => $sectionId)
-        );
     }
 
     /**
@@ -229,7 +209,6 @@ class ContentFactory
             'slug' => $this->uniqueSlug($section),
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
-            'homepage' => $section->homepage,
             'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
             'archive' => 0,
@@ -255,6 +234,17 @@ class ContentFactory
      */
     public function updateSection(Section $section)
     {
+        // Reset old homepage visibility in case of section
+        // was newly defined as the homepage.
+        // Also remove section from subfolder.
+        if (Section::VISIBILITY_HOMEPAGE == $section->visibility) {
+            $this->db->update('expose_section',
+                array('visibility' => Section::VISIBILITY_CLOSED),
+                array('visibility' => Section::VISIBILITY_HOMEPAGE)
+            );
+            $section->expose_section_id = null;
+        }
+
         // Update section
         $this->db->update('expose_section', array(
             'slug' => $this->uniqueSlug($section),
