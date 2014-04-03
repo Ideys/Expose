@@ -118,14 +118,44 @@ $contentManagerController->match('/{id}/edit/dir', function (Request $request, $
         return $app->redirect($app['url_generator']->generate('admin_content_manager'));
     }
 
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+
     return $app['twig']->render('backend/dirManager/_dirForm.html.twig', array(
         'section' => $section,
         'form' => $form->createView(),
+        'delete_form' => $deleteForm->createView(),
     ));
 })
 ->assert('id', '\d+')
 ->method('GET|POST')
 ->bind('admin_content_manager_edit_dir')
+;
+
+$contentManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
+
+    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+
+    // For directories need to have full sections tree
+    if (ContentFactory::SECTION_DIR == $section->type) {
+        $sections = $contentFactory->findSections();
+        $section = $sections[$section->id];
+    }
+
+    $deleteForm->handleRequest($request);
+    if ($deleteForm->isValid()) {
+        $section->delete();
+
+        $app['session']
+            ->getFlashBag()
+            ->add('default', $app['translator']->trans($section->type . '.deleted'));
+    }
+
+    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+})
+->assert('id', '\d+')
+->bind('admin_content_manager_delete')
 ;
 
 $contentManagerController->assert('_locale', implode('|', $app['languages']));

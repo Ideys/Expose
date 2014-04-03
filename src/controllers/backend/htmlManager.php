@@ -72,27 +72,6 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
 ->method('GET|POST')
 ;
 
-$htmlManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
-
-    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
-
-    $deleteForm->handleRequest($request);
-    if ($deleteForm->isValid()) {
-        $section->delete();
-
-        $app['session']
-            ->getFlashBag()
-            ->add('default', $app['translator']->trans('html.section.deleted'));
-    }
-
-    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
-})
-->assert('id', '\d+')
-->bind('admin_html_manager_delete')
-;
-
 $htmlManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);

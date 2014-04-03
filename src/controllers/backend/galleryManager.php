@@ -121,27 +121,6 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 ->bind('admin_gallery_manager_delete_slides')
 ;
 
-$galleryManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
-
-    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
-
-    $deleteForm->handleRequest($request);
-    if ($deleteForm->isValid()) {
-        $section->delete();
-
-        $app['session']
-            ->getFlashBag()
-            ->add('default', $app['translator']->trans('gallery.deleted'));
-    }
-
-    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
-})
-->assert('id', '\d+')
-->bind('admin_gallery_manager_delete')
-;
-
 $galleryManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);

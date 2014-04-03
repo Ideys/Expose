@@ -79,6 +79,8 @@ dir:
     dir: Directory
     root: Root
     empty: Empty directory
+    confirm.delete: Delete the directory and all its sections
+    deleted: The directory is deleted
 
 gallery:
     upload: Upload pictures
@@ -125,7 +127,7 @@ gallery:
 
 channel:
     delete.section: Delete this video
-    section.deleted: A video was deleted
+    deleted: A video was deleted
     provider:
         choice: Provider selection
     video:
@@ -145,7 +147,7 @@ form:
     validation.message: Confirmation message
     validation.message.default: Thank you for taking the time to complete the form.
     delete.form: Delete this form and those results
-    form.deleted: The form was deleted
+    deleted: The form was deleted
     field:
         add: Add field
         type: Field type
@@ -164,10 +166,11 @@ html:
     pages: Pages
     no.page: Aucunes pages dans cette section
     delete.section: Delete this section and all its content
-    section.deleted: A section was deleted
+    deleted: A section was deleted
 
 maps:
     no.map: Aucunes cartes dans cette section
+    deleted: The map is deleted
 
 file:
     manager: Files manager

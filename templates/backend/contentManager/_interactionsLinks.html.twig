@@ -11,7 +11,7 @@
   </li>
   <li>
     {{ form_start(delete_form, {
-      'action': action_path
+      'action': path('admin_content_manager_delete', {'id': section.id})
     }) }}
     <button type="submit"
             title="{{ 'delete'|trans }}"

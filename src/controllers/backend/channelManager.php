@@ -82,27 +82,6 @@ $channelManagerController->get('/{id}/remove/video/{itemId}', function ($id, $it
 ->bind('admin_channel_manager_remove_video')
 ;
 
-$channelManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
-
-    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
-
-    $deleteForm->handleRequest($request);
-    if ($deleteForm->isValid()) {
-        $section->delete();
-
-        $app['session']
-            ->getFlashBag()
-            ->add('default', $app['translator']->trans('video.section.deleted'));
-    }
-
-    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
-})
-->assert('id', '\d+')
-->bind('admin_channel_manager_delete')
-;
-
 $channelManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $channelManagerController;

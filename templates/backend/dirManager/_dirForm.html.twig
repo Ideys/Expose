@@ -10,4 +10,21 @@
   </div>
   {{ form_end(form) }}
 </div>
+<div class="row">
+  <div class="medium-12 columns">
+    {{ form_start(delete_form, {
+      'action': path('admin_content_manager_delete', {'id': section.id})
+    }) }}
+    <button type="submit"
+            data-confirm-action="{{ 'dir.confirm.delete'|trans|escape('html_attr') }}"
+            class="tiny alert button">
+      {{ 'delete'|trans }}
+    </button>
+    <a href="{{ path('admin_content_manager_archive', {'id': section.id}) }}"
+       class="tiny secondary right button">
+      {{ 'archive'|trans }}
+    </a>
+    {{ form_end(delete_form) }}
+  </div>
+</div>
 {% endspaceless %}

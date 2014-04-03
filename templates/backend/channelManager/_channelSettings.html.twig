@@ -24,7 +24,6 @@
     {% include 'backend/contentManager/_interactionsLinks.html.twig' with {
     'section': section,
     'delete_form': delete_form,
-    'action_path': path('admin_channel_manager_delete', {'id': section.id}),
     'info': 'channel.delete.section'
     } only %}
   </div>

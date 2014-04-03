@@ -79,6 +79,8 @@ dir:
     dir: Dossier
     root: Racine
     empty: Le dossier est vide
+    confirm.delete: Supprimer le dossier et toutes ses sections
+    deleted: Le dossier est supprimé
 
 gallery:
     upload: Télécharger des images
@@ -125,7 +127,7 @@ gallery:
 
 channel:
     delete.section: Supprimer la vidéo
-    section.deleted: Une vidéo a été supprimée
+    deleted: Une vidéo a été supprimée
     provider:
         choice: Choix du fournisseur
     video:
@@ -145,7 +147,7 @@ form:
     validation.message: Message de confirmation
     validation.message.default: Merci d'avoir prit le temps de compléter se formulaire.
     delete.form: Supprimer ce formulaire et ses résultats
-    form.deleted: Le formulaire a été supprimé
+    deleted: Le formulaire a été supprimé
     field:
         add: Ajouter le champ
         type: Type de champ
@@ -164,10 +166,11 @@ html:
     pages: Pages
     no.page: Aucunes pages dans cette section
     delete.section: Supprimer la section et tous ses contenus
-    section.deleted: Une section a été supprimée
+    deleted: Une section a été supprimée
 
 maps:
     no.map: Aucunes cartes dans cette section
+    deleted: La carte est supprimée
 
 file:
     manager: Gestion des fichiers
