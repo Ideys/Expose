@@ -169,9 +169,17 @@ textarea {
 }
 
 #to-top {
+    margin: 0px;
     position: fixed;
-    bottom: 0px;
+    bottom: 20px;
     right: 20px;
+}
+
+@media only screen and (max-width: 40em) {
+    #to-top {
+        padding: 4px;
+        bottom: 0px;
+    }
 }
 
 .background-black,
