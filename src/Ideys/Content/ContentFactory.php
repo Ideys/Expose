@@ -5,6 +5,7 @@ namespace Ideys\Content;
 use Ideys\Content\Section\Section;
 use Ideys\Content\Section\Html;
 use Ideys\Content\Item;
+use Symfony\Component\Security\Core\User\User;
 
 /**
  * App content manager.
@@ -160,7 +161,7 @@ class ContentFactory
         $section = $this->hydrateSection($sectionTranslations);
 
         // Generate default homepage
-        if (!$section) {
+        if (null === $section->id) {
             $settings = new \Ideys\Settings\Settings($this->db);
             $section = $this->addSection(new Html($this->db, array(
                 'type' => self::SECTION_HTML,
@@ -516,17 +517,19 @@ class ContentFactory
      */
     private function blameAndTimestampData($id)
     {
-        $datetime = (new \DateTime())->format('c');
-
         $securityToken = $this->security->getToken();
+        $datetime = (new \DateTime())->format('c');
+        $userId = null;
+
         if (!empty($securityToken)) {
             $loggedUser = $securityToken->getUser();
-            $user = $this->db->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
-                $loggedUser->getUsername(),
-            ));
-            $userId = $user['id'];
-        } else {
-            $userId = null;
+            if ($loggedUser instanceof User) {
+                $user = $this->db
+                        ->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
+                    $loggedUser->getUsername(),
+                ));
+                $userId = $user['id'];
+            }
         }
 
         return array(
