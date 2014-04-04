@@ -1,0 +1,19 @@
+{% spaceless %}
+{{ form_start(form, {
+    'action': path('admin_blog_manager_new_post', {'id': section.id})
+}) }}
+<div class="row">
+  <div class="medium-6 medium-centered columns">
+    {{ form_row(form.title) }}
+    {{ form_row(form.content) }}
+    <div class="text-right">
+      <button type="submit"
+              class="button small">{{ 'submit'|trans }}</button>
+    </div>
+  </div>
+</div>
+<div class="hidden">
+  {{ form_rest(form) }}
+</div>
+{{ form_end(form) }}
+{% endspaceless %}

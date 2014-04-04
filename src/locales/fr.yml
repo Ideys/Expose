@@ -48,6 +48,7 @@ section:
     gallery: Galerie
     channel: Vidéo
     html: Page
+    blog: Blog
     form: Formulaire
     maps: Carte
     dir: Dossier
@@ -126,7 +127,7 @@ gallery:
         rows12: Douze images
 
 channel:
-    delete.section: Supprimer la vidéo
+    delete: Supprimer la vidéo
     deleted: Une vidéo a été supprimée
     provider:
         choice: Choix du fournisseur
@@ -146,7 +147,7 @@ form:
     choices: Choix
     validation.message: Message de confirmation
     validation.message.default: Merci d'avoir prit le temps de compléter se formulaire.
-    delete.form: Supprimer ce formulaire et ses résultats
+    delete: Supprimer ce formulaire et ses résultats
     deleted: Le formulaire a été supprimé
     field:
         add: Ajouter le champ
@@ -165,11 +166,19 @@ html:
     page: Page
     pages: Pages
     no.page: Aucunes pages dans cette section
-    delete.section: Supprimer la section et tous ses contenus
+    delete: Supprimer la section et tous ses contenus
     deleted: Une section a été supprimée
+
+blog:
+    post: Article
+    posts: Articles
+    no.post: Aucun article n'a encore été écrit
+    delete: Supprimer ce blog et tous ses articles
+    deleted: Le blog a été supprimé
 
 maps:
     no.map: Aucunes cartes dans cette section
+    delete: Supprimer la carte et tous ses éléments liés
     deleted: La carte est supprimée
 
 file:

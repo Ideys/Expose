@@ -7,17 +7,17 @@
     <dl class="tabs" data-tab>
       <dd>
         <a href="#panel{{ section.id }}-list"
-           title="{{ 'section.channel'|trans }}"
-           data-inject-call="{{ path('admin_channel_manager_list', {'id': section.id}) }}"
+           title="{{ 'section.blog'|trans }}"
+           data-inject-call="{{ path('admin_blog_manager_list', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-list">
-          <i class="fi-thumbnails"></i>
-          <span class="hide-for-small-only">{{ 'section.channel'|trans }}</span>
+          <i class="fi-list-thumbnails"></i>
+          <span class="hide-for-small-only">{{ 'blog.posts'|trans }}</span>
         </a>
       </dd>
       <dd>
         <a href="#panel{{ section.id }}-add"
            title="{{ 'add'|trans }}"
-           data-inject-call="{{ path('admin_channel_manager_add', {'id': section.id}) }}"
+           data-inject-call="{{ path('admin_blog_manager_new_post', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-add">
           <i class="fi-plus"></i>
           <span class="hide-for-small-only">{{ 'add'|trans }}</span>

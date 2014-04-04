@@ -1,0 +1,71 @@
+{% import "widgets.html.twig" as widgets %}
+{% spaceless %}
+<div class="row">
+  <div class="medium-12 columns">
+    {{ form_start(edit_form, {
+      'attr': {'id': 'section-settings'},
+      'action': path('admin_content_manager_settings', {'id': section.id})
+    }) }}
+    <div class="row">
+      <div class="medium-6 columns">
+        {{ form_row(edit_form.title) }}
+        {{ form_row(edit_form.description) }}
+        {{ form_row(edit_form.expose_section_id) }}
+        <ul class="button-group">
+          <li>
+            <button type="button"
+                    title="{{ 'advanced.settings'|trans }}"
+                    class="tiny secondary button"
+                    data-display=".advanced-settings">
+              <i class="fi-widget"></i>&nbsp;
+              <span class="hide-for-small-only">{{ 'advanced.settings'|trans }}</span>
+            </button>
+          </li>
+          {% if not section.homepage %}
+          <li>
+            <a class="button tiny secondary"
+               title="{{ 'archive'|trans }}"
+               href="{{ path('admin_content_manager_archive', {'id': section.id}) }}">
+                <i class="fi-archive"></i>&nbsp;
+                <span class="hide-for-small-only">{{ 'archive'|trans }}</span>
+            </a>
+          </li>
+          <li>
+            {{ form_start(delete_form, {
+              'action': path('admin_content_manager_delete', {'id': section.id})
+            }) }}
+            <button type="submit"
+                    title="{{ 'delete'|trans }}"
+                    data-confirm-action="{{ (section.type~'.delete')|trans|escape('html_attr') }}"
+                    class="tiny alert button">
+              <i class="fi-x"></i>&nbsp;
+              <span class="hide-for-small-only">{{ 'delete'|trans }}</span>
+            </button>
+            {{ form_end(delete_form) }}
+          </li>
+          {% endif %}
+        </ul>
+        <div class="hidden advanced-settings">
+          {{ form_row(edit_form.visibility) }}
+          {{ form_row(edit_form.menu_pos) }}
+          {{ form_row(edit_form.custom_css, {'attr': {'rows': '12'} }) }}
+          {{ form_row(edit_form.custom_js, {'attr': {'rows': '12'} }) }}
+        </div>
+      </div>
+      <div class="medium-6 columns">
+        {% include 'backend/'~section.type~'Manager/_'~section.type~'Settings.html.twig' with {
+            'section': section,
+            'edit_form': edit_form,
+            'widgets': widgets
+        } only %}
+      </div>
+    </div>
+    <div class="row">
+      <div class="medium-12 columns text-right">
+        {{ widgets.btn_ajax() }}
+      </div>
+    </div>
+    {{ form_end(edit_form) }}
+  </div>
+</div>
+{% endspaceless %}

@@ -1,47 +1,16 @@
-{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-<div class="row">
-  <div class="medium-12 columns">
-    {{ form_start(edit_form, {
-      'attr': {'id': 'section-settings'},
-      'action': path('admin_gallery_manager_settings', {'id': section.id})
-    }) }}
-    <div class="row">
-      <div class="medium-6 columns">
-        {{ form_row(edit_form.title) }}
-        {{ form_row(edit_form.description) }}
-        {{ form_row(edit_form.global_legend, {'attr': {'rows': '3'} }) }}
-      </div>
-      <div class="medium-6 columns">
-        {{ form_row(edit_form.gallery_mode) }}
-        <div class="for-mode for-fullscreen{% if section.gallery_mode != 'fullscreen' %} hidden{% endif %}">
-          {{ form_row(edit_form.extended) }}
-        </div>
-        <div class="for-mode for-slideshow for-fullscreen{% if section.gallery_mode not in ['slideshow', 'fullscreen'] %} hidden{% endif %}">
-          {{ form_row(edit_form.slide_mode) }}
-          {{ form_row(edit_form.thumb_list) }}
-        </div>
-        <div class="for-mode for-vertical{% if section.gallery_mode != 'vertical' %} hidden{% endif %}">
-          {{ form_row(edit_form.grid_rows) }}
-          {{ form_row(edit_form.grid_rows_small) }}
-        </div>
-        {{ form_row(edit_form.shuffle) }}
-      </div>
-    </div>
-    {% include 'backend/contentManager/_commonSettings.html.twig' with {
-        'edit_form': edit_form,
-        'widgets': widgets
-    } only %}
-    {{ form_end(edit_form) }}
-  </div>
+{{ form_row(edit_form.global_legend, {'attr': {'rows': '3'} }) }}
+{{ form_row(edit_form.gallery_mode) }}
+<div class="for-mode for-fullscreen{% if section.gallery_mode != 'fullscreen' %} hidden{% endif %}">
+  {{ form_row(edit_form.extended) }}
 </div>
-<div class="row">
-  <div class="medium-6 medium-offset-6 columns">
-    {% include 'backend/contentManager/_interactionsLinks.html.twig' with {
-    'section': section,
-    'delete_form': delete_form,
-    'info': 'gallery.delete'
-    } only %}
-  </div>
+<div class="for-mode for-slideshow for-fullscreen{% if section.gallery_mode not in ['slideshow', 'fullscreen'] %} hidden{% endif %}">
+  {{ form_row(edit_form.slide_mode) }}
+  {{ form_row(edit_form.thumb_list) }}
 </div>
+<div class="for-mode for-vertical{% if section.gallery_mode != 'vertical' %} hidden{% endif %}">
+  {{ form_row(edit_form.grid_rows) }}
+  {{ form_row(edit_form.grid_rows_small) }}
+</div>
+{{ form_row(edit_form.shuffle) }}
 {% endspaceless %}

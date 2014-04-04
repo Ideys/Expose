@@ -48,6 +48,7 @@ section:
     gallery: Gallery
     channel: Video
     html: Page
+    blog: Blog
     form: Form
     maps: Maps
     dir: Directory
@@ -126,7 +127,7 @@ gallery:
         rows12: Twelve pictures by line
 
 channel:
-    delete.section: Delete this video
+    delete: Delete this video
     deleted: A video was deleted
     provider:
         choice: Provider selection
@@ -146,7 +147,7 @@ form:
     choices: Choices
     validation.message: Confirmation message
     validation.message.default: Thank you for taking the time to complete the form.
-    delete.form: Delete this form and those results
+    delete: Delete this form and those results
     deleted: The form was deleted
     field:
         add: Add field
@@ -164,12 +165,20 @@ form:
 html:
     page: Page
     pages: Pages
-    no.page: Aucunes pages dans cette section
-    delete.section: Delete this section and all its content
+    no.page: This section has no pages
+    delete: Delete this section and all its content
     deleted: A section was deleted
+
+blog:
+    post: Post
+    posts: Posts
+    no.post: This section has no post
+    delete: Delete this blog and its posts
+    deleted: The blog was deleted
 
 maps:
     no.map: Aucunes cartes dans cette section
+    delete: Delete this map and all related items
     deleted: The map is deleted
 
 file:
@@ -245,6 +254,7 @@ process: Process
 saved: Saved
 failed: Failed
 settings: Settings
+advanced.settings: Advanced settings
 select:
     all: Select all
     none: Cancel

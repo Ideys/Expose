@@ -56,6 +56,7 @@ class ContentFactory
     const SECTION_GALLERY   = 'gallery';
     const SECTION_CHANNEL   = 'channel';
     const SECTION_HTML      = 'html';
+    const SECTION_BLOG      = 'blog';
     const SECTION_FORM      = 'form';
     const SECTION_MAPS      = 'maps';
     const SECTION_DIR       = 'dir';
@@ -63,6 +64,7 @@ class ContentFactory
     const ITEM_SLIDE        = 'slide';
     const ITEM_VIDEO        = 'video';
     const ITEM_PAGE         = 'page';
+    const ITEM_POST         = 'post';
     const ITEM_FIELD        = 'field';
     const ITEM_PLACE        = 'place';
 
@@ -403,6 +405,7 @@ class ContentFactory
             self::SECTION_GALLERY,
             self::SECTION_CHANNEL,
             self::SECTION_HTML,
+            self::SECTION_BLOG,
             self::SECTION_FORM,
             self::SECTION_MAPS,
             self::SECTION_DIR,
@@ -420,6 +423,7 @@ class ContentFactory
             self::ITEM_SLIDE,
             self::ITEM_VIDEO,
             self::ITEM_PAGE,
+            self::ITEM_POST,
             self::ITEM_FIELD,
             self::ITEM_PLACE,
         );
@@ -460,16 +464,6 @@ class ContentFactory
         $sectionItems = array_combine($sectionTypes, $itemTypes);
 
         return $sectionItems[$type];
-    }
-
-    /**
-     * Return content visibility states.
-     *
-     * @return array
-     */
-    public static function getSectionVisibilities()
-    {
-        return array('public', 'private' ,'hidden' ,'closed');
     }
 
     /**

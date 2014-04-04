@@ -1,0 +1,17 @@
+{% spaceless %}
+{% if section.hasItems %}
+<ul id="posts-{{ section.id }}"
+    class="medium-block-grid-3 small-block-grid-1"
+    data-sortable="{{ path('admin_content_manager_sort_items') }}">
+  {% for post in section.items %}
+  <li data-selectable data-id="{{ post.id }}">
+    <div class="handle">
+      {{ post.content|raw }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="notice-empty">{{ 'blog.no.post'|trans }}</p>
+{% endif %}
+{% endspaceless %}
