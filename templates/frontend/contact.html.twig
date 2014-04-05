@@ -5,7 +5,7 @@
 {% block main -%}
 <div class="row">
 {% if 'enabled' == site.contactSection %}
-  <div class="large-8 columns">
+  <div class="medium-7 small-12 columns">
     {{ form_start(form) }}
         {{ form_errors(form) }}
         <fieldset>
@@ -22,7 +22,7 @@
         </div>
     {{ form_end(form) }}
   </div>
-  <div class="large-4 columns">
+  <div class="medium-5 small-12 columns">
     {{ widgets.inclusion_replace_keys(site.contactContent) }}
   </div>
 {% else %}

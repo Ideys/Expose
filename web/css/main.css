@@ -142,9 +142,11 @@ textarea {
 }
 
 #admin-link {
-   position: fixed;
-   bottom: 0px;
-   right: 30px;
+    margin: 0px;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    padding: 4px;
 }
 
 #maintenance-indicator {
