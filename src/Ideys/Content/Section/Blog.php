@@ -28,9 +28,16 @@ class Blog extends Section implements ContentInterface
             ->createBuilder('form', $post)
             ->add('title', 'text', array(
                 'label' => 'blog.post.title',
+                'attr' => array(
+                    'placeholder' => 'blog.post.title',
+                ),
             ))
             ->add('content', 'textarea', array(
-                'label' => 'blog.post.content',
+                'label' => 'blog.post.post',
+                'attr' => array(
+                    'placeholder' => 'blog.post.post',
+                ),
+                
             ))
         ;
 

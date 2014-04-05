@@ -1,14 +1,14 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {{ form_start(form, {
     'action': path('admin_blog_manager_new_post', {'id': section.id})
 }) }}
 <div class="row">
-  <div class="medium-6 medium-centered columns">
+  <div class="large-10 large-centered columns">
     {{ form_row(form.title) }}
-    {{ form_row(form.content) }}
+    {{ form_row(form.content, {'attr': {'rows': '22'} }) }}
     <div class="text-right">
-      <button type="submit"
-              class="button small">{{ 'submit'|trans }}</button>
+      {{ widgets.btn_ajax() }}
     </div>
   </div>
 </div>

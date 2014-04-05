@@ -42,20 +42,7 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
         $contentFactory->addItem($section, $page);
     }
 
-    $form = $app['form.factory']->createBuilder('form', $page)
-        ->add('title', 'text', array(
-            'label'         => 'section.title',
-            'attr' => array(
-                'placeholder' => 'section.title',
-            ),
-        ))
-        ->add('content', 'textarea', array(
-            'label'         => 'section.description',
-            'attr' => array(
-                'placeholder' => 'section.description',
-            ),
-        ))
-        ->getForm();
+    $form = $section->addPageForm($app['form.factory'], $page);
 
     $form->handleRequest($request);
     if ($form->isValid()) {

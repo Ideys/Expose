@@ -170,7 +170,9 @@ html:
     deleted: A section was deleted
 
 blog:
-    post: Post
+    post:
+        post: Post
+        title: Post title
     posts: Posts
     no.post: This section has no post
     delete: Delete this blog and its posts
