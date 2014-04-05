@@ -75,4 +75,5 @@
 
 {% block javascripts %}
 <script src="{{ app.request.basepath }}/js/admin.js?v={{ semver }}"></script>
+{% include "backend/htmlEditor.js.twig" only %}
 {% endblock javascripts %}

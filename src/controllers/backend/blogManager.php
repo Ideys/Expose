@@ -33,7 +33,7 @@ $blogManagerController->match('/{id}/new', function (Request $request, $id) use 
         return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
     }
 
-    return $app['twig']->render('backend/blogManager/_formNew.html.twig', array(
+    return $app['twig']->render('backend/blogManager/_postEdit.html.twig', array(
         'form' => $form->createView(),
         'section' => $section,
     ));

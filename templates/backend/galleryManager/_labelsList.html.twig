@@ -1,7 +1,10 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {% if section.hasItems %}
-{{ form_start(form, {'action': path('admin_gallery_manager_labels', {'id': section.id})}) }}
+{{ form_start(form, {
+    'action': path('admin_gallery_manager_labels', {'id': section.id}),
+    'attr': {'id': 'section-form-'~section.id }
+}) }}
 {{ widgets.btn_ajax() }}
 <ul class="label-list small-block-grid-1 medium-block-grid-2">
   {% for slide in section.items %}
@@ -24,7 +27,7 @@
     <div class="row">
       <div class="small-12 columns">
         <fieldset>
-          {{ form_widget(form['description'~slide.id], {'attr': {'rows': '2'} }) }}
+          {{ form_widget(form['description'~slide.id], {'attr': {'rows': '2', 'class': 'slide-description'} }) }}
           {{ form_widget(form['title'~slide.id]) }}
           {% if section.isLinkable %}
           {{ form_widget(form['link'~slide.id]) }}
@@ -43,4 +46,7 @@
 {% else %}
 <p class="notice-empty">{{ 'gallery.no.pics'|trans }}</p>
 {% endif %}
+<script>
+    $('#section-form-{{ section.id }} .slide-description').markItUp(markitupSettingsCompact);
+</script>
 {% endspaceless %}

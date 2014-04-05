@@ -1,6 +1,9 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{{ form_start(form, {'action': path('admin_html_manager_edit', {'id': section.id})}) }}
+{{ form_start(form, {
+    'action': path('admin_html_manager_edit', {'id': section.id}),
+    'attr': {'id': 'section-form-'~section.id }
+}) }}
 <div class="row">
   <div class="large-10 large-centered columns">
     {{ form_errors(form) }}
@@ -15,4 +18,7 @@
 {{ form_rest(form) }}
 </div>
 {{ form_end(form) }}
+<script>
+    $('#section-form-{{ section.id }} #form_content').markItUp(markitupSettingsFull);
+</script>
 {% endspaceless %}

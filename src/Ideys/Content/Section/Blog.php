@@ -33,7 +33,7 @@ class Blog extends Section implements ContentInterface
                 ),
             ))
             ->add('content', 'textarea', array(
-                'label' => 'blog.post.post',
+                'label' => false,
                 'attr' => array(
                     'placeholder' => 'blog.post.post',
                 ),

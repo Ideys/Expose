@@ -36,13 +36,13 @@ class Html extends Section implements ContentInterface
     {
         $formBuilder = $formFactory->createBuilder('form', $page)
             ->add('title', 'text', array(
-                'label'         => 'section.title',
+                'label' => 'section.title',
                 'attr' => array(
                     'placeholder' => 'section.title',
                 ),
             ))
             ->add('content', 'textarea', array(
-                'label'         => 'section.description',
+                'label' => false,
                 'attr' => array(
                     'placeholder' => 'section.description',
                 ),
