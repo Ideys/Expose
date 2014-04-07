@@ -32,6 +32,15 @@ class Blog extends Section implements ContentInterface
                     'placeholder' => 'blog.post.title',
                 ),
             ))
+            ->add('posting_date', 'date', array(
+                'label' => 'blog.post.date',
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy',
+                'attr' => array(
+                    'placeholder' => 'blog.post.date',
+                    'data-date-format' => 'dd/mm/yyyy',
+                ),
+            ))
             ->add('content', 'textarea', array(
                 'label' => false,
                 'attr' => array(

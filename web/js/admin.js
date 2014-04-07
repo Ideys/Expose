@@ -287,6 +287,16 @@ $(function(){
         form.find('.for-mode').addClass('hidden');
         form.find('.for-'+mode).removeClass('hidden');
     })
+    .on('focus', 'input[data-date-format]', function(){
+        if (!$(this).hasClass(('active'))) {
+            var dateformat = $(this).data('date-format');
+
+            $(this)
+                .fdatepicker({format: dateformat})
+                .addClass('active')
+                ;
+        }
+    })
     ;
 
     $('#content-sections, .dir-sections .accordion').sortable({

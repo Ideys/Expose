@@ -26,6 +26,7 @@ abstract class Item
         'path' => null,
         'parameters' => '',
         'language' => null,
+        'posting_date' => null,
         'hierarchy' => 0,
     );
 

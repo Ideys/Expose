@@ -173,6 +173,7 @@ blog:
     post:
         post: Post
         title: Post title
+        date: Publishing date
     posts: Posts
     no.post: This section has no post
     delete: Delete this blog and its posts

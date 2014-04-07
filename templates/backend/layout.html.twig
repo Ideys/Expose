@@ -71,9 +71,11 @@
 
 {% block head %}
 <link rel="stylesheet" href="{{ app.request.basepath }}/css/admin.css?v={{ semver }}">
+<link rel="stylesheet" href="{{ app.request.basepath }}/css/foundation-datepicker.css?v={{ semver }}">
 {% endblock head %}
 
 {% block javascripts %}
+<script src="{{ app.request.basepath }}/js/vendor/foundation-datepicker.js?v={{ semver }}"></script>
 <script src="{{ app.request.basepath }}/js/admin.js?v={{ semver }}"></script>
 {% include "backend/htmlEditor.js.twig" only %}
 {% endblock javascripts %}

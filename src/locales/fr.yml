@@ -173,8 +173,8 @@ blog:
     post:
         post: Article
         title: Titre de l'article
+        date: Date de publication
     posts: Articles
-    
     no.post: Aucun article n'a encore été écrit
     delete: Supprimer ce blog et tous ses articles
     deleted: Le blog a été supprimé
