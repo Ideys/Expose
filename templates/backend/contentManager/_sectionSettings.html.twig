@@ -31,17 +31,14 @@
             </a>
           </li>
           <li>
-            {{ form_start(delete_form, {
-              'action': path('admin_content_manager_delete', {'id': section.id})
-            }) }}
-            <button type="submit"
+            <button type="button"
                     title="{{ 'delete'|trans }}"
-                    data-confirm-action="{{ (section.type~'.delete')|trans|escape('html_attr') }}"
+                    data-confirm-delete-section="#submit-delete-{{ section.id }}"
+                    data-confirm-message="{{ (section.type~'.delete')|trans|escape('html_attr') }}"
                     class="tiny alert button">
               <i class="fi-x"></i>&nbsp;
               <span class="hide-for-small-only">{{ 'delete'|trans }}</span>
             </button>
-            {{ form_end(delete_form) }}
           </li>
           {% endif %}
         </ul>
@@ -66,6 +63,16 @@
       </div>
     </div>
     {{ form_end(edit_form) }}
+    <div class="hide">
+        {{ form_start(delete_form, {
+          'action': path('admin_content_manager_delete', {'id': section.id})
+        }) }}
+        <button type="submit"
+                id="submit-delete-{{ section.id }}">
+          {{ 'delete'|trans }}
+        </button>
+        {{ form_end(delete_form) }}
+    </div>
   </div>
 </div>
 {% endspaceless %}

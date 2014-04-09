@@ -152,6 +152,17 @@ $(function(){
         } );
         return false;
     })
+    .on('click', '[data-confirm-delete-section]', function() {
+        var deleteLink = $($(this).data('confirm-delete-section'))
+          , confirmMessage = $(this).data('confirm-message')
+          ;
+
+        if (confirm(confirmMessage)){
+            deleteLink.click();
+        }
+
+        return false;
+    })
     .on('click', '[data-confirm-action]', function(event) {
         event.stopImmediatePropagation();
         var message = $(this).data('confirm-action');
