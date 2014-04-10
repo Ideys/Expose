@@ -87,6 +87,24 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
+     * Return gallery slides total weight.
+     *
+     * @param string $name
+     *
+     * @return array
+     */
+    public function getWeight()
+    {
+        $weight = 0;
+
+        foreach ($this->items as $slide) {
+            $weight += $slide->file_size;
+        }
+
+        return $weight;
+    }
+
+    /**
      * Add a slide into gallery.
      *
      * @param \Imagine\Image\ImagineInterface                       $imagine
@@ -164,7 +182,7 @@ class Gallery extends Section implements ContentInterface
                 'choices' => static::getSlideModeChoice(),
             ))
             ->add('extended', 'choice', array(
-                'label' => 'gallery.mode.slideshow.extended',
+                'label' => 'gallery.mode.fullscreen.extended',
                 'choices' => \Ideys\Settings\Settings::getIOChoices(),
             ))
             ->add('thumb_list', 'choice', array(
@@ -282,7 +300,7 @@ class Gallery extends Section implements ContentInterface
     {
         return array(
             'slideshow' => 'gallery.mode.slideshow',
-            'fullscreen' => 'gallery.mode.slideshow.full.screen',
+            'fullscreen' => 'gallery.mode.fullscreen',
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',
         );

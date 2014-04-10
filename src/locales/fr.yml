@@ -100,8 +100,8 @@ gallery:
     mode:
         mode: Mode d'affichage de la galerie
         slideshow: Diaporama
-        slideshow.full.screen: Diaporama plein écran
-        slideshow.extended: Images étendues en débordement
+        fullscreen: Diaporama plein écran
+        fullscreen.extended: Images étendues en débordement
         vertical: Défilement vertical
         masonry: Miniatures imbriquées
     slide:
@@ -235,6 +235,13 @@ admin:
     link.on.contact.section: Dans la section contact
     link.on.menu: Dans le menu
     link.disabled: Invisible
+
+weight:
+    b: o
+    kb: Ko
+    mb: Mo
+    gb: Go
+    tb: To
 
 yes: Oui
 no: Non

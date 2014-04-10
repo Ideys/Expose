@@ -100,8 +100,8 @@ gallery:
     mode:
         mode: Gallery display mode
         slideshow: Slideshow
-        slideshow.full.screen: Fullscreen slideshow
-        slideshow.extended: Pictures extended
+        fullscreen: Fullscreen slideshow
+        fullscreen.extended: Pictures extended
         vertical: Vertical scroll
         masonry: Imbricated thumbs
     slide:
@@ -235,6 +235,13 @@ admin:
     link.on.contact.section: Under contact section
     link.on.menu: Under main menu
     link.disabled: Hidden
+
+weight:
+    b: B
+    kb: KB
+    mb: MB
+    gb: GB
+    tb: TB
 
 yes: Yes
 no: No

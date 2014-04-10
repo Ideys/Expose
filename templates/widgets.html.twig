@@ -65,15 +65,19 @@
     {% set terabyte = gigabyte * 1024 %}
 
     {% if bytes < kilobyte %}
-        {{ bytes ~ ' B' }}
+        {{ bytes ~ ' ' ~ ('weight.b'|trans) }}
     {% elseif bytes < megabyte %}
-        {{ (bytes / kilobyte)|number_format(2, '.') ~ ' KB' }}
+        {{ (bytes / kilobyte)|number_format(2, '.')
+            ~ ' ' ~ ('weight.kb'|trans) }}
     {% elseif bytes < gigabyte %}
-        {{ (bytes / megabyte)|number_format(2, '.') ~ ' MB' }}
+        {{ (bytes / megabyte)|number_format(2, '.')
+            ~ ' ' ~ ('weight.mb'|trans) }}
     {% elseif bytes < terabyte %}
-        {{ (bytes / gigabyte)|number_format(2, '.') ~ ' GB' }}
+        {{ (bytes / gigabyte)|number_format(2, '.')
+            ~ ' ' ~ ('weight.gb'|trans) }}
     {% else %}
-        {{ (bytes / terabyte)|number_format(2, '.') ~ ' TB' }}
+        {{ (bytes / terabyte)|number_format(2, '.')
+            ~ ' ' ~ ('weight.tb'|trans) }}
     {% endif %}
 {% endspaceless %}
 {% endmacro %}

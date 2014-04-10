@@ -1,3 +1,4 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 <div data-selectable-actions class="hidden stack-actions">
   <ul class="button-group">
@@ -66,13 +67,29 @@
     </li>
   </ul>
 </div>
-<div class="text-right section-info">
-{% if section.shuffle %}
-  <span class="secondary round label">
-    <i class="fi-shuffle"></i>
-    {{ 'gallery.slide.shuffle'|trans }}
-  </span>
-{% endif %}
+<div class="section-info">
+  <ul class="inline-list right">
+    <li>
+      <span class="secondary round label">
+        <i class="fi-projection-screen"></i>
+        {{ ('gallery.mode.'~section.gallery_mode)|trans }}
+      </span>
+    </li>
+    <li>
+      <span class="secondary round label">
+        <i class="fi-graph-pie"></i>
+        {{ widgets.bytes_format(section.weight) }}
+      </span>
+    </li>
+    {% if section.shuffle %}
+    <li>
+      <span class="secondary round label">
+        <i class="fi-shuffle"></i>
+        {{ 'gallery.slide.shuffle'|trans }}
+      </span>
+    </li>
+    {% endif %}
+  </ul>
 </div>
 {% if section.hasItems %}
 <ul id="slides-{{ section.id }}"
