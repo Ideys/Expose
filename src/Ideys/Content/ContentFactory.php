@@ -317,12 +317,18 @@ class ContentFactory
      */
     public function addItem(Section $section, Item\Item $item)
     {
+        $postingDate = ($item->posting_date instanceof \DateTime)
+                ? $item->posting_date->format('c') : null;
+
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $section->id,
             'type' => $item->type,
             'category' => $item->category,
             'slug' => \Ideys\String::slugify($item->title),
             'path' => $item->path,
+            'posting_date' => $postingDate,
+            'published' => $item->published,
+            'hierarchy' => $item->hierarchy,
         ) + $this->blameAndTimestampData(0));
 
         $item->id = $this->db->lastInsertId();

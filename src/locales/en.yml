@@ -175,6 +175,7 @@ blog:
         post: Post
         title: Post title
         date: Publishing date
+        publish: Publish post
     posts: Posts
     no.post: This section has no post
     delete: Delete this blog and its posts

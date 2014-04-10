@@ -18,7 +18,7 @@
   <div class="row">
     <div class="large-12 columns">
       <dl class="sub-nav">
-      {% for videos in section.items %}
+      {% for videos in section.items if videos.published %}
       <dd{% if videos.id == video.id %} class="active"{% endif %}>
         <a href="{{ path('section_item', {'slug': section.slug, 'itemSlug': videos.slug}) }}">
           {{ videos.title }}

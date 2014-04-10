@@ -27,6 +27,7 @@ abstract class Item
         'parameters' => '',
         'language' => null,
         'posting_date' => null,
+        'published' => '1',
         'hierarchy' => 0,
     );
 
@@ -39,5 +40,15 @@ abstract class Item
     {
         $this->attributes = array_merge($this->attributes, $entity);
         $this->parameters = (array) unserialize($this->attributes['parameters']);
+    }
+
+    /**
+     * Test if item is published.
+     *
+     * @return boolean
+     */
+    public function isPublished()
+    {
+        return ($this->published == '1');
     }
 }

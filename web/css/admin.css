@@ -179,6 +179,19 @@ td.muted {
  * Galleries slide labels list
  */
 
+.slides-grid .slide-state {
+    float: right;
+    position: relative;
+    top: -44px;
+    right: 10px;
+    font-size: 32px;
+    text-shadow: 1px 1px 3px #eee;
+}
+
+.slides-grid .slide-state.fi-prohibited {
+    color: #f60018;
+}
+
 .label-list .row {
     margin-bottom: 10px;
 }

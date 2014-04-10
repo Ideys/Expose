@@ -46,7 +46,10 @@ class Blog extends Section implements ContentInterface
                 'attr' => array(
                     'placeholder' => 'blog.post.post',
                 ),
-                
+            ))
+            ->add('published', 'choice', array(
+                'label' => 'blog.post.publish',
+                'choices' => \Ideys\Settings\Settings::getIOChoices(),
             ))
         ;
 

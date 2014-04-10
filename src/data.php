@@ -103,6 +103,7 @@ if (!$schema->tablesExist('expose_section_item')) {
     $table->addColumn('slug', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('path', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('posting_date', 'datetime', array('default' => null, 'notnull' => false));
+    $table->addColumn('published', 'boolean');
     $table->addColumn('hierarchy', 'smallint');
     blameAndTimestampSchema($table);
 

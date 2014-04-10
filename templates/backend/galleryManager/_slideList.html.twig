@@ -100,6 +100,9 @@
   <li data-selectable data-id="{{ slide.id }}">
     <img class="th handle"
          src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">
+    {% if not slide.published %}
+      <i class="fi-prohibited slide-state"></i>
+    {% endif %}
   </li>
   {% endfor %}
 </ul>
