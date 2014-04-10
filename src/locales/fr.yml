@@ -112,7 +112,8 @@ gallery:
         link: Lien de l'image
     grid:
         rows: Images par ligne
-        rows.small: Images par ligne (Petits écrans)
+        rows.medium: Images par ligne (Tablettes)
+        rows.small: Images par ligne (Smartphones)
         rows1: Une image
         rows2: Deux images
         rows3: Trois images

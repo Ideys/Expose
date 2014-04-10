@@ -38,6 +38,7 @@ class Gallery extends Section implements ContentInterface
             'extended' => '0',
             'thumb_list' => '0',
             'grid_rows' => '1',
+            'grid_rows_medium' => '1',
             'grid_rows_small' => '1',
             'global_legend' => '',
             'shuffle' => '0',
@@ -173,6 +174,10 @@ class Gallery extends Section implements ContentInterface
             ->add('grid_rows', 'choice', array(
                 'label' => 'gallery.grid.rows',
                 'choices' => static::getGalleryGridRowsChoice(),
+            ))
+            ->add('grid_rows_medium', 'choice', array(
+                'label' => 'gallery.grid.rows.medium',
+                'choices' => static::getGalleryGridRowsChoice(8),
             ))
             ->add('grid_rows_small', 'choice', array(
                 'label' => 'gallery.grid.rows.small',
