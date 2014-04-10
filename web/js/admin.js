@@ -152,14 +152,10 @@ $(function(){
         } );
         return false;
     })
-    .on('click', '[data-confirm-delete-section]', function() {
-        var deleteLink = $($(this).data('confirm-delete-section'))
-          , confirmMessage = $(this).data('confirm-message')
-          ;
+    .on('click', '[data-click-link]', function() {
+        var link = $($(this).data('click-link'));
 
-        if (confirm(confirmMessage)){
-            deleteLink.click();
-        }
+        link.click();
 
         return false;
     })

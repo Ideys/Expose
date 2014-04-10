@@ -33,8 +33,7 @@
           <li>
             <button type="button"
                     title="{{ 'delete'|trans }}"
-                    data-confirm-delete-section="#submit-delete-{{ section.id }}"
-                    data-confirm-message="{{ (section.type~'.delete')|trans|escape('html_attr') }}"
+                    data-click-link="#submit-delete-{{ section.id }}"
                     class="tiny alert button">
               <i class="fi-x"></i>&nbsp;
               <span class="hide-for-small-only">{{ 'delete'|trans }}</span>
@@ -68,6 +67,7 @@
           'action': path('admin_content_manager_delete', {'id': section.id})
         }) }}
         <button type="submit"
+                data-confirm-action="{{ (section.type~'.delete')|trans|escape('html_attr') }}"
                 id="submit-delete-{{ section.id }}">
           {{ 'delete'|trans }}
         </button>
