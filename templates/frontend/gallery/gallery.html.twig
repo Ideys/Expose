@@ -19,28 +19,17 @@
 {% endblock description %}
 
 {% block head %}
-  {{ parent() }}
   {% include "frontend/gallery/preloader.css.twig" %}
-  {% if section.custom_css|length %}
-    <style>
-      {{ section.custom_css|raw }}
-    </style>
-  {% endif %}
+  {{ parent() }}
 {% endblock head %}
 
 {% block javascripts %}
 {% if 'masonry' == section.gallery_mode %}
   {% include "frontend/gallery/_masonry.js.twig" %}
-{% else %}
-  {{ parent() }}
 {% endif %}
+{{ parent() }}
 {% if section.thumb_list %}
-  {% include "frontend/gallery/_fullscreen.js.twig" %}
-{% endif %}
-{% if section.custom_js|length %}
-<script>
-  {{ section.custom_js|raw }}
-</script>
+  {% include "frontend/gallery/_fullscreenThumb.js.twig" %}
 {% endif %}
 {% endblock javascripts %}
 

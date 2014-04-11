@@ -182,7 +182,7 @@ blog:
     deleted: The blog was deleted
 
 maps:
-    no.map: Aucunes cartes dans cette section
+    no.map: This section has no map yet.
     delete: Delete this map and all related items
     deleted: The map is deleted
 

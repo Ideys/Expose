@@ -9,12 +9,24 @@
 <style>
 {{ site.customStyle|raw }}
 </style>
+{% if section|default('')|length
+  and section.custom_css|length %}
+  <style>
+    {{ section.custom_css|raw }}
+  </style>
+{% endif %}
 {% endblock head %}
 
 {% block javascripts %}
 <script>
 {{ site.customJavascript|raw }}
 </script>
+{% if section|default('')|length
+  and section.custom_js|length %}
+<script>
+  {{ section.custom_js|raw }}
+</script>
+{% endif %}
 {% endblock javascripts %}
 
 {% block body_class parent()~' background-'~site.layoutBackground %}

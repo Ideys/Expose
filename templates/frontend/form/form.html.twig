@@ -35,21 +35,3 @@
 </p>
 {% endif %}
 {%- endblock main %}
-
-{% block head %}
-{{ parent() }}
-{% if section.custom_css|length %}
-  <style>
-    {{ section.custom_css|raw }}
-  </style>
-{% endif %}
-{% endblock head %}
-
-{% block javascripts %}
-{{ parent() }}
-{% if section.custom_js|length %}
-<script>
-  {{ section.custom_js|raw }}
-</script>
-{% endif %}
-{% endblock javascripts %}
