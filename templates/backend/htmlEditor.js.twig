@@ -19,7 +19,7 @@ var markitupSettings{{ mode }} = {
       {% endfor %}
     {% endif %}
     {# Paragraph tag #}
-    {name:'<i class="fi-social-path"></i>', openWith:'<p(!( class="[![Class]!]")!)>', closeWith:'</p>'  },
+    {name:'<span>P</span>', openWith:'<p(!( class="[![Class]!]")!)>', closeWith:'</p>'  },
     {# Text style tags #}
     {% if 'Full' == mode %}
       { {{ sep|raw }} },
