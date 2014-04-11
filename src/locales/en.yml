@@ -176,6 +176,8 @@ blog:
         title: Post title
         date: Publishing date
         publish: Publish post
+        published: Published
+        unpublished: Unpublished
     posts: Posts
     no.post: This section has no post
     delete: Delete this blog and its posts

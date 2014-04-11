@@ -1,11 +1,27 @@
 {% spaceless %}
 {% if section.hasItems %}
 <ul id="posts-{{ section.id }}"
-    class="medium-block-grid-3 small-block-grid-1"
+    class="posts-list small-block-grid-1"
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
   {% for post in section.items %}
-  <li data-selectable data-id="{{ post.id }}">
-    <div class="handle">
+  <li class="post"
+      data-id="{{ post.id }}">
+    <div>
+      {% if post.published %}
+        <span class="published label right">
+          {{ 'blog.post.published'|trans }}
+        </span>
+      {% else %}
+        <span class="published secondary label right">
+          {{ 'blog.post.unpublished'|trans }}
+        </span>
+      {% endif %}
+      {% if post.posting_date|length %}
+      {{ post.posting_date|date('d/m/Y') }}
+      {% endif %}
+      {{ post.title }}
+    </div>
+    <div>
       {{ post.content|raw }}
     </div>
   </li>

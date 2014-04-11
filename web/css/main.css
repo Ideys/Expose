@@ -383,6 +383,14 @@ body.gallery-fullscreen .orbit-container .orbit-slides-container > * .orbit-capt
     display: block;
 }
 
+/*
+ * Blog
+ */
+
+.content-blog .post {
+    margin-bottom: 45px;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */

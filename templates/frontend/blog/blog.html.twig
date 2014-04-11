@@ -4,7 +4,21 @@
 
 {% block main -%}
 {% if section.hasItems %}
-
+<div class="row">
+  {% for post in section.items %}
+  <div class="small-12 columns post">
+    <h2>{{ post.title }}</h2>
+    <div class="post-header">
+      {% if post.posting_date|length %}
+        {{ post.posting_date|date('d/m/Y') }}
+      {% endif %}
+    </div>
+    <div class="post-body">
+      {{ post.content|raw }}
+    </div>
+  </div>
+  {% endfor %}
+</div>
 {% else %}
 <p class="coming-soon">
   {{ 'section.coming.soon'|trans }}

@@ -176,6 +176,8 @@ blog:
         title: Titre de l'article
         date: Date de publication
         publish: Publier l'article
+        published: Publié
+        unpublished: Fermé
     posts: Articles
     no.post: Aucun article n'a encore été écrit
     delete: Supprimer ce blog et tous ses articles
