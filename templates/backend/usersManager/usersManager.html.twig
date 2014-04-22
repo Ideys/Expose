@@ -19,10 +19,10 @@
         {% else %}
           {{ 'user.never.connected'|trans }}
         {% endif %}
-        <a href="#" data-dropdown="user_action{{ user.id }}" class="tiny button dropdown">
-          {{ 'actions'|trans }}
-        </a>
-        <ul id="user_action{{ user.id }}" data-dropdown-content="" class="f-dropdown">
+        {{ widgets.btn_dropdown_actions('user-actions-'~user.id) }}
+        <ul id="user-actions-{{ user.id }}"
+            data-dropdown-content=""
+            class="f-dropdown">
           <li>
             <a href="{{ path('admin_users_manager', {'id': user.id}) }}">
               {{ 'edit'|trans }}

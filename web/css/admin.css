@@ -57,6 +57,11 @@ input.clipboard {
     top: -99999px;
 }
 
+.button.actions {
+    padding: 8px 12px;
+    font-size: 1em;
+}
+
 /*
  * Dir title
  */
@@ -250,6 +255,28 @@ td.muted {
     opacity: 0;
     -ms-filter: 'alpha(opacity=0)';
     cursor: pointer;
+}
+
+/* ==========================================================================
+   Forms manager
+   ========================================================================== */
+
+.field.panel {
+    position: relative;
+    padding-bottom: 50px;
+}
+
+.field.panel p {
+    margin: 0px;
+}
+
+.field.panel .header{
+    height: 35px;
+}
+
+.field.panel .tiny.button {
+    display: inline-block;
+    float: right;
 }
 
 /* ==========================================================================

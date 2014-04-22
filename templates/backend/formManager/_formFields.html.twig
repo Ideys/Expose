@@ -1,54 +1,55 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {% set fields = section.items %}
-<table>
-  <thead>
-    <tr>
-      <th>&nbsp;</th>
-      <th>{{ 'form.field.type'|trans }}</th>
-      <th>{{ 'form.label'|trans }}</th>
-      <th>{{ 'form.specs'|trans }}</th>
-      <th>&nbsp;</th>
-    </tr>
-  </thead>
-  <tbody data-sortable="{{ path('admin_content_manager_sort_items') }}">
-    {% for field in fields %}
-    <tr id="field-line-{{ field.id }}"
-        data-id="{{ field.id }}">
-      <td><span class="handle">::</span></td>
-      <td>{{ ('form.field.'~field.category)|trans }}</td>
-      <td>{{ field.title }}<br>{{ field.description }}</td>
-      <td>
+<div data-sortable="{{ path('admin_content_manager_sort_items') }}">
+  {% for field in fields %}
+    <div id="field-line-{{ field.id }}"
+         class="field panel"
+         data-id="{{ field.id }}">
+
+      {# Title and category #}
+      <div class="header">
+        <h5 class="left">
+          <span class="handle">::</span>
+          {{ field.title }}
+        </h5>
+        <span class="secondary label right">
+          {{ ('form.field.'~field.category)|trans }}
+        </span>
         {% if field.required|length %}
-          <span class="label">{{ 'form.required'|trans }}</span><br>
+          <span class="label right">{{ 'form.required'|trans }}</span>
         {% endif %}
-        {% if field.category in ['select', 'multiple.select', 'radio'] %}
-          <ul>
-          {% for choice in field.choices|nl2br|split('<br />') %}
-            <li>{{ choice }}</li>
-          {% endfor %}
-          </ul>
-        {% elseif field.category == 'html.insert' %}
-          {{field.content|raw }}
-        {% endif %}
-      </td>
-      <td>
-        <button
-            type="button"
-            class="tiny secondary button"
-            data-display="#delete-field-{{ field.id }}">
-          {{ 'delete'|trans }}
-        </button>
-        <button
-            type="button"
-            id="delete-field-{{ field.id }}"
-            class="tiny alert button hidden"
-            data-delete-ajax="{{ path('admin_form_manager_remove_field', {'id': section.id, 'itemId': field.id}) }}"
-            data-target="#field-line-{{ field.id }}">
-          {{ 'confirm'|trans }}
-        </button>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+      </div>
+
+      {# Help description #}
+      <p>{{ field.description }}</p>
+
+      {# Field specifications #}
+      {% if field.category in ['select', 'multiple.select', 'radio'] %}
+        <ul>
+        {% for choice in field.choices|nl2br|split('<br />') %}
+          <li>{{ choice }}</li>
+        {% endfor %}
+        </ul>
+      {% elseif field.category == 'html.insert' %}
+        {{field.content|raw }}
+      {% endif %}
+
+      {# Field actions #}
+      {{ widgets.btn_dropdown_actions('field-actions-'~field.id, 'ajax') }}
+      <ul id="field-actions-{{ field.id }}" class="f-dropdown">
+        <li>
+          <a href="{{ path('admin_form_manager_remove_field', {
+                  'id': section.id,
+                  'itemId': field.id
+              }) }}"
+              data-target="#field-line-{{ field.id }}"
+              data-confirm-action="{{ 'confirm'|trans }}">
+            {{ 'delete'|trans }}
+          </a>
+        </li>
+      </ul>
+    </div>
+  {% endfor %}
+</div>
 {% endspaceless %}

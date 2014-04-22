@@ -31,6 +31,21 @@
 {% endspaceless %}
 {% endmacro %}
 
+{% macro btn_dropdown_actions(target, ajax) %}
+{% spaceless %}
+<a href="#"
+   title="{{ 'actions'|trans }}"
+   {% if ajax|default('')|length %}
+   data-dropdown-ajax="{{ target }}"
+   {% else %}
+   data-dropdown="{{ target }}"
+   {% endif %}
+   class="tiny secondary small actions button">
+  <i class="fi-widget"></i>
+</a>
+{% endspaceless %}
+{% endmacro %}
+
 {% macro inclusion_replace_keys(content) %}
 {{ content|replace({
     '__path:gallery__': app.request.basepath~'/gallery',

@@ -1,3 +1,4 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {% if section.hasItems %}
 <ul id="videos-{{ section.id }}"
@@ -14,13 +15,14 @@
           <img src="{{ app.request.basepath }}/img/video_{{ video.provider }}.jpg">
         </div>
         <div class="large-8 small-6 columns text-right">
-        <a href="#"
-           data-dropdown-ajax="video-actions-{{ video.id }}"
-           class="button dropdown secondary small">
-        </a><br>
+        {{ widgets.btn_dropdown_actions('video-actions-'~video.id, 'ajax') }}
         <ul id="video-actions-{{ video.id }}" class="f-dropdown">
           <li>
-            <a href="{{ path('admin_channel_manager_remove_video', {'id': section.id, 'itemId': video.id}) }}">
+            <a href="{{ path('admin_channel_manager_remove_video', {
+                    'id': section.id,
+                    'itemId': video.id
+                }) }}"
+                data-confirm-action="{{ 'channel.delete'|trans }}">
               {{ 'delete'|trans }}
             </a>
           </li>
