@@ -14,10 +14,10 @@
   <div class="scroll-link scroll-right"></div>
   <div class="scroll-wrapper">
     <div class="scroll-area">
-    {% for row, item in section.items if slide.published %}
+    {% for row, slide in section.items if slide.published %}
       <a data-orbit-link="pic-{{ row }}"
-         title="{{ item.title|e }}">
-        <img src="{{ app.request.basepath }}/gallery/220/{{ item.path }}">
+         title="{{ slide.title|e }}">
+        <img src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">
       </a>
     {% endfor %}
     </div>
