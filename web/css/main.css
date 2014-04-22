@@ -117,6 +117,20 @@ textarea {
     border-top-color: #ccc;
 }
 
+.sidebar {
+    height: 100vh;
+    position: relative;
+}
+
+.sidebar .secondary.side-nav {
+    position: absolute;
+    bottom: 0px;
+}
+
+.inner-wrap {
+    min-height: 100vh; /* Display aside menu in full height */
+}
+
 .sidebar a,
 .side-nav li a:not(.button) {
     color: #333;
