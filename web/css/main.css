@@ -224,12 +224,16 @@ textarea {
  */
 
 #homepage {
-    position: fixed;
-    top: 40%;
-    left: 0px;
-    height: 180px;
-    width: 100%;
+    position: relative;
+    height: 90vh;
     text-align: center;
+}
+
+#homepage h1 {
+    position: absolute;
+    top: 40%;
+    height: 80px;
+    width: 100%;
 }
 
 /*
