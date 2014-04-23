@@ -375,7 +375,13 @@ body.gallery-fullscreen .orbit-container .orbit-slides-container > * .orbit-capt
 }
 
 #slide-thumbs div.scroll-area a img {
-    height: 15vh;
+    height: 16vh;
+}
+
+@media only screen and (min-height: 775px) {
+    #slide-thumbs div.scroll-area a img {
+        height: 12vh;
+    }
 }
 
 /*

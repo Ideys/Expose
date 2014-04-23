@@ -8,20 +8,5 @@
      </li>
   {% endfor %}
 </ul>
-{% if section.thumb_list %}
-<div id="slide-thumbs">
-  <div class="scroll-link scroll-left"></div>
-  <div class="scroll-link scroll-right"></div>
-  <div class="scroll-wrapper">
-    <div class="scroll-area">
-    {% for row, slide in section.items if slide.published %}
-      <a data-orbit-link="pic-{{ row }}"
-         title="{{ slide.title|e }}">
-        <img src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">
-      </a>
-    {% endfor %}
-    </div>
-  </div>
-</div>
-{% endif %}
+{% include "frontend/gallery/_thumbList.html.twig" with { 'section': section } only %}
 {% endspaceless %}
