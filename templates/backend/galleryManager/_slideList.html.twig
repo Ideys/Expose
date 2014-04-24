@@ -7,25 +7,31 @@
     </li>
     <li>
       <button
-          type="button"
-         class="secondary button small"
-         data-select="all">
-        {{ 'select.all'|trans }}
+        type="button"
+        title="{{ 'select.all'|trans }}"
+        class="secondary button small"
+        data-select="all">
+        <i class="fi-target"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'select.all'|trans }}</span>
       </button>
     </li>
     <li>
       <button
-          type="button"
-         class="secondary button small"
-         data-select="none">
-        {{ 'select.none'|trans }}
+        type="button"
+        title="{{ 'select.none'|trans }}"
+        class="secondary button small"
+        data-select="none">
+        <i class="fi-minus-circle"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'select.none'|trans }}</span>
       </button>
     </li>
     <li>
       <a href="#"
+         title="{{ 'move'|trans }}"
          data-dropdown-ajax="move-selection-{{ section.id }}"
-         class="button dropdown small">
-        {{ 'move'|trans }}
+         class="button small">
+        <i class="fi-folder"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'move'|trans }}</span>
       </a><br>
       <ul id="move-selection-{{ section.id }}" class="f-dropdown">
         {% for sectionMove in sections
@@ -57,12 +63,14 @@
     </li>
     <li>
       <button
-         type="button"
-         data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section.id}) }}"
-         data-confirm-message="{{ 'confirm'|trans }}"
-         data-target="#slides-{{ section.id }}"
-         class="button small alert">
-        {{ 'delete'|trans }}
+        type="button"
+        title="{{ 'delete'|trans }}"
+        data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section.id}) }}"
+        data-confirm-message="{{ 'confirm'|trans }}"
+        data-target="#slides-{{ section.id }}"
+        class="button small alert">
+        <i class="fi-x"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'delete'|trans }}</span>
       </button>
     </li>
   </ul>
