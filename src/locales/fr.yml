@@ -97,6 +97,7 @@ gallery:
     global.legend: Légende des slides
     picture:
         alt: Titre alternatif (référencement)
+        on.off: Afficher / Masquer
     mode:
         mode: Mode d'affichage de la galerie
         slideshow: Diaporama

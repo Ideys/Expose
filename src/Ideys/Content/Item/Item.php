@@ -43,6 +43,14 @@ abstract class Item
     }
 
     /**
+     * Toggle item visibility.
+     */
+    public function toggle()
+    {
+        $this->published = !$this->published;
+    }
+
+    /**
      * Test if item is published.
      *
      * @return boolean

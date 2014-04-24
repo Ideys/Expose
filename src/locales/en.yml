@@ -97,6 +97,7 @@ gallery:
     global.legend: Slides legend
     picture:
         alt: Alt attribute (SEO)
+        on.off: Display / Hide
     mode:
         mode: Gallery display mode
         slideshow: Slideshow

@@ -26,6 +26,16 @@
       </button>
     </li>
     <li>
+      <a href="{{ path('admin_content_manager_toggle_items', {'id': section.id}) }}"
+         title="{{ 'gallery.picture.on.off'|trans }}"
+         class="button small"
+         data-target="#slides-{{ section.id }}"
+         data-toggle-visibility>
+        <i class="fi-prohibited"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'gallery.picture.on.off'|trans }}</span>
+      </a>
+    </li>
+    <li>
       <a href="#"
          title="{{ 'move'|trans }}"
          data-dropdown-ajax="move-selection-{{ section.id }}"
@@ -105,12 +115,12 @@
     data-selected=""
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
   {% for slide in section.itemsRealHierarchy %}
-  <li data-selectable data-id="{{ slide.id }}">
+  <li data-selectable data-id="{{ slide.id }}"
+      {% if slide.published %}class="active"{% endif %}>
     <img class="th handle"
          src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">
-    {% if not slide.published %}
+      <i class="fi-check"></i>
       <i class="fi-prohibited slide-state"></i>
-    {% endif %}
   </li>
   {% endfor %}
 </ul>

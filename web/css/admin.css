@@ -150,10 +150,6 @@ input.clipboard {
     background: #fff;
 }
 
-.slides-grid .selected .th {
-    border-color: #0088cc;
-}
-
 .selectable-counter {
     color: #0088cc;
     padding-right: 10px;
@@ -188,17 +184,34 @@ td.muted {
  * Galleries slide labels list
  */
 
+.slides-grid li.selected .th {
+    border-color: #0088cc;
+}
+
+.slides-grid li .fi-check {
+    display: none;
+    color: #0088cc;
+}
+
+.slides-grid li.selected .fi-check {
+    display: inline-block;
+}
+
 .slides-grid .slide-state {
     float: right;
     position: relative;
     top: -44px;
     right: 10px;
     font-size: 32px;
-    text-shadow: 1px 1px 3px #eee;
+    text-shadow: 1px 1px 3px #555;
 }
 
 .slides-grid .slide-state.fi-prohibited {
-    color: #f60018;
+    color: #eee;
+}
+
+.slides-grid .active .slide-state.fi-prohibited {
+    display: none;
 }
 
 .label-list .row {

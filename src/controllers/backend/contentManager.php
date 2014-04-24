@@ -90,7 +90,32 @@ $contentManagerController->post('/move/items/{id}', function (Request $request, 
 
     return $app->json($response);
 })
+->assert('id', '\d+')
 ->bind('admin_content_manager_move_items')
+;
+
+$contentManagerController->post('/toggle/items/{id}', function (Request $request, $id) use ($app) {
+
+    $itemIds = $request->get('items');
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+
+    $response = array();
+    foreach ($section->getItems() as $item) {
+        if (in_array($item->id, $itemIds)) {
+            $item->toggle();
+            $app['db']->update('expose_section_item',
+                array('published' => $item->published),
+                array('id' => $item->id)
+            );
+            $response[] = $item->id;
+        }
+    }
+
+    return $app->json($response);
+})
+->assert('id', '\d+')
+->bind('admin_content_manager_toggle_items')
 ;
 
 $contentManagerController->get('/{id}/archive', function ($id) use ($app) {

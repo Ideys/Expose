@@ -152,6 +152,23 @@ $(function(){
         } );
         return false;
     })
+    .on('click', '[data-toggle-visibility]', function(event) {
+        event.stopPropagation();
+
+        var link = $(this)
+          , list = $(link.data('target'))
+          , toggleUrl = link.attr('href')
+          , selection = list.data('selected')
+          ;
+
+        $.post(toggleUrl, {items: selection}, function(items) {
+            for (var i in items) {
+                $('[data-id="'+items[i]+'"]').toggleClass('active');
+            }
+            resetStackSelection(list);
+        } );
+        return false;
+    })
     .on('click', '[data-click-link]', function() {
         var link = $($(this).data('click-link'));
 
@@ -385,9 +402,12 @@ var removeEditedItems = function(list, items) {
 var resetStackSelection = function(list) {
     var stackActionPanel = list
             .parents('.content')
-            .find('[data-selectable-actions]');
+            .find('[data-selectable-actions]')
+      , items = list.find('[data-selectable]')
+      ;
 
     list.data('selected', '');
+    items.removeClass('selected');
     stackActionPanel.addClass('hidden');
 };
 
