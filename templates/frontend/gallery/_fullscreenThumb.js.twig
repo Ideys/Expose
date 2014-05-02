@@ -1,13 +1,16 @@
 <script src="{{ app.request.basepath }}/js/vendor/jquery.mousewheel.min.js?v={{ semver }}"></script>
 <script src="{{ app.request.basepath }}/js/vendor/jquery.kinetic.min.js?v={{ semver }}"></script>
-<script src="{{ app.request.basepath }}/js/vendor/jquery.smoothdivscroll-1.3-min.js?v={{ semver }}"></script>
 <script>
 $(function(){
-    $('div#slide-thumbs').smoothDivScroll({
-	scrollingHotSpotLeftClass: 'scroll-left',
-	scrollingHotSpotRightClass: 'scroll-right',
-        scrollWrapperClass: 'scroll-wrapper',
-	scrollableAreaClass: 'scroll-area'
-    });
+    $('#slide-thumbs')
+        .mousewheel(function(event, delta) {
+
+            this.scrollLeft -= (delta * 30);
+
+            event.preventDefault();
+
+         })
+        .kinetic()
+   ;
 });
 </script>

@@ -199,6 +199,14 @@ textarea {
     }
 }
 
+table {
+    border: none;
+}
+
+.background-black table {
+    background: #000;
+}
+
 .background-black,
 .background-black .top-bar,
 .background-black .top-bar-section li:not(.has-form) a:not(.button),
@@ -337,49 +345,24 @@ body.gallery-fullscreen .orbit-container .orbit-slides-container > * .orbit-capt
     position: fixed;
     bottom: 0px;
     z-index: 100;
+    overflow: hidden;
 }
 
-#slide-thumbs .scroll-link {
-    min-width: 75px;
-    width: 10%;
-    height: 100%;
-    position: absolute;
-    z-index: 200;
+#slide-thumbs table {
+    margin: 0px;
 }
 
-#slide-thumbs .scroll-left {
-    background-color: #ccc;
-    left: 0;
-    cursor: url("cursors/cursor_arrow_left.png"),
-        url("cursors/cursor_arrow_left.cur"), w-resize;
+#slide-thumbs table tr td {
+    padding: 0px 2px;
 }
 
-#slide-thumbs .scroll-right {
-    background-color: #ccc;
-    right: 0;
-    cursor: url("cursors/cursor_arrow_right.png"),
-        url("cursors/cursor_arrow_right.cur"), e-resize;
-}
-
-#slide-thumbs div.scroll-area a {
-    display: block;
-    position: relative;
-    float: left;
-    margin: 0;
-    padding: 0;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-}
-
-#slide-thumbs div.scroll-area a img {
+#slide-thumbs img {
     height: 16vh;
+    max-width: none;
 }
 
 @media only screen and (min-height: 775px) {
-    #slide-thumbs div.scroll-area a img {
+    #slide-thumbs img {
         height: 12vh;
     }
 }
