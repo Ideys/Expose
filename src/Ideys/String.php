@@ -20,6 +20,9 @@ class String
             strtolower(
                 // remove accents
                 iconv('utf-8', 'us-ascii//TRANSLIT',
+                str_replace(
+                    array('à','â','ä','ç','é','è','ê','ë','î','ï','ô','ö','û','ü'),
+                    array('a','a','a','c','e','e','e','e','i','i','o','o','u','u'),
                     // trim and replace spaces by an hyphen
                     trim(
                         // replace non letter or digits by an hyphen
@@ -28,6 +31,7 @@ class String
                         ),
                         '-'
                     )
+                )
                 )
             )
         );
