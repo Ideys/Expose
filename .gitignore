@@ -26,4 +26,5 @@ ClientBin
 stylecop.*
 ~$*
 *.dbmdl
+.idea
 Generated_Code #added for RIA/Silverlight projects
