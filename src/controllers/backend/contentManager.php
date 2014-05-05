@@ -15,7 +15,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $settings = new Settings($app['db']);
 
     $newSection = new Ideys\Content\Section\Gallery($app['db']);
-    $newSection->visibility = $settings->newSectiondefaultVisibility;
+    $newSection->visibility = $settings->newSectionDefaultVisibility;
     $form = $sectionType->createForm($newSection);
 
     $form->handleRequest($request);
