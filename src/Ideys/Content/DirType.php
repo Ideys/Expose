@@ -3,6 +3,7 @@
 namespace Ideys\Content;
 
 use Symfony\Component\Form\FormFactory;
+use Ideys\Content\Section\Section;
 
 /**
  * Dir form type.
@@ -28,9 +29,11 @@ class DirType
     /**
      * Return the edit directory form.
      *
+     * @param \Ideys\Content\Section\Section $section
+     *
      * @return \Symfony\Component\Form\Form
      */
-    public function editForm($section)
+    public function editForm(Section $section)
     {
         $formBuilder = $this->formBuilder($section);
 
@@ -40,12 +43,14 @@ class DirType
     /**
      * Return dir form builder.
      *
+     * @param \Ideys\Content\Section\Section $section
+     *
      * @return \Symfony\Component\Form\FormBuilder
      */
-    public function formBuilder($entity)
+    public function formBuilder(Section $section)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $entity)
+            ->createBuilder('form', $section)
             ->add('title', 'text', array(
                 'label'         => 'section.title',
                 'attr' => array(

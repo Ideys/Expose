@@ -35,12 +35,12 @@ class Profile
     /**
      * @var string
      */
-    private $firstname;
+    private $firstName;
 
     /**
      * @var string
      */
-    private $lastname;
+    private $lastName;
 
     /**
      * @var string
@@ -63,6 +63,7 @@ class Profile
 
     /**
      * @param integer $id
+     *
      * @return Profile
      */
     private function setId($id)
@@ -95,6 +96,7 @@ class Profile
 
     /**
      * @param string $username
+     *
      * @return Profile
      */
     public function setUsername($username)
@@ -114,6 +116,7 @@ class Profile
 
     /**
      * @param string $password
+     *
      * @return Profile
      */
     public function setPassword($password)
@@ -133,6 +136,7 @@ class Profile
 
     /**
      * @param string $plainPassword
+     *
      * @return Profile
      */
     public function setPlainPassword($plainPassword)
@@ -152,6 +156,7 @@ class Profile
 
     /**
      * @param string $gender
+     *
      * @return Profile
      */
     public function setGender($gender)
@@ -183,12 +188,13 @@ class Profile
     }
 
     /**
-     * @param string $firstname
+     * @param string $firstName
+     *
      * @return Profile
      */
-    public function setFirstname($firstname)
+    public function setFirstName($firstName)
     {
-        $this->firstname = $firstname;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -196,18 +202,19 @@ class Profile
     /**
      * @return string
      */
-    public function getFirstname()
+    public function getFirstName()
     {
-        return $this->firstname;
+        return $this->firstName;
     }
 
     /**
-     * @param string $lastname
+     * @param string $lastName
+     *
      * @return Profile
      */
-    public function setLastname($lastname)
+    public function setLastName($lastName)
     {
-        $this->lastname = $lastname;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -215,13 +222,14 @@ class Profile
     /**
      * @return string
      */
-    public function getLastname()
+    public function getLastName()
     {
-        return $this->lastname;
+        return $this->lastName;
     }
 
     /**
      * @param string $email
+     *
      * @return Profile
      */
     public function setEmail($email)
@@ -241,6 +249,7 @@ class Profile
 
     /**
      * @param mixed $roles
+     *
      * @return Profile
      */
     public function setRoles($roles)
@@ -289,6 +298,7 @@ class Profile
 
     /**
      * @param mixed $lastLogin
+     *
      * @return Profile
      */
     public function setLastLogin($lastLogin)

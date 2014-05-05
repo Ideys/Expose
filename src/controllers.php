@@ -96,6 +96,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
  * Guess client language, relies on browser data.
  *
  * @param array $app
+ *
  * @return string
  */
 function client_language_guesser($app) {

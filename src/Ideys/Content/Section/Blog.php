@@ -3,8 +3,9 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
-use Symfony\Component\Form\FormFactory;
 use Ideys\Content\Item\Post;
+use Ideys\Settings\Settings;
+use Symfony\Component\Form\FormFactory;
 
 /**
  * Blog section manager.
@@ -49,7 +50,7 @@ class Blog extends Section implements ContentInterface
             ))
             ->add('published', 'choice', array(
                 'label' => 'blog.post.publish',
-                'choices' => \Ideys\Settings\Settings::getIOChoices(),
+                'choices' => Settings::getIOChoices(),
             ))
         ;
 

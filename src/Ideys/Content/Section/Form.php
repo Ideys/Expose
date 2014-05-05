@@ -4,7 +4,8 @@ namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
 use Ideys\Content\Item\Field;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form as SfForm;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Form content manager.
@@ -24,9 +25,11 @@ class Form extends Section implements ContentInterface
     /**
      * Return the form object with dynamic fields.
      *
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     *
      * @return \Symfony\Component\Form\Form
      */
-    public function generateFormFields($formFactory)
+    public function generateFormFields(SfForm\FormFactory $formFactory)
     {
         $form = $formFactory->createBuilder('form');
 
@@ -66,9 +69,10 @@ class Form extends Section implements ContentInterface
      *
      * @param  \Symfony\Component\HttpFoundation\Request $request
      * @param  \Symfony\Component\Form\Form              $form
-     * @return boolean true if form is submited
+     *
+     * @return boolean true if form is submitted
      */
-    public function checkSubmitedForm($request, $form)
+    public function checkSubmittedForm(Request $request, SfForm\Form $form)
     {
         $form->handleRequest($request);
 
@@ -138,7 +142,7 @@ class Form extends Section implements ContentInterface
     /**
      * {@inheritdoc}
      */
-    public function settingsForm(FormFactory $formFactory)
+    public function settingsForm(SfForm\FormFactory $formFactory)
     {
         $formBuilder = $this->settingsFormBuilder($formFactory)
             ->add('validation_message', 'textarea', array(

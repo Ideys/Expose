@@ -2,6 +2,7 @@
 
 namespace Ideys\Settings;
 
+use Ideys\Content\SectionType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -140,8 +141,8 @@ class SettingsType
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'file.enabled',
             ))
-            ->add('newSectiondefaultVisibility', 'choice', array(
-                'choices'       => \Ideys\Content\SectionType::getSectionVisibilityChoice(),
+            ->add('newSectionDefaultVisibility', 'choice', array(
+                'choices'       => SectionType::getSectionVisibilityChoice(),
                 'label'         => 'section.visibility.default',
             ))
         ;

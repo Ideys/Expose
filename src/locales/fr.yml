@@ -6,8 +6,8 @@ user:
     gender: Civilité
     f: Madame
     m: Monsieur
-    firstname: Prénom
-    lastname: Nom
+    first.name: Prénom
+    last.name: Nom
     email: Email
     new: Nouvel accès
     edit: Modifier l'utilisateur

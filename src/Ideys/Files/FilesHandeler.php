@@ -7,7 +7,7 @@ use Doctrine\DBAL\Connection;
 /**
  * Downloadable files manager.
  */
-class FilesHandeler
+class FilesHandler
 {
     /**
      * @var \Doctrine\DBAL\Connection

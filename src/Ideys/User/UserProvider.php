@@ -113,8 +113,8 @@ class UserProvider implements UserProviderInterface
             'password' => $profile->getPassword(),
             'email' => $profile->getEmail(),
             'gender' => $profile->getGender(),
-            'firstname' => $profile->getFirstname(),
-            'lastname' => $profile->getLastname(),
+            'firstname' => $profile->getFirstName(),
+            'lastname' => $profile->getLastName(),
             'roles' => serialize($profile->getRoles()),
         );
 
@@ -129,8 +129,10 @@ class UserProvider implements UserProviderInterface
 
     /**
      * Delete a user.
+     *
      * @param integer                                           $id
      * @param \Symfony\Component\Security\Core\SecurityContext  $security
+     *
      * @return boolean
      */
     public function deleteUser($id, SecurityContext $security)

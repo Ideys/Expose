@@ -4,9 +4,10 @@ namespace Ideys\Content\Section;
 
 use Ideys\Content\Item\Slide;
 use Ideys\Content\ContentInterface;
+use Ideys\Settings\Settings;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Imagine\Image\ImagineInterface;
+use Imagine;
 
 /**
  * Gallery content manager.
@@ -59,8 +60,6 @@ class Gallery extends Section implements ContentInterface
      * Return gallery slides,
      * trigger shuffle mode if set.
      *
-     * @param string $name
-     *
      * @return array
      */
     public function getItems()
@@ -77,8 +76,6 @@ class Gallery extends Section implements ContentInterface
      * Return gallery slides without shuffle mode
      * even if it was set.
      *
-     * @param string $name
-     *
      * @return array
      */
     public function getItemsRealHierarchy()
@@ -89,9 +86,7 @@ class Gallery extends Section implements ContentInterface
     /**
      * Return gallery slides total weight.
      *
-     * @param string $name
-     *
-     * @return array
+     * @return float
      */
     public function getWeight()
     {
@@ -112,7 +107,7 @@ class Gallery extends Section implements ContentInterface
      *
      * @return \Ideys\Content\Item\Slide
      */
-    public function addSlide(ImagineInterface $imagine, UploadedFile $file)
+    public function addSlide(Imagine\Image\ImagineInterface $imagine, UploadedFile $file)
     {
         $fileExt = $file->guessClientExtension();
         $realExt = $file->guessExtension();// from mime type
@@ -140,7 +135,7 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
-     * Create a resized slide file into dedicated directory.
+     * Resize and save a slide file into dedicated directory.
      *
      * @param \Imagine\Image\ImagineInterface   $imagine
      * @param \Ideys\Content\Item\Slide         $slide
@@ -149,7 +144,7 @@ class Gallery extends Section implements ContentInterface
      *
      * @return \Ideys\Content\Item\Slide
      */
-    public function createResizedSlide(ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
+    public function createResizedSlide(Imagine\Image\ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
     {
         $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
 
@@ -158,8 +153,8 @@ class Gallery extends Section implements ContentInterface
             mkdir($thumbDir);
         }
 
-        $transformation = new \Imagine\Filter\Transformation();
-        $transformation->thumbnail(new \Imagine\Image\Box($maxWidth, $maxHeight))
+        $transformation = new Imagine\Filter\Transformation();
+        $transformation->thumbnail(new Imagine\Image\Box($maxWidth, $maxHeight))
             ->save($thumbDir.'/'.$slide->path);
         $transformation->apply($imagine
             ->open(static::getGalleryDir().'/'.$slide->path));
@@ -183,11 +178,11 @@ class Gallery extends Section implements ContentInterface
             ))
             ->add('extended', 'choice', array(
                 'label' => 'gallery.mode.fullscreen.extended',
-                'choices' => \Ideys\Settings\Settings::getIOChoices(),
+                'choices' => Settings::getIOChoices(),
             ))
             ->add('thumb_list', 'choice', array(
                 'label' => 'gallery.thumb.list.display',
-                'choices' => \Ideys\Settings\Settings::getIOChoices(),
+                'choices' => Settings::getIOChoices(),
             ))
             ->add('grid_rows', 'choice', array(
                 'label' => 'gallery.grid.rows',
@@ -207,7 +202,7 @@ class Gallery extends Section implements ContentInterface
             ))
             ->add('shuffle', 'choice', array(
                 'label' => 'gallery.slide.shuffle',
-                'choices' => \Ideys\Settings\Settings::getIOChoices(),
+                'choices' => Settings::getIOChoices(),
             ))
         ;
 
@@ -218,6 +213,7 @@ class Gallery extends Section implements ContentInterface
      * Delete a selection of slides.
      *
      * @param array    $itemIds
+     *
      * @return array
      */
     public function deleteSlides($itemIds)
@@ -251,7 +247,8 @@ class Gallery extends Section implements ContentInterface
     /**
      * Delete item's data entry and related files.
      *
-     * @param array $item
+     * @param \Ideys\Content\Item\Slide $slide
+     *
      * @return boolean
      */
     private function deleteItemAndRelatedFile(Slide $slide)
@@ -321,6 +318,8 @@ class Gallery extends Section implements ContentInterface
 
     /**
      * Return gallery grid rows choices.
+     *
+     * @param integer $max
      *
      * @return array
      */

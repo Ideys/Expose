@@ -20,7 +20,7 @@ class Channel extends Section implements ContentInterface
     }
 
     /**
-     * Add form
+     * Add form.
      */
     public function addForm(FormFactory $formFactory, Video $video)
     {
@@ -52,6 +52,8 @@ class Channel extends Section implements ContentInterface
     }
 
     /**
+     * Return available video providers.
+     *
      * @return array
      */
     public static function getProviderChoice()
@@ -63,6 +65,11 @@ class Channel extends Section implements ContentInterface
         );
     }
 
+    /**
+     * Guess video code from user input.
+     *
+     * @param \Ideys\Content\Item\Video $video
+     */
     public function guessVideoCode(Video $video)
     {
         switch (true) {

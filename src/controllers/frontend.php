@@ -63,7 +63,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     $formView = null;
     if ($section instanceof Ideys\Content\Section\Form) {
         $form = $section->generateFormFields($app['form.factory']);
-        if ($section->checkSubmitedForm($request, $form)) {
+        if ($section->checkSubmittedForm($request, $form)) {
             $validationMessage = $section->getParameter('validation_message');
             $app['session']
                 ->getFlashBag()
@@ -159,8 +159,8 @@ $frontendController->match('/profile', function (Request $request, $id = null) u
 $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
 
     $settings = new \Ideys\Settings\Settings($app['db']);
-    $filesHandeler = new \Ideys\Files\FilesHandeler($app['db']);
-    $file = $filesHandeler->findBySlugAndToken($slug, $token);
+    $filesHandler = new \Ideys\Files\FilesHandler($app['db']);
+    $file = $filesHandler->findBySlugAndToken($slug, $token);
 
     if ('0' === $settings->shareFiles) {
         throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
@@ -170,7 +170,7 @@ $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use (
         throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
     }
 
-    $filesHandeler->logDownload($file->getRecipients()[0]);
+    $filesHandler->logDownload($file->getRecipients()[0]);
 
     if (null !== $app['request']->query->get('preview')) {
         $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_INLINE;

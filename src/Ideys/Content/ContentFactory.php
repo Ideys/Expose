@@ -5,7 +5,9 @@ namespace Ideys\Content;
 use Ideys\Content\Section\Section;
 use Ideys\Content\Section\Html;
 use Ideys\Content\Item;
+use Silex\Application;
 use Symfony\Component\Security\Core\User\User;
+use Doctrine\DBAL\Connection;
 
 /**
  * App content manager.
@@ -73,7 +75,7 @@ class ContentFactory
      *
      * @param \Silex\Application $app
      */
-    public function __construct(\Silex\Application $app)
+    public function __construct(Application $app)
     {
         $this->db = $app['db'];
         $this->translator = $app['translator'];
@@ -98,12 +100,12 @@ class ContentFactory
            . 'ORDER BY s.hierarchy ASC ';
         $sections = $this->db->fetchAll($sql, array($this->language));
 
-        // Use sql primary keys as array keys and objectise entity
+        // Use sql primary keys as array keys and objectify entity
         foreach ($sections as $section) {
             $this->sections[$section['id']] = static::instantiateSection($this->db, $section);
         }
 
-        // Generate tree structure from raw datas
+        // Generate tree structure from raw data
         foreach ($this->sections as $id => $section) {
             $parentSectionId = $section->expose_section_id;
             if ($parentSectionId > 0) {
@@ -233,6 +235,8 @@ class ContentFactory
     /**
      * Edit a section.
      *
+     * @param \Ideys\Content\Section\Section $section
+     *
      * @return array Section
      */
     public function updateSection(Section $section)
@@ -271,7 +275,7 @@ class ContentFactory
      * Increments slugs for identical name sections:
      * new-section / new-section-2 / new-section-4 => new-section-5
      *
-     * @param string $title
+     * @param \Ideys\Content\Section\Section $section
      *
      * @return string
      */
@@ -383,6 +387,7 @@ class ContentFactory
      * @param integer $id
      * @param string  $title
      * @param string  $description
+     * @param string  $link
      */
     public function updateItemTitle($id, $title, $description, $link)
     {
@@ -443,7 +448,7 @@ class ContentFactory
      *
      * @return Section
      */
-    public static function instantiateSection(\Doctrine\DBAL\Connection $db, $data)
+    public static function instantiateSection(Connection $db, $data)
     {
         $type = $data['type'];
 
@@ -460,6 +465,7 @@ class ContentFactory
      * Return item types keys.
      *
      * @param  string $type The section type
+     *
      * @return string       The section default item
      */
     public static function getDefaultSectionItemType($type)
@@ -473,9 +479,10 @@ class ContentFactory
     }
 
     /**
-     * Instanciate a related content object from database entity.
+     * Instantiate a related content object from database entity.
      *
      * @param array $sectionTranslations
+     *
      * @return \ContentPrototype
      */
     private function hydrateSection(array $sectionTranslations)
@@ -495,7 +502,7 @@ class ContentFactory
     /**
      * Retrieve section in current language or fallback to default one.
      *
-     * @param array $translations
+     * @param array  $translations
      * @param string $language
      */
     private function retrieveLanguage(array $translations, $language)
@@ -513,6 +520,7 @@ class ContentFactory
      * Define user author and timestamp for persisted data.
      *
      * @param integer $id
+     *
      * @return array
      */
     private function blameAndTimestampData($id)

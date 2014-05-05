@@ -19,6 +19,7 @@ trait ContentTrait
      * Magic method get, return attributes.
      *
      * @param string $name
+     *
      * @return string
      */
     public function __get($name)
@@ -26,11 +27,22 @@ trait ContentTrait
         return $this->getObjectTaxon($name);
     }
 
+    /**
+     * @param string $name
+     * @param array  $parameters
+     *
+     * @return mixed
+     */
     public function __call($name, $parameters)
     {
         return $this->getObjectTaxon($name);
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     */
     public function getObjectTaxon($name)
     {
         if (array_key_exists($name, (array)$this->attributes)) {
@@ -39,6 +51,10 @@ trait ContentTrait
         return $this->getParameter($name);
     }
 
+    /**
+     * @param string $name
+     * @param string $value
+     */
     public function __set($name, $value)
     {
         if (array_key_exists($name, (array)$this->attributes)) {
@@ -48,6 +64,10 @@ trait ContentTrait
         }
     }
 
+    /**
+     * @param string $name
+     * @param string $value
+     */
     public function setParameter($name, $value)
     {
         if (!is_array($this->parameters)) {
@@ -57,6 +77,13 @@ trait ContentTrait
         $this->attributes['parameters'] = $this->parameters;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return mixed
+     *
+     * @throws \Exception
+     */
     public function getParameter($name)
     {
         if (array_key_exists($name, (array)$this->parameters)) {

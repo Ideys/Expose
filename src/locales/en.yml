@@ -6,8 +6,8 @@ user:
     gender: Title
     f: Mrs.
     m: Mr.
-    firstname: First name
-    lastname: Last name
+    first.name: First name
+    last.name: Last name
     email: Email
     new: New access
     edit: Edit user

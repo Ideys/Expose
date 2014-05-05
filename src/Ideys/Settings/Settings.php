@@ -41,7 +41,7 @@ class Settings
                 'menuPosition' => 'top',
                 'hideMenuOnHomepage' => '0',
                 'shareFiles' => '0',
-                'newSectiondefaultVisibility' => 'public',
+                'newSectionDefaultVisibility' => 'public',
             );
 
     /**
@@ -158,7 +158,7 @@ class Settings
     /**
      * Update custom parameters.
      *
-     * @param type $parameters
+     * @param array $parameters
      */
     public function updateParameters($parameters)
     {

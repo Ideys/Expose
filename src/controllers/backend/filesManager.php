@@ -1,6 +1,6 @@
 <?php
 
-use Ideys\Files\FilesHandeler;
+use Ideys\Files\FilesHandler;
 use Ideys\Files\FileType;
 use Ideys\Files\File;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,15 +9,15 @@ $filesManagerController = $app['controllers_factory'];
 
 $filesManagerController->match('/', function (Request $request) use ($app) {
 
-    $filesHandeler = new FilesHandeler($app['db']);
-    $files = $filesHandeler->findAll();
+    $filesHandler = new FilesHandler($app['db']);
+    $files = $filesHandler->findAll();
     $file = new File();
 
     $formFactory = new FileType($app['form.factory']);
     $form = $formFactory->form($file);
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $filesHandeler->addFile($file);
+        $filesHandler->addFile($file);
         return $app->redirect($app['url_generator']->generate('admin_files_manager'));
     }
 

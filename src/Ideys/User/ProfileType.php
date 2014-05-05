@@ -74,17 +74,17 @@ class ProfileType
                 'choices'       => Profile::getGenderChoice(),
                 'label'         => 'user.gender',
             ))
-            ->add('firstname', 'text', array(
+            ->add('firstName', 'text', array(
                 'constraints'   => array(
                     new Assert\NotBlank(),
                 ),
-                'label'         => 'user.firstname',
+                'label'         => 'user.first.name',
             ))
-            ->add('lastname', 'text', array(
+            ->add('lastName', 'text', array(
                 'constraints'   => array(
                     new Assert\NotBlank(),
                 ),
-                'label'         => 'user.lastname',
+                'label'         => 'user.last.name',
             ))
             ->add('email', 'email', array(
                 'constraints'   => array(

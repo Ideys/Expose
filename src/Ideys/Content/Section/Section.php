@@ -103,8 +103,6 @@ abstract class Section
     /**
      * Return section items.
      *
-     * @param string $name
-     *
      * @return array
      */
     public function getItems()
@@ -113,7 +111,7 @@ abstract class Section
     }
 
     /**
-     * Return section item finded by slug.
+     * Return section item found by slug.
      *
      * @param string $slug
      *
@@ -132,7 +130,7 @@ abstract class Section
 
     /**
      * Define if the section has more than one page.
-     * Method extended by section childs.
+     * Method extended by section children.
      *
      * @return boolean
      */
@@ -144,7 +142,7 @@ abstract class Section
     /**
      * Define content translation language.
      *
-     * @param string $name
+     * @param string $language
      */
     public function setLanguage($language)
     {

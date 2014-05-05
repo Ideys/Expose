@@ -38,9 +38,11 @@ class SectionType
     /**
      * Return the add section form.
      *
+     * @param \Ideys\Content\Section\Section $section
+     *
      * @return \Symfony\Component\Form\Form
      */
-    public function createForm($section)
+    public function createForm(Section $section)
     {
         $formBuilder = $this->formBuilder($section);
 
@@ -50,12 +52,14 @@ class SectionType
     /**
      * Return section form builder.
      *
+     * @param \Ideys\Content\Section\Section $section
+     *
      * @return \Symfony\Component\Form\FormBuilder
      */
-    public function formBuilder($entity)
+    public function formBuilder(Section $section)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $entity)
+            ->createBuilder('form', $section)
             ->add('type', 'choice', array(
                 'choices'       => static::getSectionTypesChoice(),
                 'label'         => 'content.type',

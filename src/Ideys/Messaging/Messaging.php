@@ -68,6 +68,8 @@ class Messaging
 
     /**
      * Retrieve active messages.
+     *
+     * @return array
      */
     public function findAll()
     {
@@ -80,6 +82,8 @@ class Messaging
 
     /**
      * Retrieve all messages.
+     *
+     * @return array
      */
     public function findArchived()
     {

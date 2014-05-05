@@ -49,6 +49,7 @@ class Message
      * Set name
      *
      * @param string $name
+     *
      * @return \Ideys\Messaging\Message
      */
     public function setName($name)
@@ -72,6 +73,7 @@ class Message
      * Set email
      *
      * @param string $email
+     *
      * @return \Ideys\Messaging\Message
      */
     public function setEmail($email)
@@ -105,6 +107,7 @@ class Message
      * Set subject
      *
      * @param string $subject
+     *
      * @return \Ideys\Messaging\Message
      */
     public function setSubject($subject)
@@ -128,6 +131,7 @@ class Message
      * Set message
      *
      * @param string $message
+     *
      * @return \Ideys\Messaging\Message
      */
     public function setMessage($message)
@@ -154,6 +158,7 @@ class Message
      * Set date
      *
      * @param \DateTime $date
+     *
      * @return \Ideys\Messaging\Message
      */
     public function setDate(\DateTime $date)
