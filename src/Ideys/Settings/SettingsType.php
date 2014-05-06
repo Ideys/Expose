@@ -73,6 +73,10 @@ class SettingsType
                 ),
                 'label'         => 'site.author',
             ))
+            ->add('subDomain', 'choice', array(
+                'choices'       => Settings::getSubDomainRedirectionChoices(),
+                'label'         => 'site.sub.domain',
+            ))
             ->add('maintenance', 'choice', array(
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'site.maintenance.mode',

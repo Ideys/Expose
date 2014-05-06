@@ -12,6 +12,9 @@ Desktop.ini
 /vendor/
 composer.lock
 
+# Server files
+/web/.htaccess
+
 # User assets
 /downloads/
 /web/gallery/

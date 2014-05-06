@@ -23,26 +23,33 @@ class Settings
      * @var array
      */
     private $defaultParameters = array(
-                'name' => 'Ideys Expose',
-                'description' => 'Smart gallery',
-                'authorName' => 'Your Name',
-                'authorName' => 'Your Name',
-                'maintenance' => '0',
-                'analyticsKey' => '',
-                'verificationKey' => '',
-                'googleFonts' => '',
-                'layoutBackground' => 'white',
-                'customStyle' => '',
-                'customJavascript' => '',
-                'adminLink' => 'contact.section',
-                'contactContent' => 'Contact me',
-                'contactSection' => 'enabled',
-                'contactSendToEmail' => '',
-                'menuPosition' => 'top',
-                'hideMenuOnHomepage' => '0',
-                'shareFiles' => '0',
-                'newSectionDefaultVisibility' => 'public',
-            );
+        'name' => 'Ideys Expose',
+        'description' => 'Smart gallery',
+        'authorName' => 'Your Name',
+        'subDomain' => 'www',
+        'maintenance' => '0',
+        'analyticsKey' => '',
+        'verificationKey' => '',
+        'googleFonts' => '',
+        'layoutBackground' => 'white',
+        'customStyle' => '',
+        'customJavascript' => '',
+        'adminLink' => 'contact.section',
+        'contactContent' => 'Contact me',
+        'contactSection' => 'enabled',
+        'contactSendToEmail' => '',
+        'menuPosition' => 'top',
+        'hideMenuOnHomepage' => '0',
+        'shareFiles' => '0',
+        'newSectionDefaultVisibility' => 'public',
+    );
+
+    /**
+     * @var array
+     */
+    private $htaccessParameters = array(
+        'subDomain',
+    );
 
     /**
      * Constructor: inject database connexion.
@@ -59,6 +66,7 @@ class Settings
      * Return a parameter.
      *
      * @param string $name
+     *
      * @return string
      */
     public function __get($name)
@@ -131,6 +139,19 @@ class Settings
     }
 
     /**
+     * Return yes / no choices for form selects.
+     *
+     * @return array
+     */
+    public static function getSubDomainRedirectionChoices()
+    {
+        return array(
+            'root' => 'http://',
+            'www'  => 'http://www.',
+        );
+    }
+
+    /**
      * Add a parameter.
      */
     private function createParameter($attribute, $value)
@@ -139,6 +160,7 @@ class Settings
             'attribute' => $attribute,
             'value' => $value,
         ));
+
         // Update available parameters
         $this->parameters[$attribute] = $value;
     }
@@ -151,6 +173,7 @@ class Settings
         $this->db->update('expose_settings', array(
             'value' => $value,
         ), array('attribute' => $attribute));
+
         // Update object parameter
         $this->parameters[$attribute] = $value;
     }
@@ -162,10 +185,20 @@ class Settings
      */
     public function updateParameters($parameters)
     {
+        $updatedParameters = array();
+
         foreach ($parameters as $attribute => $value) {
             if ($this->parameters[$attribute] != $value) {
                 $this->updateParameter($attribute, $parameters[$attribute]);
+                $updatedParameters[] = $attribute;
             }
+        }
+
+        // .htaccess file updating if related parameters was updated
+        $htaccessUpdatedParameters = array_intersect($updatedParameters, $this->htaccessParameters);
+        if (count($htaccessUpdatedParameters) > 0) {
+            $htaccessManager = new HtaccessManager();
+            $htaccessManager->updateHtaccess($this);
         }
     }
 
@@ -180,9 +213,9 @@ class Settings
             $this->parameters[$parameter['attribute']] = $parameter['value'];
         }
 
-        $unpersistedParameters = array_diff_key($this->defaultParameters, $this->parameters);
+        $unPersistedParameters = array_diff_key($this->defaultParameters, $this->parameters);
 
-        foreach ($unpersistedParameters as $attribute => $value) {
+        foreach ($unPersistedParameters as $attribute => $value) {
             $this->createParameter($attribute, $value);
         }
     }

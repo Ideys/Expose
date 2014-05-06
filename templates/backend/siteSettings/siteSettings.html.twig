@@ -21,7 +21,8 @@
     </fieldset>
     <fieldset>
       <legend>{{ 'section.sections'|trans }}</legend>
-      {{ form_row(form.newSectiondefaultVisibility) }}
+      {{ form_row(form.newSectionDefaultVisibility) }}
+    </fieldset>
     <fieldset>
       <legend>{{ 'file.manager'|trans }}</legend>
       {{ form_row(form.shareFiles) }}
@@ -41,6 +42,7 @@
         </button>
       </div>
       <div id="advanced-layout" class="hidden">
+        {{ form_row(form.subDomain) }}
         {{ form_row(form.customStyle, {'attr': {'rows': '12'} }) }}
         {{ form_row(form.customJavascript, {'attr': {'rows': '12'} }) }}
         {{ form_row(form.googleFonts) }}

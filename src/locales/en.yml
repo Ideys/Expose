@@ -211,6 +211,7 @@ site:
     name: Site name
     description: Site description
     author: Author
+    sub.domain: Subdomain
     maintenance:
         mode: Maintenance mode
         message: |
