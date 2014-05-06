@@ -51,6 +51,7 @@ class Profile
      * @var array
      */
     private $roles = array(self::ROLE_USER);
+
     const ROLE_SUPER_ADMIN  = 'ROLE_SUPER_ADMIN';
     const ROLE_ADMIN        = 'ROLE_ADMIN';
     const ROLE_EDITOR       = 'ROLE_EDITOR';

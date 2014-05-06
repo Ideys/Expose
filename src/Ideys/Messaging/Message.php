@@ -2,8 +2,6 @@
 
 namespace Ideys\Messaging;
 
-use Doctrine\DBAL\Connection;
-
 /**
  * Contact message entity.
  */
@@ -151,6 +149,7 @@ class Message
         if (null === $this->date) {
             return new \DateTime();
         }
+
         return $this->date;
     }
 

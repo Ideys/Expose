@@ -3,15 +3,17 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentFactory;
+use Ideys\Content\ContentTrait;
 use Ideys\Content\SectionType;
 use Symfony\Component\Form\FormFactory;
+use Doctrine\DBAL\Connection;
 
 /**
  * Sections prototype class.
  */
 abstract class Section
 {
-    use \Ideys\Content\ContentTrait;
+    use ContentTrait;
 
     /**
      * @var \Doctrine\DBAL\Connection
@@ -69,7 +71,7 @@ abstract class Section
      * @param \Doctrine\DBAL\Connection $db
      * @param array                     $entity
      */
-    public function __construct(\Doctrine\DBAL\Connection $db, array $entity = array())
+    public function __construct(Connection $db, array $entity = array())
     {
         $this->db = $db;
         $this->attributes = array_merge($this->attributes, $entity);

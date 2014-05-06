@@ -2,12 +2,14 @@
 
 namespace Ideys\Content\Item;
 
+use Ideys\Content\ContentTrait;
+
 /**
  * Items prototype class.
  */
 abstract class Item
 {
-    use \Ideys\Content\ContentTrait;
+    use ContentTrait;
 
     /**
      * Item main attributes

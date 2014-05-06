@@ -5,6 +5,8 @@ namespace Ideys\Content;
 use Ideys\Content\Section\Section;
 use Ideys\Content\Section\Html;
 use Ideys\Content\Item;
+use Ideys\String;
+use Ideys\Settings\Settings;
 use Silex\Application;
 use Symfony\Component\Security\Core\User\User;
 use Doctrine\DBAL\Connection;
@@ -166,7 +168,7 @@ class ContentFactory
 
         // Generate default homepage
         if (null === $section->id) {
-            $settings = new \Ideys\Settings\Settings($this->db);
+            $settings = new Settings($this->db);
             $section = $this->addSection(new Html($this->db, array(
                 'type' => self::SECTION_HTML,
                 'title' => $settings->name,
@@ -243,7 +245,7 @@ class ContentFactory
     {
         // Reset old homepage visibility in case of section
         // was newly defined as the homepage.
-        // Also remove section from subfolder.
+        // Also remove section from sub-folder.
         if (Section::VISIBILITY_HOMEPAGE == $section->visibility) {
             $this->db->update('expose_section',
                 array('visibility' => Section::VISIBILITY_CLOSED),
@@ -288,7 +290,7 @@ class ContentFactory
             $title .= '-dir';
         }
 
-        $slug = \Ideys\String::slugify($title);
+        $slug = String::slugify($title);
 
         $sections = $this->db->fetchAll(
             'SELECT slug FROM expose_section WHERE slug LIKE ? AND id != ?',
@@ -328,7 +330,7 @@ class ContentFactory
             'expose_section_id' => $section->id,
             'type' => $item->type,
             'category' => $item->category,
-            'slug' => \Ideys\String::slugify($item->title),
+            'slug' => String::slugify($item->title),
             'path' => $item->path,
             'posting_date' => $postingDate,
             'published' => $item->published,
@@ -483,7 +485,7 @@ class ContentFactory
      *
      * @param array $sectionTranslations
      *
-     * @return \ContentPrototype
+     * @return Section
      */
     private function hydrateSection(array $sectionTranslations)
     {

@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -27,12 +28,27 @@ class UserProvider implements UserProviderInterface
     private $session;
 
 
+    /**
+     * Constructor.
+     *
+     * @param Connection    $connection
+     * @param Session       $session
+     */
     public function __construct(Connection $connection, Session $session)
     {
         $this->db = $connection;
         $this->session = $session;
     }
 
+    /**
+     * User loader for authentication.
+     *
+     * @param  string $username
+     *
+     * @return User|UserInterface
+     *
+     * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     */
     public function loadUserByUsername($username)
     {
         $stmt = $this->db->executeQuery('SELECT * FROM expose_user WHERE username = ?', array(strtolower($username)));
@@ -92,12 +108,12 @@ class UserProvider implements UserProviderInterface
     /**
      * Persist a user profile.
      *
-     * @param type $security
+     * @param \Symfony\Component\Security\Core\Encoder\EncoderFactory $security
      * @param \Ideys\User\Profile $profile
      *
      * @return \Symfony\Component\Security\Core\User\User
      */
-    public function persist($security, Profile $profile)
+    public function persist(EncoderFactory $security, Profile $profile)
     {
         $user = new User($profile->getUsername(), $profile->getPassword(), $profile->getRoles());
 

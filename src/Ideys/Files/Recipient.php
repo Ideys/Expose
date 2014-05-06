@@ -2,6 +2,8 @@
 
 namespace Ideys\Files;
 
+use Ideys\String;
+
 /**
  * File recipient object.
  */
@@ -116,7 +118,7 @@ class Recipient
     public function getToken()
     {
         if (null === $this->token) {
-            $this->token = \Ideys\String::generateToken();
+            $this->token = String::generateToken();
         }
         return $this->token;
     }
