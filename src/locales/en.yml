@@ -57,6 +57,7 @@ section:
     coming.soon: Coming soon
     title: Title
     description: Description
+    tag: Section tag
     new: New section
     visibility:
         visibility: Section visibility

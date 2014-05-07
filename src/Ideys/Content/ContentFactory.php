@@ -47,7 +47,7 @@ class ContentFactory
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.custom_css, s.custom_js,
-               s.menu_pos, s.visibility,
+               s.menu_pos, s.tag, s.visibility,
                s.hierarchy, s.archive,
                t.title, t.description, t.parameters, t.language,
                COUNT(i.id) AS total_items
@@ -259,6 +259,7 @@ class ContentFactory
             'slug' => $this->uniqueSlug($section),
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
+            'tag' => $section->tag,
             'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
             'expose_section_id' => $section->expose_section_id,
@@ -506,6 +507,8 @@ class ContentFactory
      *
      * @param array  $translations
      * @param string $language
+     *
+     * @return string
      */
     private function retrieveLanguage(array $translations, $language)
     {

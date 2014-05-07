@@ -57,6 +57,7 @@ section:
     coming.soon: Prochainement
     title: Titre
     description: Description
+    tag: Groupe
     new: Nouvelle section
     visibility:
         visibility: Visibilité de la section

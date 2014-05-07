@@ -87,6 +87,14 @@
 </div>
 <div class="section-info">
   <ul class="inline-list right">
+    {% if section.hasTag %}
+    <li>
+      <span class="secondary round label">
+        <i class="fi-price-tag"></i>
+        {{ section.tag }}
+      </span>
+    </li>
+    {% endif %}
     <li>
       <span class="secondary round label">
         <i class="fi-projection-screen"></i>

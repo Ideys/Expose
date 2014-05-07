@@ -105,6 +105,10 @@ class SectionType
                 'choices'       => static::getSectionVisibilityChoice(),
                 'label'         => 'section.visibility.visibility',
             ))
+            ->add('tag', 'text', array(
+                'label'         => 'section.tag',
+                'required'      => false,
+            ))
         ;
 
         return $formBuilder;

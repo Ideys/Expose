@@ -34,6 +34,7 @@ abstract class Section
         'total_items' => 0,
         'custom_css' => null,
         'custom_js' => null,
+        'tag' => null,
         'parameters' => 'N;',
         'menu_pos' => 'main',
         'visibility' => 'public',
@@ -131,7 +132,7 @@ abstract class Section
     }
 
     /**
-     * Define if the section has more than one page.
+     * Test if the section has more than one page.
      * Method extended by section children.
      *
      * @return boolean
@@ -152,7 +153,7 @@ abstract class Section
     }
 
     /**
-     * Define if content is hidden from anonymous users.
+     * Test if content is hidden from anonymous users.
      *
      * @return boolean
      */
@@ -162,7 +163,7 @@ abstract class Section
     }
 
     /**
-     * Define if content is not accessible.
+     * Test if content is not accessible.
      *
      * @return boolean
      */
@@ -172,7 +173,7 @@ abstract class Section
     }
 
     /**
-     * Define if the section is the homepage.
+     * Test if the section is the homepage.
      *
      * @return boolean
      */
@@ -182,7 +183,7 @@ abstract class Section
     }
 
     /**
-     * Define if the section is archived.
+     * Test if the section is archived.
      *
      * @return boolean
      */
@@ -192,7 +193,7 @@ abstract class Section
     }
 
     /**
-     * Define if the section have to be displayed into menu.
+     * Test if the section have to be displayed into menu.
      *
      * @param boolean $userHasCredentials
      *
@@ -212,13 +213,23 @@ abstract class Section
     }
 
     /**
-     * Define if content has some items or not.
+     * Test if content has some items or not.
      *
      * @return boolean
      */
     public function hasItems()
     {
         return count($this->items) > 0;
+    }
+
+    /**
+     * Test if content has a tag defined.
+     *
+     * @return boolean
+     */
+    public function hasTag()
+    {
+        return strlen($this->tag) > 0;
     }
 
     /**
