@@ -290,14 +290,13 @@ class ContentFactory
         $this->db->update('expose_section', array(
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
-            'menu_pos' => $section->menu_pos,
         ),
-        array('tag' => $section->tag));
+        array('tag' => $section->tag, 'type' => $section->type));
 
         // Update translated sections parameters
         $sectionsIds = $this->db->fetchAll(
-            'SELECT id FROM expose_section WHERE tag = ?',
-            array($section->tag)
+            'SELECT id FROM expose_section WHERE tag = ? AND type = ?',
+            array($section->tag, $section->type)
         );
 
         foreach ($sectionsIds as $id) {
