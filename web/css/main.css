@@ -302,7 +302,7 @@ body.gallery-slideshow .orbit-slides-container img {
  * Gallery full screen
  */
 
-body.gallery-fullscreen {
+.gallery-fullscreen {
     height: 100vh;
     overflow: hidden;
 }
@@ -320,6 +320,10 @@ body.gallery-fullscreen {
     overflow: hidden;
     margin: 0;
     padding: 0;
+}
+
+.gallery-fullscreen .orbit-container {
+    height: 100vh;
 }
 
 .gallery-extended #content,

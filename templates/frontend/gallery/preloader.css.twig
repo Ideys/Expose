@@ -28,107 +28,31 @@
     animation: sandglass 0.9s infinite alternate;
 }
 
-#sandglass_1 {
-    -moz-animation-delay: 0s;
-    -webkit-animation-delay: 0s;
-    -ms-animation-delay: 0s;
-    -o-animation-delay: 0s;
-    animation-delay: 0s;
+{% for row, seconds in {1: '0s', 2: '0.27s', 3: '0.54s'} %}
+#sandglass_{{ row }} {
+    -moz-animation-delay: {{ seconds }};
+    -webkit-animation-delay: {{ seconds }};
+    -ms-animation-delay: {{ seconds }};
+    -o-animation-delay: {{ seconds }};
+    animation-delay: {{ seconds }};
 }
+{% endfor %}
 
-#sandglass_2 {
-    -moz-animation-delay: 0.27s;
-    -webkit-animation-delay: 0.27s;
-    -ms-animation-delay: 0.27s;
-    -o-animation-delay: 0.27s;
-    animation-delay: 0.27s;
-}
-
-#sandglass_3 {
-    -moz-animation-delay: 0.54s;
-    -webkit-animation-delay: 0.54s;
-    -ms-animation-delay: 0.54s;
-    -o-animation-delay: 0.54s;
-    animation-delay: 0.54s;
-}
-
-@-moz-keyframes sandglass {
+{% for prefix in ['-moz-', '-webkit-', '-ms-', '-o-', ''] %}
+@{{ prefix }}keyframes sandglass {
     0% {
-        width: 20px;
-        height: 20px;
-        background-color:#000000;
-        -moz-transform: translateY(0);
+        width: 14px;
+        height: 14px;
+        background-color: #000000;
+        {{ prefix }}transform: translateY(0);
     }
 
     100% {
-        width: 48px;
-        height: 48px;
-        background-color:#ffffff;
-        -moz-transform: translateY(-42px);
+        width: 28px;
+        height: 28px;
+        background-color: #ffffff;
+        {{ prefix }}transform: translateY(-42px);
     }
 }
-
-@-webkit-keyframes sandglass {
-    0% {
-        width: 20px;
-        height: 20px;
-        background-color:#000000;
-        -webkit-transform: translateY(0);
-    }
-
-    100% {
-        width: 48px;
-        height: 48px;
-        background-color:#ffffff;
-        -webkit-transform: translateY(-42px);
-    }
-}
-
-@-ms-keyframes sandglass {
-    0% {
-        width: 20px;
-        height: 20px;
-        background-color:#000000;
-        -ms-transform: translateY(0);
-    }
-
-    100% {
-        width: 48px;
-        height: 48px;
-        background-color:#ffffff;
-        -ms-transform: translateY(-42px);
-    }
-}
-
-@-o-keyframes sandglass {
-    0% {
-        width: 20px;
-        height: 20px;
-        background-color:#000000;
-        -o-transform: translateY(0);
-    }
-
-    100% {
-        width: 48px;
-        height: 48px;
-        background-color:#ffffff;
-        -o-transform: translateY(-42px);
-    }
-}
-
-@keyframes sandglass {
-    0% {
-        width: 20px;
-        height: 20px;
-        background-color:#000000;
-        transform: translateY(0);
-    }
-
-    100% {
-        width: 48px;
-        height: 48px;
-        background-color:#ffffff;
-        transform: translateY(-42px);
-    }
-}
+{% endfor %}
 </style>
