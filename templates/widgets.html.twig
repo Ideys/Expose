@@ -54,9 +54,9 @@
 
 {% macro gallery_slide_legend(slide, section, wrapper_class) %}
 {% spaceless %}
-{% if slide.description|length or section.global_legend|length %}
+{% if slide.description|length or section.legend|length %}
   <div class="{{ wrapper_class|default('caption') }}">
-    {{ section.global_legend|default('%s')|replace({'%s': slide.description})|raw }}
+    {{ section.legend|default('%s')|replace({'%s': slide.description})|raw }}
   </div>
 {% endif %}
 {% endspaceless %}

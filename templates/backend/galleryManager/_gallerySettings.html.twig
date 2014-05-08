@@ -1,5 +1,5 @@
 {% spaceless %}
-{{ form_row(edit_form.global_legend, {'attr': {'rows': '3'} }) }}
+{{ form_row(edit_form.legend, {'attr': {'rows': '3'} }) }}
 {{ form_row(edit_form.gallery_mode) }}
 <div class="for-mode for-fullscreen{% if section.gallery_mode != 'fullscreen' %} hidden{% endif %}">
   {{ form_row(edit_form.extended) }}

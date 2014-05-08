@@ -5,6 +5,7 @@ namespace Ideys\Content\Section;
 use Ideys\Content\Item\Slide;
 use Ideys\Content\ContentInterface;
 use Ideys\Settings\Settings;
+use Ideys\Content\ContentFactory;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Imagine;
@@ -41,7 +42,6 @@ class Gallery extends Section implements ContentInterface
             'grid_rows' => '1',
             'grid_rows_medium' => '1',
             'grid_rows_small' => '1',
-            'global_legend' => '',
             'shuffle' => '0',
         );
     }
@@ -116,7 +116,7 @@ class Gallery extends Section implements ContentInterface
         $this->total_items += 1;
         $slide = new Slide(array(
             'category' => $file->getMimeType(),
-            'type' => \Ideys\Content\ContentFactory::ITEM_SLIDE,
+            'type' => ContentFactory::ITEM_SLIDE,
             'hierarchy' => $this->total_items,
         ));
 
@@ -128,7 +128,7 @@ class Gallery extends Section implements ContentInterface
         $file->move(static::getGalleryDir(), $slide->path);
 
         foreach ($this->thumbSizes as $thumbSize){
-            $this->createResizedSlide($imagine, $slide, $thumbSize);
+            $this->createResizeSlide($imagine, $slide, $thumbSize);
         }
 
         return $slide;
@@ -144,7 +144,7 @@ class Gallery extends Section implements ContentInterface
      *
      * @return \Ideys\Content\Item\Slide
      */
-    public function createResizedSlide(Imagine\Image\ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
+    public function createResizeSlide(Imagine\Image\ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
     {
         $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
 
@@ -196,7 +196,7 @@ class Gallery extends Section implements ContentInterface
                 'label' => 'gallery.grid.rows.small',
                 'choices' => static::getGalleryGridRowsChoice(3),
             ))
-            ->add('global_legend', 'textarea', array(
+            ->add('legend', 'textarea', array(
                 'label' => 'gallery.global.legend',
                 'required' => false,
             ))

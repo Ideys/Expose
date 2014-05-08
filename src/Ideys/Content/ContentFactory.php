@@ -49,7 +49,8 @@ class ContentFactory
                s.custom_css, s.custom_js,
                s.menu_pos, s.tag, s.visibility,
                s.hierarchy, s.archive,
-               t.title, t.description, t.parameters, t.language,
+               t.title, t.description, t.legend,
+               t.parameters, t.language,
                COUNT(i.id) AS total_items
         FROM expose_section AS s
         LEFT JOIN expose_section_trans AS t
@@ -154,7 +155,7 @@ class ContentFactory
     }
 
     /**
-     * Return a section.
+     * Find the homepage section, create it if not exists.
      *
      * @return \Ideys\Content\Section\Section
      */
@@ -208,7 +209,7 @@ class ContentFactory
     public function addSection(Section &$section)
     {
         $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
-        $incr = $count['total']++;
+        $i = $count['total']++;
 
         $this->db->insert('expose_section', array(
             'expose_section_id' => $section->expose_section_id,
@@ -219,7 +220,7 @@ class ContentFactory
             'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
             'archive' => 0,
-            'hierarchy' => $incr,
+            'hierarchy' => $i,
         ) + $this->blameAndTimestampData(0));
 
         $section->id = $this->db->lastInsertId();
@@ -227,6 +228,7 @@ class ContentFactory
             'expose_section_id' => $section->id,
             'title' => $section->title,
             'description' => $section->description,
+            'legend' => $section->legend,
             'language' => $this->language,
             'parameters' => serialize($section->parameters),
         ));
@@ -238,8 +240,6 @@ class ContentFactory
      * Edit a section.
      *
      * @param \Ideys\Content\Section\Section $section
-     *
-     * @return array Section
      */
     public function updateSection(Section $section)
     {
@@ -270,8 +270,41 @@ class ContentFactory
         $this->db->update('expose_section_trans', array(
             'title' => $section->title,
             'description' => $section->description,
+            'legend' => $section->legend,
             'parameters' => serialize($section->parameters),
         ), array('expose_section_id' => $section->id, 'language' => $this->language));
+
+        // Update other sections parameters with identical tag
+        if ($section->tag != null) {
+            $this->updateGroupedSections($section);
+        }
+    }
+
+    /**
+     * Update all sections common parameters with identical tag.
+     *
+     * @param \Ideys\Content\Section\Section $section
+     */
+    private function updateGroupedSections(Section $section)
+    {
+        $this->db->update('expose_section', array(
+            'custom_css' => $section->custom_css,
+            'custom_js' => $section->custom_js,
+            'menu_pos' => $section->menu_pos,
+        ),
+        array('tag' => $section->tag));
+
+        // Update translated sections parameters
+        $sectionsIds = $this->db->fetchAll(
+            'SELECT id FROM expose_section WHERE tag = ?',
+            array($section->tag)
+        );
+
+        foreach ($sectionsIds as $id) {
+            $this->db->update('expose_section_trans', array(
+                'parameters' => serialize($section->parameters),
+            ), array('expose_section_id' => $id['id'], 'language' => $this->language));
+        }
     }
 
     /**
@@ -307,8 +340,8 @@ class ContentFactory
 
         if (!empty($namesakes)) {
             sort($namesakes);
-            $lastIncr = array_pop($namesakes);
-            $slug .= '-' . (++$lastIncr);
+            $lastRow = array_pop($namesakes);
+            $slug .= '-' . (++$lastRow);
         }
 
         return $slug;

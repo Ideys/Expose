@@ -87,6 +87,7 @@ if (!$schema->tablesExist('expose_section_trans')) {
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('title', 'string', array('length' => 255));
     $table->addColumn('description', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
+    $table->addColumn('legend', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('parameters', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('language', 'string', array('length' => 5));
 

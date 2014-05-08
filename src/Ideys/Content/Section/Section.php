@@ -31,6 +31,7 @@ abstract class Section
         'type' => null,
         'title' => null,
         'description' => null,
+        'legend' => null,
         'total_items' => 0,
         'custom_css' => null,
         'custom_js' => null,
@@ -220,16 +221,6 @@ abstract class Section
     public function hasItems()
     {
         return count($this->items) > 0;
-    }
-
-    /**
-     * Test if content has a tag defined.
-     *
-     * @return boolean
-     */
-    public function hasTag()
-    {
-        return strlen($this->tag) > 0;
     }
 
     /**
