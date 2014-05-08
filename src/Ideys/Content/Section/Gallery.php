@@ -38,6 +38,7 @@ class Gallery extends Section implements ContentInterface
             'gallery_mode' => 'slideshow',
             'slide_mode' => 'slide',
             'extended' => '0',
+            'nav_bar' => '0',
             'thumb_list' => '0',
             'grid_rows' => '1',
             'grid_rows_medium' => '1',
@@ -178,6 +179,10 @@ class Gallery extends Section implements ContentInterface
             ))
             ->add('extended', 'choice', array(
                 'label' => 'gallery.mode.fullscreen.extended',
+                'choices' => Settings::getIOChoices(),
+            ))
+            ->add('nav_bar', 'choice', array(
+                'label' => 'gallery.nav.bar.display',
                 'choices' => Settings::getIOChoices(),
             ))
             ->add('thumb_list', 'choice', array(

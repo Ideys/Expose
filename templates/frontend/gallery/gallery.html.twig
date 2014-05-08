@@ -1,5 +1,6 @@
 {% extends "frontend/layout.html.twig" %}
 
+{% if not section.nav_bar %}{% set nav_class = ' no-nav' %}{% else %}{% set nav_class = '' %}{% endif %}
 {% if section.thumb_list %}{% set thumb_class = ' gallery-thumb' %}{% else %}{% set thumb_class = '' %}{% endif %}
 {% if section.extended %}{% set extended_class = ' gallery-extended' %}{% else %}{% set extended_class = '' %}{% endif %}
 {% block body_class parent()
@@ -7,6 +8,7 @@
     ~ ' gallery-'
     ~ section.gallery_mode
     ~ extended_class
+    ~ nav_class
     ~ thumb_class
 %}
 

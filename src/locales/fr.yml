@@ -94,6 +94,7 @@ gallery:
     delete: Supprimer la section et ses photos
     deleted: Une galerie a été supprimée
     labels: Labels
+    nav.bar.display: Afficher la navigation
     thumb.list.display: Afficher les miniatures en bas d'écran
     global.legend: Légende des slides
     picture:

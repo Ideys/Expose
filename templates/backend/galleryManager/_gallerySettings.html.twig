@@ -6,6 +6,7 @@
 </div>
 <div class="for-mode for-slideshow for-fullscreen{% if section.gallery_mode not in ['slideshow', 'fullscreen'] %} hidden{% endif %}">
   {{ form_row(edit_form.slide_mode) }}
+  {{ form_row(edit_form.nav_bar) }}
   {{ form_row(edit_form.thumb_list) }}
 </div>
 <div class="for-mode for-vertical{% if section.gallery_mode != 'vertical' %} hidden{% endif %}">

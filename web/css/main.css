@@ -246,7 +246,7 @@ table {
 }
 
 /*
- * Gallery preloader
+ * Gallery pre-loader
  */
 
 .hold-on {
@@ -269,10 +269,18 @@ table {
     display: inline-block;
 }
 
-.orbit-next,
-.orbit-prev {
+.no-nav .orbit-next,
+.no-nav .orbit-prev {
     visibility: hidden;
     cursor: default;
+}
+
+.background-white .orbit-container .orbit-prev>span {
+    border-right-color: #000;
+}
+
+.background-white .orbit-container .orbit-next>span {
+    border-left-color: #000;
 }
 
 body.gallery-slideshow .orbit-container .orbit-slides-container > * .orbit-caption {
