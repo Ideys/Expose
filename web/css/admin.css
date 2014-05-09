@@ -216,6 +216,12 @@ td.muted {
     display: none;
 }
 
+.preview-link {
+    line-height: 10px;
+    font-size: 20px;
+    color: #ccc;
+}
+
 .label-list .row {
     margin-bottom: 10px;
 }

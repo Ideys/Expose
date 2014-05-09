@@ -101,6 +101,14 @@
       </span>
     </li>
     {% endif %}
+    <li>
+      <a href="{{ path('section', {'slug': section.slug}) }}"
+         title="{{ 'section.preview'|trans }}"
+         target="_blank"
+         class="preview-link">
+        <i class="fi-eye"></i>
+      </a>
+    </li>
   </ul>
 </div>
 {% if section.hasItems %}
