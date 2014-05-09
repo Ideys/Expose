@@ -284,14 +284,18 @@ table {
 }
 
 body.gallery-slideshow .orbit-container .orbit-slides-container > * .orbit-caption {
-    position: inherit;
     background: none;
     color: #333;
+    bottom: -45px;
 }
 
 body.gallery-slideshow.background-black
 .orbit-container .orbit-slides-container > * .orbit-caption {
     color: #eee;
+}
+
+body.gallery-slideshow .orbit-container {
+    padding-bottom: 30px;
 }
 
 body.gallery-slideshow .orbit-slides-container img {
