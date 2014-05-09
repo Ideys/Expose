@@ -111,14 +111,22 @@ $(function(){
     .on('click', '[data-select]', function(){
         var section = $(this).parents('.content-section')
           , items = section.find('[data-selectable]')
-          , mode = $(this).data('select')
+          , state = $(this).data('select')
+          , title = $(this).attr('title')
+          , altTitle = $(this).data('alt-title')
           ;
 
-        if ('all' === mode) {
-            items.addClass('selected');
-        } else if ('none' === mode) {
+        if ('all' === state) {
             items.removeClass('selected');
+            $(this).data('select', 'none');
+        } else {
+            items.addClass('selected');
+            $(this).data('select', 'all');
         }
+
+        $(this)
+            .attr('title', altTitle)
+            .data('alt-title', title);
 
         itemsSelection(section);
     })

@@ -3,26 +3,12 @@
 <div data-selectable-actions class="hidden stack-actions">
   <ul class="button-group">
     <li>
-      <h3 class="selectable-counter">&nbsp;</h3>
-    </li>
-    <li>
       <button
         type="button"
         title="{{ 'select.all'|trans }}"
-        class="secondary button small"
-        data-select="all">
-        <i class="fi-target"></i>&nbsp;
-        <span class="hide-for-small-only">{{ 'select.all'|trans }}</span>
-      </button>
-    </li>
-    <li>
-      <button
-        type="button"
-        title="{{ 'select.none'|trans }}"
-        class="secondary button small"
+        class="button small selectable-counter"
+        data-alt-title="{{ 'select.none'|trans }}"
         data-select="none">
-        <i class="fi-minus-circle"></i>&nbsp;
-        <span class="hide-for-small-only">{{ 'select.none'|trans }}</span>
       </button>
     </li>
     <li>

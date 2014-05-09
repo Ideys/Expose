@@ -150,9 +150,11 @@ input.clipboard {
     background: #fff;
 }
 
-.selectable-counter {
+button.selectable-counter {
     color: #0088cc;
-    padding-right: 10px;
+    background-color: #fff;
+    padding: 2px 10px;
+    font-weight: bold;
 }
 
 /*
