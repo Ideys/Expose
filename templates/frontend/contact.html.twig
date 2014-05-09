@@ -5,7 +5,10 @@
 {% block main -%}
 <div class="row">
 {% if 'enabled' == site.contactSection %}
-  <div class="medium-7 small-12 columns">
+  <div class="medium-5 medium-push-7 columns">
+    {{ widgets.inclusion_replace_keys(site.contactContent) }}
+  </div>
+  <div class="medium-7 medium-pull-5 columns">
     {{ form_start(form) }}
         {{ form_errors(form) }}
         <fieldset>
@@ -21,9 +24,6 @@
                  value="{{ 'contact.send'|trans }}" class="tiny secondary button">
         </div>
     {{ form_end(form) }}
-  </div>
-  <div class="medium-5 small-12 columns">
-    {{ widgets.inclusion_replace_keys(site.contactContent) }}
   </div>
 {% else %}
   <div class="large-12 columns">
