@@ -19,6 +19,8 @@
             {{ widgets.bytes_format(slide.file_size) }}</li>
           <li><em>{{ 'file.original.name'|trans }}</em>:<br>
             {{ slide.original_name }}</li>
+          <li><em>{{ 'file.uploaded.at'|trans }}</em>:<br>
+            {{ slide.created_at|date('d/m/Y H:i') }}</li>
           <li><em>{{ 'file.html.include'|trans }}</em>:
             {{ widgets.clipboard_text('<img src="__path:gallery__/220/'~ slide.path~'">') }}</li>
         </ul>

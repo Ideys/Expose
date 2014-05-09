@@ -197,11 +197,11 @@ file:
     file: Fichier
     size: Taille du fichier
     original.name: Titre original
+    uploaded.at: Téléchargé le
     html.include: Inclusion HTML
     title: Titre du document
     recipient: Destinataire
     no.files: Aucun fichiers mis à disposition
-
 messaging:
     messaging: Messagerie
     no.messages: Aucun message

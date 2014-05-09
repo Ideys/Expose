@@ -197,6 +197,7 @@ file:
     file: File
     size: File size
     original.name: Original name
+    uploaded.at: Uploaded the
     html.include: HTML inclusion
     title: File title
     recipient: Recipient
