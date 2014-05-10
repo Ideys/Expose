@@ -23,7 +23,12 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $formBuilder = $app['form.factory']->createBuilder('form');
+    $formBuilder = $app['form.factory']->createBuilder('form')
+        ->add('global_legend', 'textarea', array(
+            'label'     => 'gallery.global.legend',
+            'data'      => $section->legend,
+            'required'  => false,
+        ));
     foreach ($section->getItems() as $slide) {
     $formBuilder
         ->add('title'.$slide->id, 'text', array(
@@ -56,6 +61,12 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     $form->handleRequest($request);
     if ($form->isValid()) {
         $data = $form->getData();
+
+        // Update the global legend
+        $section->legend = $data['global_legend'];
+        $contentFactory->updateSection($section);
+
+        // Update each items legends
         foreach ($section->getItems() as $slide) {
             $contentFactory->updateItemTitle(
                 $slide->id,

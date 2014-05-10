@@ -201,10 +201,6 @@ class Gallery extends Section implements ContentInterface
                 'label' => 'gallery.grid.rows.small',
                 'choices' => static::getGalleryGridRowsChoice(3),
             ))
-            ->add('legend', 'textarea', array(
-                'label' => 'gallery.global.legend',
-                'required' => false,
-            ))
             ->add('shuffle', 'choice', array(
                 'label' => 'gallery.slide.shuffle',
                 'choices' => Settings::getIOChoices(),

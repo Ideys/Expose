@@ -102,6 +102,9 @@ gallery:
     nav.bar.display: Afficher la navigation
     thumb.list.display: Afficher les miniatures en bas d'écran
     global.legend: Légende des slides
+    global.legend.info: |
+        Cette légende sera affichée sur chaque images,
+        utilisez le symbole <strong>%s</strong> afin d'y ajouter les légendes spécifiques.
     picture:
         alt: Titre alternatif (référencement)
         on.off: Afficher / Masquer

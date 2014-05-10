@@ -5,7 +5,22 @@
     'action': path('admin_gallery_manager_labels', {'id': section.id}),
     'attr': {'id': 'section-form-'~section.id }
 }) }}
+
 {{ widgets.btn_ajax() }}
+
+<div>
+  <label for="form_global_legend" style="display: inline">
+    {{ 'gallery.global.legend'|trans }}
+  </label>
+  <span data-display="#global-legend-info">
+    <i class="fi-info"></i>
+  </span>
+  <div id="global-legend-info" class="panel radius hidden">
+    <p>{{ 'gallery.global.legend.info'|trans|raw }}</p>
+  </div>
+  {{ form_widget(form.global_legend, {'attr': {'rows': '3'} }) }}
+</div>
+
 <ul class="label-list small-block-grid-1 medium-block-grid-2">
   {% for slide in section.items %}
   <li>
@@ -40,14 +55,17 @@
   </li>
   {% endfor %}
 </ul>
+
 <div class="hide">
   {{ form_rest(form) }}
 </div>
+
 {{ widgets.btn_ajax() }}
 {{ form_end(form) }}
 {% else %}
 <p class="notice-empty">{{ 'gallery.no.pics'|trans }}</p>
 {% endif %}
+
 <script>
     $('#section-form-{{ section.id }} .slide-description').markItUp(markitupSettingsCompact);
 </script>

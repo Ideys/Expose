@@ -13,8 +13,8 @@
                alt="{{ slide.title|e }}">
           {% if slide.link|length %}
           </a>
-          {{ widgets.gallery_slide_legend(slide, section) }}
           {% endif %}
+          {{ widgets.gallery_slide_legend(slide, section) }}
         </li>
       {% endfor %}
     </ul>

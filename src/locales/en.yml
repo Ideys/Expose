@@ -102,6 +102,9 @@ gallery:
     nav.bar.display: Display navigation
     thumb.list.display: Display thumbs at the bottom of the screen
     global.legend: Slides legend
+    global.legend.info: |
+        This legend will be displayed on each slides,
+        use the <strong>%s</strong> symbol to include custom legends.
     picture:
         alt: Alt attribute (SEO)
         on.off: Display / Hide
