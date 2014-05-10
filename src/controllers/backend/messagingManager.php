@@ -34,6 +34,25 @@ $messagingManagerController->get('/archive', function () use ($app) {
 ->bind('admin_messaging_manager_archive')
 ;
 
+$messagingManagerController->get('/new-counter', function () use ($app) {
+
+    $messaging = new Messaging($app['db']);
+    return $app->json($messaging->countUnread());
+})
+->bind('admin_messaging_manager_new_messages_counter')
+;
+
+$messagingManagerController->post('/{id}/mark-as-read', function ($id) use ($app) {
+
+    $messaging = new Messaging($app['db']);
+    $messaging->markAsRead($id);
+
+    return $app->json(true);
+})
+->assert('id', '\d+')
+->bind('admin_messaging_manager_mark_as_read')
+;
+
 $messagingManagerController->get('/{id}/archive', function ($id) use ($app) {
 
     $messaging = new Messaging($app['db']);

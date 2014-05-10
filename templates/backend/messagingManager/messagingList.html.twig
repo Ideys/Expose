@@ -17,16 +17,25 @@
         <h3>
             {{ 'contact.messaging'|trans }}
             <small class="right">
-                {{ count.unread }}/{{ count.read + count.unread }}
+                <span id="unread-counter" class="new-messages-counter">{{ count.unread }}</span>
+                /
+                {{ count.read + count.unread }}
             </small>
         </h3>
       {% endif %}
 
       {% if messages|length %}
-        <dl class="accordion" data-accordion>
+        <dl id="messages-list"
+            class="accordion"
+            data-accordion>
           {% for row, message in messages %}
             <dd>
-              <a href="#panel{{ row }}" class="panel-title">
+              <a href="#panel{{ row }}"
+                 class="panel-title"
+                {% if not message.isRead %}
+                 data-mark-as-read="{{ path('admin_messaging_manager_mark_as_read', {'id': message.id}) }}"
+                 {% endif %}
+                 >
                 <i class="fi-mail"></i>
                 <span class="name">
                   {{ message.name }}
@@ -35,7 +44,7 @@
                   {{ message.subject|default('contact.no.subject'|trans) }}
                 </span>
                 {% if not message.isRead %}
-                  <span class="label">{{ 'new'|trans }}</span>
+                  <span class="label new">{{ 'new'|trans }}</span>
                 {% endif %}
                 <small class="right">
                 {{ message.date|date('d/m/Y H:i') }}
@@ -108,3 +117,8 @@
   </div>
 </div>
 {%- endblock main %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ app.request.basepath }}/js/messaging.js?v={{ semver }}"></script>
+{% endblock javascripts %}

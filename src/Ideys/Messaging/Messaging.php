@@ -44,13 +44,33 @@ class Messaging
     }
 
     /**
+     * Mark a message as read.
+     *
+     * @param integer $id
+     */
+    public function markAsRead($id)
+    {
+        $this->db->executeQuery(
+            'UPDATE expose_messaging '
+          . 'SET read_at = :datetime '
+          . 'WHERE id = :id',
+            array(
+                'datetime' => (new \DateTime())->format('Y-m-d H:i:s'),
+                'id' => $id,
+            )
+        );
+    }
+
+    /**
      * Archive / Restore a message.
      *
      * @param integer $id
      */
     public function archive($id)
     {
-        $this->db->executeQuery('UPDATE expose_messaging SET archive = NOT archive '
+        $this->db->executeQuery(
+            'UPDATE expose_messaging '
+          . 'SET archive = NOT archive '
           . 'WHERE id = :id',
             array('id' => $id)
         );

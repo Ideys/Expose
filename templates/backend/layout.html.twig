@@ -29,6 +29,9 @@
         <li>
           <a href="{{ path('admin_messaging_manager') }}">
             {{ 'contact.messaging'|trans }}
+            <span id="messages-counter"
+                  class="label round secondary hidden"
+                  data-url="{{ path('admin_messaging_manager_new_messages_counter') }}">0</span>
           </a>
         </li>
         <li>

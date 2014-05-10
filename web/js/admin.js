@@ -292,6 +292,7 @@ $(function(){
         switch ($(this).val()) {
             case 'disabled':
                 contactContentWrapper.addClass('hidden');
+            break;
             case 'no.form':
                 sendToWrapper.addClass('hidden');
         }
@@ -357,7 +358,7 @@ $(function(){
         }
     });
 
-    // Open panel from url hashtag
+    // Open panel from url hash tag.
     var url = window.location.href.split('#');
     if (url[1] != undefined) {
         var sectionLink = $('[href=#'+url[1]+']')
@@ -369,7 +370,28 @@ $(function(){
         }
         sectionLink.click();
     }
-});
+
+    // New messages counter
+    var messagesCounterWrapper = $('#messages-counter')
+      , messagesCounterUrl = messagesCounterWrapper.data('url')
+      ;
+
+    $.ajax({
+        url: messagesCounterUrl,
+        type: 'GET'
+    })
+    .done(function(count) {
+        if (count > 0) {
+            messagesCounterWrapper
+                .text(count)
+                .removeClass('hidden');
+        }
+    })
+    .fail(function() {
+        console.log('Messages counter error.');
+    });
+
+}); // End on DOM ready.
 
 var itemsSelection = function(section) {
     var list = section.find('[data-selected]')
@@ -377,7 +399,7 @@ var itemsSelection = function(section) {
       , counterInfo = stackActionPanel.find('.selectable-counter')
       , selectedEntities = section.find('.selected')
       , totalSelection = selectedEntities.length
-      , selectedIds = new Array()
+      , selectedIds = []
       ;
 
     selectedEntities.each(function(){
