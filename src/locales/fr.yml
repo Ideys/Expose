@@ -274,6 +274,7 @@ remove: Retirer
 process: Traitement
 saved: Sauvegardé
 failed: Echec
+new: Nouveau
 settings: Paramétrages
 advanced.settings: Options avancées
 select:

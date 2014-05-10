@@ -274,6 +274,7 @@ remove: Remove
 process: Process
 saved: Saved
 failed: Failed
+new: New
 settings: Settings
 advanced.settings: Advanced settings
 select:
