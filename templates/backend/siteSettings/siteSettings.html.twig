@@ -49,7 +49,7 @@
       </div>
     </fieldset>
     <fieldset>
-      <legend>{{ 'contact.contact'|trans }}</legend>
+      <legend>{{ 'contact.messaging'|trans }}</legend>
       {{ form_row(form.contactSection) }}
       <div id="contact-content-wrapper"{% if site.contactSection == 'disabled' %} class="hidden"{% endif %}>
         {{ form_row(form.contactContent, {'attr': {'rows': '12'} }) }}

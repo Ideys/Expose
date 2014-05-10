@@ -73,25 +73,124 @@ class Messaging
      */
     public function findAll()
     {
-        $messages = $this->db->fetchAll(
-                'SELECT * FROM expose_messaging ' .
-                'WHERE archive = 0');
-
-        return $messages;
+        return $this->extractMessages();
     }
 
     /**
-     * Retrieve all messages.
+     * Retrieve archived messages.
      *
      * @return array
      */
     public function findArchived()
     {
-        $messages = $this->db->fetchAll(
-                'SELECT * FROM expose_messaging ' .
-                'WHERE archive = 1');
+        return $this->extractMessages(true);
+    }
+
+    /**
+     * Messages extractor.
+     *
+     * @param boolean $archive
+     *
+     * @return array
+     */
+    private function extractMessages($archive = false)
+    {
+        $messages =  array();
+
+        $results = $this->db->fetchAll(
+            ' SELECT * FROM expose_messaging' .
+            ' WHERE archive = ' . (int) $archive .
+            ' ORDER BY date DESC'
+        );
+
+        foreach ($results as $result) {
+            $message = new Message();
+
+            $message
+                ->setId($result['id'])
+                ->setDate(new \DateTime($result['date']))
+                ->setName($result['name'])
+                ->setEmail($result['email'])
+                ->setSubject($result['subject'])
+                ->setMessage($result['message'])
+                ->setReadAt(empty($result['read_at']) ? null : new \DateTime($result['read_at']));
+
+            $messages[] = $message;
+        }
 
         return $messages;
+    }
+
+    /**
+     * Count read and unread messages.
+     *
+     * @return integer
+     */
+    public function countUnread()
+    {
+        return $this->countMessages('unread');
+    }
+
+    /**
+     * Count read and unread messages.
+     *
+     * @return integer
+     */
+    public function countRead()
+    {
+        return $this->countMessages('read');
+    }
+
+    /**
+     * Count total of archived messages.
+     *
+     * @return integer
+     */
+    public function countArchived()
+    {
+        return $this->countMessages('archived');
+    }
+
+    /**
+     * Return all messages count.
+     *
+     * @return array
+     */
+    public function countAll()
+    {
+        return array(
+            'unread' => $this->countUnread(),
+            'read' => $this->countRead(),
+            'archived' => $this->countArchived(),
+        );
+    }
+
+    /**
+     * Messages counter.
+     *
+     * @param string $filter
+     *
+     * @return integer
+     */
+    private function countMessages($filter)
+    {
+        $sqlStatement = 'SELECT count(id) AS total FROM expose_messaging ';
+
+        switch ($filter) {
+            case 'unread':
+                $sqlStatement .= 'WHERE archive = 0 AND read_at IS NULL';
+                break;
+            case 'read':
+                $sqlStatement .= 'WHERE archive = 0 AND read_at IS NOT NULL';
+                break;
+            case 'archived':
+                $sqlStatement .= 'WHERE archive = 1';
+                break;
+        }
+
+        $counter = $this->db->fetchAssoc($sqlStatement);
+
+        return $counter['total'];
     }
 
     /**

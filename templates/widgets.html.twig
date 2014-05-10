@@ -31,7 +31,7 @@
 {% endspaceless %}
 {% endmacro %}
 
-{% macro btn_dropdown_actions(target, ajax) %}
+{% macro btn_dropdown_actions(target, ajax, class) %}
 {% spaceless %}
 <a href="#"
    title="{{ 'actions'|trans }}"
@@ -40,7 +40,7 @@
    {% else %}
    data-dropdown="{{ target }}"
    {% endif %}
-   class="tiny secondary small actions button">
+   class="tiny secondary small actions {{ class|default('') }} button">
   <i class="fi-widget"></i>
 </a>
 {% endspaceless %}

@@ -27,11 +27,15 @@ user:
         ROLE_USER: User
 
 contact:
+    messaging: Messaging
     contact: Contact
     section: Contact section
     name: Name
     email: Email
+    subject: Subject
+    no.subject: No subject
     message: Message
+    no.messages: No messages
     send: Send
     info.sent: The message has been sent.
     content: Contact section content
@@ -75,6 +79,7 @@ section:
         css: CSS
         js: Javascript
     unavailable: The requested section is unavailable.
+    no.section: No sections
     define.as.homepage: Define as the homepage
 
 dir:
@@ -203,10 +208,6 @@ file:
     recipient: Recipient
     no.files: No shared files
 
-messaging:
-    messaging: Messaging
-    no.messages: No messages
-
 site:
     site: Website
     settings: Settings
@@ -257,6 +258,7 @@ left: Left
 right: Right
 top: Top
 bottom: Bottom
+back: Back
 submit: Submit
 confirm: Confirm
 cancel: Cancel

@@ -1,0 +1,110 @@
+{% extends "backend/layout.html.twig" %}
+
+{% block body_class parent() ~ ' messaging-section' %}
+
+{% block main -%}
+<div class="row">
+  <div class="large-12 columns">
+
+      {% if is_archive %}
+        <h3>
+            {{ 'archives'|trans }}
+            <small class="right">
+                {{ count.archived }}
+            </small>
+        </h3>
+      {% else %}
+        <h3>
+            {{ 'contact.messaging'|trans }}
+            <small class="right">
+                {{ count.unread }}/{{ count.read + count.unread }}
+            </small>
+        </h3>
+      {% endif %}
+
+      {% if messages|length %}
+        <dl class="accordion" data-accordion>
+          {% for row, message in messages %}
+            <dd>
+              <a href="#panel{{ row }}" class="panel-title">
+                <i class="fi-mail"></i>
+                <span class="name">
+                  {{ message.name }}
+                </span>
+                <span class="subject">
+                  {{ message.subject|default('contact.no.subject'|trans) }}
+                </span>
+                {% if not message.isRead %}
+                  <span class="label">{{ 'new'|trans }}</span>
+                {% endif %}
+                <small class="right">
+                {{ message.date|date('d/m/Y H:i') }}
+                </small>
+              </a>
+
+              <div id="panel{{ row }}" class="content">
+
+                <div class="row">
+                  <div class="small-9 columns">
+                    <h3>
+                      {% if message.subject|length %}
+                        {{ message.subject }}
+                      {% else %}
+                        <em>{{ 'contact.no.subject'|trans }}</em>
+                      {% endif %}
+                    </h3>
+                  </div>
+                  <div class="small-3 columns">
+                    {{ widgets.btn_dropdown_actions('message-actions-'~row, '', 'right') }}
+                    <ul id="message-actions-{{ row }}"
+                        data-dropdown-content=""
+                        class="f-dropdown">
+                        <li>
+                            <a href="{{ path('admin_messaging_manager_archive_item', {'id': message.id}) }}">
+                                {% if is_archive %}
+                                    <i class="fi-refresh"></i>
+                                    {{ 'restore'|trans }}
+                                {% else %}
+                                    <i class="fi-archive"></i>
+                                    {{ 'archive'|trans }}
+                                {% endif %}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_messaging_manager_delete', {'id': message.id}) }}"
+                               data-confirm-action="{{ 'confirm'|trans }}">
+                                <i class="fi-x"></i>
+                                {{ 'delete'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <p>{{ message.message|nl2br }}</p>
+
+              </div>
+            </dd>
+          {% endfor %}
+        </dl>
+      {% else %}
+        <p class="notice-empty">{{ 'contact.no.messages'|trans }}</p>
+      {% endif %}
+
+      {% if is_archive %}
+        <a href="{{ path('admin_messaging_manager') }}"
+           style="color: #aaa">
+            <i class="fi-arrow-left"></i>&nbsp;
+            {{ 'back'|trans }}
+        </a>
+      {% else %}
+          <a href="{{ path('admin_messaging_manager_archive') }}"
+             style="color: #aaa">
+              <i class="fi-archive"></i>&nbsp;
+              {{ 'archives'|trans }} <small>{{ count.archived }}</small>
+          </a>
+      {% endif %}
+
+  </div>
+</div>
+{%- endblock main %}

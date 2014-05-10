@@ -12,8 +12,21 @@
     {{ form_start(form) }}
         {{ form_errors(form) }}
         <fieldset>
-          {{ form_row(form.name) }}
-          {{ form_row(form.email) }}
+          <div class="row">
+            <div class="medium-6 columns">
+              {{ form_row(form.name) }}
+            </div>
+            <div class="medium-6 columns">
+              {{ form_row(form.email) }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="medium-12 columns">
+              {{ form_row(form.subject) }}
+            </div>
+          </div>
+        </fieldset>
+        <fieldset>
           {{ form_row(form.message, {'attr': {'rows': '12'} }) }}
         </fieldset>
         <div class="hidden">

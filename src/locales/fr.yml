@@ -27,11 +27,15 @@ user:
         ROLE_USER: Utilisateur
 
 contact:
+    messaging: Messagerie
     contact: Contact
     section: Section contact
     name: Nom
     email: Email
+    subject: Objet
+    no.subject: Sans objet
     message: Message
+    no.messages: Aucun message
     send: Envoyer
     info.sent: Le message a bien été envoyé.
     content: Contenu de la section contact
@@ -75,6 +79,7 @@ section:
         css: CSS
         js: Javascript
     unavailable: La section demandée est indisponible.
+    no.section: Aucunes sections
     define.as.homepage: Définir comme page d'accueil
 
 dir:
@@ -202,9 +207,6 @@ file:
     title: Titre du document
     recipient: Destinataire
     no.files: Aucun fichiers mis à disposition
-messaging:
-    messaging: Messagerie
-    no.messages: Aucun message
 
 site:
     site: Site Internet
@@ -256,6 +258,7 @@ left: Gauche
 right: Droite
 top: Haut
 bottom: Bas
+back: Retour
 submit: Valider
 confirm: Confirmer
 cancel: Annuler

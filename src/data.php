@@ -150,6 +150,7 @@ if (!$schema->tablesExist('expose_messaging')) {
     $table->addColumn('subject', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('message', 'text');
     $table->addColumn('date', 'datetime');
+    $table->addColumn('read_at', 'datetime', array('default' => null, 'notnull' => false));
     $table->addColumn('archive', 'boolean');
 
     $schema->createTable($table);

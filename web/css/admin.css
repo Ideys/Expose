@@ -12,7 +12,7 @@
 }
 
 .tabs dd a i {
-    margin: 0px 6px;
+    margin: 0 6px;
     color: #555;
 }
 
@@ -44,8 +44,8 @@ input.clipboard {
     border: none;
     -webkit-box-shadow: none;
     box-shadow: none;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
 }
 
 /*
@@ -80,13 +80,13 @@ input.clipboard {
 
 .dir-title .dir-actions {
     font-size: 25px;
-    margin: 0px;
+    margin: 0;
 }
 
 .dir-title .dir-actions button.tiny.secondary {
     padding: 7px 6px;
     font-size: 14px;
-    margin: 4px 0px;
+    margin: 4px 0;
 }
 
 /*
@@ -99,8 +99,8 @@ input.clipboard {
     height: 57px;
     background-color: #e2e2e2;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     z-index: 10;
 }
 
@@ -143,7 +143,6 @@ input.clipboard {
 
 .stack-actions {
     position: absolute;
-    top: -50px;
     top: -60px;
     left: -10px;
     width: 100%;
@@ -171,7 +170,7 @@ iframe.page-preview {
     background-color: #556778;
     color: #fff;
     text-align: center;
-    padding: 15px 0px;
+    padding: 15px 0;
 }
 
 td.muted {
@@ -252,7 +251,7 @@ td.muted {
 
 .gallery-upload .upload-ok {
     float: right;
-    margin: -22px 10px 0px 0px;
+    margin: -22px 10px 0 0;
     color: #fff;
 }
 
@@ -288,7 +287,7 @@ td.muted {
 }
 
 .field.panel p {
-    margin: 0px;
+    margin: 0;
 }
 
 .field.panel .header{
@@ -307,6 +306,33 @@ td.muted {
 .posts-list .post {
     border-top: 1px solid #ccc;
     padding-top: 12px;
+}
+
+/* ==========================================================================
+   Messaging section
+   ========================================================================== */
+
+.messaging-section h3 small  {
+    line-height: 35px;
+}
+
+.messaging-section .panel-title .fi-mail  {
+    color: #555;
+}
+
+.messaging-section .panel-title .name  {
+    display: inline-block;
+    width: 30%;
+}
+
+@media only screen and (max-width: 640px) {
+    .messaging-section .panel-title .subject  {
+        display: none;
+    }
+}
+
+.messaging-section .panel-title small  {
+    line-height: 30px;
 }
 
 /* ==========================================================================
@@ -331,7 +357,7 @@ td.muted {
 
 .user.panel,
 .user.panel p {
-    margin: 0px;
+    margin: 0;
 }
 
 .user.panel .tiny.button {
@@ -380,13 +406,13 @@ td.muted {
     color: rgba(0, 136, 204, 0.8);
     text-shadow: 1px 4px 6px #FFF, 0 0 0 #000, 1px 4px 6px #FFF;
     float: left;
-    line-height: 0px;
+    line-height: 0;
     margin: -2px 8px 0 4px;
 }
 
 .state-icon {
     font-size: 25px;
-    line-height: 0px;
+    line-height: 0;
     float: right;
     color: #ccc;
 }
@@ -412,7 +438,7 @@ td.muted {
 }
 
 /* ==========================================================================
-   Ajax links preloader
+   Ajax links pre-loader
    ========================================================================== */
 
 .btn-msg {

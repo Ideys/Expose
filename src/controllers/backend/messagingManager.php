@@ -8,9 +8,11 @@ $messagingManagerController->get('/', function () use ($app) {
 
     $messaging = new Messaging($app['db']);
     $messages = $messaging->findAll();
+    $count = $messaging->countAll();
 
-    return $app['twig']->render('backend/messagingManager/messagingManager.html.twig', array(
+    return $app['twig']->render('backend/messagingManager/messagingList.html.twig', array(
         'messages' => $messages,
+        'count' => $count,
         'is_archive' => false,
     ));
 })
@@ -21,9 +23,11 @@ $messagingManagerController->get('/archive', function () use ($app) {
 
     $messaging = new Messaging($app['db']);
     $messages = $messaging->findArchived();
+    $count = $messaging->countAll();
 
-    return $app['twig']->render('backend/messagingManager/messagingManager.html.twig', array(
+    return $app['twig']->render('backend/messagingManager/messagingList.html.twig', array(
         'messages' => $messages,
+        'count' => $count,
         'is_archive' => true,
     ));
 })

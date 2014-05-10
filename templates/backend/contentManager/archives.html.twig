@@ -12,7 +12,14 @@
        class="large-12 columns">
     {% for section in sections if section.archive == 1 %}
       {% include "backend/contentManager/_sectionRow.html.twig" with {'section': section} only %}
+    {% else %}
+      <p class="notice-empty">{{ 'section.no.section'|trans }}</p>
     {% endfor %}
+    <a href="{{ path('admin_content_manager') }}"
+       style="color: #aaa">
+        <i class="fi-arrow-left"></i>&nbsp;
+        {{ 'back'|trans }}
+    </a>
   </div>
 </div>
 {%- endblock main %}
