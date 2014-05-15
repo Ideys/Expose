@@ -69,6 +69,10 @@
 </nav>
 <div id="content">
   {% block main %}{% endblock %}
+  <div id="universal-modal" class="reveal-modal" data-reveal>
+    <div id="universal-modal-content"></div>
+    <a class="close-reveal-modal">&#215;</a>
+  </div>
 </div>
 {%- endblock content%}
 

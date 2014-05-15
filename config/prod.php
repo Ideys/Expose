@@ -47,4 +47,4 @@ $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 $app['languages'] = array('en', 'fr');
 $app['locale_fallback'] = 'fr';
 
-$app['semver'] = '0.15.2';
+$app['semver'] = '0.15.3';

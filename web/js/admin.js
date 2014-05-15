@@ -442,3 +442,22 @@ var resetStackSelection = function(list) {
 };
 
 }(window.jQuery);
+
+/**
+ * Insert content using AJAX into a modal then display it.
+ * @param url
+ */
+var callUniversalModalContent = function(url) {
+
+    $.ajax({
+        url: url,
+        type: 'GET'
+    })
+    .done(function(html) {
+        $('#universal-modal-content').html(html);
+        $('#universal-modal').foundation('reveal', 'open');
+    })
+    .fail(function() {
+        console.log('Universal modal AJAX error.');
+    });
+};

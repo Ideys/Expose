@@ -7,7 +7,7 @@ To avoid <i></i> code into anchor title attr.
 #}
 {% set sep = "separator:'&nbsp;&nbsp;.&nbsp;&nbsp;'" %}
 {% for mode in ['Full', 'Compact'] %}
-var markitupSettings{{ mode }} = {
+var markItUpSettings{{ mode }} = {
   onShiftEnter:  	{keepDefault:false, replaceWith:'<br />\n'},
   onCtrlEnter:  	{keepDefault:false, openWith:'\n<p>', closeWith:'</p>'},
   onTab:    		{keepDefault:false, replaceWith:'    '},
@@ -41,6 +41,8 @@ var markitupSettings{{ mode }} = {
     {% if 'Full' == mode %}
       { {{ sep|raw }} },
       {name:'<i class="fi-x-circle"></i>', className:'clean', replaceWith:function(markitup) { return markitup.selection.replace(/<(.*?)>/g, ""); } },
+      { {{ sep|raw }} },
+      {name:'<i class="fi-photo"></i>', openWith: function(markitup) { var url = $(markitup.textarea).data('pic-manager-url'); callUniversalModalContent(url); } }
     {% endif %}
   ]
 };

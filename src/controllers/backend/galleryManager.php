@@ -132,6 +132,19 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 ->bind('admin_gallery_manager_delete_slides')
 ;
 
+$galleryManagerController->get('/{id}/pic-manager', function ($id) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+
+    return $app['twig']->render('backend/galleryManager/_contentSectionsPicManager.html.twig', array(
+        'section' => $section,
+    ));
+})
+    ->assert('id', '\d+')
+    ->bind('admin_gallery_manager_content_sections_pic_manager')
+;
+
 $galleryManagerController->assert('_locale', implode('|', $app['languages']));
 
 return $galleryManagerController;

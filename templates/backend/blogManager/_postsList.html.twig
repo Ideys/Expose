@@ -6,23 +6,28 @@
   {% for post in section.items %}
   <li class="post"
       data-id="{{ post.id }}">
-    <div>
-      {% if post.published %}
-        <span class="published label right">
-          {{ 'blog.post.published'|trans }}
-        </span>
-      {% else %}
-        <span class="published secondary label right">
-          {{ 'blog.post.unpublished'|trans }}
-        </span>
-      {% endif %}
-      {% if post.posting_date|length %}
-      {{ post.posting_date|date('d/m/Y') }}
-      {% endif %}
-      {{ post.title }}
-    </div>
-    <div>
-      {{ post.content|raw }}
+    <div class="panel radius">
+      <div class="row">
+        <div class="medium-8 columns">
+          <h5>
+            {{ post.title }}
+            {% if post.published %}
+              <span class="published label right">
+                {{ 'blog.post.published'|trans }}
+              </span>
+            {% else %}
+              <span class="published secondary label right">
+                {{ 'blog.post.unpublished'|trans }}
+              </span>
+            {% endif %}
+          </h5>
+        </div>
+        <div class="medium-4 columns">
+          {% if post.posting_date|length %}
+            {{ post.posting_date|date('d/m/Y') }}
+          {% endif %}
+        </div>
+      </div>
     </div>
   </li>
   {% endfor %}
