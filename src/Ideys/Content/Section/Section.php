@@ -21,6 +21,13 @@ abstract class Section
     protected $db;
 
     /**
+     * Define if shuffle mode is activated.
+     *
+     * @var boolean
+     */
+    private $shuffleOn = false;
+
+    /**
      * Section main attributes
      *
      * @var array
@@ -39,6 +46,7 @@ abstract class Section
         'parameters' => 'N;',
         'menu_pos' => 'main',
         'visibility' => 'public',
+        'shuffle' => '0',
         'language' => null,
         'archive' => '0',
     );
@@ -106,10 +114,27 @@ abstract class Section
 
     /**
      * Return section items.
+     * Trigger the shuffle mode if set.
      *
      * @return array
      */
     public function getItems()
+    {
+        if ($this->shuffle && !$this->shuffleOn) {
+            shuffle($this->items);
+            $this->shuffleOn = true;
+        }
+
+        return $this->items;
+    }
+
+    /**
+     * Return section items without shuffle mode
+     * even if it was set.
+     *
+     * @return array
+     */
+    public function getItemsRealHierarchy()
     {
         return $this->items;
     }

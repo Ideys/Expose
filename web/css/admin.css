@@ -196,6 +196,9 @@ td.muted {
 
 .slides-grid li.selected .fi-check {
     display: inline-block;
+    position: relative;
+    top: -30px;
+    left: 10px;
 }
 
 .slides-grid .slide-state {
@@ -241,29 +244,16 @@ td.muted {
 
 .gallery-upload {
     min-height: 200px;
-    background: #efefef;
-    border: 1px dashed #0088cc;
 }
 
 .gallery-upload .upload-info {
     color: #999;
-}
-
-.gallery-upload .upload-ok {
-    float: right;
-    margin: -22px 10px 0 0;
-    color: #fff;
+    margin: 15px 0;
 }
 
 .gallery-upload .upload-link {
-    position: relative;
     overflow: hidden;
-    left: 50%;
-    width: 200px;
-    margin-left: -100px;
-    padding: 0.8em;
     color: #999;
-
 }
 
 .gallery-upload .upload-link input {

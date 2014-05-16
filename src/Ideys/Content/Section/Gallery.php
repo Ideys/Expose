@@ -23,13 +23,6 @@ class Gallery extends Section implements ContentInterface
     private $thumbSizes = array(1200, 220);
 
     /**
-     * Define if shuffle mode is activated.
-     *
-     * @var boolean
-     */
-    private $shuffleOn = false;
-
-    /**
      * {@inheritdoc}
      */
     public static function getParameters()
@@ -43,7 +36,6 @@ class Gallery extends Section implements ContentInterface
             'grid_rows' => '1',
             'grid_rows_medium' => '1',
             'grid_rows_small' => '1',
-            'shuffle' => '0',
         );
     }
 
@@ -55,33 +47,6 @@ class Gallery extends Section implements ContentInterface
     public static function getGalleryDir()
     {
         return WEB_DIR.'/gallery';
-    }
-
-    /**
-     * Return gallery slides,
-     * trigger shuffle mode if set.
-     *
-     * @return array
-     */
-    public function getItems()
-    {
-        if ($this->shuffle && !$this->shuffleOn) {
-            shuffle($this->items);
-            $this->shuffleOn = true;
-        }
-
-        return $this->items;
-    }
-
-    /**
-     * Return gallery slides without shuffle mode
-     * even if it was set.
-     *
-     * @return array
-     */
-    public function getItemsRealHierarchy()
-    {
-        return $this->items;
     }
 
     /**
@@ -200,10 +165,6 @@ class Gallery extends Section implements ContentInterface
             ->add('grid_rows_small', 'choice', array(
                 'label' => 'gallery.grid.rows.small',
                 'choices' => static::getGalleryGridRowsChoice(3),
-            ))
-            ->add('shuffle', 'choice', array(
-                'label' => 'gallery.slide.shuffle',
-                'choices' => Settings::getIOChoices(),
             ))
         ;
 

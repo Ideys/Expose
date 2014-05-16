@@ -109,7 +109,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 
         $jsonResponse[] = array(
             'path' => $slide->path,
-            'id' => $sectionId,
+            'id' => $slide->id,
         );
     }
 
@@ -141,8 +141,8 @@ $galleryManagerController->get('/{id}/pic-manager', function ($id) use ($app) {
         'section' => $section,
     ));
 })
-    ->assert('id', '\d+')
-    ->bind('admin_gallery_manager_content_sections_pic_manager')
+->assert('id', '\d+')
+->bind('admin_gallery_manager_content_sections_pic_manager')
 ;
 
 $galleryManagerController->assert('_locale', implode('|', $app['languages']));

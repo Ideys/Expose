@@ -1,3 +1,4 @@
 {% spaceless %}
     <h2>{{ section.title }}</h2>
+    {% include 'backend/galleryManager/_slidesManager.html.twig' with {'section': section} only %}
 {% endspaceless %}

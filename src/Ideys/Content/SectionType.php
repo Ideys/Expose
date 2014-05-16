@@ -3,6 +3,7 @@
 namespace Ideys\Content;
 
 use Ideys\Content\Section\Section;
+use Ideys\Settings\Settings;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Form\FormFactory;
 
@@ -66,28 +67,28 @@ class SectionType
             ))
             ->add('title', 'text', array(
                 'label'         => 'section.title',
-                'attr' => array(
+                'attr'          => array(
                     'placeholder' => 'section.title',
                 ),
             ))
             ->add('description', 'textarea', array(
                 'required'      => false,
                 'label'         => 'section.description',
-                'attr' => array(
+                'attr'          => array(
                     'placeholder' => 'section.description',
                 ),
             ))
             ->add('custom_css', 'textarea', array(
                 'required'      => false,
                 'label'         => 'section.custom.css',
-                'attr' => array(
+                'attr'          => array(
                     'placeholder' => 'section.custom.css',
                 ),
             ))
             ->add('custom_js', 'textarea', array(
                 'required'      => false,
                 'label'         => 'section.custom.js',
-                'attr' => array(
+                'attr'          => array(
                     'placeholder' => 'section.custom.js',
                 ),
             ))
@@ -104,6 +105,10 @@ class SectionType
             ->add('visibility', 'choice', array(
                 'choices'       => static::getSectionVisibilityChoice(),
                 'label'         => 'section.visibility.visibility',
+            ))
+            ->add('shuffle', 'choice', array(
+                'choices'       => Settings::getIOChoices(),
+                'label'         => 'gallery.slide.shuffle',
             ))
             ->add('tag', 'text', array(
                 'label'         => 'section.tag',

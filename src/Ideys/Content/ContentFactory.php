@@ -47,7 +47,7 @@ class ContentFactory
     private $sqlSelectSection =
        'SELECT s.id, s.expose_section_id, s.type, s.slug,
                s.custom_css, s.custom_js,
-               s.menu_pos, s.tag, s.visibility,
+               s.menu_pos, s.tag, s.visibility, s.shuffle,
                s.hierarchy, s.archive,
                t.title, t.description, t.legend,
                t.parameters, t.language,
@@ -219,6 +219,7 @@ class ContentFactory
             'custom_js' => $section->custom_js,
             'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
+            'shuffle' => $section->shuffle,
             'archive' => 0,
             'hierarchy' => $i,
         ) + $this->blameAndTimestampData(0));
@@ -262,6 +263,7 @@ class ContentFactory
             'tag' => $section->tag,
             'menu_pos' => $section->menu_pos,
             'visibility' => $section->visibility,
+            'shuffle' => $section->shuffle,
             'expose_section_id' => $section->expose_section_id,
         ) + $this->blameAndTimestampData($section->id),
         array('id' => $section->id));
@@ -290,6 +292,7 @@ class ContentFactory
         $this->db->update('expose_section', array(
             'custom_css' => $section->custom_css,
             'custom_js' => $section->custom_js,
+            'shuffle' => $section->shuffle,
         ),
         array('tag' => $section->tag, 'type' => $section->type));
 

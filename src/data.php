@@ -73,6 +73,7 @@ if (!$schema->tablesExist('expose_section')) {
     $table->addColumn('tag', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('menu_pos', 'string', array('length' => 32));
     $table->addColumn('visibility', 'string', array('length' => 32));
+    $table->addColumn('shuffle', 'boolean');
     $table->addColumn('hierarchy', 'smallint');
     blameAndTimestampSchema($table);
 

@@ -111,22 +111,5 @@
     </li>
   </ul>
 </div>
-{% if section.hasItems %}
-<ul id="slides-{{ section.id }}"
-    class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid"
-    data-selected=""
-    data-sortable="{{ path('admin_content_manager_sort_items') }}">
-  {% for slide in section.itemsRealHierarchy %}
-  <li data-selectable data-id="{{ slide.id }}"
-      {% if slide.published %}class="active"{% endif %}>
-    <img class="th handle"
-         src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}">
-      <i class="fi-check"></i>
-      <i class="fi-prohibited slide-state"></i>
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p class="notice-empty">{{ 'gallery.no.pics'|trans }}</p>
-{% endif %}
+{% include 'backend/galleryManager/_slidesManager.html.twig' with {'section': section} only %}
 {% endspaceless %}

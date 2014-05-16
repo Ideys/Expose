@@ -24,14 +24,6 @@
         </a>
       </dd>
       <dd>
-        <a href="#panel{{ section.id }}-upload"
-           title="{{ 'gallery.upload'|trans }}"
-           data-gallery-upload="#gallery-upload{{ section.id }}">
-          <i class="fi-upload-cloud"></i>
-          <span class="hide-for-small-only">{{ 'gallery.upload'|trans }}</span>
-        </a>
-      </dd>
-      <dd>
         <a href="#panel{{ section.id }}-settings"
            title="{{ 'settings'|trans }}"
            data-inject-call="{{ path('admin_content_manager_settings', {'id': section.id}) }}"
@@ -42,39 +34,9 @@
       </dd>
     </dl>
     <div class="tabs-content">
-      <div class="content" id="panel{{ section.id }}-list">
-      </div>
-      <div class="content" id="panel{{ section.id }}-labels">
-      </div>
-      <div class="content" id="panel{{ section.id }}-upload">
-        <div class="gallery-dropzone">
-        </div>
-        <form class="gallery-upload"
-              id="gallery-upload{{ section.id }}"
-              action="{{ path('admin_gallery_manager_upload') }}"
-              method="POST"
-              enctype="multipart/form-data">
-          <div class="progress">
-            <span class="meter" style="width: 0%;"></span>
-            <i class="fi-check upload-ok hidden"></i>
-          </div>
-          <h4 class="text-center upload-info"
-              data-upload-info="{{ 'gallery.upload.info'|trans }}">
-            {{ 'gallery.drop.here'|trans }}
-          </h4>
-          <ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 upload-grid"></ul>
-          <div class="secondary upload-link button" data-more-text="{{ 'gallery.upload.more'|trans }}">
-            <span>{{ 'gallery.or.click.here'|trans }}</span>
-            <input type="file" name="files[]" multiple>
-          </div>
-          <div class="hidden">
-            <input type="hidden" name="sectionId" value="{{ section.id }}">
-            <button type="submit"></button>
-          </div>
-        </form>
-      </div>
-      <div class="content" id="panel{{ section.id }}-settings">
-      </div>
+      <div class="content" id="panel{{ section.id }}-list"></div>
+      <div class="content" id="panel{{ section.id }}-labels"></div>
+      <div class="content" id="panel{{ section.id }}-settings"></div>
     </div>
   </div>
 </dd>

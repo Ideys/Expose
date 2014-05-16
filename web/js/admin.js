@@ -35,52 +35,6 @@ $(function(){
                 .toggleClass('fi-minus');
     })
     .on('click', '[data-gallery-upload]', function(){
-        var uploadForm = $($(this).data('gallery-upload'))
-          , sectionSlidesCounter = $(this).parents('.section').find('.counter')
-          , currentCount = parseInt(sectionSlidesCounter.text())
-          , uploadProgress = uploadForm.find('.progress .meter')
-          , uploadGrid = uploadForm.find('.upload-grid')
-          , uploadInfo = uploadForm.find('.upload-info')
-          , uploadOk = uploadForm.find('.upload-ok')
-          , uploadLink = uploadForm.find('.upload-link')
-          , uploadMoreText = uploadLink.data('more-text')
-          , uploadProgressText = uploadInfo.data('upload-info')
-          , picsCounter = 0
-          ;
-
-        if (!uploadForm.hasClass('upload-active')) {
-            uploadForm.fileupload({
-                dropZone: uploadForm,
-                dataType: 'json',
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    uploadProgress.css('width', progress + '%');
-                    if (progress === 100) {
-                        uploadOk.removeClass('hidden');
-                    }
-                },
-                add: function (e, data) {
-                    picsCounter++;
-                    var uploadText = uploadProgressText.replace('%i', picsCounter);
-                    uploadInfo.text(uploadText);
-                    uploadLink.find('span').text(uploadMoreText);
-                    data.submit();
-                },
-                done: function (e, data) {
-                    currentCount += 1;
-                    sectionSlidesCounter.text(currentCount);
-                    $.each(data.result, function (index, file) {
-                        var item = $('<li class="new"></li>')
-                          , slide = $('<img/>')
-                            .prop('src', basePath + '/gallery/220/' + file.path)
-                            .addClass('th handle');
-                        item.append(slide);
-                        item.appendTo(uploadGrid);
-                    });
-                }
-            });
-            uploadForm.addClass('upload-active');
-        }
     })
     .on('mouseenter', '[data-sortable]', function() {
         var list = $(this);
@@ -460,4 +414,51 @@ var callUniversalModalContent = function(url) {
     .fail(function() {
         console.log('Universal modal AJAX error.');
     });
+};
+
+var smartUpload = function(section) {
+    var uploadForm = $(section)
+      , sectionSlidesCounter = uploadForm.parents('.section').find('.counter')
+      , noticeEmpty = uploadForm.find('.notice-empty')
+      , currentCount = parseInt(sectionSlidesCounter.text())
+      , uploadProgress = uploadForm.find('.progress .meter')
+      , uploadGrid = uploadForm.find('.upload-grid')
+      , uploadInfo = uploadForm.find('.upload-info')
+      , uploadProgressText = uploadInfo.data('upload-info')
+      , picsCounter = 0
+      ;
+
+    if (!uploadForm.hasClass('upload-active')) {
+        uploadForm.fileupload({
+            dropZone: uploadForm,
+            dataType: 'json',
+            progressall: function (e, data) {
+                var progress = parseInt(data.loaded / data.total * 100, 10);
+                uploadProgress.css('width', progress + '%');
+            },
+            add: function (e, data) {
+                picsCounter++;
+                var uploadText = uploadProgressText.replace('%i', picsCounter);
+                uploadInfo.text(uploadText);
+                if (undefined != noticeEmpty) {
+                    noticeEmpty.remove();
+                }
+                data.submit();
+            },
+            done: function (e, data) {
+                currentCount += 1;
+                sectionSlidesCounter.text(currentCount);
+                $.each(data.result, function (index, file) {
+                    var item = $('<li data-selectable data-id="'+file.id+'" class="active"></li>')
+                        , slide = $('<img/>')
+                            .prop('src', basePath + '/gallery/220/' + file.path)
+                            .addClass('th handle');
+                    item.append(slide);
+                    item.append('<i class="fi-check"></i><i class="fi-prohibited slide-state"></i>');
+                    item.appendTo(uploadGrid);
+                });
+            }
+        });
+        uploadForm.addClass('upload-active');
+    }
 };
