@@ -28,7 +28,7 @@ abstract class Section
      *
      * @var boolean
      */
-    private $shuffleOn = false;
+    protected $shuffleOn = false;
 
     /**
      * Section main attributes
@@ -65,7 +65,7 @@ abstract class Section
      *
      * @var array
      */
-    private $thumbSizes = array(1200, 220);
+    protected $thumbSizes = array(1200, 220);
 
     /**
      * @var array
@@ -398,12 +398,6 @@ abstract class Section
      */
     public function deleteItem($id)
     {
-        foreach ($this->items as $item) {
-            if ($item instanceof Slide) {
-                $this->deleteItemAndRelatedFile($item);
-            }
-        }
-
         // Delete item's translations
         $this->db->delete('expose_section_item_trans', array('expose_section_item_id' => $id));
         // Delete item
@@ -439,9 +433,9 @@ abstract class Section
      *
      * @return boolean
      */
-    private function deleteItemAndRelatedFile(Slide $slide)
+    protected function deleteItemAndRelatedFile(Slide $slide)
     {
-        if (parent::deleteItem($slide->id)) {
+        if ($this->deleteItem($slide->id)) {
             @unlink(WEB_DIR.'/gallery/'.$slide->path);
             foreach ($this->thumbSizes as $thumbSize){
                 @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->path);
@@ -477,7 +471,11 @@ abstract class Section
     {
         // Delete section items
         foreach ($this->items as $item) {
-            $this->deleteItem($item->id);
+            if ($item instanceof Slide) {
+                $this->deleteItemAndRelatedFile($item);
+            } else {
+                $this->deleteItem($item->id);
+            }
         }
 
         // Delete section's translations
