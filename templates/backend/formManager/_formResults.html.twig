@@ -3,7 +3,7 @@
     <thead>
       <tr>
         <th>{{ 'date'|trans }}</th>
-        {% for field in section.items %}
+        {% for field in section.items('Field') %}
           <th>{{ field.title }}</th>
         {% endfor %}
         <th>&nbsp;</th>
@@ -15,7 +15,7 @@
         <td>
           {{ result.date|date('d/m/Y H:i') }}
         </td>
-        {% for field in section.items %}
+        {% for field in section.items('Field') %}
           {% if result.result[field.slug] is defined %}
           {% set data = result.result[field.slug] %}
           <td>
@@ -48,7 +48,7 @@
       </tr>
     {% else %}
       <tr>
-        <td colspan="{{ section.items|length + 2 }}" class="notice-empty">
+        <td colspan="{{ section.items('Field')|length + 2 }}" class="notice-empty">
           {{ 'form.no.results'|trans }}
         </td>
       </tr>

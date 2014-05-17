@@ -1,8 +1,7 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{% set fields = section.items %}
 <div data-sortable="{{ path('admin_content_manager_sort_items') }}">
-  {% for field in fields %}
+  {% for field in section.items('Field') %}
     <div id="field-line-{{ field.id }}"
          class="field panel"
          data-id="{{ field.id }}">

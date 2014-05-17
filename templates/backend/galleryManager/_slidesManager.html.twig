@@ -4,14 +4,14 @@
       action="{{ path('admin_gallery_manager_upload') }}"
       method="POST"
       enctype="multipart/form-data">
-    {% if not section.hasItems %}
+    {% if not section.hasItems('Slide') %}
         <p class="notice-empty">{{ 'gallery.no.pics'|trans }}</p>
     {% endif %}
     <ul id="slides-{{ section.id }}"
         class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid upload-grid"
         data-selected=""
         data-sortable="{{ path('admin_content_manager_sort_items') }}">
-        {% for slide in section.itemsRealHierarchy %}
+        {% for slide in section.itemsRealHierarchy('Slide') %}
             <li data-selectable data-id="{{ slide.id }}"
                 {% if slide.published %}class="active"{% endif %}>
                 <img class="th handle"

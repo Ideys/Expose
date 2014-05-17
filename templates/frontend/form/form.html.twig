@@ -7,14 +7,14 @@
 <div class="row">
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
-    {% for item in section.items %}
-      {% if 'html.insert' == item.category %}
-        {{ item.content|raw }}
+    {% for field in section.items('Field') %}
+      {% if 'html.insert' == field.category %}
+        {{ field.content|raw }}
       {% else %}
         <div class="row">
           <div class="large-12 columns">
-            {{ form_row(form[ item.slug ]) }}
-            <em>{{ item.description }}</em>
+            {{ form_row(form[ field.slug ]) }}
+            <em>{{ field.description }}</em>
           </div>
         </div>
       {% endif %}

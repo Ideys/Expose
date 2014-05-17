@@ -127,27 +127,40 @@ abstract class Section
      * Return section items.
      * Trigger the shuffle mode if set.
      *
+     * @param string $type Can optionally filter by items type.
+     *
      * @return array
      */
-    public function getItems()
+    public function getItems($type = 'Item')
     {
         if ($this->shuffle && !$this->shuffleOn) {
             shuffle($this->items);
             $this->shuffleOn = true;
         }
 
-        return $this->items;
+        $typeNamespace = '\Ideys\Content\Item\\'.$type;
+        return array_filter($this->items, function($item) use ($typeNamespace) {
+            return ($item instanceof $typeNamespace);
+        });
     }
 
     /**
      * Return section items without shuffle mode
      * even if it was set.
      *
+     * @param string $type Can optionally filter by items type.
+     *
      * @return array
      */
-    public function getItemsRealHierarchy()
+    public function getItemsRealHierarchy($type = 'Item')
     {
-        return $this->items;
+        // Force disable shuffle
+        $shuffle = $this->shuffleOn;
+        $this->shuffleOn = false;
+        $items = $this->getItems($type);
+        $this->shuffleOn = $shuffle;
+
+        return $items;
     }
 
     /**
@@ -252,11 +265,13 @@ abstract class Section
     /**
      * Test if content has some items or not.
      *
+     * @param string $type Can optionally filter by items type.
+     *
      * @return boolean
      */
-    public function hasItems()
+    public function hasItems($type = 'Item')
     {
-        return count($this->items) > 0;
+        return count($this->getItems($type)) > 0;
     }
 
     /**

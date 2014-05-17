@@ -7,7 +7,7 @@
   {% if item|length %}
     {% set video = item %}
   {% else %}
-    {% set video = section.items|first %}
+    {% set video = section.items('Video')|first %}
   {% endif %}
   <div class="row">
     <div class="large-12 columns">
@@ -18,7 +18,7 @@
   <div class="row">
     <div class="large-12 columns">
       <dl class="sub-nav">
-      {% for videos in section.items if videos.published %}
+      {% for videos in section.items('Video') if videos.published %}
       <dd{% if videos.id == video.id %} class="active"{% endif %}>
         <a href="{{ path('section_item', {'slug': section.slug, 'itemSlug': videos.slug}) }}">
           {{ videos.title }}

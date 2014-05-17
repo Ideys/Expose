@@ -4,7 +4,7 @@
   <table>
     <tbody>
       <tr>
-        {% for row, slide in section.items if slide.published %}
+        {% for row, slide in section.items('Slide') if slide.published %}
         <td>
           <a data-orbit-link="pic-{{ row }}"
              title="{{ slide.title|e }}">

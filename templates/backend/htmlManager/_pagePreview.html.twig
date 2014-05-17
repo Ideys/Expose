@@ -1,5 +1,5 @@
 {% spaceless %}
-{% if section.items|length > 1 %}
+{% if section.items('Page')|length > 1 %}
 <ul class="pagination">
   {% for page in section.items %}
   <li{% if loop.first %} class="current"{% endif %}>
@@ -11,7 +11,7 @@
   {% endfor %}
 </ul>
 {% endif %}
-{% if section.hasItems %}
+{% if section.hasItems('Page') %}
   <iframe class="page-preview"
           src="{{ path('admin_html_manager_display_preview', {'id': section.id}) }}"
           seamless></iframe>
