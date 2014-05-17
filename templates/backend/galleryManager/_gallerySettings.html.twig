@@ -1,9 +1,9 @@
 {% spaceless %}
 {{ form_row(edit_form.gallery_mode) }}
-<div class="for-mode for-fullscreen{% if section.gallery_mode != 'fullscreen' %} hidden{% endif %}">
+<div class="for-mode for-full-screen{% if section.gallery_mode != 'fullScreen' %} hidden{% endif %}">
   {{ form_row(edit_form.extended) }}
 </div>
-<div class="for-mode for-slideshow for-fullscreen{% if section.gallery_mode not in ['slideshow', 'fullscreen'] %} hidden{% endif %}">
+<div class="for-mode for-slideshow for-full-screen{% if section.gallery_mode not in ['slideshow', 'fullScreen'] %} hidden{% endif %}">
   {{ form_row(edit_form.slide_mode) }}
   {{ form_row(edit_form.nav_bar) }}
   {{ form_row(edit_form.thumb_list) }}

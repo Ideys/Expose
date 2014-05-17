@@ -2,26 +2,15 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\Item\Slide;
 use Ideys\Content\ContentInterface;
 use Ideys\Settings\Settings;
-use Ideys\Content\ContentFactory;
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Imagine;
 
 /**
  * Gallery content manager.
  */
 class Gallery extends Section implements ContentInterface
 {
-    /**
-     * Slides thumbs sizes.
-     *
-     * @var array
-     */
-    private $thumbSizes = array(1200, 220);
-
     /**
      * {@inheritdoc}
      */
@@ -37,16 +26,6 @@ class Gallery extends Section implements ContentInterface
             'grid_rows_medium' => '1',
             'grid_rows_small' => '1',
         );
-    }
-
-    /**
-     * Return the gallery directory path.
-     *
-     * @return string
-     */
-    public static function getGalleryDir()
-    {
-        return WEB_DIR.'/gallery';
     }
 
     /**
@@ -66,69 +45,6 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
-     * Add a slide into gallery.
-     *
-     * @param \Imagine\Image\ImagineInterface                       $imagine
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile   $file
-     *
-     * @return \Ideys\Content\Item\Slide
-     */
-    public function addSlide(Imagine\Image\ImagineInterface $imagine, UploadedFile $file)
-    {
-        $fileExt = $file->guessClientExtension();
-        $realExt = $file->guessExtension();// from mime type
-        $fileSize = $file->getClientSize();
-
-        $this->total_items += 1;
-        $slide = new Slide(array(
-            'category' => $file->getMimeType(),
-            'type' => ContentFactory::ITEM_SLIDE,
-            'hierarchy' => $this->total_items,
-        ));
-
-        $slide->path = uniqid('expose').'.'.$fileExt;
-        $slide->setParameter('real_ext', $realExt);
-        $slide->setParameter('file_size', $fileSize);
-        $slide->setParameter('original_name', $file->getClientOriginalName());
-
-        $file->move(static::getGalleryDir(), $slide->path);
-
-        foreach ($this->thumbSizes as $thumbSize){
-            $this->createResizeSlide($imagine, $slide, $thumbSize);
-        }
-
-        return $slide;
-    }
-
-    /**
-     * Resize and save a slide file into dedicated directory.
-     *
-     * @param \Imagine\Image\ImagineInterface   $imagine
-     * @param \Ideys\Content\Item\Slide         $slide
-     * @param integer                           $maxWidth
-     * @param integer                           $maxHeight
-     *
-     * @return \Ideys\Content\Item\Slide
-     */
-    public function createResizeSlide(Imagine\Image\ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
-    {
-        $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
-
-        $thumbDir = static::getGalleryDir().'/'.$maxWidth;
-        if (!is_dir($thumbDir)) {
-            mkdir($thumbDir);
-        }
-
-        $transformation = new Imagine\Filter\Transformation();
-        $transformation->thumbnail(new Imagine\Image\Box($maxWidth, $maxHeight))
-            ->save($thumbDir.'/'.$slide->path);
-        $transformation->apply($imagine
-            ->open(static::getGalleryDir().'/'.$slide->path));
-
-        return $slide;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function settingsForm(FormFactory $formFactory)
@@ -143,7 +59,7 @@ class Gallery extends Section implements ContentInterface
                 'choices' => static::getSlideModeChoice(),
             ))
             ->add('extended', 'choice', array(
-                'label' => 'gallery.mode.fullscreen.extended',
+                'label' => 'gallery.mode.full.screen.extended',
                 'choices' => Settings::getIOChoices(),
             ))
             ->add('nav_bar', 'choice', array(
@@ -172,60 +88,6 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
-     * Delete a selection of slides.
-     *
-     * @param array    $itemIds
-     *
-     * @return array
-     */
-    public function deleteSlides($itemIds)
-    {
-        $deletedIds = array();
-
-        foreach ($itemIds as $id) {
-            if (is_numeric($id)
-                && $this->deleteItemAndRelatedFile($this->items[$id])) {
-                $deletedIds[] = $id;
-            }
-        }
-        return $deletedIds;
-    }
-
-    /**
-     * Delete the gallery from database
-     * and remove this pictures.
-     *
-     * @return boolean
-     */
-    public function delete()
-    {
-        foreach ($this->items as $slide) {
-            $this->deleteItemAndRelatedFile($slide);
-        }
-
-        return parent::delete();
-    }
-
-    /**
-     * Delete item's data entry and related files.
-     *
-     * @param \Ideys\Content\Item\Slide $slide
-     *
-     * @return boolean
-     */
-    private function deleteItemAndRelatedFile(Slide $slide)
-    {
-        if (parent::deleteItem($slide->id)) {
-            @unlink(WEB_DIR.'/gallery/'.$slide->path);
-            foreach ($this->thumbSizes as $thumbSize){
-                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->path);
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * Test if gallery is in a slideshow mode.
      *
      * @return boolean
@@ -234,7 +96,7 @@ class Gallery extends Section implements ContentInterface
     {
         return in_array($this->getParameter('gallery_mode'), array(
             'slideshow',
-            'fullscreen',
+            'fullScreen',
         ));
     }
 
@@ -259,7 +121,7 @@ class Gallery extends Section implements ContentInterface
     {
         return array(
             'slideshow' => 'gallery.mode.slideshow',
-            'fullscreen' => 'gallery.mode.fullscreen',
+            'full-screen' => 'gallery.mode.full.screen',
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',
         );

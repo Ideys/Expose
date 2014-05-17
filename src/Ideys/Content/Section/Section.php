@@ -5,8 +5,11 @@ namespace Ideys\Content\Section;
 use Ideys\Content\ContentFactory;
 use Ideys\Content\ContentTrait;
 use Ideys\Content\SectionType;
+use Ideys\Content\Item\Slide;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\DBAL\Connection;
+use Imagine;
 
 /**
  * Sections prototype class.
@@ -56,6 +59,13 @@ abstract class Section
      * @var array
      */
     protected $items = array();
+
+    /**
+     * Slides thumbs sizes.
+     *
+     * @var array
+     */
+    private $thumbSizes = array(1200, 220);
 
     /**
      * @var array
@@ -250,6 +260,16 @@ abstract class Section
     }
 
     /**
+     * Return the gallery directory path for slide parent sections.
+     *
+     * @return string
+     */
+    public static function getGalleryDir()
+    {
+        return WEB_DIR.'/gallery';
+    }
+
+    /**
      * Return section settings form builder used to extends standard form.
      *
      * @param \Symfony\Component\Form\FormFactory $formFactory
@@ -307,6 +327,69 @@ abstract class Section
     }
 
     /**
+     * Add a slide into gallery.
+     *
+     * @param \Imagine\Image\ImagineInterface                       $imagine
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile   $file
+     *
+     * @return \Ideys\Content\Item\Slide
+     */
+    public function addSlide(Imagine\Image\ImagineInterface $imagine, UploadedFile $file)
+    {
+        $fileExt = $file->guessClientExtension();
+        $realExt = $file->guessExtension();// from mime type
+        $fileSize = $file->getClientSize();
+
+        $this->total_items += 1;
+        $slide = new Slide(array(
+            'category' => $file->getMimeType(),
+            'type' => ContentFactory::ITEM_SLIDE,
+            'hierarchy' => $this->total_items,
+        ));
+
+        $slide->path = uniqid('expose').'.'.$fileExt;
+        $slide->setParameter('real_ext', $realExt);
+        $slide->setParameter('file_size', $fileSize);
+        $slide->setParameter('original_name', $file->getClientOriginalName());
+
+        $file->move(static::getGalleryDir(), $slide->path);
+
+        foreach ($this->thumbSizes as $thumbSize){
+            $this->createResizeSlide($imagine, $slide, $thumbSize);
+        }
+
+        return $slide;
+    }
+
+    /**
+     * Resize and save a slide file into dedicated directory.
+     *
+     * @param \Imagine\Image\ImagineInterface   $imagine
+     * @param \Ideys\Content\Item\Slide         $slide
+     * @param integer                           $maxWidth
+     * @param integer                           $maxHeight
+     *
+     * @return \Ideys\Content\Item\Slide
+     */
+    public function createResizeSlide(Imagine\Image\ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
+    {
+        $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
+
+        $thumbDir = static::getGalleryDir().'/'.$maxWidth;
+        if (!is_dir($thumbDir)) {
+            mkdir($thumbDir);
+        }
+
+        $transformation = new Imagine\Filter\Transformation();
+        $transformation->thumbnail(new Imagine\Image\Box($maxWidth, $maxHeight))
+            ->save($thumbDir.'/'.$slide->path);
+        $transformation->apply($imagine
+            ->open(static::getGalleryDir().'/'.$slide->path));
+
+        return $slide;
+    }
+
+    /**
      * Delete a section item.
      *
      * @param integer $id
@@ -315,12 +398,57 @@ abstract class Section
      */
     public function deleteItem($id)
     {
+        foreach ($this->items as $item) {
+            if ($item instanceof Slide) {
+                $this->deleteItemAndRelatedFile($item);
+            }
+        }
+
         // Delete item's translations
         $this->db->delete('expose_section_item_trans', array('expose_section_item_id' => $id));
         // Delete item
         $rows = $this->db->delete('expose_section_item', array('id' => $id));
 
         return (0 < $rows);
+    }
+
+    /**
+     * Delete a selection of slides.
+     *
+     * @param array    $itemIds
+     *
+     * @return array
+     */
+    public function deleteSlides($itemIds)
+    {
+        $deletedIds = array();
+
+        foreach ($itemIds as $id) {
+            if (is_numeric($id)
+                && $this->deleteItemAndRelatedFile($this->items[$id])) {
+                $deletedIds[] = $id;
+            }
+        }
+        return $deletedIds;
+    }
+
+    /**
+     * Delete item's data entry and related files.
+     *
+     * @param \Ideys\Content\Item\Slide $slide
+     *
+     * @return boolean
+     */
+    private function deleteItemAndRelatedFile(Slide $slide)
+    {
+        if (parent::deleteItem($slide->id)) {
+            @unlink(WEB_DIR.'/gallery/'.$slide->path);
+            foreach ($this->thumbSizes as $thumbSize){
+                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->path);
+            }
+            return true;
+        }
+        return false;
     }
 
     /**

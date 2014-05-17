@@ -110,8 +110,8 @@ gallery:
     mode:
         mode: Mode d'affichage de la galerie
         slideshow: Diaporama
-        fullscreen: Diaporama plein écran
-        fullscreen.extended: Images étendues en débordement
+        full.screen: Diaporama plein écran
+        full.screen.extended: Images étendues en débordement
         vertical: Défilement vertical
         masonry: Miniatures imbriquées
     slide:
