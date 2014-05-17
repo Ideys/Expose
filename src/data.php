@@ -72,6 +72,7 @@ if (!$schema->tablesExist('expose_section')) {
     $table->addColumn('archive', 'boolean');
     $table->addColumn('tag', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('menu_pos', 'string', array('length' => 32));
+    $table->addColumn('target_blank', 'boolean');
     $table->addColumn('visibility', 'string', array('length' => 32));
     $table->addColumn('shuffle', 'boolean');
     $table->addColumn('hierarchy', 'smallint');

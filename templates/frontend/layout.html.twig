@@ -42,12 +42,16 @@
 {% endif %}
 {% if 'top' == site.menuPosition
   and not hideMenu %}
-  {% include "frontend/menu/_topbar.html.twig" only %}
+  {% include "frontend/menu/_topbar.html.twig" with {
+      'widgets': widgets
+  } only %}
 {% elseif 'left' == site.menuPosition
   and not hideMenu %}
   <div class="off-canvas-wrap">
     <div class="inner-wrap">
-    {% include "frontend/menu/_sidebar.html.twig" only %}
+    {% include "frontend/menu/_sidebar.html.twig" with {
+        'widgets': widgets
+    } only %}
 {% endif %}
     <section id="content"
              {% if 'left' == site.menuPosition and not hideMenu %}

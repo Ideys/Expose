@@ -55,6 +55,7 @@ section:
     blog: Blog
     form: Form
     maps: Maps
+    link: Link
     dir: Directory
     preview: Preview
     edit: Edit content
@@ -196,6 +197,10 @@ maps:
     no.map: This section has no map yet.
     delete: Delete this map and all related items
     deleted: The map is deleted
+
+link:
+    url: Link
+    target.blank: Open the link in a new window
 
 file:
     manager: Files manager

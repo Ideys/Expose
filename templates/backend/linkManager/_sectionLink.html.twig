@@ -1,0 +1,23 @@
+{% spaceless %}
+<dd data-id="{{ section.id }}"
+    class="section {{ section.visibility }}-section">
+    {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
+    <div id="panel{{ section.id }}"
+         class="content panel-section link">
+        <dl class="tabs" data-tab>
+            <dd>
+                <a href="#panel{{ section.id }}-settings"
+                   title="{{ 'settings'|trans }}"
+                   data-inject-call="{{ path('admin_content_manager_settings', {'id': section.id}) }}"
+                   data-target="#panel{{ section.id }}-settings">
+                    <i class="fi-wrench"></i>
+                    <span class="hide-for-small-only">{{ 'settings'|trans }}</span>
+                </a>
+            </dd>
+        </dl>
+        <div class="tabs-content">
+            <div class="content" id="panel{{ section.id }}-settings"></div>
+        </div>
+    </div>
+</dd>
+{% endspaceless %}

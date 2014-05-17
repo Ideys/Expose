@@ -1,9 +1,32 @@
-
+{# Frontend body classes integrator #}
 {% macro section_body_classes(section) %}
 {% if section.isHomepage %}{{ ' content-homepage' }}{% endif %}
 {{ ' content-'~section.type }}
 {% endmacro %}
 
+{# Main frontend nav bar link formatter #}
+{% macro menu_link(section, follow) %}
+{% spaceless %}
+<li>
+{% if ('link' == section.type) %}
+    <a href="{{ section.url }}"
+       {% if section.target_blank %}
+           target="_blank"
+       {% endif %}
+       {{ follow }}>
+        {{ section.title }}
+    </a>
+{% else %}
+    <a href="{{ path('section', {'slug': section.slug}) }}"
+       {{ follow }}>
+        {{ section.title }}
+    </a>
+{% endif %}
+</li>
+{% endspaceless %}
+{% endmacro %}
+
+{# Ajax form submittion button #}
 {% macro btn_ajax(target, title) %}
 {% spaceless %}
 <button type="submit" class="small button"
@@ -31,6 +54,7 @@
 {% endspaceless %}
 {% endmacro %}
 
+{# Dropdown links #}
 {% macro btn_dropdown_actions(target, ajax, class) %}
 {% spaceless %}
 <a href="#"
@@ -46,12 +70,14 @@
 {% endspaceless %}
 {% endmacro %}
 
+{# Keys replacement mechanism for rich contents #}
 {% macro inclusion_replace_keys(content) %}
 {{ content|replace({
     '__path:gallery__': app.request.basepath~'/gallery',
 })|raw }}
 {% endmacro %}
 
+{# HTML formatter for galleries slides legend #}
 {% macro gallery_slide_legend(slide, section, wrapper_class) %}
 {% spaceless %}
 {% if slide.description|length or section.legend|length %}
@@ -62,6 +88,7 @@
 {% endspaceless %}
 {% endmacro %}
 
+{# Widget to easily copy-paste data #}
 {% macro clipboard_text(text) %}
 {% spaceless %}
 <input class="clipboard"
@@ -72,6 +99,7 @@
 {% endspaceless %}
 {% endmacro %}
 
+{# Display formatted bytes weight #}
 {% macro bytes_format(bytes) %}
 {% spaceless %}
     {% set kilobyte = 1024 %}

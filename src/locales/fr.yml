@@ -55,6 +55,7 @@ section:
     blog: Blog
     form: Formulaire
     maps: Carte
+    link: Lien
     dir: Dossier
     preview: Aperçu
     edit: Éditer le contenu
@@ -196,6 +197,10 @@ maps:
     no.map: Aucunes cartes dans cette section
     delete: Supprimer la carte et tous ses éléments liés
     deleted: La carte est supprimée
+
+link:
+    url: Lien
+    target.blank: Ouvrir le lien dans une nouvelle fenêtre
 
 file:
     manager: Gestion des fichiers

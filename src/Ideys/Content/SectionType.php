@@ -102,6 +102,10 @@ class SectionType
                 'choices'       => static::getMenuPosChoice(),
                 'label'         => 'section.menu.menu',
             ))
+            ->add('target_blank', 'choice', array(
+                'label'         => 'link.target.blank',
+                'choices'       => Settings::getIOChoices(),
+            ))
             ->add('visibility', 'choice', array(
                 'choices'       => static::getSectionVisibilityChoice(),
                 'label'         => 'section.visibility.visibility',

@@ -64,6 +64,7 @@ class ContentFactory
     const SECTION_BLOG      = 'blog';
     const SECTION_FORM      = 'form';
     const SECTION_MAPS      = 'maps';
+    const SECTION_LINK      = 'link';
     const SECTION_DIR       = 'dir';
 
     const ITEM_SLIDE        = 'slide';
@@ -457,6 +458,7 @@ class ContentFactory
             self::SECTION_BLOG,
             self::SECTION_FORM,
             self::SECTION_MAPS,
+            self::SECTION_LINK,
             self::SECTION_DIR,
         );
     }
@@ -509,7 +511,7 @@ class ContentFactory
     public static function getDefaultSectionItemType($type)
     {
         $sectionTypes = static::getSectionTypes();
-        array_pop($sectionTypes);// Remove dir type
+        array_diff($sectionTypes, array(self::SECTION_LINK, self::SECTION_DIR));
         $itemTypes = static::getItemTypes();
         $sectionItems = array_combine($sectionTypes, $itemTypes);
 

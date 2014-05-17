@@ -5,19 +5,11 @@
   {% if section.sections|length %}
     <li class="heading">{{ section.title }}</li>
     {% for child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
-      <li>
-        <a href="{{ path('section', {'slug': child.slug}) }}"{{ follow }}>
-          {{ child.title }}
-        </a>
-      </li>
+        {{ widgets.menu_link(child, follow) }}
     {% endfor %}
   {# An empty dir is not a content #}
   {% elseif section.type != 'dir' %}
-      <li>
-        <a href="{{ path('section', {'slug': section.slug}) }}"{{ follow }}>
-          {{ section.title }}
-        </a>
-      </li>
+      {{ widgets.menu_link(section, follow) }}
   {% endif %}
 {% endfor %}
 {% endspaceless %}

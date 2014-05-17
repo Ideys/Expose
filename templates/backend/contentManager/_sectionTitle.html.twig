@@ -5,7 +5,8 @@
     'html': 'page',
     'blog': 'page-copy',
     'form': 'checkbox',
-    'maps': 'map'
+    'maps': 'map',
+    'link': 'link'
 } %}
 {% set visibilityIcons = {
     'homepage': 'home',
@@ -19,7 +20,9 @@
   <span class="handle-section">&nbsp;</span>
   <i class="fi-{{ typeIcons[section.type] }} type-icon"></i>
   <span class="section-title">{{ section.title }}</span>
-  <small class="counter">{{ section.total_items }}</small>
+  {% if 'link' != section.type %}
+    <small class="counter">{{ section.total_items }}</small>
+  {% endif %}
   <i class="state-icon fi-{{ visibilityIcons[section.visibility] }}"></i>
 </a>
 {% endspaceless %}

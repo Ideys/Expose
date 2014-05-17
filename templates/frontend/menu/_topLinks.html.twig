@@ -14,22 +14,14 @@
       <a href="#">{{ section.title }}</a>
       <ul class="dropdown">
         {% for child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
-          <li>
-            <a href="{{ path('section', {'slug': child.slug}) }}">
-              {{ child.title }}
-            </a>
-          </li>
+            {{ widgets.menu_link(child, follow) }}
         {% endfor %}
       </ul>
     </li>
     {% endif %}
     {# An empty dir is not a content #}
     {% elseif section.type != 'dir' %}
-    <li>
-      <a href="{{ path('section', {'slug': section.slug}) }}">
-        {{ section.title }}
-      </a>
-    </li>
+        {{ widgets.menu_link(section, follow) }}
     {% endif %}
 {% endfor %}
 {% endspaceless %}

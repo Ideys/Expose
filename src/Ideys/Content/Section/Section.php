@@ -45,6 +45,7 @@ abstract class Section
         'tag' => null,
         'parameters' => 'N;',
         'menu_pos' => 'main',
+        'target_blank' => '0',
         'visibility' => 'public',
         'shuffle' => '0',
         'language' => null,
