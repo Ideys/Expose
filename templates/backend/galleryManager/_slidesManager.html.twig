@@ -11,7 +11,7 @@
         class="small-block-grid-2 medium-block-grid-3 large-block-grid-6 slides-grid upload-grid"
         data-selected=""
         data-sortable="{{ path('admin_content_manager_sort_items') }}">
-        {% for slide in section.itemsRealHierarchy('Slide') %}
+        {% for slide in section.items('Slide') %}
             <li data-selectable data-id="{{ slide.id }}"
                 {% if slide.published %}class="active"{% endif %}>
                 <img class="th handle"

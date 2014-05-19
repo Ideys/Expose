@@ -1,6 +1,6 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{% if section.hasItems %}
+{% if section.hasItems('Slide') %}
 {{ form_start(form, {
     'action': path('admin_gallery_manager_labels', {'id': section.id}),
     'attr': {'id': 'section-form-'~section.id }

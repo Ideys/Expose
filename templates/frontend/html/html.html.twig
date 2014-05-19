@@ -3,7 +3,7 @@
 {% block body_class parent()~widgets.section_body_classes(section) %}
 
 {% block main -%}
-{% if section.hasItems %}
+{% if section.hasItems('Page') %}
 <div class="row">
   <div class="large-12 columns">
     {% set content = (section.items('Page')|first).content %}

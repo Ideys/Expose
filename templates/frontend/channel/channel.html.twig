@@ -3,7 +3,7 @@
 {% block body_class parent()~widgets.section_body_classes(section) %}
 
 {% block main -%}
-{% if section.hasItems %}
+{% if section.hasItems('Video') %}
   {% if item|length %}
     {% set video = item %}
   {% else %}

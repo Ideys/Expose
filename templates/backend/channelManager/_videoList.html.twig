@@ -1,6 +1,6 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{% if section.hasItems %}
+{% if section.hasItems('Video') %}
 <ul id="videos-{{ section.id }}"
     class="medium-block-grid-3 small-block-grid-1 videos-grid"
     data-sortable="{{ path('admin_content_manager_sort_items') }}">

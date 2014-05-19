@@ -29,6 +29,14 @@ class Gallery extends Section implements ContentInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isSlidesHolder()
+    {
+        return true;
+    }
+
+    /**
      * Return gallery slides total weight.
      *
      * @return float

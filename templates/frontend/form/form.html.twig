@@ -3,7 +3,7 @@
 {% block body_class parent()~widgets.section_body_classes(section) %}
 
 {% block main -%}
-{% if section.hasItems %}
+{% if section.hasItems('Field') %}
 <div class="row">
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}

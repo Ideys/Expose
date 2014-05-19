@@ -29,7 +29,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
             'data'      => $section->legend,
             'required'  => false,
         ));
-    foreach ($section->getItems() as $slide) {
+    foreach ($section->getItems('Slide') as $slide) {
     $formBuilder
         ->add('title'.$slide->id, 'text', array(
             'required'      => false,
@@ -67,7 +67,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         $contentFactory->updateSection($section);
 
         // Update each items legends
-        foreach ($section->getItems() as $slide) {
+        foreach ($section->getItems('Slide') as $slide) {
             $contentFactory->updateItemTitle(
                 $slide->id,
                 $data['title'.$slide->id],

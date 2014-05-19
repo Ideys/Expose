@@ -1,0 +1,72 @@
+{% spaceless %}
+<div data-selectable-actions class="hidden stack-actions">
+  <ul class="button-group">
+    <li>
+      <button
+        type="button"
+        title="{{ 'select.all'|trans }}"
+        class="button small selectable-counter"
+        data-alt-title="{{ 'select.none'|trans }}"
+        data-select="none">
+      </button>
+    </li>
+    <li>
+      <a href="{{ path('admin_content_manager_toggle_items', {'id': section.id}) }}"
+         title="{{ 'gallery.picture.on.off'|trans }}"
+         class="button small"
+         data-target="#slides-{{ section.id }}"
+         data-toggle-visibility>
+        <i class="fi-prohibited"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'gallery.picture.on.off'|trans }}</span>
+      </a>
+    </li>
+    <li>
+      <a href="#"
+         title="{{ 'move'|trans }}"
+         data-dropdown-ajax="move-selection-{{ section.id }}"
+         class="button small">
+        <i class="fi-folder"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'move'|trans }}</span>
+      </a><br>
+      <ul id="move-selection-{{ section.id }}" class="f-dropdown">
+        {% for sectionMove in sections
+            if sectionMove.id != section.id %}
+            {% if 'dir' == sectionMove.type  %}
+              {% for subsectionMove in sectionMove.sections
+                 if subsectionMove.isSlidesHolder
+                 and subsectionMove.id != section.id %}
+                <li>
+                  <a href="{{ path('admin_content_manager_move_items', {'id': subsectionMove.id}) }}"
+                     data-target="#slides-{{ section.id }}"
+                     data-move>
+                    {{ subsectionMove.title }}
+                  </a>
+                </li>
+              {% endfor %}
+            {% elseif sectionMove.isSlidesHolder %}
+            <li>
+              <a href="{{ path('admin_content_manager_move_items', {'id': sectionMove.id}) }}"
+                 data-target="#slides-{{ section.id }}"
+                 data-move>
+                {{ sectionMove.title }}
+              </a>
+            </li>
+          {% endif  %}
+        {% endfor %}
+      </ul>
+    </li>
+    <li>
+      <button
+        type="button"
+        title="{{ 'delete'|trans }}"
+        data-delete="{{ path('admin_gallery_manager_delete_slides', {'id': section.id}) }}"
+        data-confirm-message="{{ 'confirm'|trans }}"
+        data-target="#slides-{{ section.id }}"
+        class="button small alert">
+        <i class="fi-x"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'delete'|trans }}</span>
+      </button>
+    </li>
+  </ul>
+</div>
+{% endspaceless %}

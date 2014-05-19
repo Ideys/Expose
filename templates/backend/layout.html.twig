@@ -83,6 +83,8 @@
 
 {% block javascripts %}
 <script src="{{ app.request.basepath }}/js/vendor/foundation-datepicker.js?v={{ semver }}"></script>
-<script src="{{ app.request.basepath }}/js/admin.js?v={{ semver }}"></script>
+<script src="{{ app.request.basepath }}/js/admin/ui.js?v={{ semver }}"></script>
+<script src="{{ app.request.basepath }}/js/admin/items.js?v={{ semver }}"></script>
+<script src="{{ app.request.basepath }}/js/admin/settings.js?v={{ semver }}"></script>
 {% include "backend/htmlEditor.js.twig" only %}
 {% endblock javascripts %}

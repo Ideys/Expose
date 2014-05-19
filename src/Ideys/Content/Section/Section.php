@@ -127,17 +127,12 @@ abstract class Section
      * Return section items.
      * Trigger the shuffle mode if set.
      *
-     * @param string $type Can optionally filter by items type.
+     * @param string $type Items type.
      *
      * @return array
      */
-    public function getItems($type = 'Item')
+    public function getItems($type)
     {
-        if ($this->shuffle && !$this->shuffleOn) {
-            shuffle($this->items);
-            $this->shuffleOn = true;
-        }
-
         $typeNamespace = '\Ideys\Content\Item\\'.$type;
         return array_filter($this->items, function($item) use ($typeNamespace) {
             return ($item instanceof $typeNamespace);
@@ -145,22 +140,14 @@ abstract class Section
     }
 
     /**
-     * Return section items without shuffle mode
-     * even if it was set.
-     *
-     * @param string $type Can optionally filter by items type.
-     *
-     * @return array
+     * Trigger shuffle on section items if option was set.
      */
-    public function getItemsRealHierarchy($type = 'Item')
+    public function triggerShuffle()
     {
-        // Force disable shuffle
-        $shuffle = $this->shuffleOn;
-        $this->shuffleOn = false;
-        $items = $this->getItems($type);
-        $this->shuffleOn = $shuffle;
-
-        return $items;
+        if ($this->shuffle && !$this->shuffleOn) {
+            shuffle($this->items);
+            $this->shuffleOn = true;
+        }
     }
 
     /**
@@ -263,13 +250,23 @@ abstract class Section
     }
 
     /**
-     * Test if content has some items or not.
-     *
-     * @param string $type Can optionally filter by items type.
+     * Test if the section could have slides items.
      *
      * @return boolean
      */
-    public function hasItems($type = 'Item')
+    public function isSlidesHolder()
+    {
+        return false;
+    }
+
+    /**
+     * Test if content has some items or not.
+     *
+     * @param string $type Items type.
+     *
+     * @return boolean
+     */
+    public function hasItems($type)
     {
         return count($this->getItems($type)) > 0;
     }

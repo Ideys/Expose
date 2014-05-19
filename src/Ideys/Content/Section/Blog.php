@@ -21,6 +21,14 @@ class Blog extends Section implements ContentInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isSlidesHolder()
+    {
+        return true;
+    }
+
+    /**
      * New post form.
      */
     public function newPostForm(FormFactory $formFactory, Post $post)

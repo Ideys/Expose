@@ -16,4 +16,12 @@ class Maps extends Section implements ContentInterface
     {
         return array();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSlidesHolder()
+    {
+        return true;
+    }
 }

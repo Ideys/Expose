@@ -20,11 +20,19 @@ class Html extends Section implements ContentInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isSlidesHolder()
+    {
+        return true;
+    }
+
+    /**
      * Return page content first page.
      */
     public function getFirstPage()
     {
-        $items = $this->getItems();
+        $items = $this->getItems('Page');
 
         return array_pop($items);
     }

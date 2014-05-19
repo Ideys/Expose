@@ -1,5 +1,5 @@
 {% spaceless %}
-{% if section.hasItems %}
+{% if section.hasItems('Post') %}
 <ul id="posts-{{ section.id }}"
     class="posts-list small-block-grid-1"
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
