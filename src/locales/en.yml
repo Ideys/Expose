@@ -110,7 +110,7 @@ gallery:
     mode:
         mode: Gallery display mode
         slideshow: Slideshow
-        full.screen: Full screen slideshow
+        fullScreen: Full screen slideshow
         full.screen.extended: Pictures extended
         vertical: Vertical scroll
         masonry: Imbricated thumbs

@@ -129,7 +129,7 @@ class Gallery extends Section implements ContentInterface
     {
         return array(
             'slideshow' => 'gallery.mode.slideshow',
-            'full-screen' => 'gallery.mode.full.screen',
+            'fullScreen' => 'gallery.mode.fullScreen',
             'vertical' => 'gallery.mode.vertical',
             'masonry' => 'gallery.mode.masonry',
         );
