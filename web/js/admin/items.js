@@ -20,7 +20,7 @@ $(function(){
     })
     .on('click', '[data-selectable]', function() {
         var item = $(this)
-          , section = item.parents('.content-section')
+          , section = item.parents('.items-holder')
           ;
 
         item.toggleClass('selected');
@@ -28,7 +28,7 @@ $(function(){
         itemsSelection(section);
     })
     .on('click', '[data-select]', function(){
-        var section = $(this).parents('.content-section')
+        var section = $(this).parents('.items-holder')
           , items = section.find('[data-selectable]')
           , state = $(this).data('select')
           , title = $(this).attr('title')
@@ -80,6 +80,31 @@ $(function(){
             resetStackSelection(list);
         } );
         return false;
+    })
+    .on('click', '[data-insert-picture]', function(event) {
+        event.stopPropagation();
+
+        var link = $(this)
+          , listId = link.data('target')
+          , list = $(listId)
+          , id = listId.replace(/[^0-9]/g, '')
+          , textareaId = '#section-form-'+id+' .markItUpEditor'
+          , selection = list.data('selected')
+          ;
+
+        for (var i in selection) {
+            var picSrc = $('[data-id="'+selection[i]+'"]')
+                .find('img')
+                .attr('src')
+                .replace('/220/', '/1200/');
+            $.markItUp({
+                target: textareaId,
+                replaceWith: "\n"+'<img src="'+picSrc+'" />'+"\n"
+            });
+        }
+
+        resetStackSelection(list);
+        $('#universal-modal').foundation('reveal', 'close');
     })
     .on('click', '[data-delete]', function(event) {
         event.stopPropagation();

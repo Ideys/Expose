@@ -107,6 +107,7 @@ gallery:
     picture:
         alt: Titre alternatif (référencement)
         on.off: Afficher / Masquer
+        insert: Insérer dans le document
     mode:
         mode: Mode d'affichage de la galerie
         slideshow: Diaporama

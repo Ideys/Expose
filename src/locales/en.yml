@@ -107,6 +107,7 @@ gallery:
     picture:
         alt: Alt attribute (SEO)
         on.off: Display / Hide
+        insert: Insert into doc
     mode:
         mode: Gallery display mode
         slideshow: Slideshow

@@ -1,5 +1,12 @@
 {% spaceless %}
-    <h2>{{ section.title }}</h2>
-    {% include 'backend/galleryManager/_slidesManagerLinks.html.twig' with {'section': section} only %}
-    {% include 'backend/galleryManager/_slidesManager.html.twig' with {'section': section} only %}
+<div class="items-holder">
+  <h2>{{ section.title }}</h2>
+  <div class="stack-actions-wrapper">
+    {% include 'backend/galleryManager/_slidesManagerLinks.html.twig' with {
+        'section': section,
+        'mode': 'insert'
+    } only %}
+  </div>
+  {% include 'backend/galleryManager/_slidesManager.html.twig' with {'section': section} only %}
+</div>
 {% endspaceless %}

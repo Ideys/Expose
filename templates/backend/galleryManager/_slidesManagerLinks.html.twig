@@ -10,6 +10,7 @@
         data-select="none">
       </button>
     </li>
+    {% if 'gallery' == mode %}
     <li>
       <a href="{{ path('admin_content_manager_toggle_items', {'id': section.id}) }}"
          title="{{ 'gallery.picture.on.off'|trans }}"
@@ -20,6 +21,18 @@
         <span class="hide-for-small-only">{{ 'gallery.picture.on.off'|trans }}</span>
       </a>
     </li>
+    {% elseif 'insert' == mode %}
+    <li>
+      <a href="#"
+         title="{{ 'gallery.picture.insert'|trans }}"
+         class="button small"
+         data-target="#slides-{{ section.id }}"
+         data-insert-picture>
+        <i class="fi-download"></i>&nbsp;
+        <span class="hide-for-small-only">{{ 'gallery.picture.insert'|trans }}</span>
+      </a>
+    </li>
+    {% endif %}
     <li>
       <a href="#"
          title="{{ 'move'|trans }}"

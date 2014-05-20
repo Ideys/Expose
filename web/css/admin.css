@@ -141,12 +141,16 @@ input.clipboard {
  * Selectable widget
  */
 
-.stack-actions {
+.content-section .stack-actions {
     position: absolute;
     top: -60px;
     left: -10px;
     width: 100%;
     background: #fff;
+}
+
+.stack-actions-wrapper {
+    height: 60px;
 }
 
 button.selectable-counter {

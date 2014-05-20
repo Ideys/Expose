@@ -101,7 +101,7 @@ $contentManagerController->post('/toggle/items/{id}', function (Request $request
     $section = $contentFactory->findSection($id);
 
     $response = array();
-    foreach ($section->getItems() as $item) {
+    foreach ($section->getItems('Item') as $item) {
         if (in_array($item->id, $itemIds)) {
             $item->toggle();
             $app['db']->update('expose_section_item',

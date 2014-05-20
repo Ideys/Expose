@@ -1,6 +1,10 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{% include 'backend/galleryManager/_slidesManagerLinks.html.twig' with {'section': section} only %}
+<div class="items-holder">
+{% include 'backend/galleryManager/_slidesManagerLinks.html.twig' with {
+    'section': section,
+    'mode': 'gallery'
+} only %}
 <div class="section-info">
   <ul class="inline-list right">
     {% if section.tag|length %}
@@ -42,4 +46,5 @@
   </ul>
 </div>
 {% include 'backend/galleryManager/_slidesManager.html.twig' with {'section': section} only %}
+</div>
 {% endspaceless %}
