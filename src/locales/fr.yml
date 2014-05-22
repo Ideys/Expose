@@ -186,6 +186,8 @@ blog:
         post: Article
         title: Titre de l'article
         date: Date de publication
+        author: Auteur
+        by.author: Par %author%
         publish: Publier l'article
         published: Publié
         unpublished: Fermé

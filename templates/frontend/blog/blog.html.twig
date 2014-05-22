@@ -12,6 +12,9 @@
       {% if post.posting_date|length %}
         {{ post.posting_date|date('d/m/Y') }}
       {% endif %}
+      {% if post.author|length %}
+        {{ 'blog.post.by.author'|trans({'%author%': post.author}) }}
+      {% endif %}
     </div>
     <div class="post-body">
       {{ post.content|raw }}

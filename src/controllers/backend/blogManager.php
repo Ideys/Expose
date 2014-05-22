@@ -1,6 +1,7 @@
 <?php
 
 use Ideys\Content\ContentFactory;
+use Ideys\Content\Section\Blog;
 use Ideys\Content\Item\Post;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -35,11 +36,41 @@ $blogManagerController->match('/{id}/new', function (Request $request, $id) use 
 
     return $app['twig']->render('backend/blogManager/_postEdit.html.twig', array(
         'form' => $form->createView(),
+        'form_action' => $app['url_generator']->generate('admin_blog_manager_new_post', array('id' => $id)),
         'section' => $section,
     ));
 })
 ->assert('id', '\d+')
 ->bind('admin_blog_manager_new_post')
+->method('GET|POST')
+;
+
+$blogManagerController->match('/{sectionId}/{id}/edit', function (Request $request, $sectionId, $id) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($sectionId);
+    $post = $contentFactory->findItem($id);
+    $blog = new Blog($app['db']);
+
+    $form = $blog->newPostForm($app['form.factory'], $post);
+
+    $form->handleRequest($request);
+    if ($form->isValid()) {
+        $contentFactory->editItem($post);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$sectionId);
+    }
+
+    return $app['twig']->render('backend/blogManager/_postEdit.html.twig', array(
+        'form' => $form->createView(),
+        'form_action' => $app['url_generator']->generate('admin_blog_manager_edit_post', array(
+                'sectionId' => $sectionId,
+                'id' => $id,
+            )),
+        'section' => $section,
+    ));
+})
+->assert('id', '\d+')
+->bind('admin_blog_manager_edit_post')
 ->method('GET|POST')
 ;
 

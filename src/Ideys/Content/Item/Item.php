@@ -29,6 +29,7 @@ abstract class Item
         'parameters' => '',
         'language' => null,
         'posting_date' => null,
+        'author' => null,
         'published' => '1',
         'hierarchy' => 0,
     );
@@ -41,6 +42,8 @@ abstract class Item
     public function __construct(array $entity = array())
     {
         $this->attributes = array_merge($this->attributes, $entity);
+        $this->attributes['posting_date'] = empty($this->attributes['posting_date'])
+            ? null : new \DateTime($this->attributes['posting_date']);
         $this->parameters = (array) unserialize($this->attributes['parameters']);
     }
 

@@ -312,30 +312,26 @@ abstract class Section
 
     /**
      * Fill items attribute with section's persisted items.
+     *
+     * @return boolean true if hydration is successful.
      */
     public function hydrateItems()
     {
-        $sql =
-           'SELECT i.*, t.title, t.description, t.content,
-            t.link, t.parameters, t.language
-            FROM expose_section_item AS i
-            LEFT JOIN expose_section_item_trans AS t
-            ON t.expose_section_item_id = i.id
-            WHERE i.expose_section_id = ?
-            ORDER BY i.hierarchy ASC';
+        $sql = ContentFactory::getSqlSelectItem() .
+              'WHERE i.expose_section_id = ?'.
+              'ORDER BY i.hierarchy ASC ';
+
         $itemTranslations = $this->db->fetchAll($sql, array($this->id));
 
         if (empty($itemTranslations)) {
             return false;
         }
 
-        foreach ($itemTranslations as $itemData) {
-            if (!in_array($itemData['type'], ContentFactory::getItemTypes())) {
-                $itemData['type'] = ContentFactory::getDefaultSectionItemType($this->type);
-            }
-            $itemClass = '\Ideys\Content\Item\\'.ucfirst($itemData['type']);
-            $this->items[$itemData['id']] = new $itemClass($itemData);
+        foreach ($itemTranslations as $data) {
+            $this->items[$data['id']] = ContentFactory::instantiateItem($data);
         }
+
+        return true;
     }
 
     /**

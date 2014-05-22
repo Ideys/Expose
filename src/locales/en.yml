@@ -186,6 +186,8 @@ blog:
         post: Post
         title: Post title
         date: Publishing date
+        author: Author
+        by.author: By %author%
         publish: Publish post
         published: Published
         unpublished: Unpublished

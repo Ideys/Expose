@@ -50,6 +50,12 @@ class Blog extends Section implements ContentInterface
                     'data-date-format' => 'dd/mm/yyyy',
                 ),
             ))
+            ->add('author', 'text', array(
+                'label' => 'blog.post.author',
+                'attr' => array(
+                    'placeholder' => 'blog.post.author',
+                ),
+            ))
             ->add('content', 'textarea', array(
                 'label' => false,
                 'attr' => array(

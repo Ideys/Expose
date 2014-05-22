@@ -1,3 +1,4 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {% if section.hasItems('Post') %}
 <ul id="posts-{{ section.id }}"
@@ -23,9 +24,26 @@
           </h5>
         </div>
         <div class="medium-4 columns">
-          {% if post.posting_date|length %}
-            {{ post.posting_date|date('d/m/Y') }}
-          {% endif %}
+            {% if post.posting_date|length %}
+                {{ post.posting_date|date('d/m/Y') }}
+            {% endif %}
+
+            {{ widgets.btn_dropdown_actions('post-actions-'~post.id, '', 'right') }}
+            <ul id="post-actions-{{ post.id }}"
+                data-dropdown-content=""
+                class="f-dropdown">
+                <li>
+                    <a href="#panel{{ section.id }}-list"
+                       data-inject-call="{{ path('admin_blog_manager_edit_post', {
+                       'sectionId': section.id,
+                       'id': post.id
+                       }) }}"
+                       data-target="#panel{{ section.id }}-list">
+                        <i class="fi-pencil"></i>
+                        {{ 'edit'|trans }}
+                    </a>
+                </li>
+            </ul>
         </div>
       </div>
     </div>

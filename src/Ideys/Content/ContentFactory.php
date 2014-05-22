@@ -41,23 +41,6 @@ class ContentFactory
      */
     protected $sections = array();
 
-    /**
-     * @var string
-     */
-    private $sqlSelectSection =
-       'SELECT s.id, s.expose_section_id, s.type, s.slug,
-               s.custom_css, s.custom_js,
-               s.menu_pos, s.tag, s.visibility, s.shuffle,
-               s.hierarchy, s.archive, s.target_blank,
-               t.title, t.description, t.legend,
-               t.parameters, t.language,
-               COUNT(i.id) AS total_items
-        FROM expose_section AS s
-        LEFT JOIN expose_section_trans AS t
-        ON t.expose_section_id = s.id
-        LEFT JOIN expose_section_item AS i
-        ON i.expose_section_id = s.id ';
-
     const SECTION_GALLERY   = 'gallery';
     const SECTION_CHANNEL   = 'channel';
     const SECTION_HTML      = 'html';
@@ -98,7 +81,7 @@ class ContentFactory
             return $this->sections;
         }
 
-        $sql = $this->sqlSelectSection
+        $sql = $this::getSqlSelectSection()
            . 'WHERE t.language = ? '
            . 'GROUP BY t.id '
            . 'ORDER BY s.hierarchy ASC ';
@@ -130,7 +113,7 @@ class ContentFactory
      */
     public function findSection($id)
     {
-        $sql = $this->sqlSelectSection
+        $sql = $this::getSqlSelectSection()
            . 'WHERE s.id = ? '
            . 'ORDER BY s.hierarchy ASC ';
         $sectionTranslations = $this->db->fetchAll($sql, array($id));
@@ -147,7 +130,7 @@ class ContentFactory
      */
     public function findSectionBySlug($slug)
     {
-        $sql = $this->sqlSelectSection
+        $sql = $this::getSqlSelectSection()
            . 'WHERE s.slug = ? '
            . 'ORDER BY s.hierarchy ASC ';
         $sectionTranslations = $this->db->fetchAll($sql, array($slug));
@@ -162,7 +145,7 @@ class ContentFactory
      */
     public function findHomepage()
     {
-        $sql = $this->sqlSelectSection
+        $sql = $this::getSqlSelectSection()
            . 'WHERE s.visibility = ? '
            . 'ORDER BY s.hierarchy ASC ';
         $sectionTranslations = $this->db->fetchAll($sql, array(Section::VISIBILITY_HOMEPAGE));
@@ -353,6 +336,23 @@ class ContentFactory
     }
 
     /**
+     * Return an Item.
+     *
+     * @param integer $id
+     *
+     * @return \Ideys\Content\Item\Item
+     */
+    public function findItem($id)
+    {
+        $sql = $this::getSqlSelectItem()
+            . 'WHERE i.id = ? '
+            . 'ORDER BY s.hierarchy ASC ';
+        $data = $this->db->fetchAssoc($sql, array($id));
+
+        return static::instantiateItem($data);
+    }
+
+    /**
      * Insert a new content.
      *
      * @param \Ideys\Content\Section\Section    $section
@@ -362,16 +362,14 @@ class ContentFactory
      */
     public function addItem(Section $section, Item\Item $item)
     {
-        $postingDate = ($item->posting_date instanceof \DateTime)
-                ? $item->posting_date->format('c') : null;
-
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $section->id,
             'type' => $item->type,
             'category' => $item->category,
             'slug' => String::slugify($item->title),
             'path' => $item->path,
-            'posting_date' => $postingDate,
+            'posting_date' => static::dateToDatabase($item->posting_date),
+            'author' => $item->author,
             'published' => $item->published,
             'hierarchy' => $item->hierarchy,
         ) + $this->blameAndTimestampData(0));
@@ -402,6 +400,8 @@ class ContentFactory
             'expose_section_item',
             array(
                 'path' => $item->path,
+                'posting_date' => static::dateToDatabase($item->posting_date),
+                'author' => $item->author,
             ) + $this->blameAndTimestampData($item->id),
             array('id' => $item->id)
         );
@@ -504,6 +504,23 @@ class ContentFactory
     }
 
     /**
+     * Return instantiated Item from array data.
+     *
+     * @param array     $data
+     *
+     * @return \Ideys\Content\Item\Item
+     */
+    public static function instantiateItem($data)
+    {
+        if (!in_array($data['type'], static::getItemTypes())) {
+            $data['type'] = static::getDefaultSectionItemType($data['section_type']);
+        }
+
+        $itemClass = '\Ideys\Content\Item\\'.ucfirst($data['type']);
+        return new $itemClass($data);
+    }
+
+    /**
      * Return item types keys.
      *
      * @param  string $type The section type
@@ -558,6 +575,58 @@ class ContentFactory
         }
 
         return $translations[0];
+    }
+
+    /**
+     * Return SQL statement to extract a Section.
+     *
+     * @return string
+     */
+    public static function getSqlSelectSection()
+    {
+        return
+        'SELECT s.id, s.expose_section_id, s.type, s.slug, '.
+               's.custom_css, s.custom_js, '.
+               's.menu_pos, s.tag, s.visibility, s.shuffle, '.
+               's.hierarchy, s.archive, s.target_blank, '.
+               't.title, t.description, t.legend, '.
+               't.parameters, t.language, '.
+               'COUNT(i.id) AS total_items '.
+        'FROM expose_section AS s '.
+        'LEFT JOIN expose_section_trans AS t '.
+        'ON t.expose_section_id = s.id '.
+        'LEFT JOIN expose_section_item AS i '.
+        'ON i.expose_section_id = s.id ';
+    }
+
+    /**
+     * Return SQL statement to extract an Item.
+     *
+     * @return string
+     */
+    public static function getSqlSelectItem()
+    {
+        return
+        'SELECT i.*, t.title, t.description, t.content, '.
+               't.link, t.parameters, t.language, s.type AS section_type '.
+        'FROM expose_section_item AS i '.
+        'LEFT JOIN expose_section_item_trans AS t '.
+        'ON t.expose_section_item_id = i.id '.
+        'LEFT JOIN expose_section AS s '.
+        'ON i.expose_section_id = s.id ';
+    }
+
+    /**
+     * Format a datetime to be persisted.
+     *
+     * @param \DateTime $datetime
+     *
+     * @return null|string
+     */
+    private static function dateToDatabase(\DateTime $datetime = null)
+    {
+        return ($datetime instanceof \DateTime)
+            ? $datetime->format('c') : null;
     }
 
     /**

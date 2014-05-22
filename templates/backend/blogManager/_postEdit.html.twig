@@ -1,21 +1,30 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {{ form_start(form, {
-    'action': path('admin_blog_manager_new_post', {'id': section.id}),
+    'action': form_action,
     'attr': {'id': 'section-form-'~section.id }
 }) }}
 <div class="row">
   <div class="large-10 large-centered columns">
-    {{ form_row(form.title) }}
-    {{ form_row(form.posting_date) }}
-    {{ form_row(form.published) }}
-    {{ form_row(form.content, {'attr': {
+      {{ form_row(form.title) }}
+      <div class="row">
+          <div class="medium-4 columns">
+             {{ form_row(form.posting_date) }}
+          </div>
+          <div class="medium-4 columns">
+              {{ form_row(form.author) }}
+          </div>
+          <div class="medium-4 columns">
+              {{ form_row(form.published) }}
+          </div>
+      </div>
+      {{ form_row(form.content, {'attr': {
         'rows': '22',
         'data-pic-manager-url': path('admin_gallery_manager_content_sections_pic_manager', {'id': section.id})
-    } }) }}
-    <div class="text-right">
-      {{ widgets.btn_ajax() }}
-    </div>
+      } }) }}
+      <div class="text-right">
+          {{ widgets.btn_ajax() }}
+      </div>
   </div>
 </div>
 <div class="hidden">
