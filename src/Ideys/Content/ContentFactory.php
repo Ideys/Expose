@@ -530,7 +530,7 @@ class ContentFactory
     public static function getDefaultSectionItemType($type)
     {
         $sectionTypes = static::getSectionTypes();
-        array_diff($sectionTypes, array(self::SECTION_LINK, self::SECTION_DIR));
+        $sectionTypes = array_diff($sectionTypes, array(self::SECTION_LINK, self::SECTION_DIR));
         $itemTypes = static::getItemTypes();
         $sectionItems = array_combine($sectionTypes, $itemTypes);
 

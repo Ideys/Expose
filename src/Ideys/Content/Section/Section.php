@@ -317,6 +317,10 @@ abstract class Section
      */
     public function hydrateItems()
     {
+        if ($this->id == null) {
+            return false;
+        }
+
         $sql = ContentFactory::getSqlSelectItem() .
               'WHERE i.expose_section_id = ?'.
               'ORDER BY i.hierarchy ASC ';
