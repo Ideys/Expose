@@ -15,6 +15,27 @@
             </li>
           {% endfor %}
         </ul>
+        <p class="options">
+          {{ widgets.btn_dropdown_actions('file-actions-'~file.id, '', 'right') }}
+          <ul id="file-actions-{{ file.id }}"
+              data-dropdown-content=""
+              class="f-dropdown">
+            <li>
+                <a href="#"
+                   data-inject-call="{{ path('admin_files_manager_edit', {'id': file.id}) }}"
+                   data-target="#file-edit-wrapper-{{ file.id }}">
+                    {{ 'edit'|trans }}
+                </a>
+            </li>
+            <li id="file-edit-wrapper-{{ file.id }}"></li>
+            <li>
+                <a href="{{ path('admin_files_manager_delete', {'id': file.id}) }}"
+                   data-confirm-action="{{ 'file.delete'|trans }}">
+                    {{ 'delete'|trans }}
+                </a>
+            </li>
+          </ul>
+        </p>
     </div>
     {% else %}
     <p class="notice-empty">{{ 'file.no.files'|trans }}</p>

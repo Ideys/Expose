@@ -216,6 +216,9 @@ file:
     title: Titre du document
     recipient: Destinataire
     no.files: Aucun fichiers mis à disposition
+    delete: Supprimer ce fichier et toutes ses statistiques liées
+    deleted: Le fichier a été supprimé
+    deletion.error: Une erreur est survenue lors de la suppression du fichier
 
 site:
     site: Site Internet

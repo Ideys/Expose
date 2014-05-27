@@ -59,6 +59,7 @@ $usersManagerController->get('/{id}/delete', function ($id) use ($app) {
 
     return $app->redirect($app['url_generator']->generate('admin_users_manager'));
 })
+->assert('id', '\d+')
 ->bind('admin_user_manager_delete')
 ;
 

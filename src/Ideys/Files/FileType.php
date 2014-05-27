@@ -41,6 +41,21 @@ class FileType
     }
 
     /**
+     * Return the edit file title form.
+     *
+     * @param \Ideys\Files\File $file
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function editForm(File $file)
+    {
+        $formBuilder = $this->formBuilder($file);
+        $formBuilder->remove('file');
+
+        return $formBuilder->getForm();
+    }
+
+    /**
      * Return contact message form builder.
      *
      * @param \Ideys\Files\File $file

@@ -216,6 +216,9 @@ file:
     title: File title
     recipient: Recipient
     no.files: No shared files
+    delete: Delete this file with related statistics
+    deleted: The file is deleted
+    deletion.error: An error has occured during file deletion
 
 site:
     site: Website

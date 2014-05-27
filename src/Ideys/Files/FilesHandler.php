@@ -3,6 +3,7 @@
 namespace Ideys\Files;
 
 use Doctrine\DBAL\Connection;
+use Ideys\String;
 
 /**
  * Downloadable files manager.
@@ -54,6 +55,19 @@ class FilesHandler
     }
 
     /**
+     * Edit the file title.
+     *
+     * @param \Ideys\Files\File
+     */
+    public function editTitle(File $file)
+    {
+        $this->db->update('expose_files', array(
+            'title' => $file->getTitle(),
+            'slug' => String::slugify($file->getTitle()),
+        ), array('id' => $file->getId()));
+    }
+
+    /**
      * Save a file recipient on database.
      *
      * @param \Ideys\Files\Recipient
@@ -95,10 +109,12 @@ class FilesHandler
      * Delete a message.
      *
      * @param integer $id
+     *
+     * @return boolean True if entity have been deleted.
      */
     public function delete($id)
     {
-        $this->db->delete('expose_files', array('id' => $id));
+        return $this->db->delete('expose_files', array('id' => $id)) > 0;
     }
 
     /**
@@ -155,6 +171,25 @@ class FilesHandler
         $file = $this->hydrateFile($entity);
 
         return $this->addRecipient($file, $entity);
+    }
+
+    /**
+     * Retrieve a file by its id.
+     *
+     * @param integer $id
+     *
+     * @return \Ideys\Files\File
+     */
+    public function find($id)
+    {
+        $entity = $this->db->fetchAssoc(
+                $this->baseQuery()
+              . 'WHERE f.id = ?',
+        array($id));
+
+        $file = $this->hydrateFile($entity);
+
+        return $file;
     }
 
     /**

@@ -11,9 +11,11 @@ class String
      * Slugify strings.
      *
      * @param string $string
+     * @param string $sep
+     *
      * @return string
      */
-    public static function slugify($string) {
+    public static function slugify($string, $sep = '-') {
         return
             preg_replace('#[^-\w]+#', '',
             // to lowercase
@@ -26,10 +28,10 @@ class String
                     // trim and replace spaces by an hyphen
                     trim(
                         // replace non letter or digits by an hyphen
-                        preg_replace('#[^\\pL\d]+#u', '-',
+                        preg_replace('#[^\\pL\d]+#u', $sep,
                             $string
                         ),
-                        '-'
+                        $sep
                     )
                 )
                 )

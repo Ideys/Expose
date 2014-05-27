@@ -179,7 +179,7 @@ $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use (
     }
 
     return $app->sendFile($file->getPath())
-               ->setContentDisposition($mode, $file->getName());
+               ->setContentDisposition($mode, $file->getSlug().'.'.$file->getFileExt());
 })
 ->bind('file_share')
 ->assert('token', '\w+')

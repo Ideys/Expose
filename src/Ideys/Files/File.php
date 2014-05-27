@@ -3,6 +3,7 @@
 namespace Ideys\Files;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Ideys\String;
 
 /**
  * File object.
@@ -159,6 +160,18 @@ class File
     }
 
     /**
+     * Guess file extension from file name.
+     *
+     * @return string
+     */
+    public function getFileExt()
+    {
+        $e = explode('.', $this->fileName);
+
+        return array_pop($e);
+    }
+
+    /**
      * @param string $name
      *
      * @return \Ideys\Files\File
@@ -234,7 +247,7 @@ class File
         $this->setFileName(uniqid('expose').'.'.$this->file->guessClientExtension());
         $this->setMime($this->file->getMimeType());
         $this->setName($this->file->getClientOriginalName());
-        $this->setSlug(\Ideys\String::slugify($this->title));
+        $this->setSlug(String::slugify($this->title));
         $this->getFile()->move($this->getDir(), $this->fileName);
     }
 }

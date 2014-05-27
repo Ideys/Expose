@@ -1,0 +1,13 @@
+{% spaceless %}
+<div class="row">
+  {{ form_start(form, {
+    'action': path('admin_files_manager_edit', {'id': file.id})
+  }) }}
+  <div class="medium-12 columns">
+    {{ form_widget(form.title) }}
+    <input type="submit" name="submit"
+           value="{{ 'submit'|trans }}" class="tiny right button">
+  </div>
+  {{ form_end(form) }}
+</div>
+{% endspaceless %}
