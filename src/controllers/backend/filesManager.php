@@ -3,6 +3,8 @@
 use Ideys\Files\FilesHandler;
 use Ideys\Files\FileType;
 use Ideys\Files\File;
+use Ideys\Files\RecipientType;
+use Ideys\Files\Recipient;
 use Symfony\Component\HttpFoundation\Request;
 
 $filesManagerController = $app['controllers_factory'];
@@ -53,6 +55,37 @@ $filesManagerController->match('/{id}/edit', function (Request $request, $id) us
 ->assert('id', '\d+')
 ->method('GET|POST')
 ->bind('admin_files_manager_edit')
+;
+
+$filesManagerController->match('/{fileId}/edit/recipient/{id}', function (Request $request, $fileId, $id) use ($app) {
+
+    $filesHandler = new FilesHandler($app['db']);
+    $file = $filesHandler->find($fileId);
+    $recipient = $file->getRecipient($id);
+    if (null == $recipient) {
+        $recipient = new Recipient();
+        $recipient->setFile($file);
+    }
+
+    $recipientType = new RecipientType($app['form.factory']);
+    $form = $recipientType->form($recipient);
+
+    $form->handleRequest($request);
+    if ($form->isValid()) {
+        $filesHandler->persistRecipient($recipient);
+        return $app->redirect($app['url_generator']->generate('admin_files_manager'));
+    }
+
+    return $app['twig']->render('backend/filesManager/_recipientForm.html.twig', array(
+        'file' => $file,
+        'recipient' => $recipient,
+        'form' => $form->createView(),
+    ));
+})
+->assert('fileId', '\d+')
+->assert('id', '\d+')
+->method('GET|POST')
+->bind('admin_files_manager_edit_recipient')
 ;
 
 $filesManagerController->get('/{id}/delete', function ($id) use ($app) {

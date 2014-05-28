@@ -6,16 +6,62 @@
     {% for file in files %}
     <div class="file panel">
         <h5>{{ file.title }} <small>{{ file.name }}</small></h5>
-        <ul class="no-bullet">
+        <ul class="no-bullet recipient-list">
           {% for recipient in file.recipients %}
             <li>
-              {{ recipient.name }}
+
+              <span>{{ recipient.name }}</span>
+
               <small>{{ recipient.downloadCounter }}</small>
+
+              <button class="tiny secondary button right edit-recipient"
+                      type="button"
+                      data-inject-call="{{ path('admin_files_manager_edit_recipient', {
+                          'fileId': file.id,
+                          'id': recipient.id
+                      }) }}"
+                      data-target="#recipient-form-{{ recipient.id }}"
+                      data-dropdown="recipient-form-{{ recipient.id }}"
+                      title="{{ 'edit'|trans }}">
+                <i class="fi-pencil"></i>
+              </button>
+
+              <div id="recipient-form-{{ recipient.id }}"
+                   data-dropdown-content
+                   class="f-dropdown content">
+              </div>
+
               {{ widgets.clipboard_text(url('file_share', {'token': recipient.token, 'slug': file.slug})) }}
+
+              {% if recipient.downloadLogs|length %}
+              <ul class="download-logs">
+                <li><strong>{{ 'file.last.downloads'|trans }}</strong></li>
+                {% for log in recipient.downloadLogs %}
+                    <li>{{ log|date('d/m/Y H:i') }}</li>
+                {% endfor %}
+              </ul>
+              {% endif %}
+
             </li>
           {% endfor %}
         </ul>
-        <p class="options">
+        <div class="options">
+          <button class="tiny secondary button left new-recipient"
+                  type="button"
+                  data-inject-call="{{ path('admin_files_manager_edit_recipient', {
+                    'fileId': file.id,
+                    'id': 0
+                  }) }}"
+                  data-target="#new-recipient-form-{{ file.id }}"
+                  data-dropdown="new-recipient-form-{{ file.id }}"
+                  title="{{ 'file.new.recipient'|trans }}">
+            <i class="fi-plus"></i>
+          </button>
+          <div id="new-recipient-form-{{ file.id }}"
+               data-dropdown-content
+               class="f-dropdown content">
+          </div>
+
           {{ widgets.btn_dropdown_actions('file-actions-'~file.id, '', 'right') }}
           <ul id="file-actions-{{ file.id }}"
               data-dropdown-content=""
@@ -24,7 +70,7 @@
                 <a href="#"
                    data-inject-call="{{ path('admin_files_manager_edit', {'id': file.id}) }}"
                    data-target="#file-edit-wrapper-{{ file.id }}">
-                    {{ 'edit'|trans }}
+                    {{ 'rename'|trans }}
                 </a>
             </li>
             <li id="file-edit-wrapper-{{ file.id }}"></li>
@@ -35,7 +81,7 @@
                 </a>
             </li>
           </ul>
-        </p>
+        </div>
     </div>
     {% else %}
     <p class="notice-empty">{{ 'file.no.files'|trans }}</p>

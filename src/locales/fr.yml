@@ -212,9 +212,11 @@ file:
     size: Taille du fichier
     original.name: Titre original
     uploaded.at: Téléchargé le
+    last.downloads: Derniers téléchargements
     html.include: Inclusion HTML
     title: Titre du document
     recipient: Destinataire
+    new.recipient: Nouveau destinataire
     no.files: Aucun fichiers mis à disposition
     delete: Supprimer ce fichier et toutes ses statistiques liées
     deleted: Le fichier a été supprimé
@@ -276,6 +278,7 @@ confirm: Confirmer
 cancel: Annuler
 actions: Actions
 edit: Éditer
+rename: Renommer
 delete: Supprimer
 archive: Archiver
 archives: Archives

@@ -106,7 +106,7 @@ class FilesHandler
     }
 
     /**
-     * Delete a message.
+     * Delete a file and its recipients.
      *
      * @param integer $id
      *
@@ -114,7 +114,10 @@ class FilesHandler
      */
     public function delete($id)
     {
-        return $this->db->delete('expose_files', array('id' => $id)) > 0;
+        $countDeletedFiles = $this->db->delete('expose_files', array('id' => $id));
+        $this->db->delete('expose_files_recipients', array('expose_files_id' => $id));
+
+        return $countDeletedFiles > 0;
     }
 
     /**
@@ -170,7 +173,9 @@ class FilesHandler
 
         $file = $this->hydrateFile($entity);
 
-        return $this->addRecipient($file, $entity);
+        $this->addRecipient($file, $entity);
+
+        return $file;
     }
 
     /**
@@ -178,16 +183,23 @@ class FilesHandler
      *
      * @param integer $id
      *
-     * @return \Ideys\Files\File
+     * @return \Ideys\Files\File|null
      */
     public function find($id)
     {
-        $entity = $this->db->fetchAssoc(
+        $entities = $this->db->fetchAll(
                 $this->baseQuery()
               . 'WHERE f.id = ?',
         array($id));
 
-        $file = $this->hydrateFile($entity);
+        if (empty($entities)) {
+            return null;
+        }
+
+        $file = $this->hydrateFile($entities[0]);
+        foreach ($entities as $entity) {
+            $this->addRecipient($file, $entity);
+        }
 
         return $file;
     }

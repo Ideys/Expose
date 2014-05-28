@@ -212,9 +212,11 @@ file:
     size: File size
     original.name: Original name
     uploaded.at: Uploaded the
+    last.downloads: Last downloads
     html.include: HTML inclusion
     title: File title
     recipient: Recipient
+    new.recipient: New recipient
     no.files: No shared files
     delete: Delete this file with related statistics
     deleted: The file is deleted
@@ -276,6 +278,7 @@ confirm: Confirm
 cancel: Cancel
 actions: Actions
 edit: Edit
+rename: Rename
 delete: Delete
 archive: Archive
 archives: Archives

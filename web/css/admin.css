@@ -332,6 +332,25 @@ td.muted {
    Files manager section
    ========================================================================== */
 
+.file.panel .recipient-list>li {
+    border-top: 1px solid #e7e7e7;
+    padding: 12px 0;
+}
+
+.file.panel button.edit-recipient {
+    padding: 4px 6px;
+    margin: 0;
+}
+
+.file.panel button.new-recipient {
+    margin: 0;
+}
+
+.file.panel .download-logs {
+    font-size: 0.8em;
+    text-align: right;
+}
+
 .file.panel .options {
     height: 15px;
 }

@@ -48,7 +48,7 @@ class File
     /**
      * @var array
      */
-    private $recipients;
+    private $recipients = array();
 
 
     /**
@@ -204,11 +204,31 @@ class File
     }
 
     /**
+     * Return all file recipients.
+     *
      * @return array
      */
     public function getRecipients()
     {
         return $this->recipients;
+    }
+
+    /**
+     * Return a file recipient by its id.
+     *
+     * @param integer $id
+     *
+     * @return Recipient|null
+     */
+    public function getRecipient($id)
+    {
+        foreach ($this->recipients as $recipient) {
+            if ($recipient->getId() == $id) {
+                return $recipient;
+            }
+        }
+
+        return null;
     }
 
     /**
