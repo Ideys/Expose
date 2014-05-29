@@ -2,6 +2,8 @@
 
 {% block body_class parent()~widgets.section_body_classes(section) %}
 
+{% block title widgets.section_title(section, parent()) %}
+
 {% block main -%}
 {% if section.hasItems('Video') %}
   {% if item|length %}

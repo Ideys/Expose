@@ -4,6 +4,10 @@
 {{ ' content-'~section.type }}
 {% endmacro %}
 
+{% macro section_title(section, baseTitle) %}
+{% if not section.isHomepage %}{{ section.title }} | {% endif %}{{ baseTitle }}
+{% endmacro %}
+
 {# Main frontend nav bar link formatter #}
 {% macro menu_link(section, follow) %}
 {% spaceless %}

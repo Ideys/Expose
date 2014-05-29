@@ -1,5 +1,7 @@
 {% extends "frontend/layout.html.twig" %}
 
+{% block title 'user.you'|trans~' | '~parent() %}
+
 {% block main -%}
 {{ form_start(form) }}
 <div class="row">

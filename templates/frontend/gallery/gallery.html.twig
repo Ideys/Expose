@@ -12,6 +12,8 @@
     ~ thumb_class
 %}
 
+{% block title widgets.section_title(section, parent()) %}
+
 {% block description %}
 {% if section.description|length %}
 {{ section.description|e }}
