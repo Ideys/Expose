@@ -121,6 +121,9 @@ gallery:
         fade: Fondu
         shuffle: Ordre aléatoire
         link: Lien de l'image
+        thumb: Miniature
+        large: Grande image
+        original: Image originale
     grid:
         rows: Images par ligne
         rows.medium: Images par ligne (Tablettes)
@@ -221,6 +224,10 @@ file:
     delete: Supprimer ce fichier et toutes ses statistiques liées
     deleted: Le fichier a été supprimé
     deletion.error: Une erreur est survenue lors de la suppression du fichier
+    meta.captureDate: Date de prise de vue
+    meta.copyright: Copyright
+    meta.author: Auteur
+    meta.isColor: Couleur
 
 site:
     site: Site Internet

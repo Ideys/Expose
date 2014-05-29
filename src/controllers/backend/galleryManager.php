@@ -1,6 +1,6 @@
 <?php
 
-use Ideys\Content\Item\Slide;
+use Ideys\Picture;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -23,14 +23,17 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
+
     $formBuilder = $app['form.factory']->createBuilder('form')
         ->add('global_legend', 'textarea', array(
             'label'     => 'gallery.global.legend',
             'data'      => $section->legend,
             'required'  => false,
         ));
+
     foreach ($section->getItems('Slide') as $slide) {
-    $formBuilder
+        // Generate related slide fields
+        $formBuilder
         ->add('title'.$slide->id, 'text', array(
             'required'      => false,
             'label'         => 'gallery.picture.alt',
@@ -55,6 +58,9 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
                 'placeholder' => 'gallery.slide.link',
             ),
         ));
+
+        // Retrieve more data about picture
+        $slide->setMetaData(Picture::getMetaData(WEB_DIR.'/gallery/'.$slide->path));
     }
     $form = $formBuilder->getForm();
 

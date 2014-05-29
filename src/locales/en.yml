@@ -121,6 +121,9 @@ gallery:
         fade: Fade
         shuffle: Random order
         link: Image link
+        thumb: Thumb
+        large: Large picture
+        original: Original size
     grid:
         rows: Gallery rows
         rows.medium: Gallery rows (Tablets)
@@ -221,6 +224,10 @@ file:
     delete: Delete this file with related statistics
     deleted: The file is deleted
     deletion.error: An error has occured during file deletion
+    meta.captureDate: Capture date
+    meta.copyright: Copyright
+    meta.author: Author
+    meta.isColor: Color
 
 site:
     site: Website

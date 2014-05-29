@@ -30,14 +30,33 @@
       </div>
       <div class="small-6 columns">
         <ul class="no-bullet slide-meta">
-          <li><em>{{ 'file.size'|trans }}</em>:<br>
+          <li><em>{{ 'file.size'|trans }}</em>:
             {{ widgets.bytes_format(slide.file_size) }}</li>
-          <li><em>{{ 'file.original.name'|trans }}</em>:<br>
+          <li><em>{{ 'file.original.name'|trans }}</em>:
             {{ slide.original_name }}</li>
-          <li><em>{{ 'file.uploaded.at'|trans }}</em>:<br>
+          <li><em>{{ 'file.uploaded.at'|trans }}</em>:
             {{ slide.created_at|date('d/m/Y H:i') }}</li>
-          <li><em>{{ 'file.html.include'|trans }}</em>:
-            {{ widgets.clipboard_text('<img src="__path:gallery__/220/'~ slide.path~'">') }}</li>
+          {% for key, data in slide.metaData %}
+          <li><em>{{ ('file.meta.'~key)|trans }}</em>:
+            {{ data }}</li>
+          {% endfor %}
+        </ul>
+
+        <a href="#"
+           class="slide-include-link"
+           data-display="#slide-include-panel-{{ slide.id }}">
+            {{ 'file.html.include'|trans }}
+        </a>
+
+        <ul id="slide-include-panel-{{ slide.id }}" class="no-bullet slide-meta hidden">
+          {% for size, title in {
+            '220/': 'gallery.slide.thumb',
+            '1200/': 'gallery.slide.large',
+            '': 'gallery.slide.original',
+          } %}
+          <li><em>{{ title|trans }}</em>:
+            {{ widgets.clipboard_text('<img src="__path:gallery__/' ~ size ~ slide.path~'">') }}</li>
+          {% endfor %}
         </ul>
       </div>
     </div>

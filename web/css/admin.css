@@ -237,9 +237,18 @@ td.muted {
     color: #333;
 }
 
+.slide-meta em {
+    color: #999;
+}
+
 .slide-meta input {
     font-size: 1em;
     height: 15px;
+}
+
+.slide-include-link {
+    color: #ccc;
+    font-size: 0.8em;
 }
 
 /*
