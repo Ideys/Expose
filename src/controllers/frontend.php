@@ -49,7 +49,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
 
     } elseif ($section->hasMultiplePages()) {
 
-        $items = $section->getItems(ContentFactory::getDefaultSectionItemType($section->type));
+        $items = $section->getItems($section::getDefaultItemType());
         $firstItem = array_shift($items);
         $itemSlug = $firstItem->slug;
 

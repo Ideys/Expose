@@ -3,13 +3,14 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
+use Ideys\Content\SectionInterface;
 use Ideys\Settings\Settings;
 use Symfony\Component\Form\FormFactory;
 
 /**
  * Gallery content manager.
  */
-class Gallery extends Section implements ContentInterface
+class Gallery extends Section implements ContentInterface, SectionInterface
 {
     /**
      * {@inheritdoc}
@@ -26,6 +27,14 @@ class Gallery extends Section implements ContentInterface
             'grid_rows_medium' => '1',
             'grid_rows_small' => '1',
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDefaultItemType()
+    {
+        return 'Slide';
     }
 
     /**

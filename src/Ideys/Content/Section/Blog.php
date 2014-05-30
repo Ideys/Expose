@@ -4,13 +4,14 @@ namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
 use Ideys\Content\Item\Post;
+use Ideys\Content\SectionInterface;
 use Ideys\Settings\Settings;
 use Symfony\Component\Form\FormFactory;
 
 /**
  * Blog section manager.
  */
-class Blog extends Section implements ContentInterface
+class Blog extends Section implements ContentInterface, SectionInterface
 {
     /**
      * {@inheritdoc}
@@ -18,6 +19,14 @@ class Blog extends Section implements ContentInterface
     public static function getParameters()
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDefaultItemType()
+    {
+        return 'Post';
     }
 
     /**

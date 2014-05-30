@@ -3,11 +3,12 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
+use Ideys\Content\SectionInterface;
 
 /**
  * Directory manager.
  */
-class Dir extends Section implements ContentInterface
+class Dir extends Section implements ContentInterface, SectionInterface
 {
     /**
      * {@inheritdoc}
@@ -15,6 +16,14 @@ class Dir extends Section implements ContentInterface
     public static function getParameters()
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDefaultItemType()
+    {
+        return 'Section';
     }
 
     /**

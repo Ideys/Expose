@@ -268,7 +268,19 @@ abstract class Section
      */
     public function hasItems($type)
     {
-        return count($this->getItems($type)) > 0;
+        return $this->countItems($type) > 0;
+    }
+
+    /**
+     * Return the number of items of a type into section.
+     *
+     * @param string $type Items type.
+     *
+     * @return integer
+     */
+    public function countItems($type)
+    {
+        return count($this->getItems($type));
     }
 
     /**
@@ -352,11 +364,10 @@ abstract class Section
         $realExt = $file->guessExtension();// from mime type
         $fileSize = $file->getClientSize();
 
-        $this->total_items += 1;
         $slide = new Slide(array(
             'category' => $file->getMimeType(),
             'type' => ContentFactory::ITEM_SLIDE,
-            'hierarchy' => $this->total_items,
+            'hierarchy' => ($this->countItems('Slide') + 1),
         ));
 
         $slide->path = uniqid('expose').'.'.$fileExt;

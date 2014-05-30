@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentInterface;
+use Ideys\Content\SectionInterface;
 use Ideys\Content\Item\Field;
 use Symfony\Component\Form as SfForm;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * Form content manager.
  */
-class Form extends Section implements ContentInterface
+class Form extends Section implements ContentInterface, SectionInterface
 {
     /**
      * {@inheritdoc}
@@ -20,6 +21,14 @@ class Form extends Section implements ContentInterface
         return array(
             'validation_message' => '',
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDefaultItemType()
+    {
+        return 'Field';
     }
 
     /**

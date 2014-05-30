@@ -83,7 +83,7 @@ class ContentFactory
 
         $sql = $this::getSqlSelectSection()
            . 'WHERE t.language = ? '
-           . 'GROUP BY t.id '
+           . 'GROUP BY s.id '
            . 'ORDER BY s.hierarchy ASC ';
         $sections = $this->db->fetchAll($sql, array($this->language));
 
@@ -596,7 +596,15 @@ class ContentFactory
         'LEFT JOIN expose_section_trans AS t '.
         'ON t.expose_section_id = s.id '.
         'LEFT JOIN expose_section_item AS i '.
-        'ON i.expose_section_id = s.id ';
+        'ON i.expose_section_id = s.id '.
+        'AND ( '.
+        '(i.type = \'Post\' AND s.type = \'Blog\') '.
+        'OR  (i.type = \'Video\' AND s.type = \'Channel\') '.
+        'OR  (i.type = \'Field\' AND s.type = \'Form\') '.
+        'OR  (i.type = \'Slide\' AND s.type = \'Gallery\') '.
+        'OR  (i.type = \'Page\' AND s.type = \'Html\') '.
+        'OR  (i.type = \'Place\' AND s.type = \'Maps\') '.
+        ') ';
     }
 
     /**

@@ -4,12 +4,13 @@ namespace Ideys\Content\Section;
 
 use Ideys\Content\Item\Video;
 use Ideys\Content\ContentInterface;
+use Ideys\Content\SectionInterface;
 use Symfony\Component\Form\FormFactory;
 
 /**
  * Channel content manager.
  */
-class Channel extends Section implements ContentInterface
+class Channel extends Section implements ContentInterface, SectionInterface
 {
     /**
      * {@inheritdoc}
@@ -17,6 +18,14 @@ class Channel extends Section implements ContentInterface
     public static function getParameters()
     {
         return array();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getDefaultItemType()
+    {
+        return 'Video';
     }
 
     /**
