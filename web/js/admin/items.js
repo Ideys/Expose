@@ -128,7 +128,13 @@ $(function(){
         event.stopImmediatePropagation();
         var url = $(this).data('delete-ajax')
           , target = $(this).data('target')
+          , message = $(this).data('confirm')
           ;
+
+        if (false === confirm(message)) {
+            return false;
+        }
+
         $.ajax({
             url: url,
             type: 'POST'

@@ -50,12 +50,13 @@
             {{ widgets.btn_dropdown_actions('result-actions-'~result.id, 'ajax') }}
             <ul id="result-actions-{{ result.id }}" class="f-dropdown">
                 <li>
-                    <a href="{{ path('admin_form_manager_remove_result', {
-                    'id': section.id,
-                    'resultId': result.id
-                    }) }}"
+                    <a href="#"
+                       data-delete-ajax="{{ path('admin_form_manager_remove_result', {
+                        'id': section.id,
+                        'resultId': result.id
+                       }) }}"
                        data-target="#result-line-{{ result.id }}"
-                       data-confirm-action="{{ 'confirm'|trans }}">
+                       data-confirm="{{ 'confirm'|trans }}">
                         {{ 'delete'|trans }}
                     </a>
                 </li>
