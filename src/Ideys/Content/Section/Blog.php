@@ -2,6 +2,7 @@
 
 namespace Ideys\Content\Section;
 
+use Ideys\Content\ContentFactory;
 use Ideys\Content\ContentInterface;
 use Ideys\Content\Item\Post;
 use Ideys\Content\SectionInterface;
@@ -27,6 +28,16 @@ class Blog extends Section implements ContentInterface, SectionInterface
     public static function getDefaultItemType()
     {
         return 'Post';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSqlSelectItem()
+    {
+        return ContentFactory::getSqlSelectItem() .
+            'WHERE i.expose_section_id = ? '.
+            'ORDER BY i.posting_date DESC, i.hierarchy ASC ';
     }
 
     /**

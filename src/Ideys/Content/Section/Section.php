@@ -333,9 +333,7 @@ abstract class Section
             return false;
         }
 
-        $sql = ContentFactory::getSqlSelectItem() .
-              'WHERE i.expose_section_id = ?'.
-              'ORDER BY i.hierarchy ASC ';
+        $sql = static::getSqlSelectItem();
 
         $itemTranslations = $this->db->fetchAll($sql, array($this->id));
 
@@ -348,6 +346,18 @@ abstract class Section
         }
 
         return true;
+    }
+
+    /**
+     * SQL query string for Section Items extraction.
+     *
+     * @return string
+     */
+    public static function getSqlSelectItem()
+    {
+        return ContentFactory::getSqlSelectItem() .
+            'WHERE i.expose_section_id = ? '.
+            'ORDER BY i.hierarchy ASC ';
     }
 
     /**
