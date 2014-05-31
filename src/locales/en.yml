@@ -175,6 +175,7 @@ form:
         multiple.select: Multiple choice
         checkbox: Checkbox
         radio: Bullet selector
+        file: File
         html.insert: HTML insert
 
 html:

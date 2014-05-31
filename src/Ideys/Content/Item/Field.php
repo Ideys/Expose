@@ -17,6 +17,7 @@ class Field extends Item implements ContentInterface
     const MULTIPLE_SELECT = 'multiple.select';
     const CHECKBOX = 'checkbox';
     const RADIO    = 'radio';
+    const FILE     = 'file';
     const HTML     = 'html.insert';
 
     /**
@@ -46,6 +47,7 @@ class Field extends Item implements ContentInterface
             self::MULTIPLE_SELECT,
             self::CHECKBOX,
             self::RADIO,
+            self::FILE,
             self::HTML,
         );
     }
@@ -82,6 +84,7 @@ class Field extends Item implements ContentInterface
             self::MULTIPLE_SELECT => 'choice',
             self::CHECKBOX => 'checkbox',
             self::RADIO    => 'choice',
+            self::FILE     => 'file',
         );
 
         return $equivalents[$type];

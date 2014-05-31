@@ -5,8 +5,11 @@ namespace Ideys\Content\Section;
 use Ideys\Content\ContentInterface;
 use Ideys\Content\SectionInterface;
 use Ideys\Content\Item\Field;
+use Ideys\Files\File;
+use Ideys\String;
 use Symfony\Component\Form as SfForm;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Form content manager.
@@ -87,6 +90,7 @@ class Form extends Section implements ContentInterface, SectionInterface
 
         if ($form->isValid()) {
             $data = $form->getData();
+            $this->handleFiles($data);
             $this->db->insert('expose_form_result', array(
                 'expose_section_id' => $this->id,
                 'result' => serialize($data),
@@ -99,16 +103,33 @@ class Form extends Section implements ContentInterface, SectionInterface
     }
 
     /**
+     * Handle file data persistence.
+     *
+     * @param array $data
+     */
+    private function handleFiles(&$data)
+    {
+        foreach ($data as $key => $value) {
+            if ($value instanceof UploadedFile) {
+                $data[$key.'__file'] = String::slugify($value->getClientOriginalName());
+                $data[$key.'__path'] = uniqid('expose').'.'.$value->guessClientExtension();
+                $value->move(File::getDir(), $data[$key.'__path']);
+                unset($data[$key]);
+            }
+        }
+    }
+
+    /**
      * Return form results.
      *
      * @return array
      */
     public function getResults()
     {
-        $sql = "SELECT r.*
-                FROM expose_form_result AS r
-                WHERE r.expose_section_id = ?
-                ORDER BY r.date ASC";
+        $sql = 'SELECT r.* '.
+               'FROM expose_form_result AS r '.
+               'WHERE r.expose_section_id = ? '.
+               'ORDER BY r.date ASC ';
         $results = $this->db->fetchAll($sql, array($this->id));
 
         foreach ($results as $row => $result) {

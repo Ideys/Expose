@@ -175,6 +175,7 @@ form:
         multiple.select: Choix multiple
         checkbox: Case à cocher
         radio: Choix à puces
+        file: Fichier
         html.insert: Insertion HTML
 
 html:

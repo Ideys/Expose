@@ -1,3 +1,4 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
   <table>
     <thead>
@@ -11,39 +12,54 @@
     </thead>
     <tbody>
     {% for result in section.results %}
-      <tr id="result-{{ result.id }}">
+      <tr id="result-line-{{ result.id }}">
         <td>
           {{ result.date|date('d/m/Y H:i') }}
         </td>
         {% for field in section.items('Field') %}
+
+          {# Text and array results #}
           {% if result.result[field.slug] is defined %}
-          {% set data = result.result[field.slug] %}
-          <td>
-          {% if data is iterable %}
-            {{ data|join(' ; ') }}
+            {% set data = result.result[field.slug] %}
+            <td>
+              {% if data is iterable %}
+                {{ data|join(' ; ') }}
+              {% else %}
+                  {{ data }}
+              {% endif %}
+            </td>
+
+          {# File sent #}
+          {% elseif result.result[field.slug~'__file'] is defined %}
+              <td>
+                  <a href="{{ path('admin_form_manager_download_file', {
+                        'file': result.result[field.slug~'__path']
+                      }) }}"
+                     target="_blank">
+                      {{ result.result[field.slug~'__file'] }}
+                  </a>
+              </td>
+
+          {# Empty result #}
           {% else %}
-              {{ data }}
-          {% endif %}
-          </td>
-          {% else %}
-          <td class="muted"></td>
+            <td class="muted"></td>
           {% endif %}
         {% endfor %}
         <td>
-          <button
-              type="button"
-              class="tiny secondary button"
-              data-display="#delete-result-{{ result.id }}">
-            {{ 'delete'|trans }}
-          </button>
-          <button
-              type="button"
-              id="delete-result-{{ result.id }}"
-              class="tiny alert button hidden"
-              data-delete-ajax="{{ path('admin_form_manager_remove_result', {'id': section.id, 'resultId': result.id}) }}"
-              data-target="#result-{{ result.id }}">
-            {{ 'confirm'|trans }}
-          </button>
+            {# Result actions #}
+            {{ widgets.btn_dropdown_actions('result-actions-'~result.id, 'ajax') }}
+            <ul id="result-actions-{{ result.id }}" class="f-dropdown">
+                <li>
+                    <a href="{{ path('admin_form_manager_remove_result', {
+                    'id': section.id,
+                    'resultId': result.id
+                    }) }}"
+                       data-target="#result-line-{{ result.id }}"
+                       data-confirm-action="{{ 'confirm'|trans }}">
+                        {{ 'delete'|trans }}
+                    </a>
+                </li>
+            </ul>
         </td>
       </tr>
     {% else %}

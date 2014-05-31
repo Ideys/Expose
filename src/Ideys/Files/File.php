@@ -248,13 +248,13 @@ class File
      */
     public function getPath()
     {
-        return $this->getDir().'/'.$this->fileName;
+        return static::getDir().'/'.$this->fileName;
     }
 
     /**
      * @return string
      */
-    public function getDir()
+    public static function getDir()
     {
         return WEB_DIR.'/../downloads';
     }
@@ -268,6 +268,6 @@ class File
         $this->setMime($this->file->getMimeType());
         $this->setName($this->file->getClientOriginalName());
         $this->setSlug(String::slugify($this->title));
-        $this->getFile()->move($this->getDir(), $this->fileName);
+        $this->getFile()->move(static::getDir(), $this->fileName);
     }
 }

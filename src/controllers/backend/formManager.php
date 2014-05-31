@@ -2,6 +2,7 @@
 
 use Ideys\Content\ContentFactory;
 use Ideys\Content\Section\Form;
+use Ideys\Files\File;
 use Ideys\Content\Item\Field;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -71,6 +72,22 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
 })
 ->assert('id', '\d+')
 ->bind('admin_form_manager_results')
+;
+
+$formManagerController->get('/download/{file}', function ($file) use ($app) {
+
+    $filePath = File::getDir().'/'.$file;
+
+    if (!file_exists($filePath)) {
+        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
+
+    $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_ATTACHMENT;
+
+    return $app->sendFile($filePath)->setContentDisposition($mode, $file);
+})
+->assert('file', '[\w-\.]+')
+->bind('admin_form_manager_download_file')
 ;
 
 $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $itemId) use ($app) {
