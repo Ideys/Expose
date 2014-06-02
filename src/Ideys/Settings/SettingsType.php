@@ -95,6 +95,13 @@ class SettingsType
                 'required'      => false,
                 'label'         => 'google.verification.key',
             ))
+            ->add('mapsKey', 'text', array(
+                'constraints'   => array(
+                    new Assert\Length(array('min' => 6)),
+                ),
+                'required'      => false,
+                'label'         => 'google.maps.key',
+            ))
             ->add('googleFonts', 'text', array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 5)),

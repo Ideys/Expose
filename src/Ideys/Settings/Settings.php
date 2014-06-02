@@ -30,6 +30,7 @@ class Settings
         'maintenance' => '0',
         'analyticsKey' => '',
         'verificationKey' => '',
+        'mapsKey' => '',
         'googleFonts' => '',
         'layoutBackground' => 'white',
         'customStyle' => '',

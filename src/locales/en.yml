@@ -238,6 +238,7 @@ site:
     description: Site description
     author: Author
     sub.domain: Subdomain
+    advanced: Developer mode
     maintenance:
         mode: Maintenance mode
         message: |
@@ -258,6 +259,7 @@ site:
 google:
     analytics.key: Google Analytics key
     verification.key: Google verification key
+    maps.key: Google Maps API key
     fonts: Google Fonts selection
 
 admin:

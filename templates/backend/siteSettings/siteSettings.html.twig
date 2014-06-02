@@ -5,62 +5,107 @@
       'action': path('admin_site_settings')
 }) }}
 <div class="row">
-  <div class="small-12 large-6 columns">
-    {{ form_errors(form) }}
-    <fieldset>
-      <legend>{{ 'site.site'|trans }}</legend>
-      {{ form_row(form.name) }}
-      {{ form_row(form.description, {'attr': {'rows': '4'} }) }}
-      {{ form_row(form.authorName) }}
-      {{ form_row(form.maintenance, {'attr': {'class': 'active'~site.maintenance} }) }}
-    </fieldset>
-    <fieldset>
-      <legend>Google</legend>
-      {{ form_row(form.analyticsKey) }}
-      {{ form_row(form.verificationKey) }}
-    </fieldset>
-    <fieldset>
-      <legend>{{ 'section.sections'|trans }}</legend>
-      {{ form_row(form.newSectionDefaultVisibility) }}
-    </fieldset>
-    <fieldset>
-      <legend>{{ 'file.manager'|trans }}</legend>
-      {{ form_row(form.shareFiles) }}
-    </fieldset>
-  </div>
-  <div class="small-12 large-6 columns">
-    <fieldset>
-      <legend>{{ 'site.style.layout'|trans }}</legend>
-      {{ form_row(form.layoutBackground) }}
-      {{ form_row(form.menuPosition) }}
-      {{ form_row(form.hideMenuOnHomepage) }}
-      {{ form_row(form.adminLink) }}
-      <div class="text-right">
-        <button type="button" class="tiny secondary button"
-                data-display="#advanced-layout">
-          {{ 'advanced.settings'|trans }}
-        </button>
+  <div class="medium-12 columns">
+      {{ form_errors(form) }}
+      <dl class="tabs" data-tab>
+          <dd class="tab-title active">
+              <a href="#panel-website">
+                  <i class="fi-laptop"></i>
+                  <span class="hide-for-small-only">{{ 'site.site'|trans }}</span>
+              </a>
+          </dd>
+          <dd class="tab-title">
+              <a href="#panel-layout">
+                  <i class="fi-paint-bucket"></i>
+                  <span class="hide-for-small-only">{{ 'layout'|trans }}</span>
+              </a>
+          </dd>
+          <dd class="tab-title">
+              <a href="#panel-advanced">
+                  <i class="fi-wrench"></i>
+                  <span class="hide-for-small-only">{{ 'advanced.settings'|trans }}</span>
+              </a>
+          </dd>
+      </dl>
+      <div class="tabs-content">
+          <div class="content active" id="panel-website">
+              <div class="row">
+                  <div class="small-12 large-6 columns">
+                      <fieldset>
+                          <legend>{{ 'settings'|trans }}</legend>
+                          {{ form_row(form.name) }}
+                          {{ form_row(form.description, {'attr': {'rows': '4'} }) }}
+                          {{ form_row(form.authorName) }}
+                          {{ form_row(form.maintenance, {'attr': {'class': 'active'~site.maintenance} }) }}
+                      </fieldset>
+                  </div>
+                  <div class="small-12 large-6 columns">
+                      <fieldset>
+                          <legend>{{ 'contact.messaging'|trans }}</legend>
+                          {{ form_row(form.contactSection) }}
+                          <div id="contact-content-wrapper"
+                               {% if site.contactSection == 'disabled' %}class="hidden"{% endif %}>
+                              {{ form_row(form.contactContent, {'attr': {'rows': '12'} }) }}
+                          </div>
+                          <div id="contact-send-to-wrapper"
+                               {% if site.contactSection in ['no.form', 'disabled'] %}class="hidden"{% endif %}>
+                              {{ form_row(form.contactSendToEmail) }}
+                          </div>
+                      </fieldset>
+                  </div>
+              </div>
+          </div>
+          <div class="content" id="panel-layout">
+              <div class="row">
+                  <div class="small-12 large-6 columns">
+                      <fieldset>
+                          <legend>{{ 'site.style.layout'|trans }}</legend>
+                          {{ form_row(form.layoutBackground) }}
+                          {{ form_row(form.menuPosition) }}
+                          {{ form_row(form.hideMenuOnHomepage) }}
+                          {{ form_row(form.adminLink) }}
+                      </fieldset>
+                  </div>
+                  <div class="small-12 large-6 columns">
+                      <fieldset>
+                          <legend>{{ 'site.advanced'|trans }}</legend>
+                          {{ form_row(form.googleFonts) }}
+                          {{ form_row(form.customStyle, {'attr': {'rows': '12'} }) }}
+                      </fieldset>
+                  </div>
+              </div>
+          </div>
+          <div class="content" id="panel-advanced">
+              <div class="row">
+                  <div class="small-12 large-6 columns">
+                      <fieldset>
+                          <legend>{{ 'section.sections'|trans }}</legend>
+                          {{ form_row(form.newSectionDefaultVisibility) }}
+                      </fieldset>
+                      <fieldset>
+                          <legend>{{ 'file.manager'|trans }}</legend>
+                          {{ form_row(form.shareFiles) }}
+                      </fieldset>
+                      <fieldset>
+                          <legend>Google</legend>
+                          {{ form_row(form.analyticsKey) }}
+                          {{ form_row(form.verificationKey) }}
+                          {{ form_row(form.mapsKey) }}
+                      </fieldset>
+                  </div>
+                  <div class="small-12 large-6 columns">
+                      <fieldset>
+                          <legend>{{ 'site.advanced'|trans }}</legend>
+                          {{ form_row(form.customJavascript, {'attr': {'rows': '12'} }) }}
+                          {{ form_row(form.subDomain) }}
+                      </fieldset>
+                  </div>
+              </div>
+          </div>
       </div>
-      <div id="advanced-layout" class="hidden">
-        {{ form_row(form.subDomain) }}
-        {{ form_row(form.customStyle, {'attr': {'rows': '12'} }) }}
-        {{ form_row(form.customJavascript, {'attr': {'rows': '12'} }) }}
-        {{ form_row(form.googleFonts) }}
+      <div class="hidden">
+          {{ form_rest(form) }}
       </div>
-    </fieldset>
-    <fieldset>
-      <legend>{{ 'contact.messaging'|trans }}</legend>
-      {{ form_row(form.contactSection) }}
-      <div id="contact-content-wrapper"{% if site.contactSection == 'disabled' %} class="hidden"{% endif %}>
-        {{ form_row(form.contactContent, {'attr': {'rows': '12'} }) }}
-      </div>
-      <div id="contact-send-to-wrapper"{% if site.contactSection in ['no.form', 'disabled'] %} class="hidden"{% endif %}>
-        {{ form_row(form.contactSendToEmail) }}
-      </div>
-    </fieldset>
-    <div class="hidden">
-      {{ form_rest(form) }}
-    </div>
   </div>
 </div>
 <div class="row">
