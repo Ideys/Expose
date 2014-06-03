@@ -1,6 +1,21 @@
 {% spaceless %}
-{% if section.hasItems('Place') %}
-{% else %}
-  <p class="notice-empty">{{ 'maps.no.map'|trans }}</p>
+{% if not site.mapsKey %}
+    <p class="notice-empty">{{ 'maps.no.google.maps.key'|trans }}</p>
+{% elseif not section.hasItems('Place') %}
+    <p class="notice-empty">{{ 'maps.no.place'|trans }}</p>
 {% endif %}
+<div id="map-preview-{{ section.id }}" class="map-preview"></div>
 {% endspaceless %}
+
+{% if site.mapsKey %}
+<script type="text/javascript">
+    function initialize() {
+        var mapOptions = {
+            center: new google.maps.LatLng(-34.397, 150.644),
+            zoom: 8
+        };
+        var map = new google.maps.Map(document.getElementById("map-preview-{{ section.id }}"), mapOptions);
+    }
+    initialize();
+</script>
+{% endif %}

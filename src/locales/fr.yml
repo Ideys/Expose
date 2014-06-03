@@ -201,7 +201,11 @@ blog:
     deleted: Le blog a été supprimé
 
 maps:
-    no.map: Aucunes cartes dans cette section
+    no.place: Cette carte n'a pas de positions définies
+    no.google.maps.key: |
+        Vous devez saisir une clé Google maps dans les paramétrages
+        généraux avant de pouvoir utiliser les cartes.
+    places: Lieux
     delete: Supprimer la carte et tous ses éléments liés
     deleted: La carte est supprimée
 

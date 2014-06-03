@@ -19,6 +19,10 @@
         <link rel="stylesheet" href="{{ app.request.basepath }}/css/icons/foundation-icons.css?v={{ semver }}">
         <link rel="stylesheet" href="{{ app.request.basepath }}/css/main.css?v={{ semver }}">
         {% block head %}{% endblock %}
+        {% if site.mapsKey %}
+        <script type="text/javascript"
+                src="https://maps.googleapis.com/maps/api/js?key={{ site.mapsKey }}&sensor=false"></script>
+        {% endif %}
         <script src="{{ app.request.basepath }}/js/vendor/modernizr.js?v={{ semver }}"></script>
     </head>
     <body class="{% block body_class '' %}">

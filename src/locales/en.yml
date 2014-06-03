@@ -201,7 +201,11 @@ blog:
     deleted: The blog was deleted
 
 maps:
-    no.map: This section has no map yet.
+    no.place: This map has no places defined yet.
+    no.google.maps.key: |
+        You have to insert a Google maps API key to
+        use this maps section.
+    places: Places
     delete: Delete this map and all related items
     deleted: The map is deleted
 

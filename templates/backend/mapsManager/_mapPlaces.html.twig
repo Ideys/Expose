@@ -1,0 +1,25 @@
+{% import "widgets.html.twig" as widgets %}
+{% spaceless %}
+<div class="row">
+    <div class="medium-6 columns">
+        {% for place in section.getItems('Place') %}
+            {{ place.title }}
+        {% endfor %}
+    </div>
+    <div class="medium-6 columns">
+        {{ form_start(form, {
+        'action': path('admin_maps_manager_places', {'id': section.id}),
+        'attr': {'id': 'place-form-'~section.id }
+        }) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.title) }}
+            <div class="text-right">
+                {{ widgets.btn_ajax() }}
+            </div>
+            <div class="hidden">
+                {{ form_rest(form) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endspaceless %}
