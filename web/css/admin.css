@@ -7,7 +7,7 @@
     position: relative;
 }
 
-.tabs dd a {
+.tabs dd>a, .tabs .tab-title>a {
     display: inline-block;
 }
 
