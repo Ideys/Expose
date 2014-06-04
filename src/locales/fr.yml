@@ -205,7 +205,16 @@ maps:
     no.google.maps.key: |
         Vous devez saisir une clé Google maps dans les paramétrages
         généraux avant de pouvoir utiliser les cartes.
+    longitude: Longitude
+    latitude: Latitude
+    zoom: Zoom
     places: Lieux
+    mode:
+        mode: Type de carte
+        hybrid: Satellite avec routes
+        road.map: Carte routière
+        satellite: Vue satellite
+        terrain: Relief
     delete: Supprimer la carte et tous ses éléments liés
     deleted: La carte est supprimée
 

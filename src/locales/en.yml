@@ -205,7 +205,16 @@ maps:
     no.google.maps.key: |
         You have to insert a Google maps API key to
         use this maps section.
+    longitude: Longitude
+    latitude: Latitude
+    zoom: Zoom
     places: Places
+    mode:
+        mode: Maps mode
+        hybrid: Satellite with roads
+        road.map: Road map
+        satellite: Satellite
+        terrain: Terrain
     delete: Delete this map and all related items
     deleted: The map is deleted
 
