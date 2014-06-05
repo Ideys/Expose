@@ -1,0 +1,27 @@
+{% if site.mapsKey %}
+    <script type="text/javascript">
+        function initialize() {
+
+            {# Define map options #}
+            var mapOptions = {
+                center: new google.maps.LatLng({{ section.latitude }}, {{ section.longitude }}),
+                zoom: {{ section.zoom }},
+                mapTypeId: google.maps.MapTypeId.{{ section.map_mode }}
+            };
+
+            {# Generate the map #}
+            var map = new google.maps.Map(document.getElementById("map-{{ section.id }}"), mapOptions);
+
+            {# Add markers to the map #}
+            {% for place in section.items('Place') %}
+                var marker = new google.maps.Marker({
+                    position: new google.maps.LatLng({{ place.latitude }},{{ place.longitude }}),
+                    map: map,
+                    title: '{{ place.title }}'
+                });
+            {% endfor %}
+        }
+
+        initialize();
+    </script>
+{% endif %}

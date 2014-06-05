@@ -421,6 +421,19 @@ body.gallery-fullScreen .orbit-container .orbit-slides-container > * .orbit-capt
     margin-bottom: 45px;
 }
 
+/*
+ * Maps
+ */
+
+.content-maps #content {
+    height: 100vh;
+    margin-top: 0;
+}
+
+.content-maps #content .map {
+    height: 100%;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */

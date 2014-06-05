@@ -24,7 +24,7 @@ $mapsManagerController->match('/{id}/places', function (Request $request, $id) u
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    $place = new Place();
+    $place = new Place(array('type' => ContentFactory::ITEM_PLACE));
     $form = $section->addPlaceForm($app['form.factory'], $place);
 
     $form->handleRequest($request);

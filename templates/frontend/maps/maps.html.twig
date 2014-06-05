@@ -6,14 +6,15 @@
 
 {% block main -%}
 {% if section.hasItems('Place') and site.mapsKey|length %}
-
+    <div id="map-{{ section.id }}" class="map"></div>
 {% else %}
-<p class="coming-soon">
-  {{ 'section.coming.soon'|trans }}
-</p>
+    <p class="coming-soon">
+        {{ 'section.coming.soon'|trans }}
+    </p>
 {% endif %}
 {%- endblock main %}
 
 {% block javascripts %}
-{{ parent() }}
+    {{ parent() }}
+    {% include "frontend/maps/maps.js.twig" with {'section': section} only %}
 {% endblock javascripts %}

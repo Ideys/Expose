@@ -4,19 +4,7 @@
 {% elseif not section.hasItems('Place') %}
     <p class="notice-empty">{{ 'maps.no.place'|trans }}</p>
 {% endif %}
-<div id="map-preview-{{ section.id }}" class="map-preview"></div>
+<div id="map-{{ section.id }}" class="map-preview"></div>
 {% endspaceless %}
 
-{% if site.mapsKey %}
-<script type="text/javascript">
-    function initialize() {
-        var mapOptions = {
-            center: new google.maps.LatLng({{ section.latitude }}, {{ section.longitude }}),
-            zoom: {{ section.zoom }},
-            mapTypeId: google.maps.MapTypeId.{{ section.map_mode }}
-        };
-        var map = new google.maps.Map(document.getElementById("map-preview-{{ section.id }}"), mapOptions);
-    }
-    initialize();
-</script>
-{% endif %}
+{% include "frontend/maps/maps.js.twig" with {'section': section} only %}

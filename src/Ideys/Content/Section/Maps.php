@@ -80,6 +80,14 @@ class Maps extends Section implements ContentInterface, SectionInterface
                     'placeholder' => 'section.title',
                 ),
             ))
+            ->add('latitude', 'number', array(
+                'label' => 'maps.latitude',
+                'precision' => 15,
+            ))
+            ->add('longitude', 'number', array(
+                'label' => 'maps.longitude',
+                'precision' => 15,
+            ))
         ;
 
         return $formBuilder->getForm();
