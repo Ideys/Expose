@@ -65,6 +65,8 @@ if (!$schema->tablesExist('expose_section')) {
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
     $table->addIndex(array('expose_section_id'));
+    $table->addColumn('parent_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
+    $table->addIndex(array('parent_id'));
     $table->addColumn('type', 'string', array('length' => 32));
     $table->addColumn('slug', 'string', array('length' => 255));
     $table->addColumn('custom_css', 'text', array('default' => null, 'notnull' => false));
@@ -102,6 +104,8 @@ if (!$schema->tablesExist('expose_section_item')) {
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
     $table->addIndex(array('expose_section_id'));
+    $table->addColumn('parent_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
+    $table->addIndex(array('parent_id'));
     $table->addColumn('type', 'string', array('length' => 55));
     $table->addColumn('category', 'string', array('length' => 55, 'default' => null, 'notnull' => false));
     $table->addColumn('slug', 'string', array('length' => 255, 'default' => null, 'notnull' => false));

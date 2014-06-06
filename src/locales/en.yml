@@ -215,6 +215,10 @@ maps:
         road.map: Road map
         satellite: Satellite
         terrain: Terrain
+    integrations:
+        title: Integrations
+        description: |
+            Connect the content of other sections on the map
     delete: Delete this map and all related items
     deleted: The map is deleted
 

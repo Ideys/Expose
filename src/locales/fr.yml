@@ -215,6 +215,10 @@ maps:
         road.map: Carte routière
         satellite: Vue satellite
         terrain: Relief
+    integrations:
+        title: Intégrations
+        description: |
+            Connectez du contenu d'autres sections à cette carte
     delete: Supprimer la carte et tous ses éléments liés
     deleted: La carte est supprimée
 

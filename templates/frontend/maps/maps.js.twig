@@ -19,6 +19,16 @@
                     map: map,
                     title: '{{ place.title }}'
                 });
+
+                {% if place.isPaired %}
+                    var contentPanel = new google.maps.InfoWindow({
+                        content: '{{ place.parent_id }}'
+                    });
+                    google.maps.event.addListener(marker, 'click', function() {
+                        contentPanel.open(map, marker);
+                    });
+                {% endif %}
+
             {% endfor %}
         }
 

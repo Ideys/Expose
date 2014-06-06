@@ -19,6 +19,7 @@ abstract class Item
     protected $attributes = array(
         'id' => null,
         'expose_section_id' => null,
+        'parent_id' => null,
         'type' => null,
         'category' => null,
         'title' => null,
@@ -63,5 +64,15 @@ abstract class Item
     public function isPublished()
     {
         return ($this->published == '1');
+    }
+
+    /**
+     * Test if Item has a twin Item connected.
+     *
+     * @return boolean
+     */
+    public function isPaired()
+    {
+        return ((int) $this->parent_id) > 0;
     }
 }

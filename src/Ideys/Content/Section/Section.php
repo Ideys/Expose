@@ -38,6 +38,7 @@ abstract class Section
     protected $attributes = array(
         'id' => null,
         'expose_section_id' => null,
+        'parent_id' => null,
         'type' => null,
         'title' => null,
         'description' => null,
@@ -227,6 +228,16 @@ abstract class Section
     public function isArchived()
     {
         return 1 == $this->archive;
+    }
+
+    /**
+     * Test if Section has a twin Section connected.
+     *
+     * @return boolean
+     */
+    public function isPaired()
+    {
+        return ((int) $this->parent_id) > 0;
     }
 
     /**
