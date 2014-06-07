@@ -585,7 +585,7 @@ class ContentFactory
     public static function getSqlSelectSection()
     {
         return
-        'SELECT s.id, s.expose_section_id, s.parent_id, '.
+        'SELECT s.id, s.expose_section_id, '.
                's.type, s.slug, s.custom_css, s.custom_js, '.
                's.menu_pos, s.tag, s.visibility, s.shuffle, '.
                's.hierarchy, s.archive, s.target_blank, '.

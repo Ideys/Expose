@@ -5,6 +5,16 @@
         <p>{{ 'maps.integrations.description'|trans }}</p>
     </div>
     <div class="medium-6 columns">
+        {% for other_section in other_sections %}
+        <div class="panel">
+            {{ widgets.type_icon(other_section.type) }}
+            {{ other_section.title }}
+            <button class="tiny secondary button right"
+                    data-clip="{{ other_section.id }}">
+                <i class="fi-paperclip"></i>
+            </button>
+        </div>
+        {% endfor %}
     </div>
 </div>
 {% endspaceless %}

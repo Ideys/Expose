@@ -1,28 +1,12 @@
 {% spaceless %}
-{% set typeIcons = {
-    'gallery': 'photo',
-    'channel': 'play-video',
-    'html': 'page',
-    'blog': 'page-copy',
-    'form': 'checkbox',
-    'maps': 'map',
-    'link': 'link'
-} %}
-{% set visibilityIcons = {
-    'homepage': 'home',
-    'public': 'link',
-    'private': 'lock',
-    'hidden': 'unlink',
-    'closed': 'prohibited'
-} %}
 <a href="#panel{{ section.id }}"
    data-click="#panel{{ section.id }} .tabs dd:first-child a">
   <span class="handle-section">&nbsp;</span>
-  <i class="fi-{{ typeIcons[section.type] }} type-icon"></i>
+  {{ widgets.type_icon(section.type, 'type-icon') }}
   <span class="section-title">{{ section.title }}</span>
   {% if 'link' != section.type %}
     <small class="counter">{{ section.total_items }}</small>
   {% endif %}
-  <i class="state-icon fi-{{ visibilityIcons[section.visibility] }}"></i>
+  {{ widgets.visibility_icon(section.visibility, 'state-icon') }}
 </a>
 {% endspaceless %}

@@ -16,8 +16,10 @@
 <div class="content-section single-section" data-id="{{ section.id }}">
   <span class="handle-section">&nbsp;</span>
   <dl class="accordion" data-accordion>
-    {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig"
-          with {'section': section} only %}
+    {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig" with {
+        'section': section,
+        'widgets': widgets
+    } only %}
   </dl>
   <hr>
 </div>

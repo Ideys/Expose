@@ -1,7 +1,10 @@
 {% spaceless %}
 <dd data-id="{{ section.id }}"
     class="section {{ section.visibility }}-section">
-    {% include 'backend/contentManager/_sectionTitle.html.twig' with {'section': section} only %}
+    {% include 'backend/contentManager/_sectionTitle.html.twig' with {
+        'section': section,
+        'widgets': widgets
+    } only %}
     <div id="panel{{ section.id }}"
          class="content panel-section link">
         <dl class="tabs" data-tab>

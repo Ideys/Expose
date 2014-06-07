@@ -8,6 +8,30 @@
 {% if not section.isHomepage %}{{ section.title }} | {% endif %}{{ baseTitle }}
 {% endmacro %}
 
+{% macro type_icon(type, class) %}
+{% set typeIcons = {
+    'gallery': 'photo',
+    'channel': 'play-video',
+    'html': 'page',
+    'blog': 'page-copy',
+    'form': 'checkbox',
+    'maps': 'map',
+    'link': 'link'
+} %}
+<i class="fi-{{ typeIcons[type] }} {{ class }}"></i>
+{% endmacro %}
+
+{% macro visibility_icon(visibility, class) %}
+{% set visibilityIcons = {
+    'homepage': 'home',
+    'public': 'link',
+    'private': 'lock',
+    'hidden': 'unlink',
+    'closed': 'prohibited'
+} %}
+<i class="fi-{{ visibilityIcons[visibility] }} {{ class }}"></i>
+{% endmacro %}
+
 {# Main frontend nav bar link formatter #}
 {% macro menu_link(section, follow) %}
 {% spaceless %}

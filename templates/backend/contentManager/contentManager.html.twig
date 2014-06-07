@@ -37,7 +37,10 @@
        data-sort-url="{{ path('admin_content_manager_sort_sections') }}"
        class="large-12 columns">
     {% for section in sections if section.archive == 0 %}
-      {% include "backend/contentManager/_sectionRow.html.twig" with {'section': section} only %}
+      {% include "backend/contentManager/_sectionRow.html.twig" with {
+          'section': section,
+          'widgets': widgets
+      } only %}
     {% endfor %}
     <a href="{{ path('admin_content_manager_archives') }}"
        style="color: #aaa">
