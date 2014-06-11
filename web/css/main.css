@@ -124,7 +124,7 @@ textarea {
 
 .sidebar .secondary.side-nav {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     width: 85%;
 }
 
@@ -156,11 +156,31 @@ textarea {
     color: #fff;
 }
 
+.side-nav li.heading,
+.off-canvas-list li.heading {
+    text-transform: inherit;
+    font-weight: bold;
+}
+
+ul.side-sub-menu {
+    list-style: none;
+    margin-left: 0;
+}
+
+.side-nav ul.side-sub-menu {
+    margin-bottom: 15px;
+}
+
+.off-canvas-list ul.side-sub-menu {
+    border-top: 2px solid #262626;
+    border-bottom: 2px solid #262626;
+}
+
 #admin-link {
-    margin: 0px;
+    margin: 0;
     position: fixed;
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     padding: 4px;
 }
 
@@ -186,7 +206,7 @@ textarea {
 }
 
 #to-top {
-    margin: 0px;
+    margin: 0;
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -195,7 +215,7 @@ textarea {
 @media only screen and (max-width: 40em) {
     #to-top {
         padding: 4px;
-        bottom: 0px;
+        bottom: 0;
     }
 }
 
@@ -359,7 +379,7 @@ body.gallery-fullScreen .orbit-container .orbit-slides-container > * .orbit-capt
 #slide-thumbs {
     width: 100%;
     position: fixed;
-    bottom: 0px;
+    bottom: 0;
     z-index: 100;
     overflow: hidden;
     background: #fff;
@@ -370,11 +390,11 @@ body.gallery-fullScreen .orbit-container .orbit-slides-container > * .orbit-capt
 }
 
 #slide-thumbs table {
-    margin: 0px;
+    margin: 0;
 }
 
 #slide-thumbs table tr td {
-    padding: 0px 2px;
+    padding: 0 2px;
 }
 
 #slide-thumbs a {

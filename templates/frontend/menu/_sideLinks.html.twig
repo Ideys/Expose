@@ -3,10 +3,18 @@
    if  section.isMenuEnabled(is_granted('ROLE_USER'))
    and section.menu_pos == menu_pos %}
   {% if section.sections|length %}
-    <li class="heading">{{ section.title }}</li>
-    {% for child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
-        {{ widgets.menu_link(child, follow) }}
-    {% endfor %}
+    <li class="heading">
+        <a href="#" data-display="#sub-menu-{{ section.id }}-{{ class }}">
+            {{ section.title }}
+        </a>
+    </li>
+    <li id="sub-menu-{{ section.id }}-{{ class }}" class="hidden">
+        <ul class="side-sub-menu">
+        {% for child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
+            {{ widgets.menu_link(child, follow) }}
+        {% endfor %}
+        </ul>
+    </li>
   {# An empty dir is not a content #}
   {% elseif section.type != 'dir' %}
       {{ widgets.menu_link(section, follow) }}
