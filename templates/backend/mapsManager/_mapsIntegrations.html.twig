@@ -6,11 +6,15 @@
     </div>
     <div class="medium-6 columns">
         {% for other_section in other_sections %}
-        <div class="panel">
+        <div class="panel{% if other_section.id in section.connectedSectionsId %} active{% endif %}">
             {{ widgets.type_icon(other_section.type) }}
             {{ other_section.title }}
-            <button class="tiny secondary button right"
-                    data-clip="{{ other_section.id }}">
+            <button type="button"
+                    class="tiny secondary button right"
+                    data-attach="{{ path('admin_maps_manager_attach', {
+                        'id': section.id,
+                        'sectionId': other_section.id
+                    }) }}">
                 <i class="fi-paperclip"></i>
             </button>
         </div>

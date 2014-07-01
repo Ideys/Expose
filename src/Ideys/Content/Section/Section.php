@@ -39,6 +39,7 @@ abstract class Section
         'id' => null,
         'expose_section_id' => null,
         'parent_id' => null,
+        'connected_sections' => null,
         'type' => null,
         'title' => null,
         'description' => null,
@@ -60,6 +61,11 @@ abstract class Section
      * @var array
      */
     protected $items = array();
+
+    /**
+     * @var array
+     */
+    protected $connectedSectionsId = array();
 
     /**
      * Slides thumbs sizes.
@@ -98,6 +104,7 @@ abstract class Section
         $this->db = $db;
         $this->attributes = array_merge($this->attributes, $entity);
         $this->parameters = (array) unserialize($this->attributes['parameters']);
+        $this->connectedSectionsId = explode(',', $this->connected_sections);
     }
 
     /**
@@ -122,6 +129,64 @@ abstract class Section
     public function getSections()
     {
         return $this->sections;
+    }
+
+    /**
+     * Add a connected section id.
+     *
+     * @param integer $sectionId
+     *
+     * @return Section
+     */
+    public function addConnectedSectionId($sectionId)
+    {
+        $this->connectedSectionsId[] = $sectionId;
+
+        return $this;
+    }
+
+    /**
+     * Return connected sections id.
+     *
+     * @return array
+     */
+    public function getConnectedSectionsId()
+    {
+        return $this->connectedSectionsId;
+    }
+
+    /**
+     * Remove a connected section id.
+     *
+     * @param integer $sectionId
+     *
+     * @return Section
+     */
+    public function removeConnectedSectionId($sectionId)
+    {
+        $this->connectedSectionsId = array_filter($this->connectedSectionsId, function($var) use ($sectionId) {
+            return $var != $sectionId;
+        });
+
+        return $this;
+    }
+
+    /**
+     * Remove or add a connected section id.
+     *
+     * @param integer $sectionId
+     *
+     * @return Section
+     */
+    public function toggleConnectedSectionId($sectionId)
+    {
+        if (in_array($sectionId, $this->connectedSectionsId)) {
+            $this->removeConnectedSectionId($sectionId);
+        } else {
+            $this->addConnectedSectionId($sectionId);
+        }
+
+        return $this;
     }
 
     /**

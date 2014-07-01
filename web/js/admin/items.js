@@ -147,6 +147,24 @@ $(function(){
         });
         return false;
     })
+    .on('click', '[data-attach]', function(event) {
+        event.stopImmediatePropagation();
+        var url = $(this).data('attach')
+          , container = $(this).parent('.panel')
+          ;
+
+        $.ajax({
+            url: url,
+            type: 'POST'
+        })
+        .done(function(response) {
+            $(container).toggleClass('active');
+        })
+        .fail(function() {
+            console.warn('AJAX attach error.');
+        });
+        return false;
+    })
     ;
 
 }); // End on DOM ready.

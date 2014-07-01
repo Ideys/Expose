@@ -47,6 +47,29 @@ $mapsManagerController->match('/{id}/integrations', function (Request $request, 
 ->method('GET|POST')
 ;
 
+$mapsManagerController->match('/{id}/attach/{sectionId}', function (Request $request, $id, $sectionId) use ($app) {
+
+    $contentFactory = new ContentFactory($app);
+    $section = $contentFactory->findSection($id);
+
+    $section->toggleConnectedSectionId($sectionId);
+
+    $app['db']->update(
+        'expose_section',
+        array(
+            'connected_sections' => implode(',', $section->getConnectedSectionsId()),
+        ),
+        array('id' => $id)
+    );
+
+    return $app->json(true);
+})
+->assert('id', '\d+')
+->assert('sectionId', '\d+')
+->bind('admin_maps_manager_attach')
+->method('POST')
+;
+
 $mapsManagerController->match('/{id}/places', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
