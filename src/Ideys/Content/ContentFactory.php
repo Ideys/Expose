@@ -616,12 +616,15 @@ class ContentFactory
     {
         return
         'SELECT i.*, t.title, t.description, t.content, '.
-               't.link, t.parameters, t.language, s.type AS section_type '.
+               't.link, t.parameters, t.language, '.
+               'st.title AS section_title, s.type AS section_type '.
         'FROM expose_section_item AS i '.
         'LEFT JOIN expose_section_item_trans AS t '.
         'ON t.expose_section_item_id = i.id '.
         'LEFT JOIN expose_section AS s '.
-        'ON i.expose_section_id = s.id ';
+        'ON i.expose_section_id = s.id '.
+        'LEFT JOIN expose_section_trans AS st '.
+        'ON st.expose_section_id = s.id ';
     }
 
     /**

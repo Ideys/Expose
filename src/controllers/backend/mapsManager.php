@@ -23,23 +23,13 @@ $mapsManagerController->match('/{id}/integrations', function (Request $request, 
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-
-    $sections = $app['db']
-        ->fetchAll(
-            'SELECT s.id, s.expose_section_id, '.
-            's.type, s.slug, s.visibility, '.
-            't.title, t.description, t.legend, t.parameters '.
-            'FROM expose_section AS s '.
-            'LEFT JOIN expose_section_trans AS t '.
-            'ON t.expose_section_id = s.id '.
-            'WHERE s.type NOT IN  (\'dir\', \'maps\') '.
-            'AND s.archive = 0 '.
-            'ORDER BY s.hierarchy ',
-            array($section->id));
+    $linkableSections = $section->getLinkableSections();
+    $linkedSectionsItems = $section->getLinkedSectionsItems();
 
     return $app['twig']->render('backend/mapsManager/_mapsIntegrations.html.twig', array(
         'section' => $section,
-        'other_sections' => $sections,
+        'linkable_sections' => $linkableSections,
+        'linked_sections_items' => $linkedSectionsItems,
     ));
 })
 ->assert('id', '\d+')

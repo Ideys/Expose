@@ -104,7 +104,7 @@ abstract class Section
         $this->db = $db;
         $this->attributes = array_merge($this->attributes, $entity);
         $this->parameters = (array) unserialize($this->attributes['parameters']);
-        $this->connectedSectionsId = explode(',', $this->connected_sections);
+        $this->connectedSectionsId = array_filter(explode(',', $this->connected_sections));
     }
 
     /**

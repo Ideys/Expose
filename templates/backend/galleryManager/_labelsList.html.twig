@@ -12,10 +12,10 @@
   <label for="form_global_legend" style="display: inline">
     {{ 'gallery.global.legend'|trans }}
   </label>
-  <span data-display="#global-legend-info">
+  <span data-display="#global-legend-info-{{ section.id }}">
     <i class="fi-info"></i>
   </span>
-  <div id="global-legend-info" class="panel radius hidden">
+  <div id="global-legend-info-{{ section.id }}" class="panel radius hidden">
     <p>{{ 'gallery.global.legend.info'|trans|raw }}</p>
   </div>
   {{ form_widget(form.global_legend, {'attr': {'rows': '3'} }) }}

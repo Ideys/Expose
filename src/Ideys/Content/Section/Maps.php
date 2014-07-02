@@ -2,6 +2,7 @@
 
 namespace Ideys\Content\Section;
 
+use Ideys\Content\ContentFactory;
 use Ideys\Content\ContentInterface;
 use Ideys\Content\SectionInterface;
 use Ideys\Content\Item\Place;
@@ -39,6 +40,54 @@ class Maps extends Section implements ContentInterface, SectionInterface
     public function isSlidesHolder()
     {
         return false;
+    }
+
+    /**
+     * Return all linkable sections to a Map section.
+     * Exclude other Maps sections and Dir sections.
+     *
+     * @return array
+     */
+    public function getLinkableSections()
+    {
+        return  $this->db
+            ->fetchAll(
+                'SELECT s.id, s.expose_section_id, '.
+                's.type, s.slug, s.visibility, '.
+                't.title, t.description, t.legend, t.parameters '.
+                'FROM expose_section AS s '.
+                'LEFT JOIN expose_section_trans AS t '.
+                'ON t.expose_section_id = s.id '.
+                'WHERE s.type NOT IN  (\'dir\', \'maps\') '.
+                'AND s.archive = 0 '.
+                'ORDER BY s.hierarchy ');
+    }
+
+    /**
+     * Return linked Sections Items.
+     *
+     * @return array
+     */
+    public function getLinkedSectionsItems()
+    {
+        $entities = $this->db
+            ->fetchAll(
+                ContentFactory::getSqlSelectItem().
+                'WHERE s.id IN  ('.implode(',', $this->connectedSectionsId).') '.
+                'ORDER BY s.hierarchy, i.hierarchy ');
+
+        // Connect related places to linked items
+        $items = array();
+        foreach ($entities as $item) {
+            $items[$item['id']] = $item + array('place' => array());
+        }
+        foreach ($this->getItems('Place') as $place) {
+            if (array_key_exists($place['parent_id'], $items)) {
+                $items[$place['parent_id']]['place'] = $place;
+            }
+        }
+
+        return $items;
     }
 
     /**
