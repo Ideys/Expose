@@ -70,11 +70,15 @@ class Maps extends Section implements ContentInterface, SectionInterface
      */
     public function getLinkedSectionsItems()
     {
-        $entities = $this->db
-            ->fetchAll(
-                ContentFactory::getSqlSelectItem().
-                'WHERE s.id IN  ('.implode(',', $this->connectedSectionsId).') '.
-                'ORDER BY s.hierarchy, i.hierarchy ');
+        if (empty($this->connectedSectionsId)) {
+            $entities = array();
+        } else {
+            $entities = $this->db
+                ->fetchAll(
+                    ContentFactory::getSqlSelectItem().
+                    'WHERE s.id IN  ('.implode(',', $this->connectedSectionsId).') '.
+                    'ORDER BY s.hierarchy, i.hierarchy ');
+        }
 
         // Connect related places to linked items
         $items = array();
@@ -82,8 +86,8 @@ class Maps extends Section implements ContentInterface, SectionInterface
             $items[$item['id']] = $item + array('place' => array());
         }
         foreach ($this->getItems('Place') as $place) {
-            if (array_key_exists($place['parent_id'], $items)) {
-                $items[$place['parent_id']]['place'] = $place;
+            if (array_key_exists($place->parent_id, $items)) {
+                $items[$place->parent_id]['place'] = $place;
             }
         }
 

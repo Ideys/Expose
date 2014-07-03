@@ -24,15 +24,6 @@
         </a>
       </dd>
       <dd>
-        <a href="#panel{{ section.id }}-integrations"
-           title="{{ 'maps.integrations.title'|trans }}"
-           data-inject-call="{{ path('admin_maps_manager_integrations', {'id': section.id}) }}"
-           data-target="#panel{{ section.id }}-integrations">
-          <i class="fi-layout"></i>
-          <span class="hide-for-small-only">{{ 'maps.integrations.title'|trans }}</span>
-        </a>
-      </dd>
-      <dd>
         <a href="#panel{{ section.id }}-settings"
            title="{{ 'settings'|trans }}"
            data-inject-call="{{ path('admin_content_manager_settings', {'id': section.id}) }}"
@@ -46,8 +37,6 @@
       <div class="content" id="panel{{ section.id }}-preview">
       </div>
       <div class="content" id="panel{{ section.id }}-places">
-      </div>
-      <div class="content" id="panel{{ section.id }}-integrations">
       </div>
       <div class="content" id="panel{{ section.id }}-settings">
       </div>

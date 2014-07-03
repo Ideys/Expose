@@ -13,7 +13,8 @@
             var map = new google.maps.Map(document.getElementById("map-{{ section.id }}"), mapOptions);
 
             {# Add markers to the map #}
-            {% for place in section.items('Place') %}
+            {% for place in section.items('Item')
+               if place.latitude is not null and place.longitude is not null %}
                 var marker = new google.maps.Marker({
                     position: new google.maps.LatLng({{ place.latitude }},{{ place.longitude }}),
                     map: map,

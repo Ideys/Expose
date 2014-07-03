@@ -27,6 +27,8 @@ abstract class Item
         'content' => null,
         'link' => null,
         'path' => null,
+        'latitude'  => null,
+        'longitude' => null,
         'parameters' => '',
         'language' => null,
         'posting_date' => null,

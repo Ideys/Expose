@@ -368,6 +368,8 @@ class ContentFactory
             'category' => $item->category,
             'slug' => String::slugify($item->title),
             'path' => $item->path,
+            'latitude' => $item->latitude,
+            'longitude' => $item->longitude,
             'posting_date' => static::dateToDatabase($item->posting_date),
             'author' => $item->author,
             'published' => $item->published,
@@ -400,6 +402,8 @@ class ContentFactory
             'expose_section_item',
             array(
                 'path' => $item->path,
+                'latitude' => $item->latitude,
+                'longitude' => $item->longitude,
                 'posting_date' => static::dateToDatabase($item->posting_date),
                 'author' => $item->author,
             ) + $this->blameAndTimestampData($item->id),

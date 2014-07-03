@@ -2,6 +2,7 @@
 {% spaceless %}
 <div class="items-holder">
 {% include 'backend/galleryManager/_slidesManagerLinks.html.twig' with {
+    'widgets': widgets,
     'section': section,
     'mode': 'gallery'
 } only %}

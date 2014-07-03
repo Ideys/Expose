@@ -57,6 +57,11 @@ input.clipboard {
     top: -99999px;
 }
 
+.f-dropdown a.active {
+    background-color: #0088cc;
+    color: #e7e7e7;
+}
+
 .button.actions {
     padding: 8px 12px;
     font-size: 1em;
@@ -316,11 +321,6 @@ td.muted {
 
 .map-preview {
     height: 320px;
-}
-
-.panel.active {
-    background-color: #0088cc;
-    color: #e7e7e7;
 }
 
 /* ==========================================================================

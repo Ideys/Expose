@@ -150,22 +150,20 @@ $(function(){
     .on('click', '[data-attach]', function(event) {
         event.stopImmediatePropagation();
         var url = $(this).data('attach')
-          , container = $(this).parent('.panel')
-          ;
+          , link = $(this)
 
         $.ajax({
             url: url,
             type: 'POST'
         })
         .done(function(response) {
-            $(container).toggleClass('active');
+            link.toggleClass('active')
         })
         .fail(function() {
-            console.warn('AJAX attach error.');
-        });
-        return false;
+            console.warn('AJAX attach error.')
+        })
+        return false
     })
-    ;
 
 }); // End on DOM ready.
 

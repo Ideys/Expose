@@ -14,9 +14,6 @@ class Place extends Item implements ContentInterface
      */
     public static function getParameters()
     {
-        return array(
-            'latitude' => '0',
-            'longitude' => '0',
-        );
+        return array();
     }
 }

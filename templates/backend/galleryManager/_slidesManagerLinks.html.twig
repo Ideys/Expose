@@ -52,6 +52,7 @@
                   <a href="{{ path('admin_content_manager_move_items', {'id': subsectionMove.id}) }}"
                      data-target="#slides-{{ section.id }}"
                      data-move>
+                    {{ widgets.type_icon(subsectionMove.type) }}
                     {{ subsectionMove.title }}
                   </a>
                 </li>
@@ -61,6 +62,7 @@
               <a href="{{ path('admin_content_manager_move_items', {'id': sectionMove.id}) }}"
                  data-target="#slides-{{ section.id }}"
                  data-move>
+                {{ widgets.type_icon(section.type) }}
                 {{ sectionMove.title }}
               </a>
             </li>
