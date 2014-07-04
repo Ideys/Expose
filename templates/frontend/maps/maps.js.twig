@@ -1,3 +1,5 @@
+{% import _self as mapWidget %}
+
 {% if site.mapsKey %}
     <script type="text/javascript">
         function initialize() {
@@ -12,23 +14,24 @@
             {# Generate the map #}
             var map = new google.maps.Map(document.getElementById("map-{{ section.id }}"), mapOptions);
 
-            {# Add markers to the map #}
-            {% for place in section.items('Item')
-               if place.latitude is not null and place.longitude is not null %}
-                var marker = new google.maps.Marker({
-                    position: new google.maps.LatLng({{ place.latitude }},{{ place.longitude }}),
-                    map: map,
-                    title: '{{ place.title }}'
-                });
+            {# Add single markers to the map #}
+            {% for place in section.items('place')
+                if place.hasCoordinates %}
+                {{ mapWidget.marker_position(place) }}
+            {% endfor %}
 
-                {% if place.isPaired %}
-                    var contentPanel = new google.maps.InfoWindow({
-                        content: '{{ place.parent_id }}'
-                    });
-                    google.maps.event.addListener(marker, 'click', function() {
-                        contentPanel.open(map, marker);
-                    });
-                {% endif %}
+            {# Add linked items markers to the map #}
+            {% for linked_item in section.linkedSectionsItems
+                if linked_item.hasCoordinates %}
+
+                {{ mapWidget.marker_position(place) }}
+
+                var contentPanel = new google.maps.InfoWindow({
+                    content: '{{ place.parent_id }}'
+                });
+                google.maps.event.addListener(marker, 'click', function() {
+                    contentPanel.open(map, marker);
+                });
 
             {% endfor %}
         }
@@ -36,3 +39,11 @@
         initialize();
     </script>
 {% endif %}
+
+{% macro marker_position(place) %}
+    var marker = new google.maps.Marker({
+    position: new google.maps.LatLng({{ place.latitude }},{{ place.longitude }}),
+    map: map,
+    title: '{{ place.title }}'
+    });
+{% endmacro %}

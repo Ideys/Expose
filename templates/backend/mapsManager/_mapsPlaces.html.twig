@@ -2,40 +2,28 @@
 {% spaceless %}
 <div class="row">
     <div class="medium-6 columns">
-        <ul class="no-bullet">
-            {% for place in section.getItems('Place') %}
-                <li>
-                    <i class="fi-marker"></i>
-                    {{ place.title }}
-                </li>
+        <ul class="no-bullet places-list">
+
+            {# Single places #}
+            {% for place in section.items('Place') %}
+                {% include "backend/mapsManager/_placeItem.html.twig" with {
+                    'item': place
+                } only %}
             {% endfor %}
-            {% for linked_item in linked_sections_items %}
-                <li>
-                    {% if 'slide' == linked_item.type %}
-                        <img src="{{ app.request.basepath }}/gallery/220/{{ linked_item.path }}"
-                             style="width:45px">
-                    {% elseif 'page' == linked_item.type %}
-                        <i class="fi-page"></i>
-                    {% endif %}
-                    <em>{{ linked_item.title }}</em>
-                    <small>{{ linked_item.section_title }}</small>
-                    {% if linked_item.place|length %}
-                        <i class="fi-marker"></i>
-                    {% else %}
-                        <button type="button"
-                                class="tiny secondary button"
-                                data-link-item="">
-                            <i class="fi-paperclip"></i>
-                        </button>
-                    {% endif %}
-                </li>
+
+            {# Places connected to other Sections #}
+            {% for linked_item in section.linkedSectionsItems %}
+                {% include "backend/mapsManager/_placeItem.html.twig" with {
+                    'item': linked_item
+                } only %}
             {% endfor %}
+
         </ul>
     </div>
     <div class="medium-6 columns">
         <a href="#" class="button" data-dropdown-ajax="integrate-map-{{ section.id }}">
             <i class="fi-paperclip"></i>
-            {{ 'maps.integrations.description'|trans }}
+            {{ 'maps.integrations.section'|trans }}
         </a>
         <ul id="integrate-map-{{ section.id }}" class="small f-dropdown attach-items" data-dropdown-content>
             {% for linkable_section in linkable_sections %}
@@ -52,9 +40,16 @@
                 </li>
             {% endfor %}
         </ul>
+        <button type="button" class="button" data-display="#single-marker-form-{{ section.id }}">
+            <i class="fi-marker"></i>
+            {{ 'maps.integrations.single.marker'|trans }}
+        </button>
         {{ form_start(form, {
-        'action': path('admin_maps_manager_places', {'id': section.id}),
-        'attr': {'id': 'place-form-'~section.id }
+            'action': path('admin_maps_manager_places', {'id': section.id}),
+            'attr': {
+                'id': 'single-marker-form-'~section.id,
+                'class': 'hidden'
+            }
         }) }}
             {{ form_errors(form) }}
             {{ form_row(form.title) }}

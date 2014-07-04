@@ -216,9 +216,8 @@ maps:
         satellite: Satellite
         terrain: Terrain
     integrations:
-        title: Integrations
-        description: |
-            Connect the content of other sections on the map
+        section: Connect the content of other sections on the map
+        single.marker: Add a single marker
     delete: Delete this map and all related items
     deleted: The map is deleted
 

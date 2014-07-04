@@ -1,0 +1,50 @@
+{% spaceless %}
+<li>
+
+    {# Coordinates indicator and actions link #}
+    <a  href="#"
+        data-display-place-manager="#place-manager-{{ item.id }}"
+        class="secondary place-bullet button">
+        <i class="fi-marker{% if item.hasCoordinates %} active{% endif %}"></i>
+    </a>
+
+    {# Title and section name #}
+    <span class="title">{{ item.title }}</span>
+
+    <small>{{ item.section_title }}</small>
+
+    {# Rich content info #}
+    {% if 'slide' == item.type %}
+        <img src="{{ app.request.basepath }}/gallery/220/{{ item.path }}"
+             class="image">
+    {% elseif 'page' == item.type %}
+        <i class="fi-page"></i>
+    {% endif %}
+
+</li>
+
+{# Place actions #}
+<li id="place-manager-{{ item.id }}" class="hidden">
+
+    <div data-coordinate-map="{{ path('admin_maps_manager_coordinates', {'id': item.id}) }}"></div>
+
+    <ul class="inline-list">
+        {# Delete single place #}
+        {% if 'place' == item.type %}
+            <li>
+                <a href="#" class="secondary small button">
+                    {{ 'delete'|trans }}
+                </a>
+            </li>
+        {# Detach linked item #}
+        {% else %}
+            <li>
+                <a href="#" class="secondary small button">
+                    {{ 'detach'|trans }}
+                </a>
+            </li>
+        {% endif %}
+    </ul>
+
+</li>
+{% endspaceless %}

@@ -151,6 +151,7 @@ $(function(){
         event.stopImmediatePropagation();
         var url = $(this).data('attach')
           , link = $(this)
+          ;
 
         $.ajax({
             url: url,
@@ -161,8 +162,34 @@ $(function(){
         })
         .fail(function() {
             console.warn('AJAX attach error.')
-        })
-        return false
+        });
+        return false;
+    })
+    .on('click', '[data-display-place-manager]', function(event) {
+        event.stopImmediatePropagation();
+
+        var container = $($(this).data('display-place-manager'))
+          , mapContainer = container.find('[data-coordinate-map]')
+          , url = mapContainer.data('coordinate-map')
+          , mapContainerActive = (mapContainer.html() != '')
+          ;
+
+        container.removeClass('hidden');
+
+        if (!mapContainerActive) {
+            $.ajax({
+                url: url,
+                type: 'POST'
+            })
+            .done(function(response) {
+                mapContainer.html(response);
+            })
+            .fail(function() {
+                console.warn('AJAX attach error.')
+            });
+        }
+
+        return false;
     })
 
 }); // End on DOM ready.

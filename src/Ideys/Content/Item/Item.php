@@ -19,7 +19,6 @@ abstract class Item
     protected $attributes = array(
         'id' => null,
         'expose_section_id' => null,
-        'parent_id' => null,
         'type' => null,
         'category' => null,
         'title' => null,
@@ -69,12 +68,13 @@ abstract class Item
     }
 
     /**
-     * Test if Item has a twin Item connected.
+     * Test if Item has latitude and longitude defined.
      *
      * @return boolean
      */
-    public function isPaired()
+    public function hasCoordinates()
     {
-        return ((int) $this->parent_id) > 0;
+        return ($this->latitude  != null)
+           and ($this->longitude != null);
     }
 }

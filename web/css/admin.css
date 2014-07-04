@@ -323,6 +323,31 @@ td.muted {
     height: 320px;
 }
 
+.places-list .place-bullet.button {
+    padding: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.places-list .fi-marker {
+    color: #fff;
+}
+
+.places-list .fi-marker.active {
+    color: #f35044;
+}
+
+.places-list .title {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.places-list .image {
+    height: 28px;
+}
+
 /* ==========================================================================
    Messaging section
    ========================================================================== */

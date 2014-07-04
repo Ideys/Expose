@@ -25,7 +25,6 @@ $mapsManagerController->match('/{id}/places', function (Request $request, $id) u
     $section = $contentFactory->findSection($id);
 
     $linkableSections = $section->getLinkableSections();
-    $linkedSectionsItems = $section->getLinkedSectionsItems();
 
     $place = new Place(array('type' => ContentFactory::ITEM_PLACE));
     $form = $section->addPlaceForm($app['form.factory'], $place);
@@ -39,7 +38,6 @@ $mapsManagerController->match('/{id}/places', function (Request $request, $id) u
         'form' => $form->createView(),
         'section' => $section,
         'linkable_sections' => $linkableSections,
-        'linked_sections_items' => $linkedSectionsItems,
     ));
 })
 ->assert('id', '\d+')
@@ -47,7 +45,7 @@ $mapsManagerController->match('/{id}/places', function (Request $request, $id) u
 ->method('GET|POST')
 ;
 
-$mapsManagerController->match('/{id}/attach/{sectionId}', function ($id, $sectionId) use ($app) {
+$mapsManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionId) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
@@ -64,10 +62,17 @@ $mapsManagerController->match('/{id}/attach/{sectionId}', function ($id, $sectio
 
     return $app->json(true);
 })
-    ->assert('id', '\d+')
-    ->assert('sectionId', '\d+')
-    ->bind('admin_maps_manager_attach')
-    ->method('POST')
+->assert('id', '\d+')
+->assert('sectionId', '\d+')
+->bind('admin_maps_manager_attach')
+;
+
+$mapsManagerController->match('/{id}/coordinates', function ($id, $sectionId) use ($app) {
+
+})
+->assert('id', '\d+')
+->bind('admin_maps_manager_coordinates')
+->method('GET|POST')
 ;
 
 $mapsManagerController->assert('_locale', implode('|', $app['languages']));

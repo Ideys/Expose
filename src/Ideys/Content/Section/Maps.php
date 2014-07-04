@@ -80,15 +80,9 @@ class Maps extends Section implements ContentInterface, SectionInterface
                     'ORDER BY s.hierarchy, i.hierarchy ');
         }
 
-        // Connect related places to linked items
         $items = array();
-        foreach ($entities as $item) {
-            $items[$item['id']] = $item + array('place' => array());
-        }
-        foreach ($this->getItems('Place') as $place) {
-            if (array_key_exists($place->parent_id, $items)) {
-                $items[$place->parent_id]['place'] = $place;
-            }
+        foreach ($entities as $data) {
+            $items[$data['id']] = ContentFactory::instantiateItem($data);
         }
 
         return $items;

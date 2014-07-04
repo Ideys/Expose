@@ -216,9 +216,8 @@ maps:
         satellite: Vue satellite
         terrain: Relief
     integrations:
-        title: Intégrations
-        description: |
-            Connectez du contenu d'autres sections à cette carte
+        section: Connectez du contenu d'autres sections à cette carte
+        single.marker: Ajouter un marqueur simple
     delete: Supprimer la carte et tous ses éléments liés
     deleted: La carte est supprimée
 
