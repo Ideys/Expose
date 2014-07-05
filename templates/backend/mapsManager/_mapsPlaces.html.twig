@@ -1,24 +1,10 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 <div class="row">
-    <div class="medium-6 columns">
-        <ul class="no-bullet places-list">
-
-            {# Single places #}
-            {% for place in section.items('Place') %}
-                {% include "backend/mapsManager/_placeItem.html.twig" with {
-                    'item': place
-                } only %}
-            {% endfor %}
-
-            {# Places connected to other Sections #}
-            {% for linked_item in section.linkedSectionsItems %}
-                {% include "backend/mapsManager/_placeItem.html.twig" with {
-                    'item': linked_item
-                } only %}
-            {% endfor %}
-
-        </ul>
+    <div class="medium-6 columns" id="places-management-{{ section.id }}">
+        {% include "backend/mapsManager/_placesList.html.twig" with {
+            'section': section
+        } only %}
     </div>
     <div class="medium-6 columns">
         <a href="#" class="button" data-dropdown-ajax="integrate-map-{{ section.id }}">
@@ -33,7 +19,8 @@
                        data-attach="{{ path('admin_maps_manager_attach', {
                        'id': section.id,
                        'sectionId': linkable_section.id
-                       }) }}">
+                       }) }}"
+                       data-target="#places-management-{{ section.id }}">
                         {{ widgets.type_icon(linkable_section.type) }}
                         {{ linkable_section.title }}
                     </a>

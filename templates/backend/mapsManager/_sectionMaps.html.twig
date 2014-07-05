@@ -6,21 +6,21 @@
        class="content panel-section html">
     <dl class="tabs" data-tab>
       <dd>
-        <a href="#panel{{ section.id }}-preview"
-           title="{{ 'section.preview'|trans }}"
-           data-inject-call="{{ path('admin_maps_manager_preview', {'id': section.id}) }}"
-           data-target="#panel{{ section.id }}-preview">
-          <i class="fi-eye"></i>
-          <span class="hide-for-small-only">{{ 'section.preview'|trans }}</span>
-        </a>
-      </dd>
-      <dd>
         <a href="#panel{{ section.id }}-places"
            title="{{ 'maps.places'|trans }}"
            data-inject-call="{{ path('admin_maps_manager_places', {'id': section.id}) }}"
            data-target="#panel{{ section.id }}-places">
           <i class="fi-marker"></i>
           <span class="hide-for-small-only">{{ 'maps.places'|trans }}</span>
+        </a>
+      </dd>
+      <dd>
+        <a href="#panel{{ section.id }}-preview"
+           title="{{ 'section.preview'|trans }}"
+           data-inject-call="{{ path('admin_maps_manager_preview', {'id': section.id}) }}"
+           data-target="#panel{{ section.id }}-preview">
+            <i class="fi-eye"></i>
+            <span class="hide-for-small-only">{{ 'section.preview'|trans }}</span>
         </a>
       </dd>
       <dd>
@@ -34,9 +34,9 @@
       </dd>
     </dl>
     <div class="tabs-content">
-      <div class="content" id="panel{{ section.id }}-preview">
-      </div>
       <div class="content" id="panel{{ section.id }}-places">
+      </div>
+      <div class="content" id="panel{{ section.id }}-preview">
       </div>
       <div class="content" id="panel{{ section.id }}-settings">
       </div>

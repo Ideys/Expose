@@ -15,7 +15,7 @@
             var map = new google.maps.Map(document.getElementById("map-{{ section.id }}"), mapOptions);
 
             {# Add single markers to the map #}
-            {% for place in section.items('place')
+            {% for place in section.items('Place')
                 if place.hasCoordinates %}
                 {{ mapWidget.marker_position(place) }}
             {% endfor %}
@@ -24,10 +24,10 @@
             {% for linked_item in section.linkedSectionsItems
                 if linked_item.hasCoordinates %}
 
-                {{ mapWidget.marker_position(place) }}
+                {{ mapWidget.marker_position(linked_item) }}
 
                 var contentPanel = new google.maps.InfoWindow({
-                    content: '{{ place.parent_id }}'
+                    content: '{{ mapWidget.item_content(linked_item) }}'
                 });
                 google.maps.event.addListener(marker, 'click', function() {
                     contentPanel.open(map, marker);
@@ -46,4 +46,12 @@
     map: map,
     title: '{{ place.title }}'
     });
+{% endmacro %}
+
+{% macro item_content(item) %}
+{% spaceless %}
+    {% if 'slide' == item.type %}
+        <img src="{{ app.request.basepath }}/gallery/220/{{ item.path }}" alt="{{ item.title|e }}">
+    {% endif %}
+{% endspaceless %}
 {% endmacro %}

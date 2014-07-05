@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Content\Section\Maps;
 use Ideys\Content\Item\Place;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
@@ -60,15 +61,33 @@ $mapsManagerController->post('/{id}/attach/{sectionId}', function ($id, $section
         array('id' => $id)
     );
 
-    return $app->json(true);
+    return $app['twig']->render('backend/mapsManager/_placesList.html.twig', array(
+        'section' => $section,
+    ));
 })
 ->assert('id', '\d+')
 ->assert('sectionId', '\d+')
 ->bind('admin_maps_manager_attach')
 ;
 
-$mapsManagerController->match('/{id}/coordinates', function ($id, $sectionId) use ($app) {
+$mapsManagerController->match('/{id}/coordinates', function (Request $request, $id) use ($app) {
 
+    $contentFactory = new ContentFactory($app);
+    $item = $contentFactory->findItem($id);
+
+    $maps = new Maps($app['db']);
+    $form = $maps->coordinatesForm($app['form.factory'], $item);
+
+    $form->handleRequest($request);
+    if ($form->isValid()) {
+        $contentFactory->editItem($item);
+        return $app->json(true);
+    }
+
+    return $app['twig']->render('backend/mapsManager/_coordinatesForm.html.twig', array(
+        'item' => $item,
+        'form' => $form->createView(),
+    ));
 })
 ->assert('id', '\d+')
 ->bind('admin_maps_manager_coordinates')

@@ -1,0 +1,16 @@
+{% import "widgets.html.twig" as widgets %}
+{% spaceless %}
+{{ form_start(form, {
+    'action': path('admin_maps_manager_coordinates', {'id': item.id}),
+}) }}
+    {{ form_errors(form) }}
+    {{ form_row(form.latitude) }}
+    {{ form_row(form.longitude) }}
+    <div class="text-right">
+        {{ widgets.btn_ajax() }}
+    </div>
+    <div class="hidden">
+        {{ form_rest(form) }}
+    </div>
+{{ form_end(form) }}
+{% endspaceless %}

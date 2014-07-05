@@ -5,8 +5,11 @@ namespace Ideys\Content\Section;
 use Ideys\Content\ContentFactory;
 use Ideys\Content\ContentInterface;
 use Ideys\Content\SectionInterface;
+use Ideys\Content\Item\Item;
 use Ideys\Content\Item\Place;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\Form as SfForm;
 
 /**
  * Maps content manager.
@@ -117,6 +120,11 @@ class Maps extends Section implements ContentInterface, SectionInterface
 
     /**
      * New place form.
+     *
+     * @param FormFactory $formFactory
+     * @param Place       $place
+     *
+     * @return SfForm
      */
     public function addPlaceForm(FormFactory $formFactory, Place $place)
     {
@@ -127,6 +135,38 @@ class Maps extends Section implements ContentInterface, SectionInterface
                     'placeholder' => 'section.title',
                 ),
             ))
+        ;
+        $this->coordinatesFields($formBuilder);
+
+        return $formBuilder->getForm();
+    }
+
+    /**
+     * Coordinates form for all items types.
+     *
+     * @param FormFactory $formFactory
+     * @param Item        $item
+     *
+     * @return SfForm
+     */
+    public function coordinatesForm(FormFactory $formFactory, Item $item)
+    {
+        $formBuilder = $formFactory->createBuilder('form', $item);
+        $this->coordinatesFields($formBuilder);
+
+        return $formBuilder->getForm();
+    }
+
+    /**
+     * Coordinates fields.
+     *
+     * @param FormBuilderInterface $formBuilder
+     *
+     * @return FormBuilderInterface
+     */
+    private function coordinatesFields(FormBuilderInterface $formBuilder)
+    {
+        $formBuilder
             ->add('latitude', 'number', array(
                 'label' => 'maps.latitude',
                 'precision' => 15,
@@ -137,7 +177,7 @@ class Maps extends Section implements ContentInterface, SectionInterface
             ))
         ;
 
-        return $formBuilder->getForm();
+        return $formBuilder;
     }
 
     /**

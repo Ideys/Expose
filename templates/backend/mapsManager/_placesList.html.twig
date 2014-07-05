@@ -1,0 +1,19 @@
+{% spaceless %}
+<ul class="no-bullet places-list">
+
+    {# Single places #}
+    {% for place in section.items('Place') %}
+        {% include "backend/mapsManager/_placeItem.html.twig" with {
+            'item': place
+        } only %}
+    {% endfor %}
+
+    {# Places connected to other Sections #}
+    {% for linked_item in section.linkedSectionsItems %}
+        {% include "backend/mapsManager/_placeItem.html.twig" with {
+            'item': linked_item
+        } only %}
+    {% endfor %}
+
+</ul>
+{% endspaceless %}

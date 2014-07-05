@@ -150,6 +150,7 @@ $(function(){
     .on('click', '[data-attach]', function(event) {
         event.stopImmediatePropagation();
         var url = $(this).data('attach')
+          , target = $($(this).data('target'))
           , link = $(this)
           ;
 
@@ -158,10 +159,11 @@ $(function(){
             type: 'POST'
         })
         .done(function(response) {
-            link.toggleClass('active')
+            link.toggleClass('active');
+            target.html(response);
         })
         .fail(function() {
-            console.warn('AJAX attach error.')
+            console.warn('AJAX attach error.');
         });
         return false;
     })
@@ -174,7 +176,7 @@ $(function(){
           , mapContainerActive = (mapContainer.html() != '')
           ;
 
-        container.removeClass('hidden');
+        container.toggleClass('hidden');
 
         if (!mapContainerActive) {
             $.ajax({
