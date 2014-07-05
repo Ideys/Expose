@@ -26,11 +26,11 @@
 
                 {{ mapWidget.marker_position(linked_item) }}
 
-                var contentPanel = new google.maps.InfoWindow({
+                var contentPanel{{ linked_item.id }} = new google.maps.InfoWindow({
                     content: '{{ mapWidget.item_content(linked_item) }}'
                 });
-                google.maps.event.addListener(marker, 'click', function() {
-                    contentPanel.open(map, marker);
+                google.maps.event.addListener(marker{{ linked_item.id }}, 'click', function() {
+                    contentPanel{{ linked_item.id }}.open(map, marker{{ linked_item.id }});
                 });
 
             {% endfor %}
@@ -41,7 +41,7 @@
 {% endif %}
 
 {% macro marker_position(place) %}
-    var marker = new google.maps.Marker({
+    var marker{{ place.id }} = new google.maps.Marker({
     position: new google.maps.LatLng({{ place.latitude }},{{ place.longitude }}),
     map: map,
     title: '{{ place.title }}'

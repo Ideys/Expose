@@ -17,6 +17,13 @@ use Symfony\Component\Form\Form as SfForm;
 class Maps extends Section implements ContentInterface, SectionInterface
 {
     /**
+     * Hold linked sections items
+     *
+     * @var array
+     */
+    private $linkedItems = array();
+
+    /**
      * {@inheritdoc}
      */
     public static function getParameters()
@@ -73,22 +80,44 @@ class Maps extends Section implements ContentInterface, SectionInterface
      */
     public function getLinkedSectionsItems()
     {
-        if (empty($this->connectedSectionsId)) {
-            $entities = array();
-        } else {
-            $entities = $this->db
-                ->fetchAll(
-                    ContentFactory::getSqlSelectItem().
-                    'WHERE s.id IN  ('.implode(',', $this->connectedSectionsId).') '.
-                    'ORDER BY s.hierarchy, i.hierarchy ');
+        if (empty($this->linkedItems)) {
+            if (empty($this->connectedSectionsId)) {
+                $entities = array();
+            } else {
+                $entities = $this->db
+                    ->fetchAll(
+                        ContentFactory::getSqlSelectItem().
+                        'WHERE s.id IN  ('.implode(',', $this->connectedSectionsId).') '.
+                        'ORDER BY s.hierarchy, i.hierarchy ');
+            }
+
+            foreach ($entities as $data) {
+                $this->linkedItems[$data['id']] = ContentFactory::instantiateItem($data);
+            }
         }
 
-        $items = array();
-        foreach ($entities as $data) {
-            $items[$data['id']] = ContentFactory::instantiateItem($data);
+        return $this->linkedItems;
+    }
+
+    /**
+     * Test if Map has some items with coordinates.
+     *
+     * @return boolean
+     */
+    public function hasPlacesDefined()
+    {
+        // Places items has always coordinates.
+        if ($this->hasItems('Place')) {
+            return true;
         }
 
-        return $items;
+        // Test if at least one linked sections item has coordinates defined.
+        foreach ($this->getLinkedSectionsItems() as $linkedItem)
+        if ($linkedItem->hasCoordinates()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

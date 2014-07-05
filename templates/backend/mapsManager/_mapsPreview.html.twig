@@ -1,7 +1,7 @@
 {% spaceless %}
 {% if not site.mapsKey %}
     <p class="notice-empty">{{ 'maps.no.google.maps.key'|trans }}</p>
-{% elseif not section.hasItems('Place') %}
+{% elseif not section.hasPlacesDefined %}
     <p class="notice-empty">{{ 'maps.no.place'|trans }}</p>
 {% endif %}
 <div id="map-{{ section.id }}" class="map-preview"></div>

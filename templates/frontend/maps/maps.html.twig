@@ -5,7 +5,7 @@
 {% block title widgets.section_title(section, parent()) %}
 
 {% block main -%}
-{% if section.hasItems('Place') and site.mapsKey|length %}
+{% if section.hasPlacesDefined and site.mapsKey|length %}
     <div id="map-{{ section.id }}" class="map"></div>
 {% else %}
     <p class="coming-soon">
