@@ -414,7 +414,8 @@ class ContentFactory
             array(
                 'title' => $item->title,
                 'description' => $item->description,
-                'parameters' => serialize($item->parameters),
+                'parameters' => is_array($item->parameters) ?
+                        serialize($item->parameters) : $item->parameters,
                 'content' => $item->content,
             ),
             array(
