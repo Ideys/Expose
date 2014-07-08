@@ -51,7 +51,7 @@
 {% macro item_content(item) %}
 {% spaceless %}
     {% if 'slide' == item.type %}
-        <img src="{{ app.request.basepath }}/gallery/220/{{ item.path }}" alt="{{ item.title|e }}">
+        <img src="{{ app.request.basepath }}/gallery/220/{{ item.path }}" alt="{{ item.title|e }}">{{ item.description|raw }}
     {% endif %}
 {% endspaceless %}
 {% endmacro %}
