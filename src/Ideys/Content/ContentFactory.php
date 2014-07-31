@@ -122,6 +122,21 @@ class ContentFactory
     }
 
     /**
+     * Return the first viewable section.
+     *
+     * @return \Ideys\Content\Section\Section
+     */
+    public function findFirstSection()
+    {
+        $sql = $this::getSqlSelectSection()
+            . "WHERE s.type NOT IN ('link', 'dir')"
+            . "AND s.visibility NOT IN ('homepage', 'closed') ";
+        $sectionTranslations = $this->db->fetchAll($sql);
+
+        return $this->hydrateSection($sectionTranslations);
+    }
+
+    /**
      * Return a section.
      *
      * @param string $slug Section slug

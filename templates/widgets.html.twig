@@ -101,6 +101,8 @@
 {# Keys replacement mechanism for rich contents #}
 {% macro inclusion_replace_keys(content) %}
 {{ content|replace({
+    '__path:section__': app.request.basepath~'/s',
+    '__path:first_section__': path('first_section'),
     '__path:gallery__': app.request.basepath~'/gallery',
 })|raw }}
 {% endmacro %}

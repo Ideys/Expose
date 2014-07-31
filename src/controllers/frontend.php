@@ -86,6 +86,16 @@ $frontendController->get('/', $frontendContent)
 ->bind('homepage')
 ;
 
+$frontendController->get('/first', function() use ($app) {
+    $contentFactory = new ContentFactory($app);
+
+    $firstSection = $contentFactory->findFirstSection();
+
+    return $app->redirect($app['url_generator']->generate('section', array('slug' => $firstSection->slug)));
+})
+->bind('first_section')
+;
+
 $frontendController->match('/s/{slug}', $frontendContent)
 ->bind('section')
 ->method('GET|POST')
