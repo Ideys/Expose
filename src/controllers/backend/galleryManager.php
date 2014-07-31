@@ -50,6 +50,14 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
                 'placeholder' => 'section.description',
             ),
         ))
+        ->add('tags'.$slide->id, 'text', array(
+            'required'      => false,
+            'label'         => 'tags',
+            'data'          => $slide->tags,
+            'attr' => array(
+                'placeholder' => 'tags',
+            ),
+        ))
         ->add('link'.$slide->id, 'text', array(
             'required'      => false,
             'label'         => 'gallery.slide.link',
@@ -78,6 +86,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
                 $slide->id,
                 $data['title'.$slide->id],
                 $data['description'.$slide->id],
+                $data['tags'.$slide->id],
                 $data['link'.$slide->id]
             );
         }

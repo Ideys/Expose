@@ -366,6 +366,7 @@ class ContentFactory
             'expose_section_id' => $section->id,
             'type' => $item->type,
             'category' => $item->category,
+            'tags' => $item->tags,
             'slug' => String::slugify($item->title),
             'path' => $item->path,
             'latitude' => $item->latitude,
@@ -405,6 +406,7 @@ class ContentFactory
                 'latitude' => $item->latitude,
                 'longitude' => $item->longitude,
                 'posting_date' => static::dateToDatabase($item->posting_date),
+                'tags' => $item->tags,
                 'author' => $item->author,
             ) + $this->blameAndTimestampData($item->id),
             array('id' => $item->id)
@@ -433,10 +435,20 @@ class ContentFactory
      * @param integer $id
      * @param string  $title
      * @param string  $description
+     * @param string  $tags
      * @param string  $link
      */
-    public function updateItemTitle($id, $title, $description, $link)
+    public function updateItemTitle($id, $title, $description, $tags, $link)
     {
+        $this->db->update(
+            'expose_section_item',
+            array(
+                'tags' => $tags,
+            ),
+            array(
+                'id' => $id,
+            )
+        );
         $this->db->update(
             'expose_section_item_trans',
             array(

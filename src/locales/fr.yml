@@ -100,6 +100,9 @@ gallery:
     labels: Labels
     nav.bar.display: Afficher la navigation
     thumb.list.display: Afficher les miniatures en bas d'écran
+    display.alt.field: Afficher le champ titre alternatif
+    display.tags.field: Afficher le champ tags
+    display.global.legend.field: Afficher la légende globale
     global.legend: Légende des slides
     global.legend.info: |
         Cette légende sera affichée sur chaque images,
@@ -316,6 +319,7 @@ process: Traitement
 saved: Sauvegardé
 failed: Echec
 new: Nouveau
+tags: Tags
 settings: Paramétrages
 advanced.settings: Options avancées
 select:

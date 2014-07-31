@@ -21,6 +21,7 @@ abstract class Item
         'expose_section_id' => null,
         'type' => null,
         'category' => null,
+        'tags' => null,
         'title' => null,
         'description' => null,
         'content' => null,

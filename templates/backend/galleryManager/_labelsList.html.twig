@@ -6,9 +6,33 @@
     'attr': {'id': 'section-form-'~section.id }
 }) }}
 
-{{ widgets.btn_ajax() }}
+<div class="clearfix">
+    <div class="left">
+        {{ widgets.btn_ajax() }}
+    </div>
+    <ul class="inline-list gallery-label-display left">
+        <li>
+            <label>
+                <input type="checkbox" data-checkbox-display=".alt-field-{{ section.id }}">
+                {{ 'gallery.display.alt.field'|trans }}
+            </label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" data-checkbox-display=".tag-field-{{ section.id }}">
+                {{ 'gallery.display.tags.field'|trans }}
+            </label>
+        </li>
+        <li>
+            <label>
+                <input type="checkbox" data-checkbox-display="#global-legend-field-{{ section.id }}">
+                {{ 'gallery.display.global.legend.field'|trans }}
+            </label>
+        </li>
+    </ul>
+</div>
 
-<div>
+<div id="global-legend-field-{{ section.id }}" class="hidden">
   <label for="form_global_legend" style="display: inline">
     {{ 'gallery.global.legend'|trans }}
   </label>
@@ -64,7 +88,8 @@
       <div class="small-12 columns">
         <fieldset>
           {{ form_widget(form['description'~slide.id], {'attr': {'rows': '2', 'class': 'slide-description'} }) }}
-          {{ form_widget(form['title'~slide.id]) }}
+          {{ form_widget(form['title'~slide.id], {'attr': {'class': 'hidden alt-field-'~section.id} }) }}
+          {{ form_widget(form['tags'~slide.id], {'attr': {'class': 'hidden tag-field-'~section.id} }) }}
           {% if section.isLinkable %}
           {{ form_widget(form['link'~slide.id]) }}
           {% endif %}

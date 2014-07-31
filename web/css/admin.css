@@ -285,6 +285,19 @@ td.muted {
     cursor: pointer;
 }
 
+/*
+ * Gallery labels manager
+ */
+
+.gallery-label-display {
+    margin-left: 8px;
+}
+
+.gallery-label-display label {
+    line-height: 50px;
+    color: #888;
+}
+
 /* ==========================================================================
    Forms manager
    ========================================================================== */

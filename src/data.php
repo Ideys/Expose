@@ -105,6 +105,7 @@ if (!$schema->tablesExist('expose_section_item')) {
     $table->addIndex(array('expose_section_id'));
     $table->addColumn('type', 'string', array('length' => 55));
     $table->addColumn('category', 'string', array('length' => 55, 'default' => null, 'notnull' => false));
+    $table->addColumn('tags', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('slug', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('path', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('posting_date', 'datetime', array('default' => null, 'notnull' => false));

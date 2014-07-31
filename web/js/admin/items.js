@@ -193,6 +193,19 @@ $(function(){
 
         return false;
     })
+    .on('click', '[data-checkbox-display]', function() {
+
+          var checkbox = $(this)
+            , target = $(checkbox.data('checkbox-display'))
+            ;
+
+          if (checkbox.prop('checked')) {
+              target.removeClass('hidden');
+          } else {
+              target.addClass('hidden');
+          }
+    });
+
 
 }); // End on DOM ready.
 

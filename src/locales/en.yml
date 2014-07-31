@@ -100,6 +100,9 @@ gallery:
     labels: Labels
     nav.bar.display: Display navigation
     thumb.list.display: Display thumbs at the bottom of the screen
+    display.alt.field: Display alt attribute field
+    display.tags.field: Display tags field
+    display.global.legend.field: Display global legend
     global.legend: Slides legend
     global.legend.info: |
         This legend will be displayed on each slides,
@@ -316,6 +319,7 @@ process: Process
 saved: Saved
 failed: Failed
 new: New
+tags: Tags
 settings: Settings
 advanced.settings: Advanced settings
 select:
