@@ -49,6 +49,14 @@ class Blog extends Section implements ContentInterface, SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isComposite()
+    {
+        return true;
+    }
+
+    /**
      * New post form.
      */
     public function newPostForm(FormFactory $formFactory, Post $post)

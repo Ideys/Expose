@@ -37,6 +37,14 @@ class Html extends Section implements ContentInterface, SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isComposite()
+    {
+        return true;
+    }
+
+    /**
      * Return page content first page.
      */
     public function getFirstPage()

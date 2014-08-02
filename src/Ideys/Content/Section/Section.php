@@ -336,6 +336,16 @@ abstract class Section
     }
 
     /**
+     * Test if the section could be composed with other sections items.
+     *
+     * @return boolean
+     */
+    public function isComposite()
+    {
+        return false;
+    }
+
+    /**
      * Test if content has some items or not.
      *
      * @param string $type Items type.

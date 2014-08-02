@@ -78,4 +78,28 @@ abstract class Item
         return ($this->latitude  != null)
            and ($this->longitude != null);
     }
+
+    /**
+     * Set item content.
+     *
+     * @param string $content
+     *
+     * @return Item
+     */
+    public function setContent($content)
+    {
+        $this->attributes['content'] = $content;
+
+        return $this;
+    }
+
+    /**
+     * Return item content.
+     *
+     * @return string|null
+     */
+    public function getContent()
+    {
+        return $this->attributes['content'];
+    }
 }

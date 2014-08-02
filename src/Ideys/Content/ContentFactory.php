@@ -186,6 +186,84 @@ class ContentFactory
     }
 
     /**
+     * Replace sections keys replacement for composite sections.
+     *
+     * - Gallery integration
+     * - Video integration
+     *
+     * @param \Ideys\Content\Section\Section $section
+     * @param $twig
+     */
+    public function composeSectionItems($section, \Twig_Environment $twig)
+    {
+        if ($section->isComposite()) {
+
+            $items = $section->getItems($section::getDefaultItemType());
+
+            // A: extract replacement keys
+            $sectionSlugs = array();
+            foreach ($items as $item) {
+                if ($item instanceof Item\Item) {
+                    $content = $item->getContent();
+                    $countMatch = preg_match_all('/__(slides|video):([\w\@-]+)__/', $content, $matches);
+                    if ((int)$countMatch > 0) {
+                        $keys = $matches[0];
+                        $contentType = $matches[1];
+                        foreach ($matches[2] as $row => $slug) {
+                            $sectionSlugs[$contentType[$row]][$keys[$row]] = $slug;
+                        }
+                    }
+                }
+            }
+
+            // B: retrieve related sections
+            $replacementValues = array();
+            $galleries = $sectionSlugs['slides'];
+            if (!empty($galleries)) {
+                $sanitizedSlugs = filter_var_array($galleries, FILTER_SANITIZE_STRING);
+                $sql = $this::getSqlSelectSection()
+                    . 'WHERE s.slug IN (\''. implode("', '", $sanitizedSlugs) .'\') '
+                    . 'AND t.language = ? '
+                    . "AND s.type IN ('gallery', 'channel') ";
+
+                $sectionsToInclude = $this->db->fetchAll($sql, array($this->language));
+
+                $replacementStrings = array_flip($galleries);
+                foreach ($sectionsToInclude as $s) {
+                    $sectionToInclude = static::instantiateSection($this->db, $s);
+                    $sectionToInclude->hydrateItems();
+                    $defaultType = $sectionToInclude::getDefaultItemType();
+                    if ($sectionToInclude->hasItems($defaultType)) {
+                        $replacementValues[$replacementStrings[$sectionToInclude->slug]] = $sectionToInclude;
+                    }
+                }
+            }
+
+            // C: replace keys by sections content
+            foreach ($items as $item) {
+                if ($item instanceof Item\Item) {
+                    $content = $item->getContent();
+
+                    // Insert extracted contents
+                    foreach ($replacementValues as $key => $replacementSection) {
+                        $replacementTemplate = $twig->render('frontend/'.$replacementSection->type.'/_embed.html.twig', array(
+                            'section' => $replacementSection,
+                        ));
+                        $content = str_replace($key, $replacementTemplate, $content);
+                    }
+
+                    // Remove no replaced keys
+                    foreach ($galleries as $key => $slug) {
+                        $content = str_replace($key, '', $content);
+                    }
+
+                    $item->setContent($content);
+                }
+            }
+        }
+    }
+
+    /**
      * Archive or restore a section.
      *
      * @param integer $sectionId
