@@ -50,13 +50,6 @@ class ContentFactory
     const SECTION_LINK      = 'link';
     const SECTION_DIR       = 'dir';
 
-    const ITEM_SLIDE        = 'slide';
-    const ITEM_VIDEO        = 'video';
-    const ITEM_PAGE         = 'page';
-    const ITEM_POST         = 'post';
-    const ITEM_FIELD        = 'field';
-    const ITEM_PLACE        = 'place';
-
     /**
      * Constructor: inject required Silex dependencies.
      *
@@ -458,26 +451,26 @@ class ContentFactory
     {
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $section->id,
-            'type' => $item->type,
-            'category' => $item->category,
-            'tags' => $item->tags,
-            'slug' => String::slugify($item->title),
-            'path' => $item->path,
-            'latitude' => $item->latitude,
-            'longitude' => $item->longitude,
-            'posting_date' => static::dateToDatabase($item->posting_date),
-            'author' => $item->author,
-            'published' => $item->published,
-            'hierarchy' => $item->hierarchy,
+            'type' => $item->getType(),
+            'category' => $item->getCategory(),
+            'tags' => $item->getTags(),
+            'slug' => String::slugify($item->getTitle()),
+            'path' => $item->getPath(),
+            'latitude' => $item->getLatitude(),
+            'longitude' => $item->getLongitude(),
+            'posting_date' => static::dateToDatabase($item->getPostingDate()),
+            'author' => $item->getAuthor(),
+            'published' => $item->getPublished(),
+            'hierarchy' => $item->getHierarchy(),
         ) + $this->blameAndTimestampData(0));
 
-        $item->id = $this->db->lastInsertId();
+        $item->setId($this->db->lastInsertId());
         $this->db->insert('expose_section_item_trans', array(
-            'expose_section_item_id' => $item->id,
-            'title' => $item->title,
-            'description' => $item->description,
-            'content' => $item->content,
-            'parameters' => serialize($item->parameters),
+            'expose_section_item_id' => $item->getId(),
+            'title' => $item->getTitle(),
+            'description' => $item->getDescription(),
+            'content' => $item->getContent(),
+            'parameters' => serialize($item->getParameters()),
             'language' => $this->language,
         ));
 
@@ -496,26 +489,25 @@ class ContentFactory
         $this->db->update(
             'expose_section_item',
             array(
-                'path' => $item->path,
-                'latitude' => $item->latitude,
-                'longitude' => $item->longitude,
-                'posting_date' => static::dateToDatabase($item->posting_date),
-                'tags' => $item->tags,
-                'author' => $item->author,
-            ) + $this->blameAndTimestampData($item->id),
-            array('id' => $item->id)
+                'path' => $item->getPath(),
+                'latitude' => $item->getLatitude(),
+                'longitude' => $item->getLongitude(),
+                'posting_date' => static::dateToDatabase($item->getPostingDate()),
+                'tags' => $item->getTags(),
+                'author' => $item->getAuthor(),
+            ) + $this->blameAndTimestampData($item->getId()),
+            array('id' => $item->getId())
         );
         $this->db->update(
             'expose_section_item_trans',
             array(
-                'title' => $item->title,
-                'description' => $item->description,
-                'parameters' => is_array($item->parameters) ?
-                        serialize($item->parameters) : $item->parameters,
-                'content' => $item->content,
+                'title' => $item->getTitle(),
+                'description' => $item->getDescription(),
+                'parameters' => serialize($item->getParameters()),
+                'content' => $item->getContent(),
             ),
             array(
-                'expose_section_item_id' => $item->id,
+                'expose_section_item_id' => $item->getId(),
                 'language' => $this->language,
             )
         );
@@ -577,23 +569,6 @@ class ContentFactory
     }
 
     /**
-     * Return item types keys.
-     *
-     * @return array
-     */
-    public static function getItemTypes()
-    {
-        return array(
-            self::ITEM_SLIDE,
-            self::ITEM_VIDEO,
-            self::ITEM_PAGE,
-            self::ITEM_POST,
-            self::ITEM_FIELD,
-            self::ITEM_PLACE,
-        );
-    }
-
-    /**
      * Return instantiated Section from array data.
      *
      * @param \Doctrine\DBAL\Connection $db
@@ -623,12 +598,27 @@ class ContentFactory
      */
     public static function instantiateItem($data)
     {
-        if (!in_array($data['type'], static::getItemTypes())) {
+        if (!in_array($data['type'], Item\Item::getTypes())) {
             $data['type'] = static::getDefaultSectionItemType($data['section_type']);
         }
 
-        $itemClass = '\Ideys\Content\Item\\'.ucfirst($data['type']);
-        return new $itemClass($data);
+        $itemClassName = '\Ideys\Content\Item\\'.ucfirst($data['type']);
+        $itemClass = new $itemClassName();
+
+        $class = new \ReflectionClass($itemClass);
+
+        do {
+            foreach ($class->getProperties() as $property) {
+                $propertyName = $property->getName();
+                if ($class->hasMethod('get' . ucfirst($propertyName))
+                    && array_key_exists($propertyName, $data)) {
+
+                    $itemClass->{'set' . ucfirst($propertyName)}($data[$propertyName]);
+                }
+            }
+        } while ($class = $class->getParentClass());
+
+        return $itemClass;
     }
 
     /**
@@ -642,7 +632,7 @@ class ContentFactory
     {
         $sectionTypes = static::getSectionTypes();
         $sectionTypes = array_diff($sectionTypes, array(self::SECTION_LINK, self::SECTION_DIR));
-        $itemTypes = static::getItemTypes();
+        $itemTypes = Item\Item::getTypes();
         $sectionItems = array_combine($sectionTypes, $itemTypes);
 
         return $sectionItems[$type];

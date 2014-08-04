@@ -34,45 +34,46 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     foreach ($section->getItems('Slide') as $slide) {
         // Generate related slide fields
         $formBuilder
-        ->add('title'.$slide->id, 'text', array(
+        ->add('title'.$slide->getId(), 'text', array(
             'required'      => false,
             'label'         => 'gallery.picture.alt',
-            'data'          => $slide->title,
+            'data'          => $slide->getTitle(),
             'attr' => array(
                 'placeholder' => 'gallery.picture.alt',
             ),
         ))
-        ->add('description'.$slide->id, 'textarea', array(
+        ->add('description'.$slide->getId(), 'textarea', array(
             'required'      => false,
             'label'         => 'section.description',
-            'data'          => $slide->description,
+            'data'          => $slide->getDescription(),
             'attr' => array(
                 'placeholder' => 'section.description',
             ),
         ))
-        ->add('tags'.$slide->id, 'text', array(
+        ->add('tags'.$slide->getId(), 'text', array(
             'required'      => false,
             'label'         => 'tags',
-            'data'          => $slide->tags,
+            'data'          => $slide->getTags(),
             'attr' => array(
                 'placeholder' => 'tags',
             ),
         ))
-        ->add('link'.$slide->id, 'text', array(
+        ->add('link'.$slide->getId(), 'text', array(
             'required'      => false,
             'label'         => 'gallery.slide.link',
-            'data'          => $slide->link,
+            'data'          => $slide->getLink(),
             'attr' => array(
                 'placeholder' => 'gallery.slide.link',
             ),
         ));
 
         // Retrieve more data about picture
-        $slide->setMetaData(Picture::getMetaData(WEB_DIR.'/gallery/'.$slide->path));
+        $slide->setMetaData(Picture::getMetaData(WEB_DIR.'/gallery/'.$slide->getPath()));
     }
     $form = $formBuilder->getForm();
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
         $data = $form->getData();
 
@@ -84,10 +85,10 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         foreach ($section->getItems('Slide') as $slide) {
             $contentFactory->updateItemTitle(
                 $slide->id,
-                $data['title'.$slide->id],
-                $data['description'.$slide->id],
-                $data['tags'.$slide->id],
-                $data['link'.$slide->id]
+                $data['title'.$slide->getId()],
+                $data['description'.$slide->getId()],
+                $data['tags'.$slide->getId()],
+                $data['link'.$slide->getId()]
             );
         }
         return $app->redirect(
@@ -123,8 +124,8 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
         $contentFactory->addItem($section, $slide);
 
         $jsonResponse[] = array(
-            'path' => $slide->path,
-            'id' => $slide->id,
+            'path' => $slide->getPath(),
+            'id' => $slide->getId(),
         );
     }
 

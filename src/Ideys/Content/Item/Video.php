@@ -2,27 +2,31 @@
 
 namespace Ideys\Content\Item;
 
-use Ideys\Content\ContentInterface;
-
 /**
  * Channel Video class.
  */
-class Video extends Item implements ContentInterface
+class Video extends Item
 {
     const PROVIDER_VIMEO = 'vimeo';
     const PROVIDER_DAILYMOTION = 'dailymotion';
     const PROVIDER_YOUTUBE = 'youtube';
 
     /**
-     * {@inheritdoc}
+     * Set provider (alias of setCategory)
+     *
+     * @param string $provider
+     *
+     * @return Video
      */
-    public static function getParameters()
+    public function setProvider($provider)
     {
-        return array();
+        $this->category = $provider;
+
+        return $this;
     }
 
     /**
-     * Alias of category.
+     * Get provider (alias of getCategory)
      *
      * @return string
      */

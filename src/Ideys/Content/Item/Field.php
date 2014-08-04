@@ -2,13 +2,21 @@
 
 namespace Ideys\Content\Item;
 
-use Ideys\Content\ContentInterface;
-
 /**
  * Form Field class.
  */
-class Field extends Item implements ContentInterface
+class Field extends Item
 {
+    /**
+     * @var string
+     */
+    private $required = '0';
+
+    /**
+     * @var string
+     */
+    private $choices = '';
+
     const TEXT     = 'text';
     const EMAIL    = 'email';
     const INTEGER  = 'integer';
@@ -21,14 +29,61 @@ class Field extends Item implements ContentInterface
     const HTML     = 'html.insert';
 
     /**
-     * {@inheritdoc}
+     * Set required
+     *
+     * @param string $required
+     *
+     * @return Field
      */
-    public static function getParameters()
+    public function setRequired($required)
     {
-        return array(
-            'required' => '0',
-            'choices' => '',
-        );
+        $this->required = $required;
+
+        return $this;
+    }
+
+    /**
+     * Get required
+     *
+     * @return string
+     */
+    public function getRequired()
+    {
+        return $this->required;
+    }
+
+    /**
+     * Test if field is required.
+     *
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return ($this->required == '1');
+    }
+
+    /**
+     * Set choices
+     *
+     * @param string $choices
+     *
+     * @return Field
+     */
+    public function setChoices($choices)
+    {
+        $this->choices = $choices;
+
+        return $this;
+    }
+
+    /**
+     * Get choices
+     *
+     * @return string
+     */
+    public function getChoices()
+    {
+        return $this->choices;
     }
 
     /**

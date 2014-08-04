@@ -55,11 +55,11 @@
       <div class="small-6 columns">
         <ul class="no-bullet slide-meta">
           <li><em>{{ 'file.size'|trans }}</em>:
-            {{ widgets.bytes_format(slide.file_size) }}</li>
+            {{ widgets.bytes_format(slide.fileSize) }}</li>
           <li><em>{{ 'file.original.name'|trans }}</em>:
-            {{ slide.original_name }}</li>
+            {{ slide.originalName }}</li>
           <li><em>{{ 'file.uploaded.at'|trans }}</em>:
-            {{ slide.created_at|date('d/m/Y H:i') }}</li>
+            {{ slide.createdAt|date('d/m/Y H:i') }}</li>
           {% for key, data in slide.metaData %}
           <li><em>{{ ('file.meta.'~key)|trans }}</em>:
             {{ data }}</li>

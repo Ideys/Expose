@@ -2,18 +2,9 @@
 
 namespace Ideys\Content\Item;
 
-use Ideys\Content\ContentInterface;
-
 /**
  * Maps places item class.
  */
-class Place extends Item implements ContentInterface
+class Place extends Item
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array();
-    }
 }

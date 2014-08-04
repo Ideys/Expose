@@ -466,12 +466,12 @@ abstract class Section
             'hierarchy' => ($this->countItems('Slide') + 1),
         ));
 
-        $slide->path = uniqid('expose').'.'.$fileExt;
-        $slide->setParameter('real_ext', $realExt);
-        $slide->setParameter('file_size', $fileSize);
-        $slide->setParameter('original_name', $file->getClientOriginalName());
+        $slide->setPath(uniqid('expose').'.'.$fileExt);
+        $slide->addParameter('real_ext', $realExt);
+        $slide->addParameter('file_size', $fileSize);
+        $slide->addParameter('original_name', $file->getClientOriginalName());
 
-        $file->move(static::getGalleryDir(), $slide->path);
+        $file->move(static::getGalleryDir(), $slide->getPath());
 
         foreach ($this->thumbSizes as $thumbSize){
             $this->createResizeSlide($imagine, $slide, $thumbSize);
@@ -501,9 +501,9 @@ abstract class Section
 
         $transformation = new Imagine\Filter\Transformation();
         $transformation->thumbnail(new Imagine\Image\Box($maxWidth, $maxHeight))
-            ->save($thumbDir.'/'.$slide->path);
+            ->save($thumbDir.'/'.$slide->getPath());
         $transformation->apply($imagine
-            ->open(static::getGalleryDir().'/'.$slide->path));
+            ->open(static::getGalleryDir().'/'.$slide->getPath()));
 
         return $slide;
     }
@@ -554,10 +554,10 @@ abstract class Section
      */
     protected function deleteItemAndRelatedFile(Slide $slide)
     {
-        if ($this->deleteItem($slide->id)) {
-            @unlink(WEB_DIR.'/gallery/'.$slide->path);
+        if ($this->deleteItem($slide->getId())) {
+            @unlink(WEB_DIR.'/gallery/'.$slide->getPath());
             foreach ($this->thumbSizes as $thumbSize){
-                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->path);
+                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->getPath());
             }
             return true;
         }

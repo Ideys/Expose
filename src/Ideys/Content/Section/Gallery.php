@@ -55,7 +55,7 @@ class Gallery extends Section implements ContentInterface, SectionInterface
         $weight = 0;
 
         foreach ($this->items as $slide) {
-            $weight += $slide->file_size;
+            $weight += $slide->getFileSize();
         }
 
         return $weight;
