@@ -202,6 +202,7 @@ class ContentFactory
 
             // A: extract replacement keys
             $sectionSlugs = array();
+            $galleries = array();
             foreach ($items as $item) {
                 if ($item instanceof Item\Item) {
                     $content = $item->getContent();
@@ -212,13 +213,13 @@ class ContentFactory
                         foreach ($matches[2] as $row => $slug) {
                             $sectionSlugs[$contentType[$row]][$keys[$row]] = $slug;
                         }
+                        $galleries = $sectionSlugs['slides'];
                     }
                 }
             }
 
             // B: retrieve related sections
             $replacementValues = array();
-            $galleries = $sectionSlugs['slides'];
             if (!empty($galleries)) {
                 $sanitizedSlugs = filter_var_array($galleries, FILTER_SANITIZE_STRING);
                 $sql = $this::getSqlSelectSection()
