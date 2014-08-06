@@ -2,9 +2,6 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\ContentInterface;
-use Ideys\Content\SectionInterface;
-use Ideys\Settings\Settings;
 use Symfony\Component\Form\FormFactory;
 
 /**
@@ -12,17 +9,9 @@ use Symfony\Component\Form\FormFactory;
  *
  * A link section is used to display an external link into menu.
  */
-class Link extends Section implements ContentInterface, SectionInterface
+class Link extends Section implements SectionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array(
-            'url' => 'http://',
-        );
-    }
+    private $url = 'http://';
 
     /**
      * {@inheritdoc}
@@ -44,5 +33,25 @@ class Link extends Section implements ContentInterface, SectionInterface
         ;
 
         return $formBuilder->getForm();
+    }
+
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return Link
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
     }
 }

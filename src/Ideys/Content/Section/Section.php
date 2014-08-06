@@ -2,26 +2,125 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\ContentFactory;
-use Ideys\Content\ContentTrait;
-use Ideys\Content\SectionType;
-use Ideys\Content\Item\Slide;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Doctrine\DBAL\Connection;
-use Imagine;
-
 /**
  * Sections prototype class.
  */
-abstract class Section
+abstract class Section implements SectionInterface
 {
-    use ContentTrait;
+    /**
+     * @var integer
+     */
+    protected $id;
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var integer
      */
-    protected $db;
+    protected $exposeSectionId;
+
+    /**
+     * @var integer
+     */
+    protected $parentId;
+
+    /**
+     * @var string
+     */
+    protected $connectedSections;
+
+    /**
+     * @var string
+     */
+    protected $type = self::SECTION_HTML;
+
+    const SECTION_GALLERY   = 'gallery';
+    const SECTION_CHANNEL   = 'channel';
+    const SECTION_HTML      = 'html';
+    const SECTION_BLOG      = 'blog';
+    const SECTION_FORM      = 'form';
+    const SECTION_MAPS      = 'maps';
+    const SECTION_LINK      = 'link';
+    const SECTION_DIR       = 'dir';
+
+    /**
+     * @var string
+     */
+    protected $title;
+
+    /**
+     * @var string
+     */
+    protected $slug;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var string
+     */
+    protected $legend;
+
+    /**
+     * @var integer
+     */
+    protected $totalItems = 0;
+
+    /**
+     * @var string
+     */
+    protected $customCss;
+
+    /**
+     * @var string
+     */
+    protected $customJs;
+
+    /**
+     * @var string
+     */
+    protected $tag;
+
+    /**
+     * @var array
+     */
+    protected $parameters = array();
+
+    /**
+     * @var string
+     */
+    protected $menuPos = 'main';
+
+    /**
+     * @var string
+     */
+    protected $targetBlank = '0';
+
+    /**
+     * @var string
+     */
+    protected $visibility = self::VISIBILITY_PUBLIC;
+
+    const VISIBILITY_HOMEPAGE   = 'homepage';
+    const VISIBILITY_PUBLIC     = 'public';
+    const VISIBILITY_PRIVATE    = 'private';
+    const VISIBILITY_HIDDEN     = 'hidden';
+    const VISIBILITY_CLOSED     = 'closed';
+
+    /**
+     * @var string
+     */
+    protected $shuffle = '0';
+
+    /**
+     * @var string
+     */
+    protected $language = 'en';
+
+    /**
+     * @var string
+     */
+    protected $archive = '0';
 
     /**
      * Define if shuffle mode is activated.
@@ -29,33 +128,6 @@ abstract class Section
      * @var boolean
      */
     protected $shuffleOn = false;
-
-    /**
-     * Section main attributes
-     *
-     * @var array
-     */
-    protected $attributes = array(
-        'id' => null,
-        'expose_section_id' => null,
-        'parent_id' => null,
-        'connected_sections' => null,
-        'type' => null,
-        'title' => null,
-        'description' => null,
-        'legend' => null,
-        'total_items' => 0,
-        'custom_css' => null,
-        'custom_js' => null,
-        'tag' => null,
-        'parameters' => 'N;',
-        'menu_pos' => 'main',
-        'target_blank' => '0',
-        'visibility' => 'public',
-        'shuffle' => '0',
-        'language' => null,
-        'archive' => '0',
-    );
 
     /**
      * @var array
@@ -80,79 +152,11 @@ abstract class Section
     protected $sections = array();
 
     /**
-     * @var string
+     * {@inheritdoc}
      */
-    protected $language = 'en';
-
-    /**
-     * Visibility states.
-     */
-    const VISIBILITY_HOMEPAGE   = 'homepage';
-    const VISIBILITY_PUBLIC     = 'public';
-    const VISIBILITY_PRIVATE    = 'private';
-    const VISIBILITY_HIDDEN     = 'hidden';
-    const VISIBILITY_CLOSED     = 'closed';
-
-    /**
-     * Constructor.
-     *
-     * @param \Doctrine\DBAL\Connection $db
-     * @param array                     $entity
-     */
-    public function __construct(Connection $db, array $entity = array())
+    public static function getDefaultItemType()
     {
-        $this->db = $db;
-        $this->attributes = array_merge($this->attributes, $entity);
-        $this->parameters = (array) unserialize($this->attributes['parameters']);
-        $this->connectedSectionsId = array_filter(explode(',', $this->connected_sections));
-    }
-
-    /**
-     * Add a child section to section.
-     *
-     * @param Section $section
-     *
-     * @return Section
-     */
-    public function addSection(Section $section)
-    {
-        $this->sections[] = $section;
-
-        return $this;
-    }
-
-    /**
-     * Return section child sections.
-     *
-     * @return array
-     */
-    public function getSections()
-    {
-        return $this->sections;
-    }
-
-    /**
-     * Add a connected section id.
-     *
-     * @param integer $sectionId
-     *
-     * @return Section
-     */
-    public function addConnectedSectionId($sectionId)
-    {
-        $this->connectedSectionsId[] = $sectionId;
-
-        return $this;
-    }
-
-    /**
-     * Return connected sections id.
-     *
-     * @return array
-     */
-    public function getConnectedSectionsId()
-    {
-        return $this->connectedSectionsId;
+        return 'Item';
     }
 
     /**
@@ -187,22 +191,6 @@ abstract class Section
         }
 
         return $this;
-    }
-
-    /**
-     * Return section items.
-     * Trigger the shuffle mode if set.
-     *
-     * @param string $type Items type.
-     *
-     * @return array
-     */
-    public function getItems($type)
-    {
-        $typeNamespace = '\Ideys\Content\Item\\'.$type;
-        return array_filter($this->items, function($item) use ($typeNamespace) {
-            return ($item instanceof $typeNamespace);
-        });
     }
 
     /**
@@ -246,46 +234,6 @@ abstract class Section
     }
 
     /**
-     * Define content translation language.
-     *
-     * @param string $language
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-    }
-
-    /**
-     * Test if content is hidden from anonymous users.
-     *
-     * @return boolean
-     */
-    public function isPrivate()
-    {
-        return self::VISIBILITY_PRIVATE === $this->visibility;
-    }
-
-    /**
-     * Test if content is not accessible.
-     *
-     * @return boolean
-     */
-    public function isClosed()
-    {
-        return self::VISIBILITY_CLOSED === $this->visibility;
-    }
-
-    /**
-     * Test if the section is the homepage.
-     *
-     * @return boolean
-     */
-    public function isHomepage()
-    {
-        return self::VISIBILITY_HOMEPAGE === $this->visibility;
-    }
-
-    /**
      * Test if the section is archived.
      *
      * @return boolean
@@ -302,7 +250,7 @@ abstract class Section
      */
     public function isPaired()
     {
-        return ((int) $this->parent_id) > 0;
+        return ((int) $this->parentId) > 0;
     }
 
     /**
@@ -380,228 +328,572 @@ abstract class Section
     }
 
     /**
-     * Return section settings form builder used to extends standard form.
-     *
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     *
-     * @return \Symfony\Component\Form\FormBuilder
+     * @return int
      */
-    protected function settingsFormBuilder(FormFactory $formFactory)
+    public function getId()
     {
-        $sectionType = new SectionType($this->db, $formFactory);
-
-        $formBuilder = $sectionType->formBuilder($this);
-        $formBuilder->remove('type');
-
-        return $formBuilder;
+        return $this->id;
     }
 
     /**
-     * Return section settings form.
+     * @param int $id
      *
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     *
-     * @return \Symfony\Component\Form\Form
+     * @return $this
      */
-    public function settingsForm(FormFactory $formFactory)
+    public function setId($id)
     {
-        return $this->settingsFormBuilder($formFactory)->getForm();
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
-     * Fill items attribute with section's persisted items.
-     *
-     * @return boolean true if hydration is successful.
+     * @return int
      */
-    public function hydrateItems()
+    public function getExposeSectionId()
     {
-        if ($this->id == null) {
-            return false;
-        }
-
-        $sql = static::getSqlSelectItem();
-
-        $itemTranslations = $this->db->fetchAll($sql, array($this->id));
-
-        if (empty($itemTranslations)) {
-            return false;
-        }
-
-        foreach ($itemTranslations as $data) {
-            $this->items[$data['id']] = ContentFactory::instantiateItem($data);
-        }
-
-        return true;
+        return $this->exposeSectionId;
     }
 
     /**
-     * SQL query string for Section Items extraction.
+     * @param int $exposeSectionId
      *
+     * @return $this
+     */
+    public function setExposeSectionId($exposeSectionId)
+    {
+        $this->exposeSectionId = $exposeSectionId;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getParentId()
+    {
+        return $this->parentId;
+    }
+
+    /**
+     * @param int $parentId
+     *
+     * @return $this
+     */
+    public function setParentId($parentId)
+    {
+        $this->parentId = $parentId;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
-    public static function getSqlSelectItem()
+    public function getConnectedSections()
     {
-        return ContentFactory::getSqlSelectItem() .
-            'WHERE i.expose_section_id = ? '.
-            'ORDER BY i.hierarchy ASC ';
+        return $this->connectedSections;
     }
 
     /**
-     * Add a slide into gallery.
+     * @param string $connectedSections
      *
-     * @param \Imagine\Image\ImagineInterface                       $imagine
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile   $file
-     *
-     * @return \Ideys\Content\Item\Slide
+     * @return $this
      */
-    public function addSlide(Imagine\Image\ImagineInterface $imagine, UploadedFile $file)
+    public function setConnectedSections($connectedSections)
     {
-        $fileExt = $file->guessClientExtension();
-        $realExt = $file->guessExtension();// from mime type
-        $fileSize = $file->getClientSize();
+        $this->connectedSections = $connectedSections;
 
-        $slide = new Slide(array(
-            'category' => $file->getMimeType(),
-            'type' => ContentFactory::ITEM_SLIDE,
-            'hierarchy' => ($this->countItems('Slide') + 1),
-        ));
-
-        $slide->setPath(uniqid('expose').'.'.$fileExt);
-        $slide->addParameter('real_ext', $realExt);
-        $slide->addParameter('file_size', $fileSize);
-        $slide->addParameter('original_name', $file->getClientOriginalName());
-
-        $file->move(static::getGalleryDir(), $slide->getPath());
-
-        foreach ($this->thumbSizes as $thumbSize){
-            $this->createResizeSlide($imagine, $slide, $thumbSize);
-        }
-
-        return $slide;
+        return $this;
     }
 
     /**
-     * Resize and save a slide file into dedicated directory.
-     *
-     * @param \Imagine\Image\ImagineInterface   $imagine
-     * @param \Ideys\Content\Item\Slide         $slide
-     * @param integer                           $maxWidth
-     * @param integer                           $maxHeight
-     *
-     * @return \Ideys\Content\Item\Slide
+     * @return string
      */
-    public function createResizeSlide(Imagine\Image\ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
+    public function getType()
     {
-        $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
-
-        $thumbDir = static::getGalleryDir().'/'.$maxWidth;
-        if (!is_dir($thumbDir)) {
-            mkdir($thumbDir);
-        }
-
-        $transformation = new Imagine\Filter\Transformation();
-        $transformation->thumbnail(new Imagine\Image\Box($maxWidth, $maxHeight))
-            ->save($thumbDir.'/'.$slide->getPath());
-        $transformation->apply($imagine
-            ->open(static::getGalleryDir().'/'.$slide->getPath()));
-
-        return $slide;
+        return $this->type;
     }
 
     /**
-     * Delete a section item.
+     * @param string $type
      *
-     * @param integer $id
-     *
-     * @return boolean
+     * @return $this
      */
-    public function deleteItem($id)
+    public function setType($type)
     {
-        // Delete item's translations
-        $this->db->delete('expose_section_item_trans', array('expose_section_item_id' => $id));
-        // Delete item
-        $rows = $this->db->delete('expose_section_item', array('id' => $id));
+        $this->type = $type;
 
-        return (0 < $rows);
+        return $this;
     }
 
     /**
-     * Delete a selection of slides.
-     *
-     * @param array    $itemIds
+     * Return section types keys.
      *
      * @return array
      */
-    public function deleteSlides($itemIds)
+    public static function getTypes()
     {
-        $deletedIds = array();
-
-        foreach ($itemIds as $id) {
-            if (is_numeric($id)
-                && $this->deleteItemAndRelatedFile($this->items[$id])) {
-                $deletedIds[] = $id;
-            }
-        }
-        return $deletedIds;
-    }
-
-    /**
-     * Delete item's data entry and related files.
-     *
-     * @param \Ideys\Content\Item\Slide $slide
-     *
-     * @return boolean
-     */
-    protected function deleteItemAndRelatedFile(Slide $slide)
-    {
-        if ($this->deleteItem($slide->getId())) {
-            @unlink(WEB_DIR.'/gallery/'.$slide->getPath());
-            foreach ($this->thumbSizes as $thumbSize){
-                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->getPath());
-            }
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Attach an item from another section to this section.
-     *
-     * @param integer $id The item id
-     *
-     * @return boolean
-     */
-    public function attachItem($id)
-    {
-        $affectedRows = $this->db->update('expose_section_item',
-                array('expose_section_id' => $this->id),
-                array('id' => $id)
+        return array(
+            self::SECTION_GALLERY,
+            self::SECTION_CHANNEL,
+            self::SECTION_HTML,
+            self::SECTION_BLOG,
+            self::SECTION_FORM,
+            self::SECTION_MAPS,
+            self::SECTION_LINK,
+            self::SECTION_DIR,
         );
-
-        return (boolean) $affectedRows;
     }
 
     /**
-     * Delete section and this items in database.
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLegend()
+    {
+        return $this->legend;
+    }
+
+    /**
+     * @param string $legend
+     *
+     * @return $this
+     */
+    public function setLegend($legend)
+    {
+        $this->legend = $legend;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalItems()
+    {
+        return $this->totalItems;
+    }
+
+    /**
+     * @param int $totalItems
+     *
+     * @return $this
+     */
+    public function setTotalItems($totalItems)
+    {
+        $this->totalItems = $totalItems;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomCss()
+    {
+        return $this->customCss;
+    }
+
+    /**
+     * @param string $customCss
+     *
+     * @return $this
+     */
+    public function setCustomCss($customCss)
+    {
+        $this->customCss = $customCss;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomJs()
+    {
+        return $this->customJs;
+    }
+
+    /**
+     * @param string $customJs
+     *
+     * @return $this
+     */
+    public function setCustomJs($customJs)
+    {
+        $this->customJs = $customJs;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTag()
+    {
+        return $this->tag;
+    }
+
+    /**
+     * @param string $tag
+     *
+     * @return $this
+     */
+    public function setTag($tag)
+    {
+        $this->tag = $tag;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * @param array|string $parameters
+     *
+     * @return $this
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = is_array($parameters) ? $parameters :
+            (array) unserialize($parameters);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMenuPos()
+    {
+        return $this->menuPos;
+    }
+
+    /**
+     * @param string $menuPos
+     *
+     * @return $this
+     */
+    public function setMenuPos($menuPos)
+    {
+        $this->menuPos = $menuPos;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTargetBlank()
+    {
+        return $this->targetBlank;
+    }
+
+    /**
+     * @param string $targetBlank
+     *
+     * @return $this
+     */
+    public function setTargetBlank($targetBlank)
+    {
+        $this->targetBlank = $targetBlank;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibility()
+    {
+        return $this->visibility;
+    }
+
+    /**
+     * @param string $visibility
+     *
+     * @return $this
+     */
+    public function setVisibility($visibility)
+    {
+        $this->visibility = $visibility;
+
+        return $this;
+    }
+
+    /**
+     * Test if content is hidden from anonymous users.
      *
      * @return boolean
      */
-    public function delete()
+    public function isPrivate()
     {
-        // Delete section items
-        foreach ($this->items as $item) {
-            if ($item instanceof Slide) {
-                $this->deleteItemAndRelatedFile($item);
-            } else {
-                $this->deleteItem($item->id);
-            }
-        }
+        return self::VISIBILITY_PRIVATE === $this->visibility;
+    }
 
-        // Delete section's translations
-        $this->db->delete('expose_section_trans', array('expose_section_id' => $this->id));
-        // Delete section
-        $rows = $this->db->delete('expose_section', array('id' => $this->id));
+    /**
+     * Test if content is not accessible.
+     *
+     * @return boolean
+     */
+    public function isClosed()
+    {
+        return self::VISIBILITY_CLOSED === $this->visibility;
+    }
 
-        return (0 < $rows);
+    /**
+     * Test if the section is the homepage.
+     *
+     * @return boolean
+     */
+    public function isHomepage()
+    {
+        return self::VISIBILITY_HOMEPAGE === $this->visibility;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShuffle()
+    {
+        return $this->shuffle;
+    }
+
+    /**
+     * @param string $shuffle
+     *
+     * @return $this
+     */
+    public function setShuffle($shuffle)
+    {
+        $this->shuffle = $shuffle;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArchive()
+    {
+        return $this->archive;
+    }
+
+    /**
+     * @param string $archive
+     *
+     * @return $this
+     */
+    public function setArchive($archive)
+    {
+        $this->archive = $archive;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getShuffleOn()
+    {
+        return $this->shuffleOn;
+    }
+
+    /**
+     * @param boolean $shuffleOn
+     *
+     * @return $this
+     */
+    public function setShuffleOn($shuffleOn)
+    {
+        $this->shuffleOn = $shuffleOn;
+
+        return $this;
+    }
+
+    /**
+     * Return section items.
+     * Trigger the shuffle mode if set.
+     *
+     * @param string $type Items type.
+     *
+     * @return array
+     */
+    public function getItems($type)
+    {
+        $typeNamespace = '\Ideys\Content\Item\\'.$type;
+        return array_filter($this->items, function($item) use ($typeNamespace) {
+            return ($item instanceof $typeNamespace);
+        });
+    }
+
+    /**
+     * @param array $items
+     *
+     * @return $this
+     */
+    public function setItems($items)
+    {
+        $this->items = $items;
+
+        return $this;
+    }
+
+    /**
+     * Return connected sections id.
+     *
+     * @return array
+     */
+    public function getConnectedSectionsId()
+    {
+        return $this->connectedSectionsId;
+    }
+
+    /**
+     * @param array $connectedSectionsId
+     *
+     * @return $this
+     */
+    public function setConnectedSectionsId($connectedSectionsId)
+    {
+        $this->connectedSectionsId = $connectedSectionsId;
+
+        return $this;
+    }
+
+    /**
+     * Add a connected section id.
+     *
+     * @param integer $connectedSectionsId
+     *
+     * @return Section
+     */
+    public function addConnectedSectionId($connectedSectionsId)
+    {
+        $this->connectedSectionsId[] = $connectedSectionsId;
+
+        return $this;
+    }
+
+    /**
+     * Return section child sections.
+     *
+     * @return array
+     */
+    public function getSections()
+    {
+        return $this->sections;
+    }
+
+    /**
+     * @param array $sections
+     *
+     * @return $this
+     */
+    public function setSections($sections)
+    {
+        $this->sections = $sections;
+
+        return $this;
+    }
+
+    /**
+     * Add a child section to section.
+     *
+     * @param Section $section
+     *
+     * @return $this
+     */
+    public function addSection(Section $section)
+    {
+        $this->sections[] = $section;
+
+        return $this;
     }
 }

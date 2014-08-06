@@ -155,7 +155,7 @@ class SectionType
      */
     public static function getSectionTypesChoice()
     {
-        $keys = ContentFactory::getSectionTypes();
+        $keys = Section::getTypes();
         $values = array_map(function($item){
             return 'section.'.$item;
         }, $keys);

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 $galleryManagerController = $app['controllers_factory'];
 
-$galleryManagerController->get('/{id}/list', function (Request $request, $id) use ($app) {
+$galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
@@ -27,7 +27,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     $formBuilder = $app['form.factory']->createBuilder('form')
         ->add('global_legend', 'textarea', array(
             'label'     => 'gallery.global.legend',
-            'data'      => $section->legend,
+            'data'      => $section->getLegend(),
             'required'  => false,
         ));
 
@@ -78,7 +78,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         $data = $form->getData();
 
         // Update the global legend
-        $section->legend = $data['global_legend'];
+        $section->setLegend($data['global_legend']);
         $contentFactory->updateSection($section);
 
         // Update each items legends

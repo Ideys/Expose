@@ -2,14 +2,16 @@
 
 namespace Ideys\Content;
 
-use Ideys\Content\Section\Section;
-use Ideys\Content\Section\Html;
+use Ideys\Content\Section;
 use Ideys\Content\Item;
 use Ideys\String;
 use Ideys\Settings\Settings;
 use Silex\Application;
 use Symfony\Component\Security\Core\User\User;
 use Doctrine\DBAL\Connection;
+use Imagine;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Form\FormFactory;
 
 /**
  * App content manager.
@@ -40,15 +42,6 @@ class ContentFactory
      * @var array
      */
     protected $sections = array();
-
-    const SECTION_GALLERY   = 'gallery';
-    const SECTION_CHANNEL   = 'channel';
-    const SECTION_HTML      = 'html';
-    const SECTION_BLOG      = 'blog';
-    const SECTION_FORM      = 'form';
-    const SECTION_MAPS      = 'maps';
-    const SECTION_LINK      = 'link';
-    const SECTION_DIR       = 'dir';
 
     /**
      * Constructor: inject required Silex dependencies.
@@ -82,12 +75,12 @@ class ContentFactory
 
         // Use sql primary keys as array keys and objectify entity
         foreach ($sections as $section) {
-            $this->sections[$section['id']] = static::instantiateSection($this->db, $section);
+            $this->sections[$section['id']] = static::instantiateSection($section);
         }
 
         // Generate tree structure from raw data
         foreach ($this->sections as $id => $section) {
-            $parentSectionId = $section->expose_section_id;
+            $parentSectionId = $section->getExposeSectionId();
             if ($parentSectionId > 0) {
                 $this->sections[$parentSectionId]->addSection($section);
                 unset($this->sections[$id]);
@@ -156,19 +149,19 @@ class ContentFactory
         $sql = $this::getSqlSelectSection()
            . 'WHERE s.visibility = ? '
            . 'ORDER BY s.hierarchy ASC ';
-        $sectionTranslations = $this->db->fetchAll($sql, array(Section::VISIBILITY_HOMEPAGE));
+        $sectionTranslations = $this->db->fetchAll($sql, array(Section\Section::VISIBILITY_HOMEPAGE));
         $section = $this->hydrateSection($sectionTranslations);
 
         // Generate default homepage
-        if (null === $section->id) {
+        if (null === $section->getId()) {
             $settings = new Settings($this->db);
-            $section = $this->addSection(new Html($this->db, array(
-                'type' => self::SECTION_HTML,
+            $section = $this->addSection(new Section\Html($this->db, array(
+                'type' => Section\Section::SECTION_HTML,
                 'title' => $settings->name,
-                'visibility' => Section::VISIBILITY_HOMEPAGE,
+                'visibility' => Section\Section::VISIBILITY_HOMEPAGE,
             )));
             $page = new Item\Page(array(
-                'type' => self::ITEM_PAGE,
+                'type' => Item\Item::ITEM_PAGE,
                 'title' => $settings->name,
                 'content' => '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
             ));
@@ -224,11 +217,11 @@ class ContentFactory
 
                 $replacementStrings = array_flip($galleries);
                 foreach ($sectionsToInclude as $s) {
-                    $sectionToInclude = static::instantiateSection($this->db, $s);
+                    $sectionToInclude = static::instantiateSection($s);
                     $sectionToInclude->hydrateItems();
                     $defaultType = $sectionToInclude::getDefaultItemType();
                     if ($sectionToInclude->hasItems($defaultType)) {
-                        $replacementValues[$replacementStrings[$sectionToInclude->slug]] = $sectionToInclude;
+                        $replacementValues[$replacementStrings[$sectionToInclude->getSlug()]] = $sectionToInclude;
                     }
                 }
             }
@@ -271,39 +264,258 @@ class ContentFactory
     }
 
     /**
+     * Delete a section item.
+     *
+     * @param integer $id
+     *
+     * @return boolean
+     */
+    public function deleteItem($id)
+    {
+        // Delete item's translations
+        $this->db->delete('expose_section_item_trans', array('expose_section_item_id' => $id));
+        // Delete item
+        $rows = $this->db->delete('expose_section_item', array('id' => $id));
+
+        return (0 < $rows);
+    }
+
+    /**
+     * Delete a selection of slides.
+     *
+     * @param array    $itemIds
+     *
+     * @return array
+     */
+    public function deleteSlides($itemIds)
+    {
+        $deletedIds = array();
+
+        foreach ($itemIds as $id) {
+            if (is_numeric($id)
+                && $this->deleteItemAndRelatedFile($this->items[$id])) {
+                $deletedIds[] = $id;
+            }
+        }
+        return $deletedIds;
+    }
+
+    /**
+     * Return section settings form builder used to extends standard form.
+     *
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     *
+     * @return \Symfony\Component\Form\FormBuilder
+     */
+    protected function settingsFormBuilder(FormFactory $formFactory)
+    {
+        $sectionType = new SectionType($this->db, $formFactory);
+
+        $formBuilder = $sectionType->formBuilder($this);
+        $formBuilder->remove('type');
+
+        return $formBuilder;
+    }
+
+    /**
+     * Return section settings form.
+     *
+     * @param \Symfony\Component\Form\FormFactory $formFactory
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public function settingsForm(FormFactory $formFactory)
+    {
+        return $this->settingsFormBuilder($formFactory)->getForm();
+    }
+
+    /**
+     * Fill items attribute with section's persisted items.
+     *
+     * @param Section\Section $section
+     *
+     * @return boolean true if hydration is successful.
+     */
+    public function hydrateItems(Section\Section $section)
+    {
+        if ($section->getId() == null) {
+            return false;
+        }
+
+        $sql = static::getSqlSelectItem() .
+            'WHERE i.expose_section_id = ? '.
+            'ORDER BY i.hierarchy ASC ';
+
+        $itemTranslations = $this->db->fetchAll($sql, array($section->getId()));
+
+        if (empty($itemTranslations)) {
+            return false;
+        }
+
+        foreach ($itemTranslations as $data) {
+            $section->getItems($section::getDefaultItemType())[$data['id']] = static::instantiateItem($data);
+        }
+
+        return true;
+    }
+
+    /**
+     * Add a slide into gallery.
+     *
+     * @param \Imagine\Image\ImagineInterface                       $imagine
+     * @param \Symfony\Component\HttpFoundation\File\UploadedFile   $file
+     *
+     * @return \Ideys\Content\Item\Slide
+     */
+    public function addSlide(Imagine\Image\ImagineInterface $imagine, UploadedFile $file)
+    {
+        $fileExt = $file->guessClientExtension();
+        $realExt = $file->guessExtension();// from mime type
+        $fileSize = $file->getClientSize();
+
+        $slide = new Item\Slide(array(
+            'category' => $file->getMimeType(),
+            'type' => Item\Item::ITEM_SLIDE,
+            'hierarchy' => ($this->countItems('Slide') + 1),
+        ));
+
+        $slide->setPath(uniqid('expose').'.'.$fileExt);
+        $slide->addParameter('real_ext', $realExt);
+        $slide->addParameter('file_size', $fileSize);
+        $slide->addParameter('original_name', $file->getClientOriginalName());
+
+        $file->move(static::getGalleryDir(), $slide->getPath());
+
+        foreach ($this->thumbSizes as $thumbSize){
+            $this->createResizeSlide($imagine, $slide, $thumbSize);
+        }
+
+        return $slide;
+    }
+
+    /**
+     * Resize and save a slide file into dedicated directory.
+     *
+     * @param \Imagine\Image\ImagineInterface   $imagine
+     * @param \Ideys\Content\Item\Slide         $slide
+     * @param integer                           $maxWidth
+     * @param integer                           $maxHeight
+     *
+     * @return \Ideys\Content\Item\Slide
+     */
+    public function createResizeSlide(Imagine\Image\ImagineInterface $imagine, Item\Slide $slide, $maxWidth, $maxHeight = null)
+    {
+        $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
+
+        $thumbDir = static::getGalleryDir().'/'.$maxWidth;
+        if (!is_dir($thumbDir)) {
+            mkdir($thumbDir);
+        }
+
+        $transformation = new Imagine\Filter\Transformation();
+        $transformation->thumbnail(new Imagine\Image\Box($maxWidth, $maxHeight))
+            ->save($thumbDir.'/'.$slide->getPath());
+        $transformation->apply($imagine
+            ->open(static::getGalleryDir().'/'.$slide->getPath()));
+
+        return $slide;
+    }
+
+
+    /**
+     * Delete item's data entry and related files.
+     *
+     * @param \Ideys\Content\Item\Slide $slide
+     *
+     * @return boolean
+     */
+    protected function deleteItemAndRelatedFile(Item\Slide $slide)
+    {
+        if ($this->deleteItem($slide->getId())) {
+            @unlink(WEB_DIR.'/gallery/'.$slide->getPath());
+            foreach ($this->thumbSizes as $thumbSize){
+                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->getPath());
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Attach an item from another section to this section.
+     *
+     * @param integer $id The item id
+     *
+     * @return boolean
+     */
+    public function attachItem($id)
+    {
+        $affectedRows = $this->db->update('expose_section_item',
+            array('expose_section_id' => $this->id),
+            array('id' => $id)
+        );
+
+        return (boolean) $affectedRows;
+    }
+
+    /**
+     * Delete section and this items in database.
+     *
+     * @return boolean
+     */
+    public function delete()
+    {
+        // Delete section items
+        foreach ($this->items as $item) {
+            if ($item instanceof Item\Slide) {
+                $this->deleteItemAndRelatedFile($item);
+            } else {
+                $this->deleteItem($item->id);
+            }
+        }
+
+        // Delete section's translations
+        $this->db->delete('expose_section_trans', array('expose_section_id' => $this->id));
+        // Delete section
+        $rows = $this->db->delete('expose_section', array('id' => $this->id));
+
+        return (0 < $rows);
+    }
+
+    /**
      * Persist a new section.
      *
      * @param \Ideys\Content\Section\Section $section
      *
      * @return \Ideys\Content\Section\Section
      */
-    public function addSection(Section &$section)
+    public function addSection(Section\Section &$section)
     {
         $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
         $i = $count['total']++;
 
         $this->db->insert('expose_section', array(
-            'expose_section_id' => $section->expose_section_id,
-            'type' => $section->type,
+            'expose_section_id' => $section->getExposeSectionId(),
+            'type' => $section->getType(),
             'slug' => $this->uniqueSlug($section),
-            'custom_css' => $section->custom_css,
-            'custom_js' => $section->custom_js,
-            'menu_pos' => $section->menu_pos,
-            'target_blank' => $section->target_blank,
-            'visibility' => $section->visibility,
-            'shuffle' => $section->shuffle,
+            'custom_css' => $section->getCustomCss(),
+            'custom_js' => $section->getCustomJs(),
+            'menu_pos' => $section->getMenuPos(),
+            'target_blank' => $section->getTargetBlank(),
+            'visibility' => $section->getVisibility(),
+            'shuffle' => $section->getShuffle(),
             'archive' => 0,
             'hierarchy' => $i,
         ) + $this->blameAndTimestampData(0));
 
-        $section->id = $this->db->lastInsertId();
+        $section->setId($this->db->lastInsertId());
         $this->db->insert('expose_section_trans', array(
-            'expose_section_id' => $section->id,
-            'title' => $section->title,
-            'description' => $section->description,
-            'legend' => $section->legend,
+            'expose_section_id' => $section->getId(),
+            'title' => $section->getTitle(),
+            'description' => $section->getDescription(),
+            'legend' => $section->getLegend(),
             'language' => $this->language,
-            'parameters' => serialize($section->parameters),
+            'parameters' => serialize($section->getParameters()),
         ));
 
         return $section;
@@ -314,43 +526,43 @@ class ContentFactory
      *
      * @param \Ideys\Content\Section\Section $section
      */
-    public function updateSection(Section $section)
+    public function updateSection(Section\Section $section)
     {
         // Reset old homepage visibility in case of section
         // was newly defined as the homepage.
         // Also remove section from sub-folder.
-        if (Section::VISIBILITY_HOMEPAGE == $section->visibility) {
+        if ($section->isHomepage()) {
             $this->db->update('expose_section',
-                array('visibility' => Section::VISIBILITY_CLOSED),
-                array('visibility' => Section::VISIBILITY_HOMEPAGE)
+                array('visibility' => Section\Section::VISIBILITY_CLOSED),
+                array('visibility' => Section\Section::VISIBILITY_HOMEPAGE)
             );
-            $section->expose_section_id = null;
+            $section->setExposeSectionId(null);
         }
 
         // Update section
         $this->db->update('expose_section', array(
             'slug' => $this->uniqueSlug($section),
-            'custom_css' => $section->custom_css,
-            'custom_js' => $section->custom_js,
-            'tag' => $section->tag,
-            'menu_pos' => $section->menu_pos,
-            'target_blank' => $section->target_blank,
-            'visibility' => $section->visibility,
-            'shuffle' => $section->shuffle,
-            'expose_section_id' => $section->expose_section_id,
-        ) + $this->blameAndTimestampData($section->id),
-        array('id' => $section->id));
+            'custom_css' => $section->getCustomCss(),
+            'custom_js' => $section->getCustomJs(),
+            'tag' => $section->getTag(),
+            'menu_pos' => $section->getMenuPos(),
+            'target_blank' => $section->getTargetBlank(),
+            'visibility' => $section->getVisibility(),
+            'shuffle' => $section->getShuffle(),
+            'expose_section_id' => $section->getExposeSectionId(),
+        ) + $this->blameAndTimestampData($section->getId()),
+        array('id' => $section->getId()));
 
         // Update translated section attributes
         $this->db->update('expose_section_trans', array(
-            'title' => $section->title,
-            'description' => $section->description,
-            'legend' => $section->legend,
-            'parameters' => serialize($section->parameters),
-        ), array('expose_section_id' => $section->id, 'language' => $this->language));
+            'title' => $section->getTitle(),
+            'description' => $section->getDescription(),
+            'legend' => $section->getLegend(),
+            'parameters' => serialize($section->getParameters()),
+        ), array('expose_section_id' => $section->getId(), 'language' => $this->language));
 
         // Update other sections parameters with identical tag
-        if ($section->tag != null) {
+        if ($section->getTag() != null) {
             $this->updateGroupedSections($section);
         }
     }
@@ -360,24 +572,24 @@ class ContentFactory
      *
      * @param \Ideys\Content\Section\Section $section
      */
-    private function updateGroupedSections(Section $section)
+    private function updateGroupedSections(Section\Section $section)
     {
         $this->db->update('expose_section', array(
-            'custom_css' => $section->custom_css,
-            'custom_js' => $section->custom_js,
-            'shuffle' => $section->shuffle,
+            'custom_css' => $section->getCustomCss(),
+            'custom_js' => $section->getCustomJs(),
+            'shuffle' => $section->getShuffle(),
         ),
-        array('tag' => $section->tag, 'type' => $section->type));
+        array('tag' => $section->getTag(), 'type' => $section->getType()));
 
         // Update translated sections parameters
         $sectionsIds = $this->db->fetchAll(
             'SELECT id FROM expose_section WHERE tag = ? AND type = ?',
-            array($section->tag, $section->type)
+            array($section->getTag(), $section->getType())
         );
 
         foreach ($sectionsIds as $id) {
             $this->db->update('expose_section_trans', array(
-                'parameters' => serialize($section->parameters),
+                'parameters' => serialize($section->getParameters()),
             ), array('expose_section_id' => $id['id'], 'language' => $this->language));
         }
     }
@@ -390,12 +602,12 @@ class ContentFactory
      *
      * @return string
      */
-    protected function uniqueSlug(Section $section)
+    protected function uniqueSlug(Section\Section $section)
     {
-        $title = $section->title;
+        $title = $section->getTitle();
 
         // Add a "-dir" suffix to dir sections.
-        if ($section->type === self::SECTION_DIR) {
+        if ($section->getType() === Section\Section::SECTION_DIR) {
             $title .= '-dir';
         }
 
@@ -403,7 +615,7 @@ class ContentFactory
 
         $sections = $this->db->fetchAll(
             'SELECT slug FROM expose_section WHERE slug LIKE ? AND id != ?',
-            array($slug.'%', $section->id)
+            array($slug.'%', $section->getId())
         );
 
         $namesakes = array();
@@ -431,7 +643,7 @@ class ContentFactory
      */
     public function findItem($id)
     {
-        $sql = $this::getSqlSelectItem()
+        $sql = static::getSqlSelectItem()
             . 'WHERE i.id = ? '
             . 'ORDER BY s.hierarchy ASC ';
         $data = $this->db->fetchAssoc($sql, array($id));
@@ -447,10 +659,10 @@ class ContentFactory
      *
      * @return \Ideys\Content\Item\Item $item
      */
-    public function addItem(Section $section, Item\Item $item)
+    public function addItem(Section\Section $section, Item\Item $item)
     {
         $this->db->insert('expose_section_item', array(
-            'expose_section_id' => $section->id,
+            'expose_section_id' => $section->getId(),
             'type' => $item->getType(),
             'category' => $item->getCategory(),
             'tags' => $item->getTags(),
@@ -550,43 +762,48 @@ class ContentFactory
     }
 
     /**
-     * Return section types keys.
-     *
-     * @return array
-     */
-    public static function getSectionTypes()
-    {
-        return array(
-            self::SECTION_GALLERY,
-            self::SECTION_CHANNEL,
-            self::SECTION_HTML,
-            self::SECTION_BLOG,
-            self::SECTION_FORM,
-            self::SECTION_MAPS,
-            self::SECTION_LINK,
-            self::SECTION_DIR,
-        );
-    }
-
-    /**
      * Return instantiated Section from array data.
      *
-     * @param \Doctrine\DBAL\Connection $db
      * @param array                     $data
      *
-     * @return Section
+     * @return Section\Section
+     *
+     * @throws \Exception If Section type is unknown
      */
-    public static function instantiateSection(Connection $db, $data)
+    public static function instantiateSection($data)
     {
-        $type = $data['type'];
-
-        if (!in_array($type, static::getSectionTypes())) {
-            $type = self::SECTION_HTML;
+        switch ($data['type']) {
+            case Section\Section::SECTION_GALLERY:
+                $section = new Section\Gallery();
+                break;
+            case Section\Section::SECTION_HTML:
+                $section = new Section\Html();
+                break;
+            case Section\Section::SECTION_BLOG:
+                $section = new Section\Blog();
+                break;
+            case Section\Section::SECTION_FORM:
+                $section = new Section\Form();
+                break;
+            case Section\Section::SECTION_CHANNEL:
+                $section = new Section\Channel();
+                break;
+            case Section\Section::SECTION_MAPS:
+                $section = new Section\Maps();
+                break;
+            case Section\Section::SECTION_LINK:
+                $section = new Section\Link();
+                break;
+            case Section\Section::SECTION_DIR:
+                $section = new Section\Dir();
+                break;
+            default:
+                throw new \Exception(sprintf('Unable to find a Section of type "%s".', $data['type']));
         }
 
-        $sectionClass = '\Ideys\Content\Section\\'.ucfirst($type);
+        static::hydrator($section, $data);
 
-        return new $sectionClass($db, $data);
+        return $section;
     }
 
     /**
@@ -605,7 +822,18 @@ class ContentFactory
         $itemClassName = '\Ideys\Content\Item\\'.ucfirst($data['type']);
         $itemClass = new $itemClassName();
 
-        $class = new \ReflectionClass($itemClass);
+        static::hydrator($itemClass, $data);
+
+        return $itemClass;
+    }
+
+    /**
+     * @param object $object
+     * @param array  $data
+     */
+    private static function hydrator(&$object, $data)
+    {
+        $class = new \ReflectionClass($object);
 
         do {
             foreach ($class->getProperties() as $property) {
@@ -613,12 +841,10 @@ class ContentFactory
                 if ($class->hasMethod('get' . ucfirst($propertyName))
                     && array_key_exists($propertyName, $data)) {
 
-                    $itemClass->{'set' . ucfirst($propertyName)}($data[$propertyName]);
+                    $object->{'set' . ucfirst($propertyName)}($data[$propertyName]);
                 }
             }
         } while ($class = $class->getParentClass());
-
-        return $itemClass;
     }
 
     /**
@@ -630,8 +856,8 @@ class ContentFactory
      */
     public static function getDefaultSectionItemType($type)
     {
-        $sectionTypes = static::getSectionTypes();
-        $sectionTypes = array_diff($sectionTypes, array(self::SECTION_LINK, self::SECTION_DIR));
+        $sectionTypes = Section\Section::getTypes();
+        $sectionTypes = array_diff($sectionTypes, array(Section\Section::SECTION_LINK, Section\Section::SECTION_DIR));
         $itemTypes = Item\Item::getTypes();
         $sectionItems = array_combine($sectionTypes, $itemTypes);
 
@@ -643,7 +869,7 @@ class ContentFactory
      *
      * @param array $sectionTranslations
      *
-     * @return Section
+     * @return Section\Section
      */
     private function hydrateSection(array $sectionTranslations)
     {
@@ -652,8 +878,8 @@ class ContentFactory
         }
 
         $sectionData = $this->retrieveLanguage($sectionTranslations, $this->language);
-        $section = static::instantiateSection($this->db, $sectionData);
-        $section->hydrateItems();
+        $section = static::instantiateSection($sectionData);
+        $this->hydrateItems($section);
         $section->setLanguage($this->language);
 
         return $section;

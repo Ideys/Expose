@@ -1,14 +1,14 @@
 {% spaceless %}
-{{ form_row(edit_form.gallery_mode) }}
-<div class="for-mode for-fullScreen{% if section.gallery_mode != 'fullScreen' %} hidden{% endif %}">
+{{ form_row(edit_form.galleryMode) }}
+<div class="for-mode for-fullScreen{% if section.galleryMode != 'fullScreen' %} hidden{% endif %}">
   {{ form_row(edit_form.extended) }}
 </div>
-<div class="for-mode for-slideshow for-fullScreen{% if section.gallery_mode not in ['slideshow', 'fullScreen'] %} hidden{% endif %}">
-  {{ form_row(edit_form.slide_mode) }}
-  {{ form_row(edit_form.nav_bar) }}
+<div class="for-mode for-slideshow for-fullScreen{% if section.galleryMode not in ['slideshow', 'fullScreen'] %} hidden{% endif %}">
+  {{ form_row(edit_form.slideMode) }}
+  {{ form_row(edit_form.navBar) }}
   {{ form_row(edit_form.thumb_list) }}
 </div>
-<div class="for-mode for-vertical{% if section.gallery_mode != 'vertical' %} hidden{% endif %}">
+<div class="for-mode for-vertical{% if section.galleryMode != 'vertical' %} hidden{% endif %}">
   {{ form_row(edit_form.grid_rows) }}
   {{ form_row(edit_form.grid_rows_medium) }}
   {{ form_row(edit_form.grid_rows_small) }}

@@ -3,25 +3,15 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentFactory;
-use Ideys\Content\ContentInterface;
 use Ideys\Content\Item\Post;
-use Ideys\Content\SectionInterface;
 use Ideys\Settings\Settings;
 use Symfony\Component\Form\FormFactory;
 
 /**
  * Blog section manager.
  */
-class Blog extends Section implements ContentInterface, SectionInterface
+class Blog extends Section implements SectionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array();
-    }
-
     /**
      * {@inheritdoc}
      */

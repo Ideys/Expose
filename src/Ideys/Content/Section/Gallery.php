@@ -2,32 +2,53 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\ContentInterface;
-use Ideys\Content\SectionInterface;
 use Ideys\Settings\Settings;
 use Symfony\Component\Form\FormFactory;
 
 /**
  * Gallery content manager.
  */
-class Gallery extends Section implements ContentInterface, SectionInterface
+class Gallery extends Section implements SectionInterface
 {
     /**
-     * {@inheritdoc}
+     * @var string
      */
-    public static function getParameters()
-    {
-        return array(
-            'gallery_mode' => 'slideshow',
-            'slide_mode' => 'slide',
-            'extended' => '0',
-            'nav_bar' => '0',
-            'thumb_list' => '0',
-            'grid_rows' => '1',
-            'grid_rows_medium' => '1',
-            'grid_rows_small' => '1',
-        );
-    }
+    private $galleryMode = 'slideshow';
+
+    /**
+     * @var string
+     */
+    private $slideMode = 'slide';
+
+    /**
+     * @var string
+     */
+    private $extended = '0';
+
+    /**
+     * @var string
+     */
+    private $navBar = '0';
+
+    /**
+     * @var string
+     */
+    private $thumbList = '0';
+
+    /**
+     * @var string
+     */
+    private $gridRows = '1';
+
+    /**
+     * @var string
+     */
+    private $gridRowsMedium = '1';
+
+    /**
+     * @var string
+     */
+    private $gridRowsSmall = '1';
 
     /**
      * {@inheritdoc}
@@ -111,7 +132,7 @@ class Gallery extends Section implements ContentInterface, SectionInterface
      */
     public function isSlidable()
     {
-        return in_array($this->getParameter('gallery_mode'), array(
+        return in_array($this->getGalleryMode(), array(
             'slideshow',
             'fullScreen',
         ));
@@ -124,7 +145,7 @@ class Gallery extends Section implements ContentInterface, SectionInterface
      */
     public function isLinkable()
     {
-        return in_array($this->getParameter('gallery_mode'), array(
+        return in_array($this->getGalleryMode(), array(
             'vertical',
         ));
     }
@@ -171,5 +192,165 @@ class Gallery extends Section implements ContentInterface, SectionInterface
             $rows[(string)$row] = 'gallery.grid.rows'.$row;
         }
         return $rows;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGalleryMode()
+    {
+        return $this->galleryMode;
+    }
+
+    /**
+     * @param string $galleryMode
+     *
+     * @return Gallery
+     */
+    public function setGalleryMode($galleryMode)
+    {
+        $this->galleryMode = $galleryMode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlideMode()
+    {
+        return $this->slideMode;
+    }
+
+    /**
+     * @param string $slideMode
+     *
+     * @return Gallery
+     */
+    public function setSlideMode($slideMode)
+    {
+        $this->slideMode = $slideMode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtended()
+    {
+        return $this->extended;
+    }
+
+    /**
+     * @param string $extended
+     *
+     * @return Gallery
+     */
+    public function setExtended($extended)
+    {
+        $this->extended = $extended;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNavBar()
+    {
+        return $this->navBar;
+    }
+
+    /**
+     * @param string $navBar
+     *
+     * @return Gallery
+     */
+    public function setNavBar($navBar)
+    {
+        $this->navBar = $navBar;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getThumbList()
+    {
+        return $this->thumbList;
+    }
+
+    /**
+     * @param string $thumbList
+     *
+     * @return Gallery
+     */
+    public function setThumbList($thumbList)
+    {
+        $this->thumbList = $thumbList;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGridRows()
+    {
+        return $this->gridRows;
+    }
+
+    /**
+     * @param string $gridRows
+     *
+     * @return Gallery
+     */
+    public function setGridRows($gridRows)
+    {
+        $this->gridRows = $gridRows;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGridRowsMedium()
+    {
+        return $this->gridRowsMedium;
+    }
+
+    /**
+     * @param string $gridRowsMedium
+     *
+     * @return Gallery
+     */
+    public function setGridRowsMedium($gridRowsMedium)
+    {
+        $this->gridRowsMedium = $gridRowsMedium;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGridRowsSmall()
+    {
+        return $this->gridRowsSmall;
+    }
+
+    /**
+     * @param string $gridRowsSmall
+     *
+     * @return Gallery
+     */
+    public function setGridRowsSmall($gridRowsSmall)
+    {
+        $this->gridRowsSmall = $gridRowsSmall;
+
+        return $this;
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ideys\Content;
+namespace Ideys\Content\Section;
 
 /**
  * Sections interface.

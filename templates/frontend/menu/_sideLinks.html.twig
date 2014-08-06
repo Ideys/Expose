@@ -1,7 +1,7 @@
 {% spaceless %}
 {% for section in sections
    if  section.isMenuEnabled(is_granted('ROLE_USER'))
-   and section.menu_pos == menu_pos %}
+   and section.menuPos == menuPos %}
   {% if section.sections|length %}
     <li class="heading">
         <a href="#" data-display="#sub-menu-{{ section.id }}-{{ class }}">

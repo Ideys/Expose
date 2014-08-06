@@ -3,8 +3,6 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentFactory;
-use Ideys\Content\ContentInterface;
-use Ideys\Content\SectionInterface;
 use Ideys\Content\Item\Item;
 use Ideys\Content\Item\Place;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,27 +12,34 @@ use Symfony\Component\Form\Form as SfForm;
 /**
  * Maps content manager.
  */
-class Maps extends Section implements ContentInterface, SectionInterface
+class Maps extends Section implements SectionInterface
 {
+    /**
+     * @param integer
+     */
+    private $zoom = 1;
+
+    /**
+     * @param integer
+     */
+    private $latitude = 0;
+
+    /**
+     * @param integer
+     */
+    private $longitude = 0;
+
+    /**
+     * @param string
+     */
+    private $mapMode = 'ROADMAP';
+
     /**
      * Hold linked sections items
      *
      * @var array
      */
     private $linkedItems = array();
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array(
-            'zoom'      => 1,
-            'latitude'  => 0,
-            'longitude' => 0,
-            'map_mode'  => 'ROADMAP',
-        );
-    }
 
     /**
      * {@inheritdoc}
@@ -217,6 +222,86 @@ class Maps extends Section implements ContentInterface, SectionInterface
     public static function getZoomChoice()
     {
         return array_combine(range(1, 18), range(1, 18));
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZoom()
+    {
+        return $this->zoom;
+    }
+
+    /**
+     * @param mixed $zoom
+     *
+     * @return Maps
+     */
+    public function setZoom($zoom)
+    {
+        $this->zoom = $zoom;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param mixed $latitude
+     *
+     * @return Maps
+     */
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * @param mixed $longitude
+     *
+     * @return Maps
+     */
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMapMode()
+    {
+        return $this->mapMode;
+    }
+
+    /**
+     * @param mixed $mapMode
+     *
+     * @return Maps
+     */
+    public function setMapMode($mapMode)
+    {
+        $this->mapMode = $mapMode;
+
+        return $this;
     }
 
     /**

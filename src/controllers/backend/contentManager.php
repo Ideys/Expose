@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\Content\Section;
 use Ideys\Content\SectionType;
 use Ideys\Content\DirType;
 use Ideys\Content\ContentFactory;
@@ -14,14 +15,14 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $sectionType = new SectionType($app['db'], $app['form.factory']);
     $settings = new Settings($app['db']);
 
-    $newSection = new Ideys\Content\Section\Gallery($app['db']);
-    $newSection->visibility = $settings->newSectionDefaultVisibility;
+    $newSection = new Section\Gallery($app['db']);
+    $newSection->setVisibility($settings->newSectionDefaultVisibility);
     $form = $sectionType->createForm($newSection);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
         $contentFactory->addSection($newSection);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$newSection->id);
+        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$newSection->getId());
     }
 
     return $app['twig']->render('backend/contentManager/contentManager.html.twig', array(
@@ -188,9 +189,9 @@ $contentManagerController->post('/{id}/delete', function (Request $request, $id)
     $section = $contentFactory->findSection($id);
 
     // For directories need to have full sections tree
-    if (ContentFactory::SECTION_DIR == $section->type) {
+    if (Section\Section::SECTION_DIR == $section->getType()) {
         $sections = $contentFactory->findSections();
-        $section = $sections[$section->id];
+        $section = $sections[$section->getId()];
     }
 
     $deleteForm->handleRequest($request);
@@ -199,7 +200,7 @@ $contentManagerController->post('/{id}/delete', function (Request $request, $id)
 
         $app['session']
             ->getFlashBag()
-            ->add('default', $app['translator']->trans($section->type . '.deleted'));
+            ->add('default', $app['translator']->trans($section->getType() . '.deleted'));
     }
 
     return $app->redirect($app['url_generator']->generate('admin_content_manager'));

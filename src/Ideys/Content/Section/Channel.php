@@ -3,23 +3,13 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\Item\Video;
-use Ideys\Content\ContentInterface;
-use Ideys\Content\SectionInterface;
 use Symfony\Component\Form\FormFactory;
 
 /**
  * Channel content manager.
  */
-class Channel extends Section implements ContentInterface, SectionInterface
+class Channel extends Section implements SectionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array();
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -82,46 +72,46 @@ class Channel extends Section implements ContentInterface, SectionInterface
     public function guessVideoCode(Video $video)
     {
         switch (true) {
-            case (strpos($video->content, Video::PROVIDER_VIMEO) > -1) :
-                $video->category = Video::PROVIDER_VIMEO;
+            case (strpos($video->getContent(), Video::PROVIDER_VIMEO) > -1) :
+                $video->setCategory(Video::PROVIDER_VIMEO);
                 //http://vimeo.com/12345678
-                if (strpos($video->content, 'http') === 0) {
-                    $video->path = '//player.vimeo.com/video/'.filter_var($video->content, FILTER_SANITIZE_NUMBER_INT);
+                if (strpos($video->getContent(), 'http') === 0) {
+                    $video->setPath('//player.vimeo.com/video/'.filter_var($video->getContent(), FILTER_SANITIZE_NUMBER_INT));
                     break;
                 }
                 //<iframe src="//player.vimeo.com/video/12345678?title=0&amp;byline=0&...
-                $videoSrc = $this->extractIframeSrc($video->content);
-                $video->path = preg_filter('!([^\?]+)(.*)?!', '$1', $videoSrc);
+                $videoSrc = $this->extractIframeSrc($video->getContent());
+                $video->setPath(preg_filter('!([^\?]+)(.*)?!', '$1', $videoSrc));
             break;
 
-            case (strpos($video->content, Video::PROVIDER_DAILYMOTION) > -1) :
-                $video->category = Video::PROVIDER_DAILYMOTION;
+            case (strpos($video->getContent(), Video::PROVIDER_DAILYMOTION) > -1) :
+                $video->setCategory(Video::PROVIDER_DAILYMOTION);
                 //http://www.dailymotion.com/video/abc12ef_lorem-ipsum...
-                if (strpos($video->content, 'http') === 0) {
-                    $parse = explode('video/', $video->content);
+                if (strpos($video->getContent(), 'http') === 0) {
+                    $parse = explode('video/', $video->getContent());
                     $code = preg_filter('!([^_]+)(.*)?!', '$1', $parse[1]);
-                    $video->path = 'http://www.dailymotion.com/embed/video/'.$code;
+                    $video->setPath('http://www.dailymotion.com/embed/video/'.$code);
                     break;
                 }
                 //<iframe frameborder="0" src="http://www.dailymotion.com/embed/video/abc12ef
-                $video->path = $this->extractIframeSrc($video->content);
+                $video->setPath($this->extractIframeSrc($video->getContent()));
             break;
 
-            case (strpos(str_replace('.', '', $video->content), Video::PROVIDER_YOUTUBE) > -1) :
-                $video->category = Video::PROVIDER_YOUTUBE;
+            case (strpos(str_replace('.', '', $video->getContent()), Video::PROVIDER_YOUTUBE) > -1) :
+                $video->setCategory(Video::PROVIDER_YOUTUBE);
                 //http://youtu.be/ABC_123...
-                if (strpos($video->content, 'http://youtu.be/') === 0) {
-                    $video->path = str_replace('http://youtu.be/', '//www.youtube.com/embed/', $video->content);
+                if (strpos($video->getContent(), 'http://youtu.be/') === 0) {
+                    $video->setPath(str_replace('http://youtu.be/', '//www.youtube.com/embed/', $video->getContent()));
                     break;
                 //http://www.youtube.com/watch?v=ABC_123...
-                } elseif (strpos($video->content, 'http') === 0) {
-                    $parse = explode('?v=', $video->content);
+                } elseif (strpos($video->getContent(), 'http') === 0) {
+                    $parse = explode('?v=', $video->getContent());
                     $code = preg_filter('!([^&]+)(.*)?!', '$1', $parse[1]);
-                    $video->path = '//www.youtube.com/embed/'.$code;
+                    $video->setPath('//www.youtube.com/embed/'.$code);
                     break;
                 }
                 //<iframe width="960" height="720" src="//www.youtube.com/embed/ABC_123...
-                $video->path = $this->extractIframeSrc($video->content);
+                $video->setPath($this->extractIframeSrc($video->getContent()));
             break;
         }
     }

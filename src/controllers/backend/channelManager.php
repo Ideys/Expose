@@ -1,7 +1,7 @@
 <?php
 
 use Ideys\Content\ContentFactory;
-use Ideys\Content\Item\Video;
+use Ideys\Content\Item;
 use Symfony\Component\HttpFoundation\Request;
 
 $channelManagerController = $app['controllers_factory'];
@@ -23,7 +23,7 @@ $channelManagerController->match('/{id}/add', function (Request $request, $id) u
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $video = new Video(array('type' => ContentFactory::ITEM_VIDEO));
+    $video = new Item\Video(array('type' => Item\Item::ITEM_VIDEO));
 
     $form = $section->addForm($app['form.factory'], $video);
 

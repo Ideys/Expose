@@ -1,7 +1,7 @@
 <?php
 
-use Ideys\Content\Section\Maps;
-use Ideys\Content\Item\Place;
+use Ideys\Content\Section;
+use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,7 +27,7 @@ $mapsManagerController->match('/{id}/places', function (Request $request, $id) u
 
     $linkableSections = $section->getLinkableSections();
 
-    $place = new Place(array('type' => ContentFactory::ITEM_PLACE));
+    $place = new Item\Place(array('type' => Item\Item::ITEM_PLACE));
     $form = $section->addPlaceForm($app['form.factory'], $place);
 
     $form->handleRequest($request);
@@ -75,7 +75,7 @@ $mapsManagerController->match('/{id}/coordinates', function (Request $request, $
     $contentFactory = new ContentFactory($app);
     $item = $contentFactory->findItem($id);
 
-    $maps = new Maps($app['db']);
+    $maps = new Section\Maps($app['db']);
     $form = $maps->coordinatesForm($app['form.factory'], $item);
 
     $form->handleRequest($request);

@@ -17,7 +17,7 @@ abstract class Item extends AbstractContent
     /**
      * @var integer
      */
-    protected $expose_section_id;
+    protected $exposeSectionId;
 
     /**
      * @var string

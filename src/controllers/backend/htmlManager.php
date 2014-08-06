@@ -1,6 +1,6 @@
 <?php
 
-use Ideys\Content\Item\Page;
+use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,7 +38,7 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
     $section = $contentFactory->findSection($id);
     $page = $section->getFirstPage();
     if (empty($page)) {
-        $page = new Page(array('type' => ContentFactory::ITEM_PAGE));
+        $page = new Item\Page(array('type' => Item\Item::ITEM_PAGE));
         $contentFactory->addItem($section, $page);
     }
 

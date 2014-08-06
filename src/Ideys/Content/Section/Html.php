@@ -2,24 +2,14 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\ContentInterface;
-use Ideys\Content\SectionInterface;
 use Symfony\Component\Form\FormFactory;
 use Ideys\Content\Item\Page;
 
 /**
  * HTML content manager.
  */
-class Html extends Section implements ContentInterface, SectionInterface
+class Html extends Section implements SectionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array();
-    }
-
     /**
      * {@inheritdoc}
      */

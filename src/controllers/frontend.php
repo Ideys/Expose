@@ -78,7 +78,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
         $formView = $form->createView();
     }
 
-    return $app['twig']->render('frontend/'.$section->type.'/'.$section->type.'.html.twig', array(
+    return $app['twig']->render('frontend/'.$section->getType().'/'.$section->getType().'.html.twig', array(
       'section' => $section,
       'item' => $item,
       'form' => $formView,
@@ -94,7 +94,7 @@ $frontendController->get('/first', function() use ($app) {
 
     $firstSection = $contentFactory->findFirstSection();
 
-    return $app->redirect($app['url_generator']->generate('section', array('slug' => $firstSection->slug)));
+    return $app->redirect($app['url_generator']->generate('section', array('slug' => $firstSection->getSlug())));
 })
 ->bind('first_section')
 ;

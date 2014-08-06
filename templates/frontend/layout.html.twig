@@ -10,9 +10,9 @@
 {{ site.customStyle|raw }}
 </style>
 {% if section|default('')|length
-  and section.custom_css|length %}
+  and section.customCss|length %}
   <style>
-    {{ section.custom_css|raw }}
+    {{ section.customCss|raw }}
   </style>
 {% endif %}
 {% endblock head %}
@@ -22,9 +22,9 @@
 {{ site.customJavascript|raw }}
 </script>
 {% if section|default('')|length
-  and section.custom_js|length %}
+  and section.customJs|length %}
 <script>
-  {{ section.custom_js|raw }}
+  {{ section.customJs|raw }}
 </script>
 {% endif %}
 {% endblock javascripts %}

@@ -2,8 +2,6 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\ContentInterface;
-use Ideys\Content\SectionInterface;
 use Ideys\Content\Item\Field;
 use Ideys\Files\File;
 use Ideys\String;
@@ -14,18 +12,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 /**
  * Form content manager.
  */
-class Form extends Section implements ContentInterface, SectionInterface
+class Form extends Section implements SectionInterface
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function getParameters()
-    {
-        return array(
-            'validation_message' => '',
-        );
-    }
-
     /**
      * {@inheritdoc}
      */

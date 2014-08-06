@@ -1,9 +1,9 @@
 <?php
 
+use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
-use Ideys\Content\Section\Form;
 use Ideys\Files\File;
-use Ideys\Content\Item\Field;
+use Ideys\Settings\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
 $formManagerController = $app['controllers_factory'];
@@ -12,11 +12,11 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $field = new Field(array('type' => ContentFactory::ITEM_FIELD));
+    $field = new Item\Field(array('type' => Item\Item::ITEM_FIELD));
 
     $form = $app['form.factory']->createBuilder('form', $field)
         ->add('category', 'choice', array(
-            'choices' => Field::getTypesChoice(),
+            'choices' => Item\Field::getTypesChoice(),
             'label' => 'form.field.type',
         ))
         ->add('title', 'text', array(
@@ -27,7 +27,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
         ))
         ->add('required', 'choice', array(
             'label' => 'form.required',
-            'choices' => \Ideys\Settings\Settings::getIOChoices(),
+            'choices' => Settings::getIOChoices(),
         ))
         ->add('description', 'textarea', array(
             'label' => 'form.help',

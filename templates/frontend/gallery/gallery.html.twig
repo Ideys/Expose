@@ -1,12 +1,12 @@
 {% extends "frontend/layout.html.twig" %}
 
-{% if not section.nav_bar %}{% set nav_class = ' no-nav' %}{% else %}{% set nav_class = '' %}{% endif %}
-{% if section.thumb_list %}{% set thumb_class = ' gallery-thumb' %}{% else %}{% set thumb_class = '' %}{% endif %}
+{% if not section.navBar %}{% set nav_class = ' no-nav' %}{% else %}{% set nav_class = '' %}{% endif %}
+{% if section.thumbList %}{% set thumb_class = ' gallery-thumb' %}{% else %}{% set thumb_class = '' %}{% endif %}
 {% if section.extended %}{% set extended_class = ' gallery-extended' %}{% else %}{% set extended_class = '' %}{% endif %}
 {% block body_class parent()
     ~ widgets.section_body_classes(section)
     ~ ' gallery-'
-    ~ section.gallery_mode
+    ~ section.galleryMode
     ~ extended_class
     ~ nav_class
     ~ thumb_class
@@ -28,11 +28,11 @@
 {% endblock head %}
 
 {% block javascripts %}
-{% if 'masonry' == section.gallery_mode %}
+{% if 'masonry' == section.galleryMode %}
   {% include "frontend/gallery/_masonry.js.twig" %}
 {% endif %}
 {{ parent() }}
-{% if section.thumb_list %}
+{% if section.thumbList %}
   {% include "frontend/gallery/_fullScreenThumb.js.twig" %}
 {% endif %}
 {% endblock javascripts %}
@@ -49,7 +49,7 @@
 {% if section.hasItems('Slide') %}
   {{ section.triggerShuffle }}
   <div id="gallery">
-    {% include "frontend/gallery/_"~ section.gallery_mode ~".html.twig" %}
+    {% include "frontend/gallery/_"~ section.galleryMode ~".html.twig" %}
   </div>
   <div class="hold-on">
     <div class="sandglass">
