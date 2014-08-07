@@ -1,8 +1,7 @@
 <?php
 
 use Ideys\Content\Section;
-use Ideys\Content\SectionType;
-use Ideys\Content\DirType;
+use Ideys\Content\Type;
 use Ideys\Content\ContentFactory;
 use Ideys\Settings\Settings;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,7 +11,7 @@ $contentManagerController = $app['controllers_factory'];
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $contentFactory = new ContentFactory($app);
-    $sectionType = new SectionType($app['db'], $app['form.factory']);
+    $sectionType = new Type\SectionType($app['db'], $app['form.factory']);
     $settings = new Settings($app['db']);
 
     $newSection = new Section\Gallery($app['db']);
@@ -135,7 +134,7 @@ $contentManagerController->match('/{id}/edit/dir', function (Request $request, $
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    $dirType = new DirType($app['form.factory']);
+    $dirType = new Type\SectionDirType($app['db'], $app['form.factory']);
     $form = $dirType->editForm($section);
 
     $form->handleRequest($request);

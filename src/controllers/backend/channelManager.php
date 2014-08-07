@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 $channelManagerController = $app['controllers_factory'];
 
-$channelManagerController->get('/{id}/list', function (Request $request, $id) use ($app) {
+$channelManagerController->get('/{id}/list', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);

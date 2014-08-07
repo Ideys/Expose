@@ -1,13 +1,13 @@
 <?php
 
 use Ideys\Content\ContentFactory;
-use Ideys\Content\Section\Blog;
-use Ideys\Content\Item\Post;
+use Ideys\Content\Section;
+use Ideys\Content\Item;
 use Symfony\Component\HttpFoundation\Request;
 
 $blogManagerController = $app['controllers_factory'];
 
-$blogManagerController->get('/{id}/list', function (Request $request, $id) use ($app) {
+$blogManagerController->get('/{id}/list', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
@@ -24,7 +24,7 @@ $blogManagerController->match('/{id}/new', function (Request $request, $id) use 
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $post = new Post(array('type' => ContentFactory::ITEM_POST));
+    $post = new Item\Post(array('type' => Item\Item::ITEM_POST));
 
     $form = $section->newPostForm($app['form.factory'], $post);
 
@@ -50,7 +50,7 @@ $blogManagerController->match('/{sectionId}/{id}/edit', function (Request $reque
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($sectionId);
     $post = $contentFactory->findItem($id);
-    $blog = new Blog($app['db']);
+    $blog = new Section\Blog($app['db']);
 
     $form = $blog->newPostForm($app['form.factory'], $post);
 
