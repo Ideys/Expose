@@ -2,8 +2,7 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\Item\Video;
-use Symfony\Component\Form\FormFactory;
+use Ideys\Content\Item;
 
 /**
  * Channel content manager.
@@ -13,31 +12,19 @@ class Channel extends Section implements SectionInterface
     /**
      * {@inheritdoc}
      */
-    public static function getDefaultItemType()
+    public function getDefaultItems()
     {
-        return 'Video';
+        return $this->getVideos();
     }
 
     /**
-     * Add form.
+     * Get Video Items.
+     *
+     * @return array
      */
-    public function addForm(FormFactory $formFactory, Video $video)
+    public function getVideos()
     {
-        $formBuilder = $formFactory
-            ->createBuilder('form', $video)
-            ->add('category', 'choice', array(
-                'label' => 'channel.provider.choice',
-                'choices' => static::getProviderChoice(),
-            ))
-            ->add('title', 'text', array(
-                'label' => 'channel.video.title',
-            ))
-            ->add('content', 'textarea', array(
-                'label' => 'channel.video.code',
-            ))
-        ;
-
-        return $formBuilder->getForm();
+        return $this->getItemsOfType(Item\Item::ITEM_VIDEO);
     }
 
     /**
@@ -58,9 +45,9 @@ class Channel extends Section implements SectionInterface
     public static function getProviderChoice()
     {
         return array(
-            Video::PROVIDER_VIMEO => ucfirst(Video::PROVIDER_VIMEO),
-            Video::PROVIDER_DAILYMOTION => ucfirst(Video::PROVIDER_DAILYMOTION),
-            Video::PROVIDER_YOUTUBE => ucfirst(Video::PROVIDER_YOUTUBE),
+            Item\Video::PROVIDER_VIMEO => ucfirst(Item\Video::PROVIDER_VIMEO),
+            Item\Video::PROVIDER_DAILYMOTION => ucfirst(Item\Video::PROVIDER_DAILYMOTION),
+            Item\Video::PROVIDER_YOUTUBE => ucfirst(Item\Video::PROVIDER_YOUTUBE),
         );
     }
 
@@ -69,11 +56,11 @@ class Channel extends Section implements SectionInterface
      *
      * @param \Ideys\Content\Item\Video $video
      */
-    public function guessVideoCode(Video $video)
+    public function guessVideoCode(Item\Video $video)
     {
         switch (true) {
-            case (strpos($video->getContent(), Video::PROVIDER_VIMEO) > -1) :
-                $video->setCategory(Video::PROVIDER_VIMEO);
+            case (strpos($video->getContent(), Item\Video::PROVIDER_VIMEO) > -1) :
+                $video->setCategory(Item\Video::PROVIDER_VIMEO);
                 //http://vimeo.com/12345678
                 if (strpos($video->getContent(), 'http') === 0) {
                     $video->setPath('//player.vimeo.com/video/'.filter_var($video->getContent(), FILTER_SANITIZE_NUMBER_INT));
@@ -84,8 +71,8 @@ class Channel extends Section implements SectionInterface
                 $video->setPath(preg_filter('!([^\?]+)(.*)?!', '$1', $videoSrc));
             break;
 
-            case (strpos($video->getContent(), Video::PROVIDER_DAILYMOTION) > -1) :
-                $video->setCategory(Video::PROVIDER_DAILYMOTION);
+            case (strpos($video->getContent(), Item\Video::PROVIDER_DAILYMOTION) > -1) :
+                $video->setCategory(Item\Video::PROVIDER_DAILYMOTION);
                 //http://www.dailymotion.com/video/abc12ef_lorem-ipsum...
                 if (strpos($video->getContent(), 'http') === 0) {
                     $parse = explode('video/', $video->getContent());
@@ -97,8 +84,8 @@ class Channel extends Section implements SectionInterface
                 $video->setPath($this->extractIframeSrc($video->getContent()));
             break;
 
-            case (strpos(str_replace('.', '', $video->getContent()), Video::PROVIDER_YOUTUBE) > -1) :
-                $video->setCategory(Video::PROVIDER_YOUTUBE);
+            case (strpos(str_replace('.', '', $video->getContent()), Item\Video::PROVIDER_YOUTUBE) > -1) :
+                $video->setCategory(Item\Video::PROVIDER_YOUTUBE);
                 //http://youtu.be/ABC_123...
                 if (strpos($video->getContent(), 'http://youtu.be/') === 0) {
                     $video->setPath(str_replace('http://youtu.be/', '//www.youtube.com/embed/', $video->getContent()));

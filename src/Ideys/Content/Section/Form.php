@@ -2,7 +2,7 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\Item\Field;
+use Ideys\Content\Item;
 use Ideys\Files\File;
 use Ideys\String;
 use Symfony\Component\Form as SfForm;
@@ -17,9 +17,19 @@ class Form extends Section implements SectionInterface
     /**
      * {@inheritdoc}
      */
-    public static function getDefaultItemType()
+    public function getDefaultItems()
     {
-        return 'Field';
+        return $this->getFields();
+    }
+
+    /**
+     * Get Field Items.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->getItemsOfType(Item\Item::ITEM_FIELD);
     }
 
     /**
@@ -34,10 +44,10 @@ class Form extends Section implements SectionInterface
         $form = $formFactory->createBuilder('form');
 
         foreach ($this->items as $item) {
-            if (Field::HTML == $item->category) {
+            if (Item\Field::HTML == $item->category) {
                 continue;
             }
-            $fieldType = Field::getSymfonyEquivalent($item->category);
+            $fieldType = Item\Field::getSymfonyEquivalent($item->category);
             $options =  array(
                 'label' => $item->title,
                 'required' => (boolean) $item->required,
@@ -48,12 +58,12 @@ class Form extends Section implements SectionInterface
                     'choices' => array_combine($choices, $choices),
                 );
             }
-            if (Field::MULTIPLE_SELECT == $item->category) {
+            if (Item\Field::MULTIPLE_SELECT == $item->category) {
                 $options += array(
                     'multiple' => true,
                 );
             }
-            if (Field::RADIO == $item->category) {
+            if (Item\Field::RADIO == $item->category) {
                 $options += array(
                     'expanded' => true,
                 );
@@ -155,20 +165,5 @@ class Form extends Section implements SectionInterface
         }
 
         return $formDeleted;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function settingsForm(SfForm\FormFactory $formFactory)
-    {
-        $formBuilder = $this->settingsFormBuilder($formFactory)
-            ->add('validation_message', 'textarea', array(
-                'label' => 'form.validation.message',
-                'required' => false,
-            ))
-        ;
-
-        return $formBuilder->getForm();
     }
 }

@@ -3,8 +3,7 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\ContentFactory;
-use Ideys\Content\Item\Item;
-use Ideys\Content\Item\Place;
+use Ideys\Content\Item;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Form as SfForm;
@@ -35,7 +34,7 @@ class Maps extends Section implements SectionInterface
     private $mapMode = 'ROADMAP';
 
     /**
-     * Hold linked sections items
+     * Hold linked sections items.
      *
      * @var array
      */
@@ -44,9 +43,19 @@ class Maps extends Section implements SectionInterface
     /**
      * {@inheritdoc}
      */
-    public static function getDefaultItemType()
+    public function getDefaultItems()
     {
-        return 'Place';
+        return $this->getPlaces();
+    }
+
+    /**
+     * Return Place Items.
+     *
+     * @return array
+     */
+    public function getPlaces()
+    {
+        return $this->getItemsOfType(Item\Item::ITEM_PLACE);
     }
 
     /**
@@ -126,41 +135,14 @@ class Maps extends Section implements SectionInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function settingsForm(FormFactory $formFactory)
-    {
-        $formBuilder = $this->settingsFormBuilder($formFactory)
-            ->add('zoom', 'choice', array(
-                'label' => 'maps.zoom',
-                'choices' => $this->getZoomChoice(),
-            ))
-            ->add('latitude', 'number', array(
-                'label' => 'maps.latitude',
-                'precision' => 15,
-            ))
-            ->add('longitude', 'number', array(
-                'label' => 'maps.longitude',
-                'precision' => 15,
-            ))
-            ->add('map_mode', 'choice', array(
-                'label' => 'maps.mode.mode',
-                'choices' => $this->getModeChoice(),
-            ))
-        ;
-
-        return $formBuilder->getForm();
-    }
-
-    /**
      * New place form.
      *
      * @param FormFactory $formFactory
-     * @param Place       $place
+     * @param Item\Place  $place
      *
      * @return SfForm
      */
-    public function addPlaceForm(FormFactory $formFactory, Place $place)
+    public function addPlaceForm(FormFactory $formFactory, Item\Place $place)
     {
         $formBuilder = $formFactory->createBuilder('form', $place)
             ->add('title', 'text', array(
@@ -179,11 +161,11 @@ class Maps extends Section implements SectionInterface
      * Coordinates form for all items types.
      *
      * @param FormFactory $formFactory
-     * @param Item        $item
+     * @param Item\Item   $item
      *
      * @return SfForm
      */
-    public function coordinatesForm(FormFactory $formFactory, Item $item)
+    public function coordinatesForm(FormFactory $formFactory, Item\Item $item)
     {
         $formBuilder = $formFactory->createBuilder('form', $item);
         $this->coordinatesFields($formBuilder);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Ideys\Content;
+namespace Ideys\Content\Type;
 
 use Ideys\Content\Section\Section;
 use Ideys\Settings\Settings;
@@ -8,7 +8,7 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\Form\FormFactory;
 
 /**
- * Section form type.
+ * Section default type.
  */
 class SectionType
 {
@@ -21,7 +21,6 @@ class SectionType
      * @var \Symfony\Component\Form\FormFactory
      */
     protected $formFactory;
-
 
     /**
      * Constructor.

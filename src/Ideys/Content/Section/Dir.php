@@ -5,16 +5,8 @@ namespace Ideys\Content\Section;
 /**
  * Directory manager.
  */
-class Dir extends Section implements SectionInterface
+class Dir extends Section
 {
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDefaultItemType()
-    {
-        return 'Section';
-    }
-
     /**
      * Delete the directory with all
      * related sections.

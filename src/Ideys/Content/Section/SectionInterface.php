@@ -8,9 +8,23 @@ namespace Ideys\Content\Section;
 interface SectionInterface
 {
     /**
-     * Return default Section Item type.
+     * Return id of Section.
      *
-     * @return string
+     * @return integer
      */
-    public static function getDefaultItemType();
+    public function getId();
+
+    /**
+     * Return default Section Items.
+     *
+     * @return array
+     */
+    public function getDefaultItems();
+
+    /**
+     * Test if the section could be composed with other sections items.
+     *
+     * @return boolean
+     */
+    public function isComposite();
 }

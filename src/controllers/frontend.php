@@ -4,6 +4,7 @@ use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception;
 
 $frontendController = $app['controllers_factory'];
 
@@ -19,7 +20,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     }
 
     if (!$section) {
-        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        throw new Exception\NotFoundHttpException();
     }
 
     if (!$section->isHomepage() && $settings->maintenance
@@ -44,12 +45,12 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
         $item = $section->getItemFromSlug($itemSlug);
 
         if (!$item) {
-            throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+            throw new Exception\NotFoundHttpException();
         }
 
     } elseif ($section->hasMultiplePages()) {
 
-        $items = $section->getItems($section::getDefaultItemType());
+        $items = $section->getItems();
         $firstItem = array_shift($items);
         $itemSlug = $firstItem->slug;
 
@@ -117,7 +118,7 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
     $messageType = new \Ideys\Messaging\MessageType($app['form.factory']);
 
     if ('disabled' === $settings->contactSection) {
-        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        throw new Exception\NotFoundHttpException();
     }
 
     $form = $messageType->form($message);
@@ -176,11 +177,11 @@ $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use (
     $file = $filesHandler->findBySlugAndToken($slug, $token);
 
     if ('0' === $settings->shareFiles) {
-        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+        throw new Exception\AccessDeniedHttpException();
     }
 
     if (!file_exists($file->getPath())) {
-        throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+        throw new Exception\NotFoundHttpException();
     }
 
     $filesHandler->logDownload($file->getRecipients()[0]);

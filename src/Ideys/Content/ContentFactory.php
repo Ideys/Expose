@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\User\User;
 use Doctrine\DBAL\Connection;
 use Imagine;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\Form\FormFactory;
 
 /**
  * App content manager.
@@ -177,14 +176,14 @@ class ContentFactory
      * - Gallery integration
      * - Video integration
      *
-     * @param \Ideys\Content\Section\Section $section
-     * @param $twig
+     * @param Section\SectionInterface $section
+     * @param \Twig_Environment        $twig
      */
-    public function composeSectionItems($section, \Twig_Environment $twig)
+    public function composeSectionItems(Section\SectionInterface $section, \Twig_Environment $twig)
     {
         if ($section->isComposite()) {
 
-            $items = $section->getItems($section::getDefaultItemType());
+            $items = $section->getDefaultItems();
 
             // A: extract replacement keys
             $sectionSlugs = array();
@@ -219,8 +218,7 @@ class ContentFactory
                 foreach ($sectionsToInclude as $s) {
                     $sectionToInclude = static::instantiateSection($s);
                     $sectionToInclude->hydrateItems();
-                    $defaultType = $sectionToInclude::getDefaultItemType();
-                    if ($sectionToInclude->hasItems($defaultType)) {
+                    if ($sectionToInclude->hasDefaultItems()) {
                         $replacementValues[$replacementStrings[$sectionToInclude->getSlug()]] = $sectionToInclude;
                     }
                 }
@@ -301,42 +299,13 @@ class ContentFactory
     }
 
     /**
-     * Return section settings form builder used to extends standard form.
-     *
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     *
-     * @return \Symfony\Component\Form\FormBuilder
-     */
-    protected function settingsFormBuilder(FormFactory $formFactory)
-    {
-        $sectionType = new SectionType($this->db, $formFactory);
-
-        $formBuilder = $sectionType->formBuilder($this);
-        $formBuilder->remove('type');
-
-        return $formBuilder;
-    }
-
-    /**
-     * Return section settings form.
-     *
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    public function settingsForm(FormFactory $formFactory)
-    {
-        return $this->settingsFormBuilder($formFactory)->getForm();
-    }
-
-    /**
      * Fill items attribute with section's persisted items.
      *
-     * @param Section\Section $section
+     * @param Section\SectionInterface $section
      *
      * @return boolean true if hydration is successful.
      */
-    public function hydrateItems(Section\Section $section)
+    public function hydrateItems(Section\SectionInterface $section)
     {
         if ($section->getId() == null) {
             return false;
@@ -353,7 +322,7 @@ class ContentFactory
         }
 
         foreach ($itemTranslations as $data) {
-            $section->getItems($section::getDefaultItemType())[$data['id']] = static::instantiateItem($data);
+            $section->getDefaultItems()[$data['id']] = static::instantiateItem($data);
         }
 
         return true;

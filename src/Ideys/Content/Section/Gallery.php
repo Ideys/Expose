@@ -2,8 +2,7 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Settings\Settings;
-use Symfony\Component\Form\FormFactory;
+use Ideys\Content\Item;
 
 /**
  * Gallery content manager.
@@ -53,9 +52,19 @@ class Gallery extends Section implements SectionInterface
     /**
      * {@inheritdoc}
      */
-    public static function getDefaultItemType()
+    public function getDefaultItems()
     {
-        return 'Slide';
+        return $this->getSlides();
+    }
+
+    /**
+     * Return Slide Items.
+     *
+     * @return array
+     */
+    public function getSlides()
+    {
+        return $this->getItemsOfType(Item\Item::ITEM_SLIDE);
     }
 
     /**
@@ -80,49 +89,6 @@ class Gallery extends Section implements SectionInterface
         }
 
         return $weight;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function settingsForm(FormFactory $formFactory)
-    {
-        $formBuilder = $this->settingsFormBuilder($formFactory)
-            ->add('gallery_mode', 'choice', array(
-                'label' => 'gallery.mode.mode',
-                'choices' => static::getGalleryModeChoice(),
-            ))
-            ->add('slide_mode', 'choice', array(
-                'label' => 'gallery.slide.mode',
-                'choices' => static::getSlideModeChoice(),
-            ))
-            ->add('extended', 'choice', array(
-                'label' => 'gallery.mode.full.screen.extended',
-                'choices' => Settings::getIOChoices(),
-            ))
-            ->add('nav_bar', 'choice', array(
-                'label' => 'gallery.nav.bar.display',
-                'choices' => Settings::getIOChoices(),
-            ))
-            ->add('thumb_list', 'choice', array(
-                'label' => 'gallery.thumb.list.display',
-                'choices' => Settings::getIOChoices(),
-            ))
-            ->add('grid_rows', 'choice', array(
-                'label' => 'gallery.grid.rows',
-                'choices' => static::getGalleryGridRowsChoice(),
-            ))
-            ->add('grid_rows_medium', 'choice', array(
-                'label' => 'gallery.grid.rows.medium',
-                'choices' => static::getGalleryGridRowsChoice(8),
-            ))
-            ->add('grid_rows_small', 'choice', array(
-                'label' => 'gallery.grid.rows.small',
-                'choices' => static::getGalleryGridRowsChoice(3),
-            ))
-        ;
-
-        return $formBuilder->getForm();
     }
 
     /**

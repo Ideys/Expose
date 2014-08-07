@@ -5,7 +5,7 @@ namespace Ideys\Content\Section;
 /**
  * Sections prototype class.
  */
-abstract class Section implements SectionInterface
+abstract class Section
 {
     /**
      * @var integer
@@ -150,14 +150,6 @@ abstract class Section implements SectionInterface
      * @var array
      */
     protected $sections = array();
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getDefaultItemType()
-    {
-        return 'Item';
-    }
 
     /**
      * Remove a connected section id.
@@ -799,13 +791,22 @@ abstract class Section implements SectionInterface
 
     /**
      * Return section items.
-     * Trigger the shuffle mode if set.
+     *
+     * @return array
+     */
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    /**
+     * Return section items filtered by type.
      *
      * @param string $type Items type.
      *
      * @return array
      */
-    public function getItems($type)
+    protected function getItemsOfType($type)
     {
         $typeNamespace = '\Ideys\Content\Item\\'.$type;
         return array_filter($this->items, function($item) use ($typeNamespace) {
