@@ -1,18 +1,19 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Content\Section;
 use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-$mapManagerController = $app['controllers_factory'];
+$mapManagerController = SilexHooks::controllerFactory($app);
 
 $mapManagerController->get('/{id}/preview', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/mapManager/_mapPreview.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/mapManager/_mapPreview.html.twig', array(
         'section' => $section,
     ));
 })
@@ -35,7 +36,7 @@ $mapManagerController->match('/{id}/places', function (Request $request, $id) us
         $contentFactory->addItem($section, $place);
     }
 
-    return $app['twig']->render('backend/mapManager/_mapPlaces.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/mapManager/_mapPlaces.html.twig', array(
         'form' => $form->createView(),
         'section' => $section,
         'linkable_sections' => $linkableSections,
@@ -61,7 +62,7 @@ $mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionI
         array('id' => $id)
     );
 
-    return $app['twig']->render('backend/mapManager/_placesList.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/mapManager/_placesList.html.twig', array(
         'section' => $section,
     ));
 })
@@ -84,7 +85,7 @@ $mapManagerController->match('/{id}/coordinates', function (Request $request, $i
         return $app->json(true);
     }
 
-    return $app['twig']->render('backend/mapManager/_coordinatesForm.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/mapManager/_coordinatesForm.html.twig', array(
         'item' => $item,
         'form' => $form->createView(),
     ));

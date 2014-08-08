@@ -1,10 +1,11 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Settings\Settings;
 use Ideys\Settings\SettingsType;
 use Symfony\Component\HttpFoundation\Request;
 
-$siteSettingsController = $app['controllers_factory'];
+$siteSettingsController = SilexHooks::controllerFactory($app);
 
 $siteSettingsController->match('/', function (Request $request) use ($app) {
 
@@ -21,7 +22,7 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
             ->add('success', $app['translator']->trans('site.settings.updated'));
     }
 
-    return $app['twig']->render('backend/siteSettings/siteSettings.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/siteSettings/siteSettings.html.twig', array(
         'form' => $form->createView(),
     ));
 })

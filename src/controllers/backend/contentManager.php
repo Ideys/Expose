@@ -1,12 +1,13 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Content\Section;
 use Ideys\Content\Type;
 use Ideys\Content\ContentFactory;
 use Ideys\Settings\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
-$contentManagerController = $app['controllers_factory'];
+$contentManagerController = SilexHooks::controllerFactory($app);
 
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
@@ -21,10 +22,10 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $form->handleRequest($request);
     if ($form->isValid()) {
         $contentFactory->addSection($newSection);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$newSection->getId());
+        return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$newSection->getId());
     }
 
-    return $app['twig']->render('backend/contentManager/contentManager.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/contentManager/contentManager.html.twig', array(
         'form' => $form->createView(),
     ));
 })
@@ -34,7 +35,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
 $contentManagerController->match('/archives', function () use ($app) {
 
-    return $app['twig']->render('backend/contentManager/archives.html.twig');
+    return SilexHooks::twig($app)->render('backend/contentManager/archives.html.twig');
 })
 ->bind('admin_content_manager_archives')
 ->method('GET')
@@ -123,7 +124,7 @@ $contentManagerController->get('/{id}/archive', function ($id) use ($app) {
     $contentFactory = new ContentFactory($app);
     $contentFactory->switchArchive($id);
 
-    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    return SilexHooks::redirect($app, 'admin_content_manager');
 })
 ->assert('id', '\d+')
 ->bind('admin_content_manager_archive')
@@ -140,12 +141,12 @@ $contentManagerController->match('/{id}/edit/dir', function (Request $request, $
     $form->handleRequest($request);
     if ($form->isValid()) {
         $contentFactory->updateSection($section);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+        return SilexHooks::redirect($app, 'admin_content_manager');
     }
 
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
-    return $app['twig']->render('backend/dirManager/_dirForm.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/dirManager/_dirForm.html.twig', array(
         'section' => $section,
         'form' => $form->createView(),
         'delete_form' => $deleteForm->createView(),
@@ -167,10 +168,10 @@ $contentManagerController->match('/{id}/settings', function (Request $request, $
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
         $contentFactory->updateSection($section);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
+        return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);
     }
 
-    return $app['twig']->render('backend/contentManager/_sectionSettings.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/contentManager/_sectionSettings.html.twig', array(
         'edit_form' => $editForm->createView(),
         'delete_form' => $deleteForm->createView(),
         'section' => $section,
@@ -197,12 +198,12 @@ $contentManagerController->post('/{id}/delete', function (Request $request, $id)
     if ($deleteForm->isValid()) {
         $section->delete();
 
-        $app['session']
+        SilexHooks::session($app)
             ->getFlashBag()
             ->add('default', $app['translator']->trans($section->getType() . '.deleted'));
     }
 
-    return $app->redirect($app['url_generator']->generate('admin_content_manager'));
+    return SilexHooks::redirect($app, 'admin_content_manager');
 })
 ->assert('id', '\d+')
 ->bind('admin_content_manager_delete')

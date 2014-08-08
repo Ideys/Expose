@@ -1,17 +1,18 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Content\ContentFactory;
 use Ideys\Content\Item;
 use Symfony\Component\HttpFoundation\Request;
 
-$channelManagerController = $app['controllers_factory'];
+$channelManagerController = SilexHooks::controllerFactory($app);
 
 $channelManagerController->get('/{id}/list', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/channelManager/_videoList.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/channelManager/_videoList.html.twig', array(
         'section' => $section,
     ));
 })
@@ -31,10 +32,10 @@ $channelManagerController->match('/{id}/add', function (Request $request, $id) u
     if ($form->isValid()) {
         $section->guessVideoCode($video);
         $contentFactory->addItem($section, $video);
-        return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
+        return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);
     }
 
-    return $app['twig']->render('backend/channelManager/_formAdd.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/channelManager/_formAdd.html.twig', array(
         'form' => $form->createView(),
         'section' => $section,
     ));
@@ -50,7 +51,7 @@ $channelManagerController->get('/{id}/remove/video/{itemId}', function ($id, $it
     $section = $contentFactory->findSection($id);
     $isDeleted = $section->deleteItem($itemId);
 
-    return $app->redirect($app['url_generator']->generate('admin_content_manager').'#panel'.$id);
+    return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);
 })
 ->assert('id', '\d+')
 ->assert('itemId', '\d+')

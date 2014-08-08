@@ -1,11 +1,12 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\User\UserProvider;
 use Ideys\User\Profile;
 use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
 
-$usersManagerController = $app['controllers_factory'];
+$usersManagerController = SilexHooks::controllerFactory($app);
 
 $usersManagerController->match('/{id}', function (Request $request, $id = null) use ($app) {
 
@@ -23,15 +24,15 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
     $form->handleRequest($request);
     if ($form->isValid()) {
         $userProvider->persist($app['security.encoder_factory'], $profile);
-        $app['session']
+        SilexHooks::session($app)
             ->getFlashBag()
-            ->add('default', $app['translator']->trans('user.updated'));
-        return $app->redirect($app['url_generator']->generate('admin_users_manager'));
+            ->add('default', SilexHooks::translator($app)->trans('user.updated'));
+        return SilexHooks::redirect($app, 'admin_users_manager');
     }
 
     $users = $userProvider->findAll();
 
-    return $app['twig']->render('backend/usersManager/usersManager.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/usersManager/usersManager.html.twig', array(
         'users' => $users,
         'edited_profile' => $profile,
         'form'  => $form->createView(),
@@ -45,19 +46,21 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
 
 $usersManagerController->get('/{id}/delete', function ($id) use ($app) {
 
-    $userProvider = new UserProvider($app['db'], $app['session']);
+    $session = SilexHooks::session($app);
+    $translator = SilexHooks::translator($app);
+    $userProvider = new UserProvider($app['db'], $session);
 
     if (false === $userProvider->deleteUser($id, $app['security'])) {
-        $app['session']
+        $session
             ->getFlashBag()
-            ->add('alert', $app['translator']->trans('user.deletion.error'));
+            ->add('alert', $translator->trans('user.deletion.error'));
     } else {
-        $app['session']
+        $session
             ->getFlashBag()
-            ->add('default', $app['translator']->trans('user.deleted'));
+            ->add('default', $translator->trans('user.deleted'));
     }
 
-    return $app->redirect($app['url_generator']->generate('admin_users_manager'));
+    return SilexHooks::redirect($app, 'admin_users_manager');
 })
 ->assert('id', '\d+')
 ->bind('admin_user_manager_delete')

@@ -1,12 +1,13 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception;
 
-$frontendController = $app['controllers_factory'];
+$frontendController = SilexHooks::controllerFactory($app);
 
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
@@ -23,20 +24,25 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
         throw new Exception\NotFoundHttpException();
     }
 
+    $security = SilexHooks::security($app);
+    $session = SilexHooks::session($app);
+    $translator = SilexHooks::translator($app);
+    $urlGenerator = SilexHooks::urlGenerator($app);
+
     if (!$section->isHomepage() && $settings->maintenance
-            && (false === $app['security']->isGranted('ROLE_ADMIN')) ) {
-        $app['session']
+            && (false === $security->isGranted('ROLE_ADMIN')) ) {
+        $session
             ->getFlashBag()
-            ->add('warning', $app['translator']->trans('site.maintenance.message'));
-        return $app->redirect($app['url_generator']->generate('homepage'));
+            ->add('warning', $translator->trans('site.maintenance.message'));
+        return $app->redirect($urlGenerator->generate('homepage'));
     }
 
-    if ($section->isPrivate() && (false === $app['security']->isGranted('ROLE_USER'))
+    if ($section->isPrivate() && (false === $security->isGranted('ROLE_USER'))
      || $section->isClosed()) {
-        $app['session']
+        $session
             ->getFlashBag()
-            ->add('warning', $app['translator']->trans('section.unavailable'));
-        return $app->redirect($app['url_generator']->generate('homepage'));
+            ->add('warning', $translator->trans('section.unavailable'));
+        return $app->redirect($urlGenerator->generate('homepage'));
     }
 
     // Multiple page sections logic
@@ -54,7 +60,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
         $firstItem = array_shift($items);
         $itemSlug = $firstItem->slug;
 
-        return $app->redirect($app['url_generator']->generate('section_item', array(
+        return $app->redirect($urlGenerator->generate('section_item', array(
             'slug' => $slug,
             'itemSlug' => $itemSlug,
         )));
@@ -69,17 +75,17 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
         $form = $section->generateFormFields($app['form.factory']);
         if ($section->checkSubmittedForm($request, $form)) {
             $validationMessage = $section->getParameter('validation_message');
-            $app['session']
+            $session
                 ->getFlashBag()
                 ->add('success', empty($validationMessage) ?
-                        $app['translator']->trans('form.validation.message.default'):
+                        $translator->trans('form.validation.message.default'):
                     $validationMessage);
-            return $app->redirect($app['url_generator']->generate('section', array('slug' => $slug)));
+            return $app->redirect($urlGenerator->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();
     }
 
-    return $app['twig']->render('frontend/'.$section->getType().'/'.$section->getType().'.html.twig', array(
+    return SilexHooks::twig($app)->render('frontend/'.$section->getType().'/'.$section->getType().'.html.twig', array(
       'section' => $section,
       'item' => $item,
       'form' => $formView,
@@ -95,7 +101,7 @@ $frontendController->get('/first', function() use ($app) {
 
     $firstSection = $contentFactory->findFirstSection();
 
-    return $app->redirect($app['url_generator']->generate('section', array('slug' => $firstSection->getSlug())));
+    return SilexHooks::redirect($app, 'section', array('slug' => $firstSection->getSlug()));
 })
 ->bind('first_section')
 ;
@@ -121,19 +127,20 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
         throw new Exception\NotFoundHttpException();
     }
 
+    $translator = SilexHooks::translator($app);
     $form = $messageType->form($message);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
         $messaging->persist($message);
-        $messaging->sendByEmail($settings, $app['translator'], $message);
-        $app['session']
+        $messaging->sendByEmail($settings, $translator, $message);
+        SilexHooks::session($app)
             ->getFlashBag()
-            ->add('success', $app['translator']->trans('contact.info.sent'));
-        return $app->redirect($app['url_generator']->generate('contact'));
+            ->add('success', $translator->trans('contact.info.sent'));
+        return SilexHooks::redirect($app, 'contact');
     }
 
-    return $app['twig']->render('frontend/contact.html.twig', array(
+    return SilexHooks::twig($app)->render('frontend/contact.html.twig', array(
         'form' => $form->createView(),
     ));
 })
@@ -143,9 +150,12 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
 
 $frontendController->match('/profile', function (Request $request, $id = null) use ($app) {
 
+    $translator = SilexHooks::translator($app);
+    $session = SilexHooks::session($app);
+
     $userProvider = new UserProvider($app['db'], $app['session']);
 
-    $profile = $app['session']->get('profile');
+    $profile = $session->get('profile');
 
     $profileType = new ProfileType($app['form.factory']);
     $form = $profileType->form($profile);
@@ -153,13 +163,13 @@ $frontendController->match('/profile', function (Request $request, $id = null) u
     $form->handleRequest($request);
     if ($form->isValid()) {
         $userProvider->persist($app['security.encoder_factory'], $profile);
-        $app['session']
+        $session
             ->getFlashBag()
-            ->add('default', $app['translator']->trans('user.updated'));
-        return $app->redirect($app['url_generator']->generate('user_profile'));
+            ->add('default', $translator->trans('user.updated'));
+        return SilexHooks::redirect($app, 'user_profile');
     }
 
-    return $app['twig']->render('frontend/userProfile.html.twig', array(
+    return SilexHooks::twig($app)->render('frontend/userProfile.html.twig', array(
         'form' => $form->createView(),
     ));
 })

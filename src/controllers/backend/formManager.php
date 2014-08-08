@@ -1,12 +1,13 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
 use Ideys\Files\File;
 use Ideys\Settings\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
-$formManagerController = $app['controllers_factory'];
+$formManagerController = SilexHooks::controllerFactory($app);
 
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
@@ -48,10 +49,10 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
     $form->handleRequest($request);
     if ($form->isValid()) {
         $contentFactory->addItem($section, $field);
-        return $app->redirect($app['url_generator']->generate('admin_form_manager_edit', array('id' => $id)));
+        return SilexHooks::redirect($app, 'admin_form_manager_edit', array('id' => $id));
     }
 
-    return $app['twig']->render('backend/formManager/_formEdit.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/formManager/_formEdit.html.twig', array(
         'form' => $form->createView(),
         'section' => $section,
     ));
@@ -66,7 +67,7 @@ $formManagerController->get('/{id}/results', function (Request $request, $id) us
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/formManager/_formResults.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/formManager/_formResults.html.twig', array(
         'section' => $section,
     ));
 })

@@ -1,17 +1,18 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-$htmlManagerController = $app['controllers_factory'];
+$htmlManagerController = SilexHooks::controllerFactory($app);
 
 $htmlManagerController->get('/{id}/preview', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/htmlManager/_pagePreview.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/htmlManager/_pagePreview.html.twig', array(
         'section' => $section,
     ));
 })
@@ -24,7 +25,7 @@ $htmlManagerController->get('/{id}/display-preview', function ($id) use ($app) {
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('frontend/html/html.html.twig', array(
+    return SilexHooks::twig($app)->render('frontend/html/html.html.twig', array(
       'section' => $section,
     ));
 })
@@ -49,7 +50,7 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
         $contentFactory->editItem($page);
     }
 
-    return $app['twig']->render('backend/htmlManager/_pageEdit.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/htmlManager/_pageEdit.html.twig', array(
         'form' => $form->createView(),
         'section' => $section,
     ));

@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Files\FilesHandler;
 use Ideys\Files\FileType;
 use Ideys\Files\File;
@@ -7,7 +8,7 @@ use Ideys\Files\RecipientType;
 use Ideys\Files\Recipient;
 use Symfony\Component\HttpFoundation\Request;
 
-$filesManagerController = $app['controllers_factory'];
+$filesManagerController = SilexHooks::controllerFactory($app);
 
 $filesManagerController->match('/', function (Request $request) use ($app) {
 
@@ -20,10 +21,10 @@ $filesManagerController->match('/', function (Request $request) use ($app) {
     $form->handleRequest($request);
     if ($form->isValid()) {
         $filesHandler->addFile($file);
-        return $app->redirect($app['url_generator']->generate('admin_files_manager'));
+        return SilexHooks::redirect($app, 'admin_files_manager');
     }
 
-    return $app['twig']->render('backend/filesManager/filesList.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/filesManager/filesList.html.twig', array(
         'files' => $files,
         'form' => $form->createView(),
     ));
@@ -44,10 +45,10 @@ $filesManagerController->match('/{id}/edit', function (Request $request, $id) us
     $form->handleRequest($request);
     if ($form->isValid()) {
         $filesHandler->editTitle($file);
-        return $app->redirect($app['url_generator']->generate('admin_files_manager'));
+        return SilexHooks::redirect($app, 'admin_files_manager');
     }
 
-    return $app['twig']->render('backend/filesManager/_fileEdit.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/filesManager/_fileEdit.html.twig', array(
         'file' => $file,
         'form' => $form->createView(),
     ));
@@ -73,10 +74,10 @@ $filesManagerController->match('/{fileId}/edit/recipient/{id}', function (Reques
     $form->handleRequest($request);
     if ($form->isValid()) {
         $filesHandler->persistRecipient($recipient);
-        return $app->redirect($app['url_generator']->generate('admin_files_manager'));
+        return SilexHooks::redirect($app, 'admin_files_manager');
     }
 
-    return $app['twig']->render('backend/filesManager/_recipientForm.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/filesManager/_recipientForm.html.twig', array(
         'file' => $file,
         'recipient' => $recipient,
         'form' => $form->createView(),
@@ -102,7 +103,7 @@ $filesManagerController->get('/{id}/delete', function ($id) use ($app) {
             ->add('default', $app['translator']->trans('file.deleted'));
     }
 
-    return $app->redirect($app['url_generator']->generate('admin_files_manager'));
+    return SilexHooks::redirect($app, 'admin_files_manager');
 })
 ->assert('id', '\d+')
 ->bind('admin_files_manager_delete')

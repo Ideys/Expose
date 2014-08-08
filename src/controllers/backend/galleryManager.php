@@ -1,17 +1,19 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Picture;
+use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-$galleryManagerController = $app['controllers_factory'];
+$galleryManagerController = SilexHooks::controllerFactory($app);
 
 $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/galleryManager/_slideList.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/galleryManager/_slideList.html.twig', array(
         'section' => $section,
     ));
 })
@@ -24,7 +26,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    $formBuilder = $app['form.factory']->createBuilder('form')
+    $formBuilder = SilexHooks::formFactory($app)->createBuilder('form')
         ->add('global_legend', 'textarea', array(
             'label'     => 'gallery.global.legend',
             'data'      => $section->getLegend(),
@@ -32,6 +34,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         ));
 
     foreach ($section->getItems('Slide') as $slide) {
+        if ($slide instanceof Item\Slide)
         // Generate related slide fields
         $formBuilder
         ->add('title'.$slide->getId(), 'text', array(
@@ -83,22 +86,19 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
 
         // Update each items legends
         foreach ($section->getItems('Slide') as $slide) {
+            if ($slide instanceof Item\Slide)
             $contentFactory->updateItemTitle(
-                $slide->id,
+                $slide->getId(),
                 $data['title'.$slide->getId()],
                 $data['description'.$slide->getId()],
                 $data['tags'.$slide->getId()],
                 $data['link'.$slide->getId()]
             );
         }
-        return $app->redirect(
-            $app['url_generator']->generate(
-                'admin_gallery_manager_labels',
-                array('id' => $id))
-            );
+        return SilexHooks::redirect($app, 'admin_gallery_manager_labels', array('id' => $id));
     }
 
-    return $app['twig']->render('backend/galleryManager/_labelsList.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/galleryManager/_labelsList.html.twig', array(
         'section' => $section,
         'form' => $form->createView(),
     ));
@@ -153,7 +153,7 @@ $galleryManagerController->get('/{id}/pic-manager', function ($id) use ($app) {
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/galleryManager/_contentSectionsPicManager.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/galleryManager/_contentSectionsPicManager.html.twig', array(
         'section' => $section,
     ));
 })

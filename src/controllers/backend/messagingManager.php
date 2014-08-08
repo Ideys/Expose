@@ -1,8 +1,9 @@
 <?php
 
+use Ideys\SilexHooks;
 use Ideys\Messaging\Messaging;
 
-$messagingManagerController = $app['controllers_factory'];
+$messagingManagerController = SilexHooks::controllerFactory($app);
 
 $messagingManagerController->get('/', function () use ($app) {
 
@@ -10,7 +11,7 @@ $messagingManagerController->get('/', function () use ($app) {
     $messages = $messaging->findAll();
     $count = $messaging->countAll();
 
-    return $app['twig']->render('backend/messagingManager/messagingList.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/messagingManager/messagingList.html.twig', array(
         'messages' => $messages,
         'count' => $count,
         'is_archive' => false,
@@ -25,7 +26,7 @@ $messagingManagerController->get('/archive', function () use ($app) {
     $messages = $messaging->findArchived();
     $count = $messaging->countAll();
 
-    return $app['twig']->render('backend/messagingManager/messagingList.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/messagingManager/messagingList.html.twig', array(
         'messages' => $messages,
         'count' => $count,
         'is_archive' => true,
@@ -58,7 +59,7 @@ $messagingManagerController->get('/{id}/archive', function ($id) use ($app) {
     $messaging = new Messaging($app['db']);
     $messaging->archive($id);
 
-    return $app->redirect($app['url_generator']->generate('admin_messaging_manager'));
+    return SilexHooks::redirect($app, 'admin_messaging_manager');
 })
 ->assert('id', '\d+')
 ->bind('admin_messaging_manager_archive_item')
@@ -69,7 +70,7 @@ $messagingManagerController->get('/{id}/delete', function ($id) use ($app) {
     $messaging = new Messaging($app['db']);
     $messaging->delete($id);
 
-    return $app->redirect($app['url_generator']->generate('admin_messaging_manager'));
+    return SilexHooks::redirect($app, 'admin_messaging_manager');
 })
 ->assert('id', '\d+')
 ->bind('admin_messaging_manager_delete')
