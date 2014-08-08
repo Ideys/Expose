@@ -6,7 +6,7 @@
   {{ widgets.type_icon(section.type, 'type-icon') }}
   <span class="section-title">{{ section.title }}</span>
   {% if 'link' != section.type %}
-    <small class="counter">{{ section.totalItems }}</small>
+    <small class="counter">{{ section.countMainItems }}</small>
   {% endif %}
   {{ widgets.visibility_icon(section.visibility, 'state-icon') }}
 </a>

@@ -38,6 +38,14 @@ class Channel extends Section implements SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countMainItems()
+    {
+        return count($this->getVideos());
+    }
+
+    /**
      * Define if channel has more than one video.
      *
      * @return boolean

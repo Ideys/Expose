@@ -40,6 +40,14 @@ class Html extends Section implements SectionInterface
     /**
      * {@inheritdoc}
      */
+    public function countMainItems()
+    {
+        return count($this->getPages());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isSlidesHolder()
     {
         return true;

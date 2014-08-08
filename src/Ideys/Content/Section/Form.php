@@ -43,6 +43,14 @@ class Form extends Section implements SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countMainItems()
+    {
+        return count($this->getFields());
+    }
+
+    /**
      * Return the form object with dynamic fields.
      *
      * @param \Symfony\Component\Form\FormFactory $formFactory

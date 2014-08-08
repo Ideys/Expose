@@ -19,6 +19,14 @@ class Blog extends Section implements SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countMainItems()
+    {
+        return count($this->getPosts());
+    }
+
+    /**
      * Get Post Items.
      *
      * @return array

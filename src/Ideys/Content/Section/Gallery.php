@@ -80,6 +80,14 @@ class Gallery extends Section implements SectionInterface
     /**
      * {@inheritdoc}
      */
+    public function countMainItems()
+    {
+        return count($this->getSlides());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function isSlidesHolder()
     {
         return true;

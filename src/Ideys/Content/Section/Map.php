@@ -68,6 +68,14 @@ class Map extends Section implements SectionInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function countMainItems()
+    {
+        return count($this->getPlaces());
+    }
+
+    /**
      * Test if Map has some Items with coordinates.
      *
      * @return boolean

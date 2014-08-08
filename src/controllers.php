@@ -2,9 +2,6 @@
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
@@ -64,7 +61,7 @@ $app->mount('/admin/{_locale}/html', include 'controllers/backend/htmlManager.ph
 
 $app->mount('/admin/{_locale}/blog', include 'controllers/backend/blogManager.php');
 
-$app->mount('/admin/{_locale}/maps', include 'controllers/backend/mapsManager.php');
+$app->mount('/admin/{_locale}/maps', include 'controllers/backend/mapManager.php');
 
 $app->mount('/admin/{_locale}/channel', include 'controllers/backend/channelManager.php');
 
@@ -78,7 +75,7 @@ $app->mount('/admin/{_locale}/users', include 'controllers/backend/usersManager.
 
 $app->error(function (\Exception $e, $code) use ($app) {
     if ($app['debug']) {
-        return;
+        return null;
     }
 
     // 404.html, or 40x.html, or 4xx.html, or error.html

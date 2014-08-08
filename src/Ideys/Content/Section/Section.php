@@ -427,7 +427,7 @@ abstract class Section
             self::SECTION_HTML,
             self::SECTION_BLOG,
             self::SECTION_FORM,
-            self::SECTION_MAPS,
+            self::SECTION_MAP,
             self::SECTION_LINK,
             self::SECTION_DIR,
         );
@@ -781,7 +781,7 @@ abstract class Section
      *
      * @return array
      */
-    protected function getItemsOfType($type)
+    public function getItemsOfType($type)
     {
         $typeNamespace = '\Ideys\Content\Item\\'.$type;
         return array_filter($this->items, function($item) use ($typeNamespace) {
