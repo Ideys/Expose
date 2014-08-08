@@ -37,7 +37,7 @@ abstract class Section
     const SECTION_HTML      = 'html';
     const SECTION_BLOG      = 'blog';
     const SECTION_FORM      = 'form';
-    const SECTION_MAPS      = 'maps';
+    const SECTION_MAP       = 'map';
     const SECTION_LINK      = 'link';
     const SECTION_DIR       = 'dir';
 
@@ -60,11 +60,6 @@ abstract class Section
      * @var string
      */
     protected $legend;
-
-    /**
-     * @var integer
-     */
-    protected $totalItems = 0;
 
     /**
      * @var string
@@ -292,9 +287,9 @@ abstract class Section
      *
      * @return boolean
      */
-    public function hasItems($type)
+    public function hasItemsOfType($type)
     {
-        return $this->countItems($type) > 0;
+        return $this->countItemsOfType($type) > 0;
     }
 
     /**
@@ -304,7 +299,7 @@ abstract class Section
      *
      * @return integer
      */
-    public function countItems($type)
+    public function countItemsOfType($type)
     {
         return count($this->getItems($type));
     }
@@ -514,26 +509,6 @@ abstract class Section
     public function setLegend($legend)
     {
         $this->legend = $legend;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getTotalItems()
-    {
-        return $this->totalItems;
-    }
-
-    /**
-     * @param int $totalItems
-     *
-     * @return $this
-     */
-    public function setTotalItems($totalItems)
-    {
-        $this->totalItems = $totalItems;
 
         return $this;
     }

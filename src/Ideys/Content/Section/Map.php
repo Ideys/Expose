@@ -2,16 +2,15 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\ContentFactory;
 use Ideys\Content\Item;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\Form as SfForm;
 
 /**
- * Maps content manager.
+ * Map content manager.
  */
-class Maps extends Section implements SectionInterface
+class Map extends Section implements SectionInterface
 {
     /**
      * @param integer
@@ -59,78 +58,42 @@ class Maps extends Section implements SectionInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function isSlidesHolder()
-    {
-        return false;
-    }
-
-    /**
-     * Return all linkable sections to a Map section.
-     * Exclude other Maps sections and Dir sections.
-     *
-     * @return array
-     */
-    public function getLinkableSections()
-    {
-        return  $this->db
-            ->fetchAll(
-                'SELECT s.id, s.expose_section_id, '.
-                's.type, s.slug, s.visibility, '.
-                't.title, t.description, t.legend, t.parameters '.
-                'FROM expose_section AS s '.
-                'LEFT JOIN expose_section_trans AS t '.
-                'ON t.expose_section_id = s.id '.
-                'WHERE s.type NOT IN  (\'dir\', \'maps\') '.
-                'AND s.archive = 0 '.
-                'ORDER BY s.hierarchy ');
-    }
-
-    /**
-     * Return linked Sections Items.
-     *
-     * @return array
-     */
-    public function getLinkedSectionsItems()
-    {
-        if (empty($this->linkedItems)) {
-            if (empty($this->connectedSectionsId)) {
-                $entities = array();
-            } else {
-                $entities = $this->db
-                    ->fetchAll(
-                        ContentFactory::getSqlSelectItem().
-                        'WHERE s.id IN  ('.implode(',', $this->connectedSectionsId).') '.
-                        'ORDER BY s.hierarchy, i.hierarchy ');
-            }
-
-            foreach ($entities as $data) {
-                $this->linkedItems[$data['id']] = ContentFactory::instantiateItem($data);
-            }
-        }
-
-        return $this->linkedItems;
-    }
-
-    /**
-     * Test if Map has some items with coordinates.
+     * Test if Map has some Place Items.
      *
      * @return boolean
      */
-    public function hasPlacesDefined()
+    public function hasPlaces()
+    {
+        return $this->hasItemsOfType(Item\Item::ITEM_PLACE);
+    }
+
+    /**
+     * Test if Map has some Items with coordinates.
+     *
+     * @return boolean
+     */
+    public function hasPlacesWithCoordinates()
     {
         // Places items has always coordinates.
-        if ($this->hasItems('Place')) {
+        if ($this->hasPlaces()) {
             return true;
         }
 
         // Test if at least one linked sections item has coordinates defined.
         foreach ($this->getLinkedSectionsItems() as $linkedItem)
-        if ($linkedItem->hasCoordinates()) {
-            return true;
-        }
+            if ($linkedItem instanceof Item\Item
+                && $linkedItem->hasCoordinates()) {
+                return true;
+            }
 
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSlidesHolder()
+    {
         return false;
     }
 
@@ -217,7 +180,7 @@ class Maps extends Section implements SectionInterface
     /**
      * @param mixed $zoom
      *
-     * @return Maps
+     * @return Map
      */
     public function setZoom($zoom)
     {
@@ -237,7 +200,7 @@ class Maps extends Section implements SectionInterface
     /**
      * @param mixed $latitude
      *
-     * @return Maps
+     * @return Map
      */
     public function setLatitude($latitude)
     {
@@ -257,7 +220,7 @@ class Maps extends Section implements SectionInterface
     /**
      * @param mixed $longitude
      *
-     * @return Maps
+     * @return Map
      */
     public function setLongitude($longitude)
     {
@@ -277,7 +240,7 @@ class Maps extends Section implements SectionInterface
     /**
      * @param mixed $mapMode
      *
-     * @return Maps
+     * @return Map
      */
     public function setMapMode($mapMode)
     {

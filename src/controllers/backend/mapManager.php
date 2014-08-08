@@ -5,22 +5,22 @@ use Ideys\Content\Item;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
-$mapsManagerController = $app['controllers_factory'];
+$mapManagerController = $app['controllers_factory'];
 
-$mapsManagerController->get('/{id}/preview', function ($id) use ($app) {
+$mapManagerController->get('/{id}/preview', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
 
-    return $app['twig']->render('backend/mapsManager/_mapsPreview.html.twig', array(
+    return $app['twig']->render('backend/mapManager/_mapPreview.html.twig', array(
         'section' => $section,
     ));
 })
 ->assert('id', '\d+')
-->bind('admin_maps_manager_preview')
+->bind('admin_map_manager_preview')
 ;
 
-$mapsManagerController->match('/{id}/places', function (Request $request, $id) use ($app) {
+$mapManagerController->match('/{id}/places', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
@@ -35,18 +35,18 @@ $mapsManagerController->match('/{id}/places', function (Request $request, $id) u
         $contentFactory->addItem($section, $place);
     }
 
-    return $app['twig']->render('backend/mapsManager/_mapsPlaces.html.twig', array(
+    return $app['twig']->render('backend/mapManager/_mapPlaces.html.twig', array(
         'form' => $form->createView(),
         'section' => $section,
         'linkable_sections' => $linkableSections,
     ));
 })
 ->assert('id', '\d+')
-->bind('admin_maps_manager_places')
+->bind('admin_map_manager_places')
 ->method('GET|POST')
 ;
 
-$mapsManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionId) use ($app) {
+$mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionId) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
@@ -61,22 +61,22 @@ $mapsManagerController->post('/{id}/attach/{sectionId}', function ($id, $section
         array('id' => $id)
     );
 
-    return $app['twig']->render('backend/mapsManager/_placesList.html.twig', array(
+    return $app['twig']->render('backend/mapManager/_placesList.html.twig', array(
         'section' => $section,
     ));
 })
 ->assert('id', '\d+')
 ->assert('sectionId', '\d+')
-->bind('admin_maps_manager_attach')
+->bind('admin_map_manager_attach')
 ;
 
-$mapsManagerController->match('/{id}/coordinates', function (Request $request, $id) use ($app) {
+$mapManagerController->match('/{id}/coordinates', function (Request $request, $id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $item = $contentFactory->findItem($id);
 
-    $maps = new Section\Maps($app['db']);
-    $form = $maps->coordinatesForm($app['form.factory'], $item);
+    $map = new Section\Map($app['db']);
+    $form = $map->coordinatesForm($app['form.factory'], $item);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
@@ -84,16 +84,16 @@ $mapsManagerController->match('/{id}/coordinates', function (Request $request, $
         return $app->json(true);
     }
 
-    return $app['twig']->render('backend/mapsManager/_coordinatesForm.html.twig', array(
+    return $app['twig']->render('backend/mapManager/_coordinatesForm.html.twig', array(
         'item' => $item,
         'form' => $form->createView(),
     ));
 })
 ->assert('id', '\d+')
-->bind('admin_maps_manager_coordinates')
+->bind('admin_map_manager_coordinates')
 ->method('GET|POST')
 ;
 
-$mapsManagerController->assert('_locale', implode('|', $app['languages']));
+$mapManagerController->assert('_locale', implode('|', $app['languages']));
 
-return $mapsManagerController;
+return $mapManagerController;

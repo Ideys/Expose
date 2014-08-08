@@ -5,9 +5,9 @@
 {% block title widgets.section_title(section, parent()) %}
 
 {% block main -%}
-{% if section.hasItems('Post') %}
+{% if section.hasPosts %}
 <div class="row">
-  {% for post in section.items('Post') %}
+  {% for post in section.posts %}
   <div class="small-12 columns post">
     <h2>{{ post.title }}</h2>
     <div class="post-header">

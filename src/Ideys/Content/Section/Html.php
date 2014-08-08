@@ -28,6 +28,16 @@ class Html extends Section implements SectionInterface
     }
 
     /**
+     * Test if HTML Section has some Page Items.
+     *
+     * @return boolean
+     */
+    public function hasPages()
+    {
+        return $this->hasItemsOfType(Item\Item::ITEM_PAGE);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isSlidesHolder()

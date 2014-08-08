@@ -1,6 +1,6 @@
 {% spaceless %}
 <ul class="gallery-slideshow" data-orbit>
-  {% for row, slide in section.items('Slide') if slide.published %}
+  {% for row, slide in section.slides if slide.published %}
     <li data-orbit-slide="pic-{{ row }}">
       <div class="slide"
            style="background-image: url('{{ app.request.basepath }}/gallery/{{ slide.path }}');"></div>

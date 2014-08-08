@@ -29,6 +29,16 @@ class Blog extends Section implements SectionInterface
     }
 
     /**
+     * Test if Blog has some Post Items.
+     *
+     * @return boolean
+     */
+    public function hasPosts()
+    {
+        return $this->hasItemsOfType(Item\Item::ITEM_POST);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSqlSelectItem()

@@ -2,21 +2,21 @@
 {% spaceless %}
 <div class="row">
     <div class="medium-6 columns" id="places-management-{{ section.id }}">
-        {% include "backend/mapsManager/_placesList.html.twig" with {
+        {% include "backend/mapManager/_placesList.html.twig" with {
             'section': section
         } only %}
     </div>
     <div class="medium-6 columns">
         <a href="#" class="button" data-dropdown-ajax="integrate-map-{{ section.id }}">
             <i class="fi-paperclip"></i>
-            {{ 'maps.integrations.section'|trans }}
+            {{ 'map.integrations.section'|trans }}
         </a>
         <ul id="integrate-map-{{ section.id }}" class="small f-dropdown attach-items" data-dropdown-content>
             {% for linkable_section in linkable_sections %}
                 <li>
                     <a href="#"
                        class="{% if linkable_section.id in section.connectedSectionsId %}active{% endif %}"
-                       data-attach="{{ path('admin_maps_manager_attach', {
+                       data-attach="{{ path('admin_map_manager_attach', {
                        'id': section.id,
                        'sectionId': linkable_section.id
                        }) }}"
@@ -29,10 +29,10 @@
         </ul>
         <button type="button" class="button" data-display="#single-marker-form-{{ section.id }}">
             <i class="fi-marker"></i>
-            {{ 'maps.integrations.single.marker'|trans }}
+            {{ 'map.integrations.single.marker'|trans }}
         </button>
         {{ form_start(form, {
-            'action': path('admin_maps_manager_places', {'id': section.id}),
+            'action': path('admin_map_manager_places', {'id': section.id}),
             'attr': {
                 'id': 'single-marker-form-'~section.id,
                 'class': 'hidden'

@@ -4,7 +4,7 @@
     <ul class="small-block-grid-{{ section.grid_rows_small }}
                medium-block-grid-{{ section.grid_rows_medium }}
                large-block-grid-{{ section.grid_rows }}">
-      {% for slide in section.items('Slide') if slide.published %}
+      {% for slide in section.slides if slide.published %}
         <li class="text-center">
           {% if slide.link|length %}
           <a href="{{ slide.link }}" title="{{ slide.title|e }}" target="_blank">

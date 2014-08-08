@@ -68,6 +68,16 @@ class Gallery extends Section implements SectionInterface
     }
 
     /**
+     * Test if Gallery has some Slide Items.
+     *
+     * @return boolean
+     */
+    public function hasSlides()
+    {
+        return $this->hasItemsOfType(Item\Item::ITEM_SLIDE);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function isSlidesHolder()

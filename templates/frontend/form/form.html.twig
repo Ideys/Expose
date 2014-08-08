@@ -5,11 +5,11 @@
 {% block title widgets.section_title(section, parent()) %}
 
 {% block main -%}
-{% if section.hasItems('Field') %}
+{% if section.hasFields %}
 <div class="row">
   <div class="medium-6 medium-centered columns">
     {{ form_start(form) }}
-    {% for field in section.items('Field') %}
+    {% for field in section.fields %}
       {% if 'html.insert' == field.category %}
         {{ field.content|raw }}
       {% else %}

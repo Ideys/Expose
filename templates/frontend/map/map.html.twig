@@ -5,7 +5,7 @@
 {% block title widgets.section_title(section, parent()) %}
 
 {% block main -%}
-{% if section.hasPlacesDefined and site.mapsKey|length %}
+{% if section.hasPlacesWithCoordinates and site.mapsKey|length %}
     <div id="map-{{ section.id }}" class="map"></div>
 {% else %}
     <p class="coming-soon">
@@ -16,5 +16,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {% include "frontend/maps/maps.js.twig" with {'section': section} only %}
+    {% include "frontend/map/map.js.twig" with {'section': section} only %}
 {% endblock javascripts %}

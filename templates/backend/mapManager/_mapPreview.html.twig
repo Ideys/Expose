@@ -1,0 +1,10 @@
+{% spaceless %}
+{% if not site.mapsKey %}
+    <p class="notice-empty">{{ 'map.no.google.maps.key'|trans }}</p>
+{% elseif not section.hasPlacesDefined %}
+    <p class="notice-empty">{{ 'map.no.place'|trans }}</p>
+{% endif %}
+<div id="map-{{ section.id }}" class="map-preview"></div>
+{% endspaceless %}
+
+{% include "frontend/map/map.js.twig" with {'section': section} only %}

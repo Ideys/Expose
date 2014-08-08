@@ -33,6 +33,16 @@ class Form extends Section implements SectionInterface
     }
 
     /**
+     * Test if Form has some Field Items.
+     *
+     * @return boolean
+     */
+    public function hasFields()
+    {
+        return $this->hasItemsOfType(Item\Item::ITEM_FIELD);
+    }
+
+    /**
      * Return the form object with dynamic fields.
      *
      * @param \Symfony\Component\Form\FormFactory $formFactory

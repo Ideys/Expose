@@ -90,6 +90,55 @@ class ContentFactory
     }
 
     /**
+     * Return all linkable sections to a Map section.
+     * Exclude other Map sections and Dir sections.
+     *
+     * @return array
+     */
+    public function getLinkableSections()
+    {
+        return  $this->db
+            ->fetchAll(
+                'SELECT s.id, s.expose_section_id, '.
+                's.type, s.slug, s.visibility, '.
+                't.title, t.description, t.legend, t.parameters '.
+                'FROM expose_section AS s '.
+                'LEFT JOIN expose_section_trans AS t '.
+                'ON t.expose_section_id = s.id '.
+                'WHERE s.type NOT IN  (\'dir\', \'map\') '.
+                'AND s.archive = 0 '.
+                'ORDER BY s.hierarchy ');
+    }
+
+    /**
+     * Return linked Sections Items.
+     *
+     * @param Section\Section $section
+     *
+     * @return array
+     */
+    public function getLinkedSectionsItems(Section\Section $section)
+    {
+        $linkedItems = array();
+
+        if (empty($this->connectedSectionsId)) {
+            $entities = array();
+        } else {
+            $entities = $this->db
+                ->fetchAll(
+                    ContentFactory::getSqlSelectItem().
+                    'WHERE s.id IN  ('.implode(',', $section->getConnectedSectionsId()).') '.
+                    'ORDER BY s.hierarchy, i.hierarchy ');
+        }
+
+        foreach ($entities as $data) {
+            $linkedItems[$data['id']] = ContentFactory::instantiateItem($data);
+        }
+
+        return $linkedItems;
+    }
+
+    /**
      * Return a section.
      *
      * @param integer $id
@@ -345,7 +394,7 @@ class ContentFactory
         $slide = new Item\Slide(array(
             'category' => $file->getMimeType(),
             'type' => Item\Item::ITEM_SLIDE,
-            'hierarchy' => ($this->countItems('Slide') + 1),
+            'hierarchy' => ($this->countItemsOfType(Item\Item::ITEM_SLIDE) + 1),
         ));
 
         $slide->setPath(uniqid('expose').'.'.$fileExt);
@@ -757,8 +806,8 @@ class ContentFactory
             case Section\Section::SECTION_CHANNEL:
                 $section = new Section\Channel();
                 break;
-            case Section\Section::SECTION_MAPS:
-                $section = new Section\Maps();
+            case Section\Section::SECTION_MAP:
+                $section = new Section\Map();
                 break;
             case Section\Section::SECTION_LINK:
                 $section = new Section\Link();
@@ -886,21 +935,12 @@ class ContentFactory
                's.menu_pos, s.tag, s.visibility, s.shuffle, '.
                's.hierarchy, s.archive, s.target_blank, '.
                't.title, t.description, t.legend, '.
-               't.parameters, t.language, '.
-               'COUNT(i.id) AS total_items '.
+               't.parameters, t.language '.
         'FROM expose_section AS s '.
         'LEFT JOIN expose_section_trans AS t '.
         'ON t.expose_section_id = s.id '.
         'LEFT JOIN expose_section_item AS i '.
-        'ON i.expose_section_id = s.id '.
-        'AND ( '.
-        '(i.type = \'Post\' AND s.type = \'Blog\') '.
-        'OR  (i.type = \'Video\' AND s.type = \'Channel\') '.
-        'OR  (i.type = \'Field\' AND s.type = \'Form\') '.
-        'OR  (i.type = \'Slide\' AND s.type = \'Gallery\') '.
-        'OR  (i.type = \'Page\' AND s.type = \'Html\') '.
-        'OR  (i.type = \'Place\' AND s.type = \'Maps\') '.
-        ') ';
+        'ON i.expose_section_id = s.id ';
     }
 
     /**

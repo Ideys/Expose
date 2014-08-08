@@ -2,7 +2,7 @@
 <div class="row">
   <div class="large-12 columns">
     <ul class="gallery-slideshow" data-orbit>
-      {% for row, slide in section.items('Slide') if slide.published %}
+      {% for row, slide in section.slides if slide.published %}
       <li class="text-center" data-orbit-slide="pic-{{ row }}">
         <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
              alt="{{ slide.title|e }}">

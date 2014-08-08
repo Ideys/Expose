@@ -5,10 +5,10 @@
 {% block title widgets.section_title(section, parent()) %}
 
 {% block main -%}
-{% if section.hasItems('Page') %}
+{% if section.hasPages %}
 <div class="row">
   <div class="large-12 columns">
-    {% set content = (section.items('Page')|first).content %}
+    {% set content = (section.pages|first).content %}
     {% if not content|length %}
       <p class="coming-soon">
         {{ 'section.coming.soon'|trans }}
@@ -17,9 +17,9 @@
       {% include template_from_string(widgets.inclusion_replace_keys(content)) %}
     {% endif %}
   {# Pagination #}
-  {% if section.items('Page')|length > 1 %}
+  {% if section.pages|length > 1 %}
   <ul class="pagination">
-    {% for item in section.items('Page') %}
+    {% for item in section.pages %}
     <li>
       <a href="#"
          title="{{ item.title }}">

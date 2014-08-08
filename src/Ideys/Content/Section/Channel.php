@@ -28,6 +28,16 @@ class Channel extends Section implements SectionInterface
     }
 
     /**
+     * Test if Channel has some Video Items.
+     *
+     * @return boolean
+     */
+    public function hasVideos()
+    {
+        return $this->hasItemsOfType(Item\Item::ITEM_VIDEO);
+    }
+
+    /**
      * Define if channel has more than one video.
      *
      * @return boolean

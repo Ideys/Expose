@@ -1,7 +1,7 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {{ form_start(form, {
-    'action': path('admin_maps_manager_coordinates', {'id': item.id}),
+    'action': path('admin_map_manager_coordinates', {'id': item.id}),
 }) }}
     {{ form_errors(form) }}
     {{ form_row(form.latitude) }}

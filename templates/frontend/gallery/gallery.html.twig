@@ -46,7 +46,7 @@
 {% endblock foundation_js %}
 
 {% block main -%}
-{% if section.hasItems('Slide') %}
+{% if section.hasSlides %}
   {{ section.triggerShuffle }}
   <div id="gallery">
     {% include "frontend/gallery/_"~ section.galleryMode ~".html.twig" %}

@@ -1,5 +1,5 @@
 {% spaceless %}
-{% for slide in section.items('Slide') if slide.published %}
+{% for slide in section.slides if slide.published %}
 <div class="slide-block">
   <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
        alt="{{ slide.title|e }}">
