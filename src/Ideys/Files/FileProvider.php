@@ -8,7 +8,7 @@ use Ideys\String;
 /**
  * Downloadable files manager.
  */
-class FilesHandler
+class FileProvider
 {
     /**
      * @var \Doctrine\DBAL\Connection

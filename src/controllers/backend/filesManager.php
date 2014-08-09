@@ -1,22 +1,18 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Files\FilesHandler;
-use Ideys\Files\FileType;
-use Ideys\Files\File;
-use Ideys\Files\RecipientType;
-use Ideys\Files\Recipient;
+use Ideys\Files;
 use Symfony\Component\HttpFoundation\Request;
 
 $filesManagerController = SilexHooks::controllerFactory($app);
 
 $filesManagerController->match('/', function (Request $request) use ($app) {
 
-    $filesHandler = new FilesHandler($app['db']);
+    $filesHandler = new Files\FileProvider($app['db']);
     $files = $filesHandler->findAll();
-    $file = new File();
+    $file = new Files\File();
 
-    $formFactory = new FileType($app['form.factory']);
+    $formFactory = new Files\FileType($app['form.factory']);
     $form = $formFactory->form($file);
     $form->handleRequest($request);
     if ($form->isValid()) {
@@ -36,10 +32,10 @@ $filesManagerController->match('/', function (Request $request) use ($app) {
 
 $filesManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $filesHandler = new FilesHandler($app['db']);
+    $filesHandler = new Files\FileProvider($app['db']);
     $file = $filesHandler->find($id);
 
-    $formFactory = new FileType($app['form.factory']);
+    $formFactory = new Files\FileType($app['form.factory']);
     $form = $formFactory->editForm($file);
 
     $form->handleRequest($request);
@@ -60,15 +56,15 @@ $filesManagerController->match('/{id}/edit', function (Request $request, $id) us
 
 $filesManagerController->match('/{fileId}/edit/recipient/{id}', function (Request $request, $fileId, $id) use ($app) {
 
-    $filesHandler = new FilesHandler($app['db']);
+    $filesHandler = new Files\FileProvider($app['db']);
     $file = $filesHandler->find($fileId);
     $recipient = $file->getRecipient($id);
     if (null == $recipient) {
-        $recipient = new Recipient();
+        $recipient = new Files\Recipient();
         $recipient->setFile($file);
     }
 
-    $recipientType = new RecipientType($app['form.factory']);
+    $recipientType = new Files\RecipientType($app['form.factory']);
     $form = $recipientType->form($recipient);
 
     $form->handleRequest($request);
@@ -91,14 +87,14 @@ $filesManagerController->match('/{fileId}/edit/recipient/{id}', function (Reques
 
 $filesManagerController->get('/{id}/delete', function ($id) use ($app) {
 
-    $filesHandler = new FilesHandler($app['db']);
+    $filesHandler = new Files\FileProvider($app['db']);
 
     if (false === $filesHandler->delete($id)) {
-        $app['session']
+        SilexHooks::session($app)
             ->getFlashBag()
             ->add('alert', $app['translator']->trans('file.deletion.error'));
     } else {
-        $app['session']
+        SilexHooks::session($app)
             ->getFlashBag()
             ->add('default', $app['translator']->trans('file.deleted'));
     }

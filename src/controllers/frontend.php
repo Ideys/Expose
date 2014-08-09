@@ -3,6 +3,7 @@
 use Ideys\SilexHooks;
 use Ideys\Settings;
 use Ideys\Messaging;
+use Ideys\Files;
 use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
@@ -187,8 +188,9 @@ $frontendController->match('/profile', function (Request $request, $id = null) u
 
 $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
 
-    $settings = new \Ideys\Settings\Settings($app['db']);
-    $filesHandler = new \Ideys\Files\FilesHandler($app['db']);
+    $settingsProvider = new Settings\SettingsProvider($app['db']);
+    $settings = $settingsProvider->getSettings();
+    $filesHandler = new Files\FileProvider($app['db']);
     $file = $filesHandler->findBySlugAndToken($slug, $token);
 
     if ('0' === $settings->getShareFiles()) {
