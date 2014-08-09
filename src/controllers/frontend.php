@@ -119,7 +119,7 @@ $frontendController->match('/s/{slug}/{itemSlug}', $frontendContent)
 $frontendController->match('/contact', function (Request $request) use ($app) {
 
     $settings = new \Ideys\Settings\Settings($app['db']);
-    $messaging = new \Ideys\Messaging\Messaging($app['db']);
+    $messaging = new \Ideys\Messaging\MessageProvider($app['db']);
     $message = new \Ideys\Messaging\Message();
     $messageType = new \Ideys\Messaging\MessageType($app['form.factory']);
 

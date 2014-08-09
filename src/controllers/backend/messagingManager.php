@@ -1,13 +1,13 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Messaging\Messaging;
+use Ideys\Messaging\MessageProvider;
 
 $messagingManagerController = SilexHooks::controllerFactory($app);
 
 $messagingManagerController->get('/', function () use ($app) {
 
-    $messaging = new Messaging($app['db']);
+    $messaging = new MessageProvider($app['db']);
     $messages = $messaging->findAll();
     $count = $messaging->countAll();
 
@@ -22,7 +22,7 @@ $messagingManagerController->get('/', function () use ($app) {
 
 $messagingManagerController->get('/archive', function () use ($app) {
 
-    $messaging = new Messaging($app['db']);
+    $messaging = new MessageProvider($app['db']);
     $messages = $messaging->findArchived();
     $count = $messaging->countAll();
 
@@ -37,7 +37,7 @@ $messagingManagerController->get('/archive', function () use ($app) {
 
 $messagingManagerController->get('/new-counter', function () use ($app) {
 
-    $messaging = new Messaging($app['db']);
+    $messaging = new MessageProvider($app['db']);
     return $app->json($messaging->countUnread());
 })
 ->bind('admin_messaging_manager_new_messages_counter')
@@ -45,7 +45,7 @@ $messagingManagerController->get('/new-counter', function () use ($app) {
 
 $messagingManagerController->post('/{id}/mark-as-read', function ($id) use ($app) {
 
-    $messaging = new Messaging($app['db']);
+    $messaging = new MessageProvider($app['db']);
     $messaging->markAsRead($id);
 
     return $app->json(true);
@@ -56,7 +56,7 @@ $messagingManagerController->post('/{id}/mark-as-read', function ($id) use ($app
 
 $messagingManagerController->get('/{id}/archive', function ($id) use ($app) {
 
-    $messaging = new Messaging($app['db']);
+    $messaging = new MessageProvider($app['db']);
     $messaging->archive($id);
 
     return SilexHooks::redirect($app, 'admin_messaging_manager');
@@ -67,7 +67,7 @@ $messagingManagerController->get('/{id}/archive', function ($id) use ($app) {
 
 $messagingManagerController->get('/{id}/delete', function ($id) use ($app) {
 
-    $messaging = new Messaging($app['db']);
+    $messaging = new MessageProvider($app['db']);
     $messaging->delete($id);
 
     return SilexHooks::redirect($app, 'admin_messaging_manager');

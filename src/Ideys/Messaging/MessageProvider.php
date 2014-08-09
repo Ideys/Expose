@@ -7,9 +7,9 @@ use Doctrine\DBAL\Connection;
 use Symfony\Component\Translation\Translator;
 
 /**
- * Contact manager.
+ * Message provider.
  */
-class Messaging
+class MessageProvider
 {
     /**
      * @var \Doctrine\DBAL\Connection
