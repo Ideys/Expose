@@ -2,10 +2,12 @@
 
 namespace Ideys\Content\Section;
 
+use Ideys\Content\AbstractContent;
+
 /**
  * Sections prototype class.
  */
-abstract class Section
+abstract class Section extends AbstractContent
 {
     /**
      * @var integer

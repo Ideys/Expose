@@ -8,6 +8,16 @@ namespace Ideys\Content;
 abstract class AbstractContent
 {
     /**
+     * @var integer
+     */
+    protected $createdBy;
+
+    /**
+     * @var integer
+     */
+    protected $updatedBy;
+
+    /**
      * @var \DateTime
      */
     protected $createdAt;
@@ -18,13 +28,61 @@ abstract class AbstractContent
     protected $updatedAt;
 
     /**
+     * Set createdBy
+     *
+     * @param integer $createdBy
+     *
+     * @return $this
+     */
+    public function setCreatedBy($createdBy)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return integer
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set updatedBy
+     *
+     * @param integer $updatedBy
+     *
+     * @return $this
+     */
+    public function setUpdatedBy($updatedBy)
+    {
+        $this->updatedBy = $updatedBy;
+
+        return $this;
+    }
+
+    /**
+     * Get updatedBy
+     *
+     * @return integer
+     */
+    public function getUpdatedBy()
+    {
+        return $this->updatedBy;
+    }
+
+    /**
      * Set createdAt
      *
      * @param \DateTime $createdAt
      *
      * @return $this
      */
-    public function setCreatedAt($createdAt)
+    public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
 
@@ -48,7 +106,7 @@ abstract class AbstractContent
      *
      * @return $this
      */
-    public function setUpdatedAt($updatedAt)
+    public function setUpdatedAt(\DateTime $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
