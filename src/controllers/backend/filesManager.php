@@ -90,13 +90,9 @@ $filesManagerController->get('/{id}/delete', function ($id) use ($app) {
     $filesHandler = new Files\FileProvider($app['db']);
 
     if (false === $filesHandler->delete($id)) {
-        SilexHooks::session($app)
-            ->getFlashBag()
-            ->add('alert', $app['translator']->trans('file.deletion.error'));
+        SilexHooks::flashMessage($app, 'file.deletion.error', SilexHooks::FLASH_ALERT);
     } else {
-        SilexHooks::session($app)
-            ->getFlashBag()
-            ->add('default', $app['translator']->trans('file.deleted'));
+        SilexHooks::flashMessage($app, 'file.deleted');
     }
 
     return SilexHooks::redirect($app, 'admin_files_manager');

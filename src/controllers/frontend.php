@@ -29,23 +29,17 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     }
 
     $security = SilexHooks::security($app);
-    $session = SilexHooks::session($app);
-    $translator = SilexHooks::translator($app);
     $urlGenerator = SilexHooks::urlGenerator($app);
 
     if (!$section->isHomepage() && $settings->getMaintenance()
             && (false === $security->isGranted('ROLE_ADMIN')) ) {
-        $session
-            ->getFlashBag()
-            ->add('warning', $translator->trans('site.maintenance.message'));
+        SilexHooks::flashMessage($app, 'site.maintenance.message', SilexHooks::FLASH_WARNING);
         return $app->redirect($urlGenerator->generate('homepage'));
     }
 
     if ($section->isPrivate() && (false === $security->isGranted('ROLE_USER'))
      || $section->isClosed()) {
-        $session
-            ->getFlashBag()
-            ->add('warning', $translator->trans('section.unavailable'));
+        SilexHooks::flashMessage($app, 'section.unavailable', SilexHooks::FLASH_WARNING);
         return $app->redirect($urlGenerator->generate('homepage'));
     }
 
@@ -79,11 +73,8 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
         $form = $section->generateFormFields($app['form.factory']);
         if ($section->checkSubmittedForm($request, $form)) {
             $validationMessage = $section->getValidationMessage();
-            $session
-                ->getFlashBag()
-                ->add('success', empty($validationMessage) ?
-                        $translator->trans('form.validation.message.default'):
-                    $validationMessage);
+            $flashMessage = empty($validationMessage) ? 'form.validation.message.default': $validationMessage;
+            SilexHooks::flashMessage($app, $flashMessage, SilexHooks::FLASH_SUCCESS);
             return $app->redirect($urlGenerator->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();
@@ -140,9 +131,7 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
     if ($form->isValid()) {
         $messageProvider->persist($message);
         $messageProvider->sendByEmail($settings, $translator, $message);
-        SilexHooks::session($app)
-            ->getFlashBag()
-            ->add('success', $translator->trans('contact.info.sent'));
+        SilexHooks::flashMessage($app, 'contact.info.sent', SilexHooks::FLASH_SUCCESS);
         return SilexHooks::redirect($app, 'contact');
     }
 
@@ -156,7 +145,6 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
 
 $frontendController->match('/profile', function (Request $request, $id = null) use ($app) {
 
-    $translator = SilexHooks::translator($app);
     $session = SilexHooks::session($app);
 
     $userProvider = new UserProvider($app['db'], $app['session']);
@@ -169,9 +157,7 @@ $frontendController->match('/profile', function (Request $request, $id = null) u
     $form->handleRequest($request);
     if ($form->isValid()) {
         $userProvider->persist($app['security.encoder_factory'], $profile);
-        $session
-            ->getFlashBag()
-            ->add('default', $translator->trans('user.updated'));
+        SilexHooks::flashMessage($app, 'user.updated');
         return SilexHooks::redirect($app, 'user_profile');
     }
 

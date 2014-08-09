@@ -18,9 +18,7 @@ $siteSettingsController->match('/', function (Request $request) use ($app) {
 
     if ($form->isValid()) {
         $settingsProvider->persistSettings($settings);
-        SilexHooks::session($app)
-            ->getFlashBag()
-            ->add('success', SilexHooks::translator($app)->trans('site.settings.updated'));
+        SilexHooks::flashMessage($app, 'site.settings.updated', SilexHooks::FLASH_SUCCESS);
     }
 
     return SilexHooks::twig($app)->render('backend/siteSettings/siteSettings.html.twig', array(

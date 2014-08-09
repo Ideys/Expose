@@ -24,9 +24,7 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
     $form->handleRequest($request);
     if ($form->isValid()) {
         $userProvider->persist($app['security.encoder_factory'], $profile);
-        SilexHooks::session($app)
-            ->getFlashBag()
-            ->add('default', SilexHooks::translator($app)->trans('user.updated'));
+        SilexHooks::flashMessage($app, 'user.updated');
         return SilexHooks::redirect($app, 'admin_users_manager');
     }
 
@@ -51,13 +49,9 @@ $usersManagerController->get('/{id}/delete', function ($id) use ($app) {
     $userProvider = new UserProvider($app['db'], $session);
 
     if (false === $userProvider->deleteUser($id, $app['security'])) {
-        $session
-            ->getFlashBag()
-            ->add('alert', $translator->trans('user.deletion.error'));
+        SilexHooks::flashMessage($app, 'user.deletion.error', SilexHooks::FLASH_ALERT);
     } else {
-        $session
-            ->getFlashBag()
-            ->add('default', $translator->trans('user.deleted'));
+        SilexHooks::flashMessage($app, 'user.deleted');
     }
 
     return SilexHooks::redirect($app, 'admin_users_manager');

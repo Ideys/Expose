@@ -199,9 +199,7 @@ $contentManagerController->post('/{id}/delete', function (Request $request, $id)
     if ($deleteForm->isValid()) {
         $section->delete();
 
-        SilexHooks::session($app)
-            ->getFlashBag()
-            ->add('default', $app['translator']->trans($section->getType() . '.deleted'));
+        SilexHooks::flashMessage($app, $section->getType() . '.deleted');
     }
 
     return SilexHooks::redirect($app, 'admin_content_manager');

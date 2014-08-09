@@ -87,4 +87,21 @@ class SilexHooks
     {
         return $app->redirect(static::urlGenerator($app)->generate($routeName, $parameters).$hashTag);
     }
+
+    const FLASH_DEFAULT = 'default';
+    const FLASH_ALERT   = 'alert';
+    const FLASH_WARNING = 'warning';
+    const FLASH_SUCCESS = 'success';
+
+    /**
+     * Shortcut for session flash bag add method.
+     *
+     * @param App    $app
+     * @param string $message  The flash message
+     * @param string $type     The flash message type
+     */
+    public static function flashMessage(App $app, $message, $type = self::FLASH_DEFAULT)
+    {
+        static::session($app)->getFlashBag()->add($type, static::translator($app)->trans($message));
+    }
 }
