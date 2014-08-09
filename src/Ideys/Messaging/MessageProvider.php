@@ -224,14 +224,14 @@ class MessageProvider
      */
     public function sendByEmail(Settings $settings, Translator $translator, Message $message)
     {
-        $sendTo = $settings->contactSendToEmail;
+        $sendTo = $settings->getContactSendToEmail();
 
         if (false === filter_var($sendTo, FILTER_VALIDATE_EMAIL)) {
             return false;
         }
 
         $mailSubject = $translator->trans('contact.send.to.email.subject', array(
-            '%sitename%' => $settings->name,
+            '%sitename%' => $settings->getName(),
             '%sender_name%' => $message->getName(),
             '%sender_email%' => $message->getEmail(),
         ));

@@ -1,25 +1,26 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Settings\Settings;
-use Ideys\Settings\SettingsType;
+use Ideys\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
 $siteSettingsController = SilexHooks::controllerFactory($app);
 
 $siteSettingsController->match('/', function (Request $request) use ($app) {
 
-    $settings = new Settings($app['db']);
-    $settingsType = new SettingsType($app['form.factory']);
-    $form = $settingsType->form($settings->getAll());
+    $settingsProvider = new Settings\SettingsProvider($app['db']);
+    $settings = $settingsProvider->getSettings();
+
+    $settingsType = new Settings\SettingsType($app['form.factory']);
+    $form = $settingsType->form($settings);
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
-        $data = $form->getData();
-        $settings->updateParameters($data);
-        $app['session']
+        $settingsProvider->persistSettings($settings);
+        SilexHooks::session($app)
             ->getFlashBag()
-            ->add('success', $app['translator']->trans('site.settings.updated'));
+            ->add('success', SilexHooks::translator($app)->trans('site.settings.updated'));
     }
 
     return SilexHooks::twig($app)->render('backend/siteSettings/siteSettings.html.twig', array(

@@ -2,7 +2,7 @@
 
 namespace Ideys\Settings;
 
-use Ideys\Content\SectionType;
+use Ideys\Content\Section\Section;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,7 +15,6 @@ class SettingsType
      * @var \Symfony\Component\Form\FormFactory
      */
     protected $formFactory;
-
 
     /**
      * Constructor.
@@ -30,11 +29,11 @@ class SettingsType
     /**
      * Return the settings form.
      *
-     * @param array $settings
+     * @param Settings $settings
      *
      * @return \Symfony\Component\Form\Form
      */
-    public function form($settings)
+    public function form(Settings $settings)
     {
         $formBuilder = $this->formBuilder($settings);
 
@@ -44,11 +43,11 @@ class SettingsType
     /**
      * Return settings form builder.
      *
-     * @param array $settings
+     * @param Settings $settings
      *
      * @return \Symfony\Component\Form\FormBuilder
      */
-    public function formBuilder($settings)
+    public function formBuilder(Settings $settings)
     {
         $formBuilder = $this->formFactory
             ->createBuilder('form', $settings)
@@ -74,7 +73,7 @@ class SettingsType
                 'label'         => 'site.author',
             ))
             ->add('subDomain', 'choice', array(
-                'choices'       => Settings::getSubDomainRedirectionChoices(),
+                'choices'       => Settings::getSubDomainChoices(),
                 'label'         => 'site.sub.domain',
             ))
             ->add('maintenance', 'choice', array(
@@ -110,10 +109,7 @@ class SettingsType
                 'label'         => 'google.fonts',
             ))
             ->add('layoutBackground', 'choice', array(
-                'choices'   => array(
-                    'black' => 'site.background.black',
-                    'white' => 'site.background.white',
-                ),
+                'choices'       => Settings::getLayoutBackgroundChoices(),
                 'label'         => 'site.background.background',
             ))
             ->add('customStyle', 'textarea', array(
@@ -122,7 +118,7 @@ class SettingsType
             ))
             ->add('customJavascript', 'textarea', array(
                 'required'      => false,
-                'label'         => 'site.style.customjs',
+                'label'         => 'site.js.custom',
             ))
             ->add('adminLink', 'choice', array(
                 'choices'       => Settings::getAdminLinkChoices(),
@@ -153,7 +149,7 @@ class SettingsType
                 'label'         => 'file.enabled',
             ))
             ->add('newSectionDefaultVisibility', 'choice', array(
-                'choices'       => SectionType::getSectionVisibilityChoice(),
+                'choices'       => Section::getVisibilityChoices(),
                 'label'         => 'section.visibility.default',
             ))
         ;

@@ -15,6 +15,11 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class Form extends Section implements SectionInterface
 {
     /**
+     * @var string
+     */
+    private $validationMessage;
+
+    /**
      * {@inheritdoc}
      */
     public function getDefaultItems()
@@ -183,5 +188,25 @@ class Form extends Section implements SectionInterface
         }
 
         return $formDeleted;
+    }
+
+    /**
+     * @return string
+     */
+    public function getValidationMessage()
+    {
+        return $this->validationMessage;
+    }
+
+    /**
+     * @param string $validationMessage
+     *
+     * @return Form
+     */
+    public function setValidationMessage($validationMessage)
+    {
+        $this->validationMessage = $validationMessage;
+
+        return $this;
     }
 }

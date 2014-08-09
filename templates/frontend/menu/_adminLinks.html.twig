@@ -1,5 +1,5 @@
 {% spaceless %}
-{% if 'menu' == site.adminLink
+{% if 'menu' == settings.adminLink
    or is_granted('ROLE_ADMIN') %}
 <li>
   <a href="{{ path('admin_content_manager') }}">
@@ -7,7 +7,7 @@
   </a>
 </li>
 {% endif %}
-{% if site.maintenance and is_granted('ROLE_ADMIN') %}
+{% if settings.maintenance and is_granted('ROLE_ADMIN') %}
 <li>
   <a href="{{ path('admin_site_settings') }}">
     <i id="maintenance-indicator" class="fi-flag"></i>

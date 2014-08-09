@@ -1,6 +1,6 @@
 {% spaceless %}
 <ul class="{{ class }}">
-  {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
+  {% if not settings.maintenance or is_granted('ROLE_ADMIN') %}
     {% include "frontend/menu/_sideLinks.html.twig" with {
         'widgets': widgets,
         'class': class,
@@ -17,7 +17,7 @@
         'follow': follow
   } only %}
   {% include "frontend/menu/_adminLinks.html.twig" only %}
-  {% if 'disabled' != site.contactSection %}
+  {% if 'disabled' != settings.contactSection %}
   <li>
     <a href="{{ path('contact') }}"{{ follow }}>
       {{ 'contact.contact'|trans }}

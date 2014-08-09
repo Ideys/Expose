@@ -14,6 +14,8 @@ use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
+use Ideys\Settings\SettingsProvider;
+use Ideys\Content\ContentFactory;
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
@@ -42,11 +44,11 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
-    $settings = new \Ideys\Settings\Settings($app['db']);
+    $settingsProvider = new SettingsProvider($app['db']);
     $twig->addGlobal('semver', $app['semver']);
-    $twig->addGlobal('site', $settings->getAll());
+    $twig->addGlobal('settings', $settingsProvider->getSettings());
     $twig->addGlobal('profile', $app['session']->get('profile'));
-    $contentFactory = new \Ideys\Content\ContentFactory($app);
+    $contentFactory = new ContentFactory($app);
     $twig->addGlobal('sections', $contentFactory->findSections());
     $twig->addExtension(new Twig_Extension_StringLoader());
 

@@ -6,7 +6,7 @@
 <nav class="top-bar" data-topbar>
   <ul class="title-area">
     <li class="name">
-      <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
+      <h1><a href="{{ path('homepage') }}">{{ settings.name }}</a></h1>
     </li>
     <li class="toggle-topbar menu-icon">
       <a href="#"><span></span></a>
@@ -21,7 +21,7 @@
       </li>
       {% if is_granted('ROLE_ADMIN') %}
         <li id="file-manager-link"
-            {% if not site.shareFiles %}class="hidden"{% endif %}>
+            {% if not settings.shareFiles %}class="hidden"{% endif %}>
           <a href="{{ path('admin_files_manager') }}">
             {{ 'file.manager'|trans }}
           </a>
@@ -38,7 +38,7 @@
           <a href="{{ path('admin_site_settings') }}">
             {{ 'site.settings'|trans }}
             <i id="maintenance-indicator"
-               class="fi-flag{% if not site.maintenance %} hidden{% endif %}"></i>
+               class="fi-flag{% if not settings.maintenance %} hidden{% endif %}"></i>
           </a>
         </li>
       {% endif %}

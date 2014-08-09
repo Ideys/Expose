@@ -8,7 +8,7 @@ use Ideys\String;
 use Ideys\Settings\Settings;
 use Silex\Application;
 use Symfony\Component\Security\Core\User\User;
-use Doctrine\DBAL\Connection;
+use Doctrine\Common\Inflector\Inflector;
 use Imagine;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -205,13 +205,13 @@ class ContentFactory
             $settings = new Settings($this->db);
             $section = $this->addSection(new Section\Html($this->db, array(
                 'type' => Section\Section::SECTION_HTML,
-                'title' => $settings->name,
+                'title' => $settings->getName(),
                 'visibility' => Section\Section::VISIBILITY_HOMEPAGE,
             )));
             $page = new Item\Page(array(
                 'type' => Item\Item::ITEM_PAGE,
-                'title' => $settings->name,
-                'content' => '<div id="homepage"><h1>'.$settings->name.'</h1></div>',
+                'title' => $settings->getName(),
+                'content' => '<div id="homepage"><h1>'.$settings->getName().'</h1></div>',
             ));
             $this->addItem($section, $page);
         }

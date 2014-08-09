@@ -1,6 +1,8 @@
 <?php
 
 use Ideys\SilexHooks;
+use Ideys\Settings;
+use Ideys\Messaging;
 use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
@@ -12,7 +14,8 @@ $frontendController = SilexHooks::controllerFactory($app);
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $contentFactory = new ContentFactory($app);
-    $settings = new \Ideys\Settings\Settings($app['db']);
+    $settingsProvider = new Settings\SettingsProvider($app['db']);
+    $settings = $settingsProvider->getSettings();
 
     if (null === $slug) {
         $section = $contentFactory->findHomepage($slug);
@@ -29,7 +32,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     $translator = SilexHooks::translator($app);
     $urlGenerator = SilexHooks::urlGenerator($app);
 
-    if (!$section->isHomepage() && $settings->maintenance
+    if (!$section->isHomepage() && $settings->getMaintenance()
             && (false === $security->isGranted('ROLE_ADMIN')) ) {
         $session
             ->getFlashBag()
@@ -74,7 +77,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     if ($section instanceof \Ideys\Content\Section\Form) {
         $form = $section->generateFormFields($app['form.factory']);
         if ($section->checkSubmittedForm($request, $form)) {
-            $validationMessage = $section->getParameter('validation_message');
+            $validationMessage = $section->getValidationMessage();
             $session
                 ->getFlashBag()
                 ->add('success', empty($validationMessage) ?
@@ -118,12 +121,14 @@ $frontendController->match('/s/{slug}/{itemSlug}', $frontendContent)
 
 $frontendController->match('/contact', function (Request $request) use ($app) {
 
-    $settings = new \Ideys\Settings\Settings($app['db']);
-    $messaging = new \Ideys\Messaging\MessageProvider($app['db']);
-    $message = new \Ideys\Messaging\Message();
-    $messageType = new \Ideys\Messaging\MessageType($app['form.factory']);
+    $settingsProvider = new Settings\SettingsProvider($app['db']);
+    $settings = $settingsProvider->getSettings();
 
-    if ('disabled' === $settings->contactSection) {
+    $messageProvider = new Messaging\MessageProvider($app['db']);
+    $message = new Messaging\Message();
+    $messageType = new Messaging\MessageType($app['form.factory']);
+
+    if (Settings\Settings::CONTACT_SECTION_DISABLED === $settings->getContactSection()) {
         throw new Exception\NotFoundHttpException();
     }
 
@@ -132,8 +137,8 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $messaging->persist($message);
-        $messaging->sendByEmail($settings, $translator, $message);
+        $messageProvider->persist($message);
+        $messageProvider->sendByEmail($settings, $translator, $message);
         SilexHooks::session($app)
             ->getFlashBag()
             ->add('success', $translator->trans('contact.info.sent'));
@@ -186,7 +191,7 @@ $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use (
     $filesHandler = new \Ideys\Files\FilesHandler($app['db']);
     $file = $filesHandler->findBySlugAndToken($slug, $token);
 
-    if ('0' === $settings->shareFiles) {
+    if ('0' === $settings->getShareFiles()) {
         throw new Exception\AccessDeniedHttpException();
     }
 

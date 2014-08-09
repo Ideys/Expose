@@ -6,9 +6,9 @@
 
 {% block main -%}
 <div class="row">
-{% if 'enabled' == site.contactSection %}
+{% if 'enabled' == settings.contactSection %}
   <div class="medium-5 medium-push-7 columns">
-    {{ widgets.inclusion_replace_keys(site.contactContent) }}
+    {{ widgets.inclusion_replace_keys(settings.contactContent) }}
   </div>
   <div class="medium-7 medium-pull-5 columns">
     {{ form_start(form) }}
@@ -42,11 +42,11 @@
   </div>
 {% else %}
   <div class="large-12 columns">
-    {{ widgets.inclusion_replace_keys(site.contactContent) }}
+    {{ widgets.inclusion_replace_keys(settings.contactContent) }}
   </div>
 {% endif %}
 </div>
-{% if 'contact.section' == site.adminLink %}
+{% if 'contact.section' == settings.adminLink %}
 <a href="{{ path('admin_content_manager') }}"
    id="admin-link"
    class="tiny secondary button">

@@ -84,7 +84,10 @@ abstract class Section
     /**
      * @var string
      */
-    protected $menuPos = 'main';
+    protected $menuPos = self::MENU_POS_MAIN;
+
+    const MENU_POS_MAIN     = 'main';
+    const MENU_POS_SECOND   = 'second';
 
     /**
      * @var string
@@ -434,6 +437,25 @@ abstract class Section
     }
 
     /**
+     * Return section type choices.
+     *
+     * @return array
+     */
+    public static function getTypeChoices()
+    {
+        return array(
+            self::SECTION_GALLERY   => 'section.gallery',
+            self::SECTION_CHANNEL   => 'section.channel',
+            self::SECTION_HTML      => 'section.html',
+            self::SECTION_BLOG      => 'section.blog',
+            self::SECTION_FORM      => 'section.form',
+            self::SECTION_MAP       => 'section.map',
+            self::SECTION_LINK      => 'section.link',
+            self::SECTION_DIR       => 'section.dir',
+        );
+    }
+
+    /**
      * @return string
      */
     public function getTitle()
@@ -615,6 +637,19 @@ abstract class Section
     }
 
     /**
+     * Return menu position choices.
+     *
+     * @return array
+     */
+    public static function getMenuPosChoices()
+    {
+        return array(
+            self::MENU_POS_MAIN     => 'section.menu.main',
+            self::MENU_POS_SECOND   => 'section.menu.second',
+        );
+    }
+
+    /**
      * @return string
      */
     public function getTargetBlank()
@@ -652,6 +687,22 @@ abstract class Section
         $this->visibility = $visibility;
 
         return $this;
+    }
+
+    /**
+     * Return content visibility choices.
+     *
+     * @return array
+     */
+    public static function getVisibilityChoices()
+    {
+        return array(
+            self::VISIBILITY_HOMEPAGE    => 'section.visibility.homepage',
+            self::VISIBILITY_PUBLIC      => 'section.visibility.public',
+            self::VISIBILITY_PRIVATE     => 'section.visibility.private',
+            self::VISIBILITY_HIDDEN      => 'section.visibility.hidden',
+            self::VISIBILITY_CLOSED      => 'section.visibility.closed',
+        );
     }
 
     /**

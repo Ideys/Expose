@@ -61,7 +61,7 @@ class SectionType
         $formBuilder = $this->formFactory
             ->createBuilder('form', $section)
             ->add('type', 'choice', array(
-                'choices'       => static::getSectionTypesChoice(),
+                'choices'       => Section::getTypeChoices(),
                 'label'         => 'content.type',
             ))
             ->add('title', 'text', array(
@@ -98,7 +98,7 @@ class SectionType
                 'empty_value'   => 'dir.root',
             ))
             ->add('menu_pos', 'choice', array(
-                'choices'       => static::getMenuPosChoice(),
+                'choices'       => Section::getMenuPosChoices(),
                 'label'         => 'section.menu.menu',
             ))
             ->add('target_blank', 'choice', array(
@@ -106,7 +106,7 @@ class SectionType
                 'choices'       => Settings::getIOChoices(),
             ))
             ->add('visibility', 'choice', array(
-                'choices'       => static::getSectionVisibilityChoice(),
+                'choices'       => Section::getVisibilityChoices(),
                 'label'         => 'section.visibility.visibility',
             ))
             ->add('shuffle', 'choice', array(
@@ -145,48 +145,5 @@ class SectionType
         }
 
         return $choice;
-    }
-
-    /**
-     * Return content types keys and trans values.
-     *
-     * @return array
-     */
-    public static function getSectionTypesChoice()
-    {
-        $keys = Section::getTypes();
-        $values = array_map(function($item){
-            return 'section.'.$item;
-        }, $keys);
-        return array_combine($keys, $values);
-    }
-
-    /**
-     * Return menu position choices.
-     *
-     * @return array
-     */
-    public static function getMenuPosChoice()
-    {
-        return array(
-            'main' => 'section.menu.main',
-            'second' => 'section.menu.second',
-        );
-    }
-
-    /**
-     * Return content visibility choices.
-     *
-     * @return array
-     */
-    public static function getSectionVisibilityChoice()
-    {
-        return array(
-            Section::VISIBILITY_HOMEPAGE    => 'section.visibility.homepage',
-            Section::VISIBILITY_PUBLIC      => 'section.visibility.public',
-            Section::VISIBILITY_PRIVATE     => 'section.visibility.private',
-            Section::VISIBILITY_HIDDEN      => 'section.visibility.hidden',
-            Section::VISIBILITY_CLOSED      => 'section.visibility.closed',
-        );
     }
 }

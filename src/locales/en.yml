@@ -203,7 +203,7 @@ blog:
     delete: Delete this blog and its posts
     deleted: The blog was deleted
 
-maps:
+map:
     no.place: This map has no places defined yet.
     no.google.maps.key: |
         You have to insert a Google maps API key to
@@ -266,7 +266,8 @@ site:
     style:
         layout: Layout
         custom: Custom style
-        customjs: Global Javascript code
+    js:
+        custom: Global Javascript code
     menu:
         position: Menu position
         hide.on.homepage: Hide menu on homepage

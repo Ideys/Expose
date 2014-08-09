@@ -203,7 +203,7 @@ blog:
     delete: Supprimer ce blog et tous ses articles
     deleted: Le blog a été supprimé
 
-maps:
+map:
     no.place: Cette carte n'a pas de positions définies
     no.google.maps.key: |
         Vous devez saisir une clé Google maps dans les paramétrages
@@ -266,7 +266,8 @@ site:
     style:
         layout: Mise en forme
         custom: Style personnalisé
-        customjs: Code Javascript global
+    js:
+        custom: Code Javascript global
     menu:
         position: Position du menu
         hide.on.homepage: Masquer le menu sur la page d'accueil

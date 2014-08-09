@@ -2,14 +2,14 @@
 <nav class="main-nav top-bar" data-topbar>
   <ul class="title-area">
     <li class="name">
-      <h1><a href="{{ path('homepage') }}">{{ site.name }}</a></h1>
+      <h1><a href="{{ path('homepage') }}">{{ settings.name }}</a></h1>
     </li>
     <li class="toggle-topbar menu-icon">
       <a href="#"><span></span></a>
     </li>
   </ul>
   <section class="top-bar-section">
-    {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
+    {% if not settings.maintenance or is_granted('ROLE_ADMIN') %}
     <ul class="left">
       {% include "frontend/menu/_topLinks.html.twig" with {
           'widgets': widgets,
@@ -20,7 +20,7 @@
     {% endif %}
     <ul class="right">
       <li class="divider show-for-small"></li>
-      {% if not site.maintenance or is_granted('ROLE_ADMIN') %}
+      {% if not settings.maintenance or is_granted('ROLE_ADMIN') %}
         {% include "frontend/menu/_topLinks.html.twig" with {
             'widgets': widgets,
             'menuPos': 'second',
@@ -28,7 +28,7 @@
         } only %}
       {% endif %}
       {% include "frontend/menu/_adminLinks.html.twig" only %}
-      {% if 'disabled' != site.contactSection %}
+      {% if 'disabled' != settings.contactSection %}
       <li>
         <a href="{{ path('contact') }}">
           {{ 'contact.contact'|trans }}

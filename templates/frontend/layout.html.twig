@@ -3,11 +3,11 @@
 {% import "widgets.html.twig" as widgets %}
 
 {% block head %}
-{% if site.googleFonts|length %}
-<link href="//fonts.googleapis.com/css?family={{ site.googleFonts }}" rel="stylesheet" type="text/css">
+{% if settings.googleFonts|length %}
+<link href="//fonts.googleapis.com/css?family={{ settings.googleFonts }}" rel="stylesheet" type="text/css">
 {% endif %}
 <style>
-{{ site.customStyle|raw }}
+{{ settings.customStyle|raw }}
 </style>
 {% if section|default('')|length
   and section.customCss|length %}
@@ -19,7 +19,7 @@
 
 {% block javascripts %}
 <script>
-{{ site.customJavascript|raw }}
+{{ settings.customJavascript|raw }}
 </script>
 {% if section|default('')|length
   and section.customJs|length %}
@@ -29,23 +29,23 @@
 {% endif %}
 {% endblock javascripts %}
 
-{% block body_class parent()~' background-'~site.layoutBackground %}
+{% block body_class parent()~' background-'~settings.layoutBackground %}
 
 {% block content -%}
 {# Hide menu on homepage option #}
-{% if site.hideMenuOnHomepage
+{% if settings.hideMenuOnHomepage
   and section|default('')|length
   and section.isHomepage %}
   {% set hideMenu = true %}
 {% else %}
   {% set hideMenu = false %}
 {% endif %}
-{% if 'top' == site.menuPosition
+{% if 'top' == settings.menuPosition
   and not hideMenu %}
   {% include "frontend/menu/_topbar.html.twig" with {
       'widgets': widgets
   } only %}
-{% elseif 'left' == site.menuPosition
+{% elseif 'left' == settings.menuPosition
   and not hideMenu %}
   <div class="off-canvas-wrap">
     <div class="inner-wrap">
@@ -54,12 +54,12 @@
     } only %}
 {% endif %}
     <section id="content"
-             {% if 'left' == site.menuPosition and not hideMenu %}
+             {% if 'left' == settings.menuPosition and not hideMenu %}
              class="main-section large-10 medium-9 columns"
              {% endif %}>
       {% block main %}{% endblock %}
     </section>
-{% if 'left' == site.menuPosition
+{% if 'left' == settings.menuPosition
   and not hideMenu %}
     <a class="exit-off-canvas"></a>
     </div>

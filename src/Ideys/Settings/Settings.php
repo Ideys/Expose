@@ -2,129 +2,129 @@
 
 namespace Ideys\Settings;
 
-use Doctrine\DBAL\Connection;
+use Ideys\Content\Section\Section;
 
 /**
- * App settings manager.
+ * App settings entity.
  */
 class Settings
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var string
      */
-    private $db;
+    private $name = 'Ideys Expose';
 
     /**
-     * @var array
+     * @var string
      */
-    private $parameters = array();
+    private $description = 'Smart gallery';
 
     /**
-     * @var array
+     * @var string
      */
-    private $defaultParameters = array(
-        'name' => 'Ideys Expose',
-        'description' => 'Smart gallery',
-        'authorName' => 'Your Name',
-        'subDomain' => 'www',
-        'maintenance' => '0',
-        'analyticsKey' => '',
-        'verificationKey' => '',
-        'mapsKey' => '',
-        'googleFonts' => '',
-        'layoutBackground' => 'white',
-        'customStyle' => '',
-        'customJavascript' => '',
-        'adminLink' => 'contact.section',
-        'contactContent' => 'Contact me',
-        'contactSection' => 'enabled',
-        'contactSendToEmail' => '',
-        'menuPosition' => 'top',
-        'hideMenuOnHomepage' => '0',
-        'shareFiles' => '0',
-        'newSectionDefaultVisibility' => 'public',
-    );
+    private $authorName = 'Your Name';
 
     /**
-     * @var array
+     * @var string
      */
-    private $htaccessParameters = array(
-        'subDomain',
-    );
+    private $subDomain = self::SUB_DOMAIN_WWW;
+
+    const SUB_DOMAIN_ROOT   = 'root';
+    const SUB_DOMAIN_WWW    = 'www';
 
     /**
-     * Constructor: inject database connexion.
-     *
-     * @param \Doctrine\DBAL\Connection $connection
+     * @var string
      */
-    public function __construct(Connection $connection)
-    {
-        $this->db = $connection;
-        $this->retrieveParameters();
-    }
+    private $maintenance = '0';
 
     /**
-     * Return a parameter.
-     *
-     * @param string $name
-     *
-     * @return string
+     * @var string
      */
-    public function __get($name)
-    {
-        return $this->parameters[$name];
-    }
+    private $analyticsKey;
 
     /**
-     * Return settings.
-     *
-     * @return array
+     * @var string
      */
-    public function getAll()
-    {
-        return $this->parameters;
-    }
+    private $verificationKey;
 
     /**
-     * Return Admin link position choices.
-     *
-     * @return array
+     * @var string
      */
-    public static function getAdminLinkChoices()
-    {
-        return array(
-            'contact.section' => 'admin.link.on.contact.section',
-            'menu' => 'admin.link.on.menu',
-            'disabled' => 'admin.link.disabled',
-        );
-    }
+    private $mapsKey;
 
     /**
-     * Return contact displaying choices.
-     *
-     * @return array
+     * @var string
      */
-    public static function getContactSectionChoices()
-    {
-        return array(
-            'enabled' => 'contact.enabled',
-            'no.form' => 'contact.no.form',
-            'disabled' => 'contact.disabled',
-        );
-    }
+    private $googleFonts;
 
     /**
-     * Return menu position choices.
-     *
-     * @return array
+     * @var string
      */
-    public static function getMenuPositionChoices()
-    {
-        return array(
-            'top' => 'top',
-            'left' => 'left',
-        );
-    }
+    private $layoutBackground = self::LAYOUT_BG_WHITE;
+
+    const LAYOUT_BG_WHITE = 'white';
+    const LAYOUT_BG_BLACK = 'black';
+
+    /**
+     * @var string
+     */
+    private $customStyle;
+
+    /**
+     * @var string
+     */
+    private $customJavascript;
+
+    /**
+     * @var string
+     */
+    private $adminLink = self::ADMIN_LINK_POS_CONTACT;
+
+    const ADMIN_LINK_POS_CONTACT    = 'contact.section';
+    const ADMIN_LINK_POS_MENU       = 'menu';
+    const ADMIN_LINK_POS_DISABLED   = 'disabled';
+
+    /**
+     * @var string
+     */
+    private $contactContent = 'Contact me';
+
+    /**
+     * @var string
+     */
+    private $contactSection = self::CONTACT_SECTION_ENABLED;
+
+    const CONTACT_SECTION_ENABLED   = 'enabled';
+    const CONTACT_SECTION_NO_FORM   = 'no.form';
+    const CONTACT_SECTION_DISABLED  = 'disabled';
+
+    /**
+     * @var string
+     */
+    private $contactSendToEmail;
+
+    /**
+     * @var string
+     */
+    private $menuPosition = self::MENU_POS_TOP;
+
+    const MENU_POS_TOP  = 'top';
+    const MENU_POS_LEFT = 'left';
+
+    /**
+     * @var string
+     */
+    private $hideMenuOnHomepage = '0';
+
+    /**
+     * @var string
+     */
+    private $shareFiles = '0';
+
+    /**
+     * @var string
+     */
+    private $newSectionDefaultVisibility = Section::VISIBILITY_PUBLIC;
 
     /**
      * Return yes / no choices for form selects.
@@ -140,84 +140,469 @@ class Settings
     }
 
     /**
-     * Return yes / no choices for form selects.
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Settings
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     *
+     * @return Settings
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorName()
+    {
+        return $this->authorName;
+    }
+
+    /**
+     * @param string $authorName
+     *
+     * @return Settings
+     */
+    public function setAuthorName($authorName)
+    {
+        $this->authorName = $authorName;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSubDomain()
+    {
+        return $this->subDomain;
+    }
+
+    /**
+     * @param string $subDomain
+     *
+     * @return Settings
+     */
+    public function setSubDomain($subDomain)
+    {
+        $this->subDomain = $subDomain;
+
+        return $this;
+    }
+
+    /**
+     * Return sub-domain choices for automatic redirection.
      *
      * @return array
      */
-    public static function getSubDomainRedirectionChoices()
+    public static function getSubDomainChoices()
     {
         return array(
-            'root' => 'http://',
-            'www'  => 'http://www.',
+            self::SUB_DOMAIN_ROOT => 'http://',
+            self::SUB_DOMAIN_WWW  => 'http://www.',
         );
     }
 
     /**
-     * Add a parameter.
+     * @return string
      */
-    private function createParameter($attribute, $value)
+    public function getMaintenance()
     {
-        $this->db->insert('expose_settings', array(
-            'attribute' => $attribute,
-            'value' => $value,
-        ));
-
-        // Update available parameters
-        $this->parameters[$attribute] = $value;
+        return $this->maintenance;
     }
 
     /**
-     * Update a parameter.
-     */
-    private function updateParameter($attribute, $value)
-    {
-        $this->db->update('expose_settings', array(
-            'value' => $value,
-        ), array('attribute' => $attribute));
-
-        // Update object parameter
-        $this->parameters[$attribute] = $value;
-    }
-
-    /**
-     * Update custom parameters.
+     * @param string $maintenance
      *
-     * @param array $parameters
+     * @return Settings
      */
-    public function updateParameters($parameters)
+    public function setMaintenance($maintenance)
     {
-        $updatedParameters = array();
+        $this->maintenance = $maintenance;
 
-        foreach ($parameters as $attribute => $value) {
-            if ($this->parameters[$attribute] != $value) {
-                $this->updateParameter($attribute, $parameters[$attribute]);
-                $updatedParameters[] = $attribute;
-            }
-        }
-
-        // .htaccess file updating if related parameters was updated
-        $htaccessUpdatedParameters = array_intersect($updatedParameters, $this->htaccessParameters);
-        if (count($htaccessUpdatedParameters) > 0) {
-            $htaccessManager = new HtaccessManager();
-            $htaccessManager->updateHtaccess($this);
-        }
+        return $this;
     }
 
     /**
-     * Retrieve custom parameters from database.
+     * @return string
      */
-    private function retrieveParameters()
+    public function getAnalyticsKey()
     {
-        $parameters = $this->db->fetchAll('SELECT * FROM expose_settings');
+        return $this->analyticsKey;
+    }
 
-        foreach ($parameters as $parameter) {
-            $this->parameters[$parameter['attribute']] = $parameter['value'];
-        }
+    /**
+     * @param string $analyticsKey
+     *
+     * @return Settings
+     */
+    public function setAnalyticsKey($analyticsKey)
+    {
+        $this->analyticsKey = $analyticsKey;
 
-        $unPersistedParameters = array_diff_key($this->defaultParameters, $this->parameters);
+        return $this;
+    }
 
-        foreach ($unPersistedParameters as $attribute => $value) {
-            $this->createParameter($attribute, $value);
-        }
+    /**
+     * @return string
+     */
+    public function getVerificationKey()
+    {
+        return $this->verificationKey;
+    }
+
+    /**
+     * @param string $verificationKey
+     *
+     * @return Settings
+     */
+    public function setVerificationKey($verificationKey)
+    {
+        $this->verificationKey = $verificationKey;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMapsKey()
+    {
+        return $this->mapsKey;
+    }
+
+    /**
+     * @param string $mapsKey
+     *
+     * @return Settings
+     */
+    public function setMapsKey($mapsKey)
+    {
+        $this->mapsKey = $mapsKey;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGoogleFonts()
+    {
+        return $this->googleFonts;
+    }
+
+    /**
+     * @param string $googleFonts
+     *
+     * @return Settings
+     */
+    public function setGoogleFonts($googleFonts)
+    {
+        $this->googleFonts = $googleFonts;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLayoutBackground()
+    {
+        return $this->layoutBackground;
+    }
+
+    /**
+     * @param string $layoutBackground
+     *
+     * @return Settings
+     */
+    public function setLayoutBackground($layoutBackground)
+    {
+        $this->layoutBackground = $layoutBackground;
+
+        return $this;
+    }
+
+    /**
+     * Return layout background choices.
+     *
+     * @return array
+     */
+    public static function getLayoutBackgroundChoices()
+    {
+        return array(
+            self::LAYOUT_BG_BLACK => 'site.background.black',
+            self::LAYOUT_BG_WHITE => 'site.background.white',
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomStyle()
+    {
+        return $this->customStyle;
+    }
+
+    /**
+     * @param string $customStyle
+     *
+     * @return Settings
+     */
+    public function setCustomStyle($customStyle)
+    {
+        $this->customStyle = $customStyle;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomJavascript()
+    {
+        return $this->customJavascript;
+    }
+
+    /**
+     * @param string $customJavascript
+     *
+     * @return Settings
+     */
+    public function setCustomJavascript($customJavascript)
+    {
+        $this->customJavascript = $customJavascript;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAdminLink()
+    {
+        return $this->adminLink;
+    }
+
+    /**
+     * @param string $adminLink
+     *
+     * @return Settings
+     */
+    public function setAdminLink($adminLink)
+    {
+        $this->adminLink = $adminLink;
+
+        return $this;
+    }
+
+    /**
+     * Return Admin link position choices.
+     *
+     * @return array
+     */
+    public static function getAdminLinkChoices()
+    {
+        return array(
+            self::ADMIN_LINK_POS_CONTACT    => 'admin.link.on.contact.section',
+            self::ADMIN_LINK_POS_MENU       => 'admin.link.on.menu',
+            self::ADMIN_LINK_POS_DISABLED   => 'admin.link.disabled',
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactContent()
+    {
+        return $this->contactContent;
+    }
+
+    /**
+     * @param string $contactContent
+     *
+     * @return Settings
+     */
+    public function setContactContent($contactContent)
+    {
+        $this->contactContent = $contactContent;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactSection()
+    {
+        return $this->contactSection;
+    }
+
+    /**
+     * @param string $contactSection
+     *
+     * @return Settings
+     */
+    public function setContactSection($contactSection)
+    {
+        $this->contactSection = $contactSection;
+
+        return $this;
+    }
+
+    /**
+     * Return contact displaying choices.
+     *
+     * @return array
+     */
+    public static function getContactSectionChoices()
+    {
+        return array(
+            self::CONTACT_SECTION_ENABLED   => 'contact.enabled',
+            self::CONTACT_SECTION_NO_FORM   => 'contact.no.form',
+            self::CONTACT_SECTION_DISABLED  => 'contact.disabled',
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getContactSendToEmail()
+    {
+        return $this->contactSendToEmail;
+    }
+
+    /**
+     * @param string $contactSendToEmail
+     *
+     * @return Settings
+     */
+    public function setContactSendToEmail($contactSendToEmail)
+    {
+        $this->contactSendToEmail = $contactSendToEmail;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMenuPosition()
+    {
+        return $this->menuPosition;
+    }
+
+    /**
+     * @param string $menuPosition
+     *
+     * @return Settings
+     */
+    public function setMenuPosition($menuPosition)
+    {
+        $this->menuPosition = $menuPosition;
+
+        return $this;
+    }
+
+    /**
+     * Return menu position choices.
+     *
+     * @return array
+     */
+    public static function getMenuPositionChoices()
+    {
+        return array(
+            self::MENU_POS_TOP  => 'top',
+            self::MENU_POS_LEFT => 'left',
+        );
+    }
+
+    /**
+     * @return string
+     */
+    public function getHideMenuOnHomepage()
+    {
+        return $this->hideMenuOnHomepage;
+    }
+
+    /**
+     * @param string $hideMenuOnHomepage
+     *
+     * @return Settings
+     */
+    public function setHideMenuOnHomepage($hideMenuOnHomepage)
+    {
+        $this->hideMenuOnHomepage = $hideMenuOnHomepage;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShareFiles()
+    {
+        return $this->shareFiles;
+    }
+
+    /**
+     * @param string $shareFiles
+     *
+     * @return Settings
+     */
+    public function setShareFiles($shareFiles)
+    {
+        $this->shareFiles = $shareFiles;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNewSectionDefaultVisibility()
+    {
+        return $this->newSectionDefaultVisibility;
+    }
+
+    /**
+     * @param string $newSectionDefaultVisibility
+     *
+     * @return Settings
+     */
+    public function setNewSectionDefaultVisibility($newSectionDefaultVisibility)
+    {
+        $this->newSectionDefaultVisibility = $newSectionDefaultVisibility;
+
+        return $this;
     }
 }

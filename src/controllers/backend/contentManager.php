@@ -4,7 +4,7 @@ use Ideys\SilexHooks;
 use Ideys\Content\Section;
 use Ideys\Content\Type;
 use Ideys\Content\ContentFactory;
-use Ideys\Settings\Settings;
+use Ideys\Settings\SettingsProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 $contentManagerController = SilexHooks::controllerFactory($app);
@@ -13,10 +13,11 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $sectionType = new Type\SectionType($app['db'], $app['form.factory']);
-    $settings = new Settings($app['db']);
+    $settingsProvider = new SettingsProvider($app['db']);
+    $settings = $settingsProvider->getSettings();
 
     $newSection = new Section\Gallery($app['db']);
-    $newSection->setVisibility($settings->newSectionDefaultVisibility);
+    $newSection->setVisibility($settings->getNewSectionDefaultVisibility());
     $form = $sectionType->createForm($newSection);
 
     $form->handleRequest($request);

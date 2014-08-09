@@ -51,7 +51,7 @@ class HtaccessManager
 
         $this->insertDelimiter();
 
-        $this->insertSubDomainRedirectionCode($settings->subDomain);
+        $this->insertSubDomainRedirectionCode($settings->getSubDomain());
 
         file_put_contents($this->filePath, $this->fileData);
     }
