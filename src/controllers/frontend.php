@@ -4,6 +4,7 @@ use Ideys\SilexHooks;
 use Ideys\Settings;
 use Ideys\Messaging;
 use Ideys\Files;
+use Ideys\Content\Provider as ContentProvider;
 use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
@@ -15,13 +16,14 @@ $frontendController = SilexHooks::controllerFactory($app);
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $contentFactory = new ContentFactory($app);
+    $sectionProvider = new ContentProvider\SectionProvider($app['db']);
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
     if (null === $slug) {
         $section = $contentFactory->findHomepage($slug);
     } else {
-        $section = $contentFactory->findSectionBySlug($slug);
+        $section = $sectionProvider->findBySlug($slug);
     }
 
     if (!$section) {
@@ -70,8 +72,9 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     // Form sections logic
     $formView = null;
     if ($section instanceof \Ideys\Content\Section\Form) {
-        $form = $section->generateFormFields($app['form.factory']);
-        if ($section->checkSubmittedForm($request, $form)) {
+        $formProvider = new ContentProvider\FormProvider($app['db']);
+        $form = $formProvider->generateFormFields($app['form.factory'], $section);
+        if ($formProvider->checkSubmittedForm($request, $form)) {
             $validationMessage = $section->getValidationMessage();
             $flashMessage = empty($validationMessage) ? 'form.validation.message.default': $validationMessage;
             SilexHooks::flashMessage($app, $flashMessage, SilexHooks::FLASH_SUCCESS);

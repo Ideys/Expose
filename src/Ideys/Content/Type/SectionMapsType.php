@@ -22,7 +22,7 @@ class SectionMapsType extends SectionType
             ->remove('type')
             ->add('zoom', 'choice', array(
                 'label' => 'maps.zoom',
-                'choices' => Section\Maps::getZoomChoice(),
+                'choices' => Section\Map::getZoomChoice(),
             ))
             ->add('latitude', 'number', array(
                 'label' => 'maps.latitude',
@@ -34,7 +34,7 @@ class SectionMapsType extends SectionType
             ))
             ->add('map_mode', 'choice', array(
                 'label' => 'maps.mode.mode',
-                'choices' => Section\Maps::getModeChoice(),
+                'choices' => Section\Map::getModeChoice(),
             ))
         ;
 

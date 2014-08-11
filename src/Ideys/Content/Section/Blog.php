@@ -2,7 +2,6 @@
 
 namespace Ideys\Content\Section;
 
-use Ideys\Content\ContentFactory;
 use Ideys\Content\Item;
 
 /**
@@ -44,16 +43,6 @@ class Blog extends Section implements SectionInterface
     public function hasPosts()
     {
         return $this->hasItemsOfType(Item\Item::ITEM_POST);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSqlSelectItem()
-    {
-        return ContentFactory::getSqlSelectItem() .
-            'WHERE i.expose_section_id = ? '.
-            'ORDER BY i.posting_date DESC, i.hierarchy ASC ';
     }
 
     /**

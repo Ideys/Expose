@@ -15,7 +15,6 @@ class FileProvider
      */
     private $db;
 
-
     /**
      * Constructor.
      *

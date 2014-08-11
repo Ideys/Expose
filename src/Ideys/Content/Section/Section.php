@@ -140,13 +140,6 @@ abstract class Section extends AbstractContent
     protected $connectedSectionsId = array();
 
     /**
-     * Slides thumbs sizes.
-     *
-     * @var array
-     */
-    protected $thumbSizes = array(1200, 220);
-
-    /**
      * @var array
      */
     protected $sections = array();

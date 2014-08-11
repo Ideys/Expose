@@ -3,9 +3,6 @@
 namespace Ideys\Content\Section;
 
 use Ideys\Content\Item;
-use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Form\Form as SfForm;
 
 /**
  * Map content manager.
@@ -30,7 +27,12 @@ class Map extends Section implements SectionInterface
     /**
      * @param string
      */
-    private $mapMode = 'ROADMAP';
+    private $mapMode = self::MAP_MODE_ROAD_MAP;
+
+    const MAP_MODE_HYBRID       = 'HYBRID';
+    const MAP_MODE_ROAD_MAP     = 'ROADMAP';
+    const MAP_MODE_SATELLITE    = 'SATELLITE';
+    const MAP_MODE_TERRAIN      = 'TERRAIN';
 
     /**
      * Hold linked sections items.
@@ -103,68 +105,6 @@ class Map extends Section implements SectionInterface
     public function isSlidesHolder()
     {
         return false;
-    }
-
-    /**
-     * New place form.
-     *
-     * @param FormFactory $formFactory
-     * @param Item\Place  $place
-     *
-     * @return SfForm
-     */
-    public function addPlaceForm(FormFactory $formFactory, Item\Place $place)
-    {
-        $formBuilder = $formFactory->createBuilder('form', $place)
-            ->add('title', 'text', array(
-                'label' => 'section.title',
-                'attr' => array(
-                    'placeholder' => 'section.title',
-                ),
-            ))
-        ;
-        $this->coordinatesFields($formBuilder);
-
-        return $formBuilder->getForm();
-    }
-
-    /**
-     * Coordinates form for all items types.
-     *
-     * @param FormFactory $formFactory
-     * @param Item\Item   $item
-     *
-     * @return SfForm
-     */
-    public function coordinatesForm(FormFactory $formFactory, Item\Item $item)
-    {
-        $formBuilder = $formFactory->createBuilder('form', $item);
-        $this->coordinatesFields($formBuilder);
-
-        return $formBuilder->getForm();
-    }
-
-    /**
-     * Coordinates fields.
-     *
-     * @param FormBuilderInterface $formBuilder
-     *
-     * @return FormBuilderInterface
-     */
-    private function coordinatesFields(FormBuilderInterface $formBuilder)
-    {
-        $formBuilder
-            ->add('latitude', 'number', array(
-                'label' => 'maps.latitude',
-                'precision' => 15,
-            ))
-            ->add('longitude', 'number', array(
-                'label' => 'maps.longitude',
-                'precision' => 15,
-            ))
-        ;
-
-        return $formBuilder;
     }
 
     /**
@@ -265,10 +205,10 @@ class Map extends Section implements SectionInterface
     public static function getModeChoice()
     {
         return array(
-            'HYBRID'    => 'maps.mode.hybrid',
-            'ROADMAP'   => 'maps.mode.road.map',
-            'SATELLITE' => 'maps.mode.satellite',
-            'TERRAIN'   => 'maps.mode.terrain',
+            self::MAP_MODE_HYBRID    => 'maps.mode.hybrid',
+            self::MAP_MODE_ROAD_MAP  => 'maps.mode.road.map',
+            self::MAP_MODE_SATELLITE => 'maps.mode.satellite',
+            self::MAP_MODE_TERRAIN   => 'maps.mode.terrain',
         );
     }
 }

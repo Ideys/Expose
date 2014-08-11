@@ -16,7 +16,6 @@ class MessageProvider
      */
     private $db;
 
-
     /**
      * Constructor.
      *

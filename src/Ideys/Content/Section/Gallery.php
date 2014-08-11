@@ -12,12 +12,20 @@ class Gallery extends Section implements SectionInterface
     /**
      * @var string
      */
-    private $galleryMode = 'slideshow';
+    private $galleryMode = self::GALLERY_MODE_SLIDESHOW;
+
+    const GALLERY_MODE_SLIDESHOW    = 'slideshow';
+    const GALLERY_MODE_FULL_SCREEN  = 'fullScreen';
+    const GALLERY_MODE_VERTICAL     = 'vertical';
+    const GALLERY_MODE_MASONRY      = 'masonry';
 
     /**
      * @var string
      */
-    private $slideMode = 'slide';
+    private $slideMode = self::SLIDE_MODE_SLIDE;
+
+    const SLIDE_MODE_SLIDE  = 'slide';
+    const SLIDE_MODE_FADE   = 'fade';
 
     /**
      * @var string
@@ -103,7 +111,9 @@ class Gallery extends Section implements SectionInterface
         $weight = 0;
 
         foreach ($this->items as $slide) {
-            $weight += $slide->getFileSize();
+            if ($slide instanceof Item\Slide) {
+                $weight += $slide->getFileSize();
+            }
         }
 
         return $weight;
@@ -117,8 +127,8 @@ class Gallery extends Section implements SectionInterface
     public function isSlidable()
     {
         return in_array($this->getGalleryMode(), array(
-            'slideshow',
-            'fullScreen',
+            self::GALLERY_MODE_SLIDESHOW,
+            self::GALLERY_MODE_FULL_SCREEN,
         ));
     }
 
@@ -130,7 +140,7 @@ class Gallery extends Section implements SectionInterface
     public function isLinkable()
     {
         return in_array($this->getGalleryMode(), array(
-            'vertical',
+            self::GALLERY_MODE_VERTICAL,
         ));
     }
 
@@ -142,10 +152,10 @@ class Gallery extends Section implements SectionInterface
     public static function getGalleryModeChoice()
     {
         return array(
-            'slideshow' => 'gallery.mode.slideshow',
-            'fullScreen' => 'gallery.mode.fullScreen',
-            'vertical' => 'gallery.mode.vertical',
-            'masonry' => 'gallery.mode.masonry',
+            self::GALLERY_MODE_SLIDESHOW    => 'gallery.mode.slideshow',
+            self::GALLERY_MODE_FULL_SCREEN  => 'gallery.mode.fullScreen',
+            self::GALLERY_MODE_VERTICAL     => 'gallery.mode.vertical',
+            self::GALLERY_MODE_MASONRY      => 'gallery.mode.masonry',
         );
     }
 
@@ -157,8 +167,8 @@ class Gallery extends Section implements SectionInterface
     public static function getSlideModeChoice()
     {
         return array(
-            'slide' => 'gallery.slide.slide',
-            'fade' => 'gallery.slide.fade',
+            self::SLIDE_MODE_SLIDE  => 'gallery.slide.slide',
+            self::SLIDE_MODE_FADE   => 'gallery.slide.fade',
         );
     }
 

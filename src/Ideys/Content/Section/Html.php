@@ -28,6 +28,16 @@ class Html extends Section implements SectionInterface
     }
 
     /**
+     * Return HTML section first page.
+     */
+    public function getFirstPage()
+    {
+        $pages = $this->getPages();
+
+        return array_pop($pages);
+    }
+
+    /**
      * Test if HTML Section has some Page Items.
      *
      * @return boolean
@@ -59,15 +69,5 @@ class Html extends Section implements SectionInterface
     public function isComposite()
     {
         return true;
-    }
-
-    /**
-     * Return page content first page.
-     */
-    public function getFirstPage()
-    {
-        $items = $this->getItems('Page');
-
-        return array_pop($items);
     }
 }
