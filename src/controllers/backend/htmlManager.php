@@ -2,15 +2,15 @@
 
 use Ideys\SilexHooks;
 use Ideys\Content\Item;
-use Ideys\Content\ContentFactory;
+use Ideys\Content\Provider\SectionProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 $htmlManagerController = SilexHooks::controllerFactory($app);
 
-$htmlManagerController->get('/{id}/preview', function (Request $request, $id) use ($app) {
+$htmlManagerController->get('/{id}/preview', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $sectionProvider = new SectionProvider($app['db']);
+    $section = $sectionProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/htmlManager/_pagePreview.html.twig', array(
         'section' => $section,
@@ -22,8 +22,8 @@ $htmlManagerController->get('/{id}/preview', function (Request $request, $id) us
 
 $htmlManagerController->get('/{id}/display-preview', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $sectionProvider = new SectionProvider($app['db']);
+    $section = $sectionProvider->find($id);
 
     return SilexHooks::twig($app)->render('frontend/html/html.html.twig', array(
       'section' => $section,
@@ -35,8 +35,9 @@ $htmlManagerController->get('/{id}/display-preview', function ($id) use ($app) {
 
 $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $sectionProvider = new SectionProvider($app['db']);
+    $section = $sectionProvider->find($id);
+
     $page = $section->getFirstPage();
     if (empty($page)) {
         $page = new Item\Page(array('type' => Item\Item::ITEM_PAGE));

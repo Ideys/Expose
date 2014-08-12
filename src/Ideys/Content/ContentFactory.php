@@ -56,40 +56,6 @@ class ContentFactory
     }
 
     /**
-     * Return sections.
-     *
-     * @return array
-     */
-    public function findSections()
-    {
-        if (!empty($this->sections)) {
-            return $this->sections;
-        }
-
-        $sql = SectionProvider::baseQuery()
-           . 'WHERE t.language = ? '
-           . 'GROUP BY s.id '
-           . 'ORDER BY s.hierarchy ASC ';
-        $sections = $this->db->fetchAll($sql, array($this->language));
-
-        // Use sql primary keys as array keys and objectify entity
-        foreach ($sections as $section) {
-            $this->sections[$section['id']] = ContentHydrator::instantiateSection($section);
-        }
-
-        // Generate tree structure from raw data
-        foreach ($this->sections as $id => $section) {
-            $parentSectionId = $section->getExposeSectionId();
-            if ($parentSectionId > 0) {
-                $this->sections[$parentSectionId]->addSection($section);
-                unset($this->sections[$id]);
-            }
-        }
-
-        return $this->sections;
-    }
-
-    /**
      * Return all linkable sections to a Map section.
      * Exclude other Map sections and Dir sections.
      *
@@ -146,13 +112,21 @@ class ContentFactory
     public function findFirstSection()
     {
         $sql = SectionProvider::baseQuery()
-            . "WHERE s.type NOT IN ('link', 'dir')"
+            . "WHERE s.type NOT IN ('link', 'dir') "
+            . "AND t.language = ? "
             . "AND s.visibility NOT IN ('homepage', 'closed') ";
-        $sectionTranslations = $this->db->fetchAll($sql);
+        $entities = $this->db->fetchAll($sql, array($this->language));
 
-        $contentHydrator = new ContentHydrator();
+        if (empty($entities)) {
+            return null;
+        }
 
-        return $contentHydrator->hydrateSection($sectionTranslations, $this->language);
+        $data = array_pop($entities);
+
+        $sectionProvider = new SectionProvider($this->db);
+        $sectionProvider->setLanguage($this->language);
+
+        return $sectionProvider->hydrateSection($data);
     }
 
     /**
@@ -164,14 +138,12 @@ class ContentFactory
     {
         $sql = SectionProvider::baseQuery()
            . 'WHERE s.visibility = ? '
+           . 'AND t.language = ? '
            . 'ORDER BY s.hierarchy ASC ';
-        $sectionTranslations = $this->db->fetchAll($sql, array(Section\Section::VISIBILITY_HOMEPAGE));
-
-        $contentHydrator = new ContentHydrator();
-        $section = $contentHydrator->hydrateSection($sectionTranslations, $this->language);
+        $entities = $this->db->fetchAll($sql, array(Section\Section::VISIBILITY_HOMEPAGE, $this->language));
 
         // Generate default homepage
-        if (null === $section->getId()) {
+        if (empty($entities)) {
             $settings = new Settings($this->db);
             $section = $this->addSection(new Section\Html($this->db, array(
                 'type' => Section\Section::SECTION_HTML,
@@ -184,6 +156,11 @@ class ContentFactory
                 'content' => '<div id="homepage"><h1>'.$settings->getName().'</h1></div>',
             ));
             $this->addItem($section, $page);
+        } else {
+            $sectionProvider = new SectionProvider($this->db);
+            $sectionProvider->setLanguage($this->language);
+            $data = array_pop($entities);
+            $section = $sectionProvider->hydrateSection($data);
         }
 
         return $section;
@@ -201,6 +178,9 @@ class ContentFactory
     public function composeSectionItems(Section\SectionInterface $section, \Twig_Environment $twig)
     {
         if ($section->isComposite()) {
+
+            $sectionProvider = new SectionProvider($this->db);
+            $sectionProvider->setLanguage($this->language);
 
             $items = $section->getDefaultItems();
 
@@ -235,11 +215,8 @@ class ContentFactory
 
                 $replacementStrings = array_flip($galleries);
                 foreach ($sectionsToInclude as $s) {
-                    $sectionToInclude = static::instantiateSection($s);
-                    $sectionToInclude->hydrateItems();
-                    if ($sectionToInclude->hasDefaultItems()) {
-                        $replacementValues[$replacementStrings[$sectionToInclude->getSlug()]] = $sectionToInclude;
-                    }
+                    $sectionToInclude = $sectionProvider->hydrateSection($s);
+                    $replacementValues[$replacementStrings[$sectionToInclude->getSlug()]] = $sectionToInclude;
                 }
             }
 
@@ -250,7 +227,7 @@ class ContentFactory
 
                     // Insert extracted contents
                     foreach ($replacementValues as $key => $replacementSection) {
-                        $replacementTemplate = $twig->render('frontend/'.$replacementSection->type.'/_embed.html.twig', array(
+                        $replacementTemplate = $twig->render('frontend/'.$replacementSection->getType().'/_embed.html.twig', array(
                             'section' => $replacementSection,
                         ));
                         $content = str_replace($key, $replacementTemplate, $content);
@@ -265,36 +242,6 @@ class ContentFactory
                 }
             }
         }
-    }
-
-    /**
-     * Fill items attribute with section's persisted items.
-     *
-     * @param Section\SectionInterface $section
-     *
-     * @return boolean true if hydration is successful.
-     */
-    public function hydrateItems(Section\SectionInterface $section)
-    {
-        if ($section->getId() == null) {
-            return false;
-        }
-
-        $sql = ItemProvider::baseQuery() .
-            'WHERE i.expose_section_id = ? '.
-            'ORDER BY i.hierarchy ASC ';
-
-        $itemTranslations = $this->db->fetchAll($sql, array($section->getId()));
-
-        if (empty($itemTranslations)) {
-            return false;
-        }
-
-        foreach ($itemTranslations as $data) {
-            $section->getDefaultItems()[$data['id']] = static::instantiateItem($data);
-        }
-
-        return true;
     }
 
     /**

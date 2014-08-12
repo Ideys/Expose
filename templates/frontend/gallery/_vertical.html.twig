@@ -1,9 +1,9 @@
 {% spaceless %}
 <div class="row-fluid">
   <div class="large-12 columns">
-    <ul class="small-block-grid-{{ section.grid_rows_small }}
-               medium-block-grid-{{ section.grid_rows_medium }}
-               large-block-grid-{{ section.grid_rows }}">
+    <ul class="small-block-grid-{{ section.gridRowsSmall }}
+               medium-block-grid-{{ section.gridRowsMedium }}
+               large-block-grid-{{ section.gridRows }}">
       {% for slide in section.slides if slide.published %}
         <li class="text-center">
           {% if slide.link|length %}

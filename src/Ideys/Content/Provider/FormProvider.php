@@ -104,15 +104,17 @@ class FormProvider extends SectionProvider
     /**
      * Return form results.
      *
+     * @param Section\Section $section
+     *
      * @return array
      */
-    public function getResults()
+    public function getResults(Section\Section $section)
     {
         $sql = 'SELECT r.* '.
             'FROM expose_form_result AS r '.
             'WHERE r.expose_section_id = ? '.
             'ORDER BY r.date ASC ';
-        $results = $this->db->fetchAll($sql, array($this->id));
+        $results = $this->db->fetchAll($sql, array($section->getId()));
 
         foreach ($results as $row => $result) {
             $results[$row]['result'] = unserialize($result['result']);
@@ -138,14 +140,16 @@ class FormProvider extends SectionProvider
     /**
      * Delete a form and its result.
      *
+     * @param Section\Section $section
+     *
      * @return boolean
      */
-    public function delete()
+    public function delete(Section\Section $section)
     {
-        $formDeleted = parent::delete();
+        $formDeleted = parent::delete($section);
 
         if ($formDeleted) {
-            $this->db->delete('expose_form_result', array('expose_section_id' => $this->id));
+            $this->db->delete('expose_form_result', array('expose_section_id' => $section->getId()));
         }
 
         return $formDeleted;

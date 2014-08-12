@@ -6,12 +6,12 @@
 <div class="for-mode for-slideshow for-fullScreen{% if section.galleryMode not in ['slideshow', 'fullScreen'] %} hidden{% endif %}">
   {{ form_row(edit_form.slideMode) }}
   {{ form_row(edit_form.navBar) }}
-  {{ form_row(edit_form.thumb_list) }}
+  {{ form_row(edit_form.thumbList) }}
 </div>
 <div class="for-mode for-vertical{% if section.galleryMode != 'vertical' %} hidden{% endif %}">
-  {{ form_row(edit_form.grid_rows) }}
-  {{ form_row(edit_form.grid_rows_medium) }}
-  {{ form_row(edit_form.grid_rows_small) }}
+  {{ form_row(edit_form.gridRows) }}
+  {{ form_row(edit_form.gridRowsMedium) }}
+  {{ form_row(edit_form.gridRowsSmall) }}
 </div>
 {{ form_row(edit_form.shuffle) }}
 {% endspaceless %}

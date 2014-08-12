@@ -3,15 +3,15 @@
 use Ideys\SilexHooks;
 use Ideys\Picture;
 use Ideys\Content\Item;
-use Ideys\Content\ContentFactory;
+use Ideys\Content\Provider;
 use Symfony\Component\HttpFoundation\Request;
 
 $galleryManagerController = SilexHooks::controllerFactory($app);
 
 $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_slideList.html.twig', array(
         'section' => $section,
@@ -23,8 +23,8 @@ $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
 $galleryManagerController->match('/{id}/labels', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $section = $galleryProvider->find($id);
 
     $formBuilder = SilexHooks::formFactory($app)->createBuilder('form')
         ->add('global_legend', 'textarea', array(
@@ -82,12 +82,12 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
 
         // Update the global legend
         $section->setLegend($data['global_legend']);
-        $contentFactory->updateSection($section);
+        $galleryProvider->updateSection($section);
 
         // Update each items legends
         foreach ($section->getItems('Slide') as $slide) {
             if ($slide instanceof Item\Slide)
-            $contentFactory->updateItemTitle(
+            $galleryProvider->updateItemTitle(
                 $slide->getId(),
                 $data['title'.$slide->getId()],
                 $data['description'.$slide->getId()],
@@ -115,13 +115,14 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     if (0 == $sectionId) {
         $sectionId = null;
     }
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($sectionId);
+    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $slideProvider = new Provider\SlideProvider($app['db']);
+    $section = $galleryProvider->find($sectionId);
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
         $slide = $section->addSlide($app['imagine'], $file);
-        $contentFactory->addItem($section, $slide);
+        $galleryProvider->addItem($section, $slide);
 
         $jsonResponse[] = array(
             'path' => $slide->getPath(),
@@ -137,8 +138,8 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 $galleryManagerController->post('/{id}/delete/slides', function (Request $request, $id) use ($app) {
 
     $itemIds = $request->get('items');
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $section = $galleryProvider->find($id);
 
     $deletedIds = $section->deleteSlides($itemIds);
 
@@ -150,8 +151,8 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 
 $galleryManagerController->get('/{id}/pic-manager', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_contentSectionsPicManager.html.twig', array(
         'section' => $section,

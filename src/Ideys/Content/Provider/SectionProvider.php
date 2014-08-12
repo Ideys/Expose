@@ -2,28 +2,46 @@
 
 namespace Ideys\Content\Provider;
 
-use Doctrine\DBAL\Connection;
-use Ideys\Content\ContentHydrator;
+use Ideys\Content\Section;
 use Ideys\Content\Item;
 
 /**
  * Section provider global class.
  */
-class SectionProvider
+class SectionProvider extends AbstractProvider
 {
     /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $db;
-
-    /**
-     * Constructor.
+     * Return sections.
      *
-     * @param \Doctrine\DBAL\Connection $connection
+     * @return array
      */
-    public function __construct(Connection $connection)
+    public function findAll()
     {
-        $this->db = $connection;
+        $sections = array();
+
+        $sql = static::baseQuery()
+            . 'WHERE t.language = ? '
+            . 'GROUP BY s.id '
+            . 'ORDER BY s.hierarchy ASC ';
+        $rows = $this->db->fetchAll($sql, array($this->language));
+
+        // Use sql primary keys as array keys and objectify entity
+        foreach ($rows as $data) {
+            $sections[$data['id']] = $this->hydrateSection($data);
+        }
+
+        // Generate tree structure from raw data
+        foreach ($sections as $id => $section) {
+            if ($section instanceof Section\Section) {
+                $parentSectionId = $section->getExposeSectionId();
+                if ($parentSectionId > 0) {
+                    $sections[$parentSectionId]->addSection($section);
+                    unset($sections[$id]);
+                }
+            }
+        }
+
+        return $sections;
     }
 
     /**
@@ -31,17 +49,17 @@ class SectionProvider
      *
      * @param integer $id
      *
-     * @return \Ideys\Content\Section\Section
+     * @return Section\Section
      */
     public function find($id)
     {
         $sql = static::baseQuery()
             . 'WHERE s.id = ? '
+            . 'AND t.language = ? '
             . 'ORDER BY s.hierarchy ASC ';
-        $sectionTranslations = $this->db->fetchAll($sql, array($id));
+        $data = $this->db->fetchAssoc($sql, array($id, $this->language));
 
-        $contentHydrator = new ContentHydrator();
-        return $contentHydrator->hydrateSection($sectionTranslations, 'fr');
+        return $this->hydrateSection($data);
     }
 
     /**
@@ -49,41 +67,86 @@ class SectionProvider
      *
      * @param string $slug Section slug
      *
-     * @return \Ideys\Content\Section\Section
+     * @return Section\Section
      */
     public function findBySlug($slug)
     {
         $sql = static::baseQuery()
             . 'WHERE s.slug = ? '
+            . 'AND t.language = ? '
             . 'ORDER BY s.hierarchy ASC ';
-        $sectionTranslations = $this->db->fetchAll($sql, array($slug));
+        $data = $this->db->fetchAssoc($sql, array($slug, $this->language));
 
-        $contentHydrator = new ContentHydrator();
-        return $contentHydrator->hydrateSection($sectionTranslations, 'fr');
+        return $this->hydrateSection($data);
+    }
+
+    /**
+     * Instantiate a related content object from database entity.
+     *
+     * @param array $data
+     *
+     * @return Section\Section
+     */
+    public function hydrateSection(array $data)
+    {
+        $sectionClassName = '\Ideys\Content\Section\\'.ucfirst($data['type']);
+        $section = new $sectionClassName();
+
+        static::hydrate($section, $data);
+
+        $this->hydrateItems($section);
+
+        return $section;
+    }
+
+    /**
+     * Attach Items to their Section.
+     *
+     * @param Section\Section $section
+     */
+    public function hydrateItems(Section\Section $section)
+    {
+        $items = array();
+
+        $sql = ItemProvider::baseQuery()
+            . 'WHERE i.expose_section_id = ? '
+            . 'AND t.language = ? '
+            . 'ORDER BY i.hierarchy ASC ';
+        $rows = $this->db->fetchAll($sql, array($section->getId(), $this->language));
+
+        foreach ($rows as $data) {
+            $items[$data['id']] = ItemProvider::hydrateItem($data);
+        }
+
+        $section->setItems($items);
     }
 
     /**
      * Archive or restore a section.
      *
-     * @param integer $sectionId
+     * @param Section\Section $section
      */
-    public function switchArchive($sectionId)
+    public function switchArchive(Section\Section $section)
     {
-        $this->db->executeQuery('UPDATE expose_section SET archive = NOT archive '
-            . 'WHERE id = :id',
-            array('id' => $sectionId)
+        $this->db->executeQuery(
+            'UPDATE expose_section ' .
+            'SET archive = NOT archive ' .
+            'WHERE id = :id ',
+            array('id' => $section->getId())
         );
     }
 
     /**
      * Delete a Section and this items in database.
      *
+     * @param Section\Section $section
+     *
      * @return boolean
      */
-    public function delete()
+    public function delete(Section\Section $section)
     {
         // Delete section items
-        foreach ($this->items as $item) {
+        foreach ($section->getItems() as $item) {
             if ($item instanceof Item\Slide) {
                 $this->deleteItemAndRelatedFile($item);
             } else {
@@ -92,9 +155,9 @@ class SectionProvider
         }
 
         // Delete section's translations
-        $this->db->delete('expose_section_trans', array('expose_section_id' => $this->id));
+        $this->db->delete('expose_section_trans', array('expose_section_id' => $section->getId()));
         // Delete section
-        $rows = $this->db->delete('expose_section', array('id' => $this->id));
+        $rows = $this->db->delete('expose_section', array('id' => $section->getId()));
 
         return (0 < $rows);
     }

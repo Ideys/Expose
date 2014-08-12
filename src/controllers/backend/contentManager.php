@@ -4,6 +4,7 @@ use Ideys\SilexHooks;
 use Ideys\Content\Section;
 use Ideys\Content\Type;
 use Ideys\Content\ContentFactory;
+use Ideys\Content\Provider\SectionProvider;
 use Ideys\Settings\SettingsProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -160,15 +161,15 @@ $contentManagerController->match('/{id}/edit/dir', function (Request $request, $
 
 $contentManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $sectionProvider = new SectionProvider($app['db']);
+    $section = $sectionProvider->find($id);
 
     $editForm = $section->settingsForm($app['form.factory']);
     $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
 
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
-        $contentFactory->updateSection($section);
+        $sectionProvider->updateSection($section);
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);
     }
 

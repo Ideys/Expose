@@ -2,29 +2,13 @@
 
 namespace Ideys\Content\Provider;
 
-use Doctrine\DBAL\Connection;
 use Ideys\Content\Item;
 
 /**
  * Item provider global class.
  */
-class ItemProvider
+class ItemProvider extends AbstractProvider
 {
-    /**
-     * @var \Doctrine\DBAL\Connection
-     */
-    protected $db;
-
-    /**
-     * Constructor.
-     *
-     * @param \Doctrine\DBAL\Connection $connection
-     */
-    public function __construct(Connection $connection)
-    {
-        $this->db = $connection;
-    }
-
     /**
      * Return an Item.
      *
@@ -39,7 +23,24 @@ class ItemProvider
             . 'ORDER BY s.hierarchy ASC ';
         $data = $this->db->fetchAssoc($sql, array($id));
 
-        return static::instantiateItem($data);
+        return static::hydrateItem($data);
+    }
+
+    /**
+     * Return instantiated Item from array data.
+     *
+     * @param array $data
+     *
+     * @return \Ideys\Content\Item\Item
+     */
+    public static function hydrateItem(array $data)
+    {
+        $itemClassName = '\Ideys\Content\Item\\'.ucfirst($data['type']);
+        $itemClass = new $itemClassName();
+
+        static::hydrate($itemClass, $data);
+
+        return $itemClass;
     }
 
     /**

@@ -3,7 +3,9 @@
 namespace Ideys\Content\Provider;
 
 use Ideys\Content\Item;
-use Imagine;
+use Imagine\Image\ImagineInterface;
+use Imagine\Image\Box;
+use Imagine\Filter\Transformation;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -26,7 +28,7 @@ class SlideProvider extends ItemProvider
      *
      * @return \Ideys\Content\Item\Slide
      */
-    public function addSlide(Imagine\Image\ImagineInterface $imagine, UploadedFile $file)
+    public function addSlide(ImagineInterface $imagine, UploadedFile $file)
     {
         $fileExt = $file->guessClientExtension();
         $realExt = $file->guessExtension();// from mime type
@@ -43,7 +45,7 @@ class SlideProvider extends ItemProvider
         $slide->addParameter('file_size', $fileSize);
         $slide->addParameter('original_name', $file->getClientOriginalName());
 
-        $file->move(static::getGalleryDir(), $slide->getPath());
+        $file->move(GalleryProvider::getGalleryDir(), $slide->getPath());
 
         foreach ($this->thumbSizes as $thumbSize){
             $this->createResizeSlide($imagine, $slide, $thumbSize);
@@ -62,20 +64,20 @@ class SlideProvider extends ItemProvider
      *
      * @return \Ideys\Content\Item\Slide
      */
-    public function createResizeSlide(Imagine\Image\ImagineInterface $imagine, Item\Slide $slide, $maxWidth, $maxHeight = null)
+    public function createResizeSlide(ImagineInterface $imagine, Item\Slide $slide, $maxWidth, $maxHeight = null)
     {
         $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
 
-        $thumbDir = static::getGalleryDir().'/'.$maxWidth;
+        $thumbDir = GalleryProvider::getGalleryDir().'/'.$maxWidth;
         if (!is_dir($thumbDir)) {
             mkdir($thumbDir);
         }
 
-        $transformation = new Imagine\Filter\Transformation();
-        $transformation->thumbnail(new Imagine\Image\Box($maxWidth, $maxHeight))
+        $transformation = new Transformation();
+        $transformation->thumbnail(new Box($maxWidth, $maxHeight))
             ->save($thumbDir.'/'.$slide->getPath());
         $transformation->apply($imagine
-            ->open(static::getGalleryDir().'/'.$slide->getPath()));
+            ->open(GalleryProvider::getGalleryDir().'/'.$slide->getPath()));
 
         return $slide;
     }

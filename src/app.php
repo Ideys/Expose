@@ -15,7 +15,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 use Ideys\Settings\SettingsProvider;
-use Ideys\Content\ContentFactory;
+use Ideys\Content\Provider\SectionProvider;
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());
@@ -44,12 +44,15 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
+    // Global settings
     $settingsProvider = new SettingsProvider($app['db']);
     $twig->addGlobal('semver', $app['semver']);
     $twig->addGlobal('settings', $settingsProvider->getSettings());
     $twig->addGlobal('profile', $app['session']->get('profile'));
-    $contentFactory = new ContentFactory($app);
-    $twig->addGlobal('sections', $contentFactory->findSections());
+
+    // Content sections (for menu)
+    $sectionProvider = new SectionProvider($app['db']);
+    $twig->addGlobal('sections', $sectionProvider->findAll());
     $twig->addExtension(new Twig_Extension_StringLoader());
 
     return $twig;

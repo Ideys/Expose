@@ -299,17 +299,7 @@ abstract class Section extends AbstractContent
      */
     public function countItemsOfType($type)
     {
-        return count($this->getItems($type));
-    }
-
-    /**
-     * Return the gallery directory path for slide parent sections.
-     *
-     * @return string
-     */
-    public static function getGalleryDir()
-    {
-        return WEB_DIR.'/gallery';
+        return count($this->getItemsOfType($type));
     }
 
     /**
