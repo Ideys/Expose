@@ -13,6 +13,14 @@ class Slide extends Item
     private $metaData = array();
 
     /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->type = self::ITEM_SLIDE;
+    }
+
+    /**
      * Set fileSize
      *
      * @param float $fileSize

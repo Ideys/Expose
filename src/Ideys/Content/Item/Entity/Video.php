@@ -12,6 +12,14 @@ class Video extends Item
     const PROVIDER_YOUTUBE = 'youtube';
 
     /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->type = self::ITEM_VIDEO;
+    }
+
+    /**
      * Set provider (alias of setCategory)
      *
      * @param string $provider

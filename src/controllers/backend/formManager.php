@@ -2,51 +2,25 @@
 
 use Ideys\SilexHooks;
 use Ideys\Content\Item\Entity\Field;
+use Ideys\Content\Item\Type\ItemTypeFactory;
+use Ideys\Content\Section\Provider\FormProvider;
 use Ideys\Content\ContentFactory;
 use Ideys\Files\File;
-use Ideys\Settings\Settings;
 use Symfony\Component\HttpFoundation\Request;
 
 $formManagerController = SilexHooks::controllerFactory($app);
 
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
-    $field = new Field();
+    $formProvider = new FormProvider($app['db']);
+    $section = $formProvider->find($id);
 
-    $form = $app['form.factory']->createBuilder('form', $field)
-        ->add('category', 'choice', array(
-            'choices' => Field::getTypesChoice(),
-            'label' => 'form.field.type',
-        ))
-        ->add('title', 'text', array(
-            'label' => 'form.label',
-            'attr' => array(
-                'placeholder' => 'form.label',
-            ),
-        ))
-        ->add('required', 'choice', array(
-            'label' => 'form.required',
-            'choices' => Settings::getIOChoices(),
-        ))
-        ->add('description', 'textarea', array(
-            'label' => 'form.help',
-            'attr' => array(
-                'placeholder' => 'form.help',
-            ),
-            'required' => false,
-        ))
-        ->add('choices', 'textarea', array(
-            'label' => 'form.choices',
-            'attr' => array(
-                'placeholder' => 'form.choices',
-            ),
-            'required' => false,
-        ))
-        ->getForm();
+    $itemTypeFactory = new ItemTypeFactory($app['form.factory']);
+    $field = new Field();
+    $form = $itemTypeFactory->createForm($field);
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
         $contentFactory->addItem($section, $field);
         return SilexHooks::redirect($app, 'admin_form_manager_edit', array('id' => $id));

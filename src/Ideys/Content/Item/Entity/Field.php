@@ -29,6 +29,14 @@ class Field extends Item
     const HTML     = 'html.insert';
 
     /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->type = self::ITEM_FIELD;
+    }
+
+    /**
      * Set required
      *
      * @param string $required
