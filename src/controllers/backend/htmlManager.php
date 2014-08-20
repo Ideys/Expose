@@ -1,8 +1,8 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\Item;
-use Ideys\Content\Provider\SectionProvider;
+use Ideys\Content\Item\Entity\Page;
+use Ideys\Content\Section\Provider\SectionProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 $htmlManagerController = SilexHooks::controllerFactory($app);
@@ -40,7 +40,7 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $page = $section->getFirstPage();
     if (empty($page)) {
-        $page = new Item\Page(array('type' => Item\Item::ITEM_PAGE));
+        $page = new Page();
         $contentFactory->addItem($section, $page);
     }
 

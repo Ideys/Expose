@@ -15,7 +15,7 @@ use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 use Ideys\Settings\SettingsProvider;
-use Ideys\Content\Provider\SectionProvider;
+use Ideys\Content\Section\Provider\SectionProvider;
 
 $app = new Application();
 $app->register(new UrlGeneratorServiceProvider());

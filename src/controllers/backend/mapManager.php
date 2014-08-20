@@ -1,8 +1,8 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\Section;
-use Ideys\Content\Item;
+use Ideys\Content\Section\Entity\Map;
+use Ideys\Content\Item\Entity\Place;
 use Ideys\Content\ContentFactory;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -28,7 +28,7 @@ $mapManagerController->match('/{id}/places', function (Request $request, $id) us
 
     $linkableSections = $section->getLinkableSections();
 
-    $place = new Item\Place(array('type' => Item\Item::ITEM_PLACE));
+    $place = new Place();
     $form = $section->addPlaceForm($app['form.factory'], $place);
 
     $form->handleRequest($request);
@@ -76,7 +76,7 @@ $mapManagerController->match('/{id}/coordinates', function (Request $request, $i
     $contentFactory = new ContentFactory($app);
     $item = $contentFactory->findItem($id);
 
-    $map = new Section\Map($app['db']);
+    $map = new Map($app['db']);
     $form = $map->coordinatesForm($app['form.factory'], $item);
 
     $form->handleRequest($request);

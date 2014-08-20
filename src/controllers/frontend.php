@@ -4,7 +4,8 @@ use Ideys\SilexHooks;
 use Ideys\Settings;
 use Ideys\Messaging;
 use Ideys\Files;
-use Ideys\Content\Provider as ContentProvider;
+use Ideys\Content\Section\Provider as ContentProvider;
+use Ideys\Content\Section\Entity as SectionEntity;
 use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
@@ -71,7 +72,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
 
     // Form sections logic
     $formView = null;
-    if ($section instanceof \Ideys\Content\Section\Form) {
+    if ($section instanceof SectionEntity\Form) {
         $formProvider = new ContentProvider\FormProvider($app['db']);
         $form = $formProvider->generateFormFields($app['form.factory'], $section);
         if ($formProvider->checkSubmittedForm($request, $form)) {

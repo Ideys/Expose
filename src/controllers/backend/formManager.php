@@ -1,7 +1,7 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\Item;
+use Ideys\Content\Item\Entity\Field;
 use Ideys\Content\ContentFactory;
 use Ideys\Files\File;
 use Ideys\Settings\Settings;
@@ -13,11 +13,11 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $field = new Item\Field(array('type' => Item\Item::ITEM_FIELD));
+    $field = new Field();
 
     $form = $app['form.factory']->createBuilder('form', $field)
         ->add('category', 'choice', array(
-            'choices' => Item\Field::getTypesChoice(),
+            'choices' => Field::getTypesChoice(),
             'label' => 'form.field.type',
         ))
         ->add('title', 'text', array(
@@ -62,7 +62,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 ->method('GET|POST')
 ;
 
-$formManagerController->get('/{id}/results', function (Request $request, $id) use ($app) {
+$formManagerController->get('/{id}/results', function ($id) use ($app) {
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);

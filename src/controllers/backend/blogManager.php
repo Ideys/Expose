@@ -2,8 +2,8 @@
 
 use Ideys\SilexHooks;
 use Ideys\Content\ContentFactory;
-use Ideys\Content\Section;
-use Ideys\Content\Item;
+use Ideys\Content\Section\Entity\Blog;
+use Ideys\Content\Item\Entity\Post;
 use Symfony\Component\HttpFoundation\Request;
 
 $blogManagerController = SilexHooks::controllerFactory($app);
@@ -27,7 +27,7 @@ $blogManagerController->match('/{id}/new', function (Request $request, $id) use 
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $post = new Item\Post(array('type' => Item\Item::ITEM_POST));
+    $post = new Post();
 
     $form = $section->newPostForm($app['form.factory'], $post);
 
@@ -55,7 +55,7 @@ $blogManagerController->match('/{sectionId}/{id}/edit', function (Request $reque
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($sectionId);
     $post = $contentFactory->findItem($id);
-    $blog = new Section\Blog($app['db']);
+    $blog = new Blog($app['db']);
 
     $form = $blog->newPostForm($app['form.factory'], $post);
 

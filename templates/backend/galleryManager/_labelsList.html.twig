@@ -1,6 +1,6 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{% if section.hasItems('Slide') %}
+{% if section.hasSlides %}
 {{ form_start(form, {
     'action': path('admin_gallery_manager_labels', {'id': section.id}),
     'attr': {'id': 'section-form-'~section.id }
@@ -46,7 +46,7 @@
 </div>
 
 <ul class="label-list small-block-grid-1 medium-block-grid-2">
-  {% for slide in section.items('Slide') %}
+  {% for slide in section.slides %}
   <li>
     <div class="row">
       <div class="small-6 columns">

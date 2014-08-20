@@ -54,7 +54,7 @@ section:
     html: Page
     blog: Blog
     form: Form
-    maps: Maps
+    map: Maps
     link: Link
     dir: Directory
     preview: Preview

@@ -2,7 +2,7 @@
 
 use Ideys\SilexHooks;
 use Ideys\Content\ContentFactory;
-use Ideys\Content\Item;
+use Ideys\Content\Item\Entity\Video;
 use Symfony\Component\HttpFoundation\Request;
 
 $channelManagerController = SilexHooks::controllerFactory($app);
@@ -24,7 +24,7 @@ $channelManagerController->match('/{id}/add', function (Request $request, $id) u
 
     $contentFactory = new ContentFactory($app);
     $section = $contentFactory->findSection($id);
-    $video = new Item\Video(array('type' => Item\Item::ITEM_VIDEO));
+    $video = new Video();
 
     $form = $section->addForm($app['form.factory'], $video);
 

@@ -2,7 +2,7 @@
 
 namespace Ideys\Settings;
 
-use Ideys\Content\Section\Section;
+use Ideys\Content\Section\Entity\Section;
 
 /**
  * App settings entity.

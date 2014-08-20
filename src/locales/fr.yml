@@ -54,7 +54,7 @@ section:
     html: Page
     blog: Blog
     form: Formulaire
-    maps: Carte
+    map: Carte
     link: Lien
     dir: Dossier
     preview: Aperçu

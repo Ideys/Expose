@@ -104,4 +104,17 @@ class SilexHooks
     {
         static::session($app)->getFlashBag()->add($type, static::translator($app)->trans($message));
     }
+
+    /**
+     * Shortcut to generate a standard form.
+     * Useful for validation forms.
+     *
+     * @param App $app
+     *
+     * @return \Symfony\Component\Form\Form
+     */
+    public static function standardForm(App $app)
+    {
+        return static::formFactory($app)->createBuilder('form')->getForm();
+    }
 }

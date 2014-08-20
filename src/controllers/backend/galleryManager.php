@@ -2,15 +2,16 @@
 
 use Ideys\SilexHooks;
 use Ideys\Picture;
-use Ideys\Content\Item;
-use Ideys\Content\Provider;
+use Ideys\Content\Item\Entity\Slide;
+use Ideys\Content\Item\Provider\SlideProvider;
+use Ideys\Content\Section\Provider\GalleryProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 $galleryManagerController = SilexHooks::controllerFactory($app);
 
 $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
-    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db']);
     $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_slideList.html.twig', array(
@@ -23,7 +24,7 @@ $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
 $galleryManagerController->match('/{id}/labels', function (Request $request, $id) use ($app) {
 
-    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db']);
     $section = $galleryProvider->find($id);
 
     $formBuilder = SilexHooks::formFactory($app)->createBuilder('form')
@@ -34,7 +35,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         ));
 
     foreach ($section->getItems('Slide') as $slide) {
-        if ($slide instanceof Item\Slide)
+        if ($slide instanceof Slide)
         // Generate related slide fields
         $formBuilder
         ->add('title'.$slide->getId(), 'text', array(
@@ -86,7 +87,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
 
         // Update each items legends
         foreach ($section->getItems('Slide') as $slide) {
-            if ($slide instanceof Item\Slide)
+            if ($slide instanceof Slide)
             $galleryProvider->updateItemTitle(
                 $slide->getId(),
                 $data['title'.$slide->getId()],
@@ -115,8 +116,8 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     if (0 == $sectionId) {
         $sectionId = null;
     }
-    $galleryProvider = new Provider\GalleryProvider($app['db']);
-    $slideProvider = new Provider\SlideProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db']);
+    $slideProvider = new SlideProvider($app['db']);
     $section = $galleryProvider->find($sectionId);
     $jsonResponse = array();
 
@@ -138,7 +139,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 $galleryManagerController->post('/{id}/delete/slides', function (Request $request, $id) use ($app) {
 
     $itemIds = $request->get('items');
-    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db']);
     $section = $galleryProvider->find($id);
 
     $deletedIds = $section->deleteSlides($itemIds);
@@ -151,7 +152,7 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 
 $galleryManagerController->get('/{id}/pic-manager', function ($id) use ($app) {
 
-    $galleryProvider = new Provider\GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db']);
     $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_contentSectionsPicManager.html.twig', array(
