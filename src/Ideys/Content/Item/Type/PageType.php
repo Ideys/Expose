@@ -1,44 +1,14 @@
 <?php
 
-namespace Ideys\Content\Type;
+namespace Ideys\Content\Item\Type;
 
 use Ideys\Content\Item\Entity\Page;
-use Symfony\Component\Form\FormFactory;
 
 /**
  * Html Page Item type.
  */
-class PageType
+class PageType extends ItemType
 {
-    /**
-     * @var \Symfony\Component\Form\FormFactory
-     */
-    protected $formFactory;
-
-    /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
-     */
-    public function __construct(FormFactory $formFactory)
-    {
-        $this->formFactory = $formFactory;
-    }
-
-    /**
-     * Return the item form.
-     *
-     * @param \Ideys\Content\Item\Entity\Page $page
-     *
-     * @return \Symfony\Component\Form\Form
-     */
-    public function createForm(Page $page)
-    {
-        $formBuilder = $this->formBuilder($page);
-
-        return $formBuilder->getForm();
-    }
-
     /**
      * Return the item form builder.
      *

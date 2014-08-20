@@ -2,6 +2,7 @@
 
 use Ideys\SilexHooks;
 use Ideys\Content\Item\Entity\Page;
+use Ideys\Content\Item\Type\ItemTypeFactory;
 use Ideys\Content\Section\Provider\SectionProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -44,7 +45,8 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
         $contentFactory->addItem($section, $page);
     }
 
-    $form = $section->addPageForm($app['form.factory'], $page);
+    $itemTypeFactory = new ItemTypeFactory($app['form.factory']);
+    $form = $itemTypeFactory->createForm($page);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
