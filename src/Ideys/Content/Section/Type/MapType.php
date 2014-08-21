@@ -22,19 +22,19 @@ class MapType extends SectionType
         $formBuilder = parent::formBuilder($section)
             ->remove('type')
             ->add('zoom', 'choice', array(
-                'label' => 'maps.zoom',
+                'label' => 'map.zoom',
                 'choices' => Map::getZoomChoice(),
             ))
             ->add('latitude', 'number', array(
-                'label' => 'maps.latitude',
+                'label' => 'map.latitude',
                 'precision' => 15,
             ))
             ->add('longitude', 'number', array(
-                'label' => 'maps.longitude',
+                'label' => 'map.longitude',
                 'precision' => 15,
             ))
             ->add('mapMode', 'choice', array(
-                'label' => 'maps.mode.mode',
+                'label' => 'map.mode.mode',
                 'choices' => Map::getModeChoice(),
             ))
         ;

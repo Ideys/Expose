@@ -1,10 +1,9 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\Section;
-use Ideys\Content\ContentFactory;
-use Ideys\Content\Section\Entity;
+use Ideys\Content\Section\Provider\DirProvider;
 use Ideys\Content\Section\Provider\SectionProvider;
+use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Section\Type\SectionTypeFactory;
 use Ideys\Settings\SettingsProvider;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,12 +12,11 @@ $contentManagerController = SilexHooks::controllerFactory($app);
 
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
     $typeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
     $settingsProvider = new SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
-    $newSection = new Entity\Section();
+    $newSection = new Section();
     $newSection->setVisibility($settings->getNewSectionDefaultVisibility());
     $form = $typeFactory->createForm($newSection);
 
@@ -135,19 +133,20 @@ $contentManagerController->get('/{id}/archive', function ($id) use ($app) {
 
 $contentManagerController->match('/{id}/edit/dir', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $dirProvider = new DirProvider($app['db']);
+    $section = $dirProvider->find($id);
 
-    $dirType = new Type\DirType($app['db'], $app['form.factory']);
-    $form = $dirType->editForm($section);
+    $typeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
+    $form = $typeFactory->createForm($section);
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
-        $contentFactory->updateSection($section);
+//        $contentFactory->updateSection($section);
         return SilexHooks::redirect($app, 'admin_content_manager');
     }
 
-    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
+    $deleteForm = SilexHooks::standardForm($app);
 
     return SilexHooks::twig($app)->render('backend/dirManager/_dirForm.html.twig', array(
         'section' => $section,
@@ -193,7 +192,7 @@ $contentManagerController->post('/{id}/delete', function (Request $request, $id)
     $section = $contentFactory->findSection($id);
 
     // For directories need to have full sections tree
-    if (Entity\Section::SECTION_DIR == $section->getType()) {
+    if (Section::SECTION_DIR == $section->getType()) {
         $sections = $contentFactory->findSections();
         $section = $sections[$section->getId()];
     }

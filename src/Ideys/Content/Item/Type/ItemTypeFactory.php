@@ -41,7 +41,7 @@ class ItemTypeFactory
         $typeClassName = '\Ideys\Content\Item\Type\\'.ucfirst($itemType).'Type';
         $type = new $typeClassName($this->formFactory);
 
-        if ( ! $type instanceof ItemType) {
+        if ( ! ($type instanceof ItemType)) {
             throw new \Exception(sprintf('Unable to find a form type for Item "%s"', $itemType));
         }
 

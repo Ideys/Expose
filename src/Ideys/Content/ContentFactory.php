@@ -2,10 +2,13 @@
 
 namespace Ideys\Content;
 
-use Ideys\Content\Provider\ItemProvider;
-use Ideys\Content\Provider\SectionProvider;
-use Ideys\Content\Section;
-use Ideys\Content\Item;
+use Ideys\Content\Item\Provider\ItemProvider;
+use Ideys\Content\Section\Provider\SectionProvider;
+use Ideys\Content\Section\Entity\SectionInterface;
+use Ideys\Content\Section\Entity\Section;
+use Ideys\Content\Section\Entity\Html;
+use Ideys\Content\Item\Entity\Item;
+use Ideys\Content\Item\Entity\Page;
 use Ideys\String;
 use Ideys\Settings\Settings;
 use Silex\Application;
@@ -56,34 +59,13 @@ class ContentFactory
     }
 
     /**
-     * Return all linkable sections to a Map section.
-     * Exclude other Map sections and Dir sections.
-     *
-     * @return array
-     */
-    public function getLinkableSections()
-    {
-        return  $this->db
-            ->fetchAll(
-                'SELECT s.id, s.expose_section_id, '.
-                's.type, s.slug, s.visibility, '.
-                't.title, t.description, t.legend, t.parameters '.
-                'FROM expose_section AS s '.
-                'LEFT JOIN expose_section_trans AS t '.
-                'ON t.expose_section_id = s.id '.
-                'WHERE s.type NOT IN  (\'dir\', \'map\') '.
-                'AND s.archive = 0 '.
-                'ORDER BY s.hierarchy ');
-    }
-
-    /**
      * Return linked Sections Items.
      *
-     * @param Section\Section $section
+     * @param Section $section
      *
      * @return array
      */
-    public function getLinkedSectionsItems(Section\Section $section)
+    public function getLinkedSectionsItems(Section $section)
     {
         $linkedItems = array();
 
@@ -107,7 +89,7 @@ class ContentFactory
     /**
      * Return the first viewable section.
      *
-     * @return \Ideys\Content\Section\Section
+     * @return Section
      */
     public function findFirstSection()
     {
@@ -132,7 +114,7 @@ class ContentFactory
     /**
      * Find the homepage section, create it if not exists.
      *
-     * @return \Ideys\Content\Section\Section
+     * @return Section
      */
     public function findHomepage()
     {
@@ -140,18 +122,18 @@ class ContentFactory
            . 'WHERE s.visibility = ? '
            . 'AND t.language = ? '
            . 'ORDER BY s.hierarchy ASC ';
-        $entities = $this->db->fetchAll($sql, array(Section\Section::VISIBILITY_HOMEPAGE, $this->language));
+        $entities = $this->db->fetchAll($sql, array(Section::VISIBILITY_HOMEPAGE, $this->language));
 
         // Generate default homepage
         if (empty($entities)) {
             $settings = new Settings($this->db);
-            $section = $this->addSection(new Section\Html($this->db, array(
-                'type' => Section\Section::SECTION_HTML,
+            $section = $this->addSection(new Html($this->db, array(
+                'type' => Section::SECTION_HTML,
                 'title' => $settings->getName(),
-                'visibility' => Section\Section::VISIBILITY_HOMEPAGE,
+                'visibility' => Section::VISIBILITY_HOMEPAGE,
             )));
-            $page = new Item\Page(array(
-                'type' => Item\Item::ITEM_PAGE,
+            $page = new Page(array(
+                'type' => Item::ITEM_PAGE,
                 'title' => $settings->getName(),
                 'content' => '<div id="homepage"><h1>'.$settings->getName().'</h1></div>',
             ));
@@ -172,10 +154,10 @@ class ContentFactory
      * - Gallery integration
      * - Video integration
      *
-     * @param Section\SectionInterface $section
+     * @param SectionInterface $section
      * @param \Twig_Environment        $twig
      */
-    public function composeSectionItems(Section\SectionInterface $section, \Twig_Environment $twig)
+    public function composeSectionItems(SectionInterface $section, \Twig_Environment $twig)
     {
         if ($section->isComposite()) {
 
@@ -188,7 +170,7 @@ class ContentFactory
             $sectionSlugs = array();
             $galleries = array();
             foreach ($items as $item) {
-                if ($item instanceof Item\Item) {
+                if ($item instanceof Item) {
                     $content = $item->getContent();
                     $countMatch = preg_match_all('/__(slides|video):([\w\@-]+)__/', $content, $matches);
                     if ((int)$countMatch > 0) {
@@ -222,7 +204,7 @@ class ContentFactory
 
             // C: replace keys by sections content
             foreach ($items as $item) {
-                if ($item instanceof Item\Item) {
+                if ($item instanceof Item) {
                     $content = $item->getContent();
 
                     // Insert extracted contents
@@ -264,11 +246,11 @@ class ContentFactory
     /**
      * Persist a new section.
      *
-     * @param \Ideys\Content\Section\Section $section
+     * @param Section $section
      *
-     * @return \Ideys\Content\Section\Section
+     * @return Section
      */
-    public function addSection(Section\Section &$section)
+    public function addSection(Section &$section)
     {
         $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
         $i = $count['total']++;
@@ -303,17 +285,17 @@ class ContentFactory
     /**
      * Edit a section.
      *
-     * @param \Ideys\Content\Section\Section $section
+     * @param Section $section
      */
-    public function updateSection(Section\Section $section)
+    public function updateSection(Section $section)
     {
         // Reset old homepage visibility in case of section
         // was newly defined as the homepage.
         // Also remove section from sub-folder.
         if ($section->isHomepage()) {
             $this->db->update('expose_section',
-                array('visibility' => Section\Section::VISIBILITY_CLOSED),
-                array('visibility' => Section\Section::VISIBILITY_HOMEPAGE)
+                array('visibility' => Section::VISIBILITY_CLOSED),
+                array('visibility' => Section::VISIBILITY_HOMEPAGE)
             );
             $section->setExposeSectionId(null);
         }
@@ -349,9 +331,9 @@ class ContentFactory
     /**
      * Update all sections common parameters with identical tag.
      *
-     * @param \Ideys\Content\Section\Section $section
+     * @param Section $section
      */
-    private function updateGroupedSections(Section\Section $section)
+    private function updateGroupedSections(Section $section)
     {
         $this->db->update('expose_section', array(
             'custom_css' => $section->getCustomCss(),
@@ -377,16 +359,16 @@ class ContentFactory
      * Increments slugs for identical name sections:
      * new-section / new-section-2 / new-section-4 => new-section-5
      *
-     * @param \Ideys\Content\Section\Section $section
+     * @param Section $section
      *
      * @return string
      */
-    protected function uniqueSlug(Section\Section $section)
+    protected function uniqueSlug(Section $section)
     {
         $title = $section->getTitle();
 
         // Add a "-dir" suffix to dir sections.
-        if ($section->getType() === Section\Section::SECTION_DIR) {
+        if ($section->getType() === Section::SECTION_DIR) {
             $title .= '-dir';
         }
 
@@ -416,12 +398,12 @@ class ContentFactory
     /**
      * Insert a new content.
      *
-     * @param \Ideys\Content\Section\Section    $section
-     * @param \Ideys\Content\Item\Item          $item
+     * @param Section    $section
+     * @param Item       $item
      *
-     * @return \Ideys\Content\Item\Item $item
+     * @return Item $item
      */
-    public function addItem(Section\Section $section, Item\Item $item)
+    public function addItem(Section $section, Item $item)
     {
         $this->db->insert('expose_section_item', array(
             'expose_section_id' => $section->getId(),
@@ -454,11 +436,11 @@ class ContentFactory
     /**
      * Update a content.
      *
-     * @param \Ideys\Content\Item\Item $item
+     * @param Item $item
      *
-     * @return \Ideys\Content\Item\Item
+     * @return Item
      */
-    public function editItem(Item\Item $item)
+    public function editItem(Item $item)
     {
         $this->db->update(
             'expose_section_item',

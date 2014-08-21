@@ -3,8 +3,6 @@
 namespace Ideys\Content;
 
 use Doctrine\DBAL\Connection;
-use Ideys\Content\Section;
-use Ideys\Content\Item;
 
 /**
  * Content provider global class.

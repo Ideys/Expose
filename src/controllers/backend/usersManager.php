@@ -45,7 +45,6 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
 $usersManagerController->get('/{id}/delete', function ($id) use ($app) {
 
     $session = SilexHooks::session($app);
-    $translator = SilexHooks::translator($app);
     $userProvider = new UserProvider($app['db'], $session);
 
     if (false === $userProvider->deleteUser($id, $app['security'])) {

@@ -4,19 +4,19 @@
     <thead>
       <tr>
         <th>{{ 'date'|trans }}</th>
-        {% for field in section.items('Field') %}
+        {% for field in section.fields %}
           <th>{{ field.title }}</th>
         {% endfor %}
         <th>&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-    {% for result in section.results %}
+    {% for result in results %}
       <tr id="result-line-{{ result.id }}">
         <td>
           {{ result.date|date('d/m/Y H:i') }}
         </td>
-        {% for field in section.items('Field') %}
+        {% for field in section.fields %}
 
           {# Text and array results #}
           {% if result.result[field.slug] is defined %}

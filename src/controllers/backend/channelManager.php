@@ -1,16 +1,17 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\ContentFactory;
+use Ideys\Content\Section\Provider\ChannelProvider;
 use Ideys\Content\Item\Entity\Video;
+use Ideys\Content\Item\Type\VideoType;
 use Symfony\Component\HttpFoundation\Request;
 
 $channelManagerController = SilexHooks::controllerFactory($app);
 
 $channelManagerController->get('/{id}/list', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $channelProvider = new ChannelProvider($app['db']);
+    $section = $channelProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/channelManager/_videoList.html.twig', array(
         'section' => $section,
@@ -22,13 +23,15 @@ $channelManagerController->get('/{id}/list', function ($id) use ($app) {
 
 $channelManagerController->match('/{id}/add', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $channelProvider = new ChannelProvider($app['db']);
+    $section = $channelProvider->find($id);
     $video = new Video();
 
-    $form = $section->addForm($app['form.factory'], $video);
+    $videoType = new VideoType($app['form.factory']);
+    $form = $videoType->formBuilder($video)->getForm();
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
         $section->guessVideoCode($video);
         $contentFactory->addItem($section, $video);
@@ -47,8 +50,8 @@ $channelManagerController->match('/{id}/add', function (Request $request, $id) u
 
 $channelManagerController->get('/{id}/remove/video/{itemId}', function ($id, $itemId) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $channelProvider = new ChannelProvider($app['db']);
+    $section = $channelProvider->find($id);
     $isDeleted = $section->deleteItem($itemId);
 
     return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);

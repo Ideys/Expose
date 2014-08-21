@@ -4,7 +4,6 @@ use Ideys\SilexHooks;
 use Ideys\Content\Item\Entity\Field;
 use Ideys\Content\Item\Type\ItemTypeFactory;
 use Ideys\Content\Section\Provider\FormProvider;
-use Ideys\Content\ContentFactory;
 use Ideys\Files\File;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -38,11 +37,13 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
 $formManagerController->get('/{id}/results', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $formProvider = new FormProvider($app['db']);
+    $section = $formProvider->find($id);
+    $results = $formProvider->getResults($section);
 
     return SilexHooks::twig($app)->render('backend/formManager/_formResults.html.twig', array(
         'section' => $section,
+        'results' => $results,
     ));
 })
 ->assert('id', '\d+')
@@ -67,8 +68,8 @@ $formManagerController->get('/download/{file}', function ($file) use ($app) {
 
 $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $itemId) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $formProvider = new FormProvider($app['db']);
+    $section = $formProvider->find($id);
     $isDeleted = $section->deleteItem($itemId);
 
     $jsonResponse = $isDeleted;
@@ -82,8 +83,8 @@ $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $item
 
 $formManagerController->post('/{id}/remove/result/{resultId}', function ($id, $resultId) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $formProvider = new FormProvider($app['db']);
+    $section = $formProvider->find($id);
     $isDeleted = $section->deleteResult($resultId);
 
     return $app->json($isDeleted);

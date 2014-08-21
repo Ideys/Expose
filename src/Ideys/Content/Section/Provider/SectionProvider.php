@@ -3,9 +3,9 @@
 namespace Ideys\Content\Section\Provider;
 
 use Ideys\Content\AbstractProvider;
-use Ideys\Content\Section\Entity;
+use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Item\Provider\ItemProvider;
-use Ideys\Content\Item;
+use Ideys\Content\Item\Entity\Slide;
 
 /**
  * Section provider global class.
@@ -34,7 +34,7 @@ class SectionProvider extends AbstractProvider
 
         // Generate tree structure from raw data
         foreach ($sections as $id => $section) {
-            if ($section instanceof Entity\Section) {
+            if ($section instanceof Section) {
                 $parentSectionId = $section->getExposeSectionId();
                 if ($parentSectionId > 0) {
                     $sections[$parentSectionId]->addSection($section);
@@ -51,7 +51,7 @@ class SectionProvider extends AbstractProvider
      *
      * @param integer $id
      *
-     * @return Entity\Section
+     * @return Section
      */
     public function find($id)
     {
@@ -69,7 +69,7 @@ class SectionProvider extends AbstractProvider
      *
      * @param string $slug Section slug
      *
-     * @return Entity\Section
+     * @return Section
      */
     public function findBySlug($slug)
     {
@@ -87,7 +87,7 @@ class SectionProvider extends AbstractProvider
      *
      * @param array $data
      *
-     * @return Entity\Section
+     * @return Section
      */
     public function hydrateSection(array $data)
     {
@@ -104,9 +104,9 @@ class SectionProvider extends AbstractProvider
     /**
      * Attach Items to their Section.
      *
-     * @param Entity\Section $section
+     * @param Section $section
      */
-    public function hydrateItems(Entity\Section $section)
+    public function hydrateItems(Section $section)
     {
         $items = array();
 
@@ -126,9 +126,9 @@ class SectionProvider extends AbstractProvider
     /**
      * Archive or restore a section.
      *
-     * @param Entity\Section $section
+     * @param Section $section
      */
-    public function switchArchive(Entity\Section $section)
+    public function switchArchive(Section $section)
     {
         $this->db->executeQuery(
             'UPDATE expose_section ' .
@@ -141,15 +141,15 @@ class SectionProvider extends AbstractProvider
     /**
      * Delete a Section and this items in database.
      *
-     * @param Entity\Section $section
+     * @param Section $section
      *
      * @return boolean
      */
-    public function delete(Entity\Section $section)
+    public function delete(Section $section)
     {
         // Delete section items
         foreach ($section->getItems() as $item) {
-            if ($item instanceof Item\Entity\Slide) {
+            if ($item instanceof Slide) {
                 $this->deleteItemAndRelatedFile($item);
             } else {
                 $this->deleteItem($item->id);

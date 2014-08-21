@@ -1,10 +1,10 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{% if section.hasItems('Video') %}
+{% if section.hasVideos %}
 <ul id="videos-{{ section.id }}"
     class="medium-block-grid-3 small-block-grid-1 videos-grid"
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
-  {% for video in section.items('Video') %}
+  {% for video in section.videos %}
   <li data-selectable data-id="{{ video.id }}">
     <div class="flex-video {{ video.provider }} handle">
         <iframe src="{{ video.path }}" frameborder="0"></iframe>

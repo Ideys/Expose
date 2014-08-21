@@ -1,17 +1,18 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\ContentFactory;
 use Ideys\Content\Section\Entity\Blog;
+use Ideys\Content\Section\Provider\BlogProvider;
 use Ideys\Content\Item\Entity\Post;
+use Ideys\Content\Item\Type\PostType;
 use Symfony\Component\HttpFoundation\Request;
 
 $blogManagerController = SilexHooks::controllerFactory($app);
 
 $blogManagerController->get('/{id}/list', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $blogProvider = new BlogProvider($app['db']);
+    $section = $blogProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/blogManager/_postsList.html.twig', array(
         'section' => $section,
@@ -25,15 +26,17 @@ $blogManagerController->match('/{id}/new', function (Request $request, $id) use 
 
     $urlGenerator = SilexHooks::urlGenerator($app);
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $blogProvider = new BlogProvider($app['db']);
+    $section = $blogProvider->find($id);
     $post = new Post();
 
-    $form = $section->newPostForm($app['form.factory'], $post);
+    $postType = new PostType($app['form.factory']);
+    $form = $postType->formBuilder($post)->getForm();
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
-        $contentFactory->addItem($section, $post);
+        $blogProvider->addItem($section, $post);
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);
     }
 
@@ -52,16 +55,16 @@ $blogManagerController->match('/{sectionId}/{id}/edit', function (Request $reque
 
     $urlGenerator = SilexHooks::urlGenerator($app);
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($sectionId);
-    $post = $contentFactory->findItem($id);
+    $blogProvider = new BlogProvider($app['db']);
+    $section = $blogProvider->find($id);
+    $post = $blogProvider->findItem($id);
     $blog = new Blog($app['db']);
 
     $form = $blog->newPostForm($app['form.factory'], $post);
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $contentFactory->editItem($post);
+        $blogProvider->editItem($post);
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$sectionId);
     }
 

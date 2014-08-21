@@ -2,8 +2,6 @@
 
 namespace Ideys\Content\Section\Provider;
 
-use Ideys\Content\Item;
-
 /**
  * Gallery section provider.
  */

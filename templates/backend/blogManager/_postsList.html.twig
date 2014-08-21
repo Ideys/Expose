@@ -1,10 +1,10 @@
 {% import "widgets.html.twig" as widgets %}
 {% spaceless %}
-{% if section.hasItems('Post') %}
+{% if section.hasPosts %}
 <ul id="posts-{{ section.id }}"
     class="posts-list small-block-grid-1"
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
-  {% for post in section.items('Post') %}
+  {% for post in section.posts %}
   <li class="post"
       data-id="{{ post.id }}">
     <div class="panel radius">

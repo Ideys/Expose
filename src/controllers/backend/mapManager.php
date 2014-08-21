@@ -1,17 +1,18 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\Section\Entity\Map;
 use Ideys\Content\Item\Entity\Place;
-use Ideys\Content\ContentFactory;
+use Ideys\Content\Section\Provider\MapProvider;
+use Ideys\Content\Item\Type\PlaceType;
+use Ideys\Content\Item\Type\CoordinatesType;
 use Symfony\Component\HttpFoundation\Request;
 
 $mapManagerController = SilexHooks::controllerFactory($app);
 
 $mapManagerController->get('/{id}/preview', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $mapProvider = new MapProvider($app['db']);
+    $section = $mapProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/mapManager/_mapPreview.html.twig', array(
         'section' => $section,
@@ -23,17 +24,19 @@ $mapManagerController->get('/{id}/preview', function ($id) use ($app) {
 
 $mapManagerController->match('/{id}/places', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $mapProvider = new MapProvider($app['db']);
+    $section = $mapProvider->find($id);
 
-    $linkableSections = $section->getLinkableSections();
+    $linkableSections = $mapProvider->findLinkableSections();
 
     $place = new Place();
-    $form = $section->addPlaceForm($app['form.factory'], $place);
+    $placeType = new PlaceType($app['form.factory']);
+    $form = $placeType->formBuilder($place)->getForm();
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
-        $contentFactory->addItem($section, $place);
+        $mapProvider->addItem($section, $place);
     }
 
     return SilexHooks::twig($app)->render('backend/mapManager/_mapPlaces.html.twig', array(
@@ -49,8 +52,8 @@ $mapManagerController->match('/{id}/places', function (Request $request, $id) us
 
 $mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionId) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $mapProvider = new MapProvider($app['db']);
+    $section = $mapProvider->find($id);
 
     $section->toggleConnectedSectionId($sectionId);
 
@@ -73,13 +76,14 @@ $mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionI
 
 $mapManagerController->match('/{id}/coordinates', function (Request $request, $id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $item = $contentFactory->findItem($id);
+    $mapProvider = new MapProvider($app['db']);
+    $item = $mapProvider->find($id);
 
-    $map = new Map($app['db']);
-    $form = $map->coordinatesForm($app['form.factory'], $item);
+    $coordinatesType = new CoordinatesType($app['form.factory']);
+    $form = $coordinatesType->formBuilder($item)->getForm();
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
         $contentFactory->editItem($item);
         return $app->json(true);
