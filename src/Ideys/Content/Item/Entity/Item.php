@@ -12,11 +12,6 @@ abstract class Item extends AbstractEntity
     /**
      * @var integer
      */
-    protected $id;
-
-    /**
-     * @var integer
-     */
     protected $exposeSectionId;
 
     /**
@@ -107,35 +102,11 @@ abstract class Item extends AbstractEntity
     protected $hierarchy = 0;
 
     /**
-     * Set id
-     *
-     * @param integer $id
-     *
-     * @return Item
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
      * Set type
      *
      * @param string $type
      *
-     * @return Item
+     * @return $this
      */
     public function setType($type)
     {
@@ -176,7 +147,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $category
      *
-     * @return Item
+     * @return $this
      */
     public function setCategory($category)
     {
@@ -200,7 +171,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $tags
      *
-     * @return Item
+     * @return $this
      */
     public function setTags($tags)
     {
@@ -224,7 +195,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $title
      *
-     * @return Item
+     * @return $this
      */
     public function setTitle($title)
     {
@@ -248,7 +219,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $description
      *
-     * @return Item
+     * @return $this
      */
     public function setDescription($description)
     {
@@ -272,7 +243,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $content
      *
-     * @return Item
+     * @return $this
      */
     public function setContent($content)
     {
@@ -296,7 +267,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $link
      *
-     * @return Item
+     * @return $this
      */
     public function setLink($link)
     {
@@ -320,7 +291,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $path
      *
-     * @return Item
+     * @return $this
      */
     public function setPath($path)
     {
@@ -344,7 +315,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $latitude
      *
-     * @return Item
+     * @return $this
      */
     public function setLatitude($latitude)
     {
@@ -368,7 +339,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $longitude
      *
-     * @return Item
+     * @return $this
      */
     public function setLongitude($longitude)
     {
@@ -403,7 +374,7 @@ abstract class Item extends AbstractEntity
      *
      * @param array $parameters
      *
-     * @return Item
+     * @return $this
      */
     public function setParameters($parameters)
     {
@@ -419,7 +390,7 @@ abstract class Item extends AbstractEntity
      * @param string $key
      * @param string $value
      *
-     * @return Item
+     * @return $this
      */
     public function addParameter($key, $value)
     {
@@ -456,7 +427,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $language
      *
-     * @return Item
+     * @return $this
      */
     public function setLanguage($language)
     {
@@ -480,7 +451,7 @@ abstract class Item extends AbstractEntity
      *
      * @param \DateTime $postingDate
      *
-     * @return Item
+     * @return $this
      */
     public function setPostingDate(\DateTime $postingDate)
     {
@@ -504,7 +475,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $author
      *
-     * @return Item
+     * @return $this
      */
     public function setAuthor($author)
     {
@@ -528,7 +499,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $published
      *
-     * @return Item
+     * @return $this
      */
     public function setPublished($published)
     {
@@ -570,7 +541,7 @@ abstract class Item extends AbstractEntity
      *
      * @param string $hierarchy
      *
-     * @return Item
+     * @return $this
      */
     public function setHierarchy($hierarchy)
     {

@@ -6,6 +6,7 @@ use Ideys\Content\AbstractProvider;
 use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Item\Provider\ItemProvider;
 use Ideys\Content\Item\Entity\Slide;
+use Ideys\String;
 
 /**
  * Section provider global class.
@@ -136,6 +137,131 @@ class SectionProvider extends AbstractProvider
             'WHERE id = :id ',
             array('id' => $section->getId())
         );
+    }
+
+    /**
+     * Create or update a section into database.
+     *
+     * @param Section $section
+     */
+    public function persist(Section $section)
+    {
+        if ($section->getId() > 0) {
+            $this->update($section);
+        } else {
+            $this->create($section);
+        }
+    }
+
+    /**
+     * @param Section $section
+     *
+     * @return Section
+     */
+    private function create(Section $section) {
+
+        $count = $this->db->fetchAssoc(
+            'SELECT COUNT(s.id) AS total '.
+            'FROM expose_section AS s');
+        $section->setHierarchy(++$count['total']);
+
+        $section->setLanguage($this->language);
+
+        $this->uniqueSlug($section);
+        $this->blameAndTimestamp($section);
+
+        $sectionData = $this->objectToArray($section, 'expose_section');
+
+        $this->db->insert('expose_section', $sectionData);
+        $section->setId($this->db->lastInsertId());
+
+        $transactionData = $this->objectToArray($section, 'expose_section_trans');
+        array(
+            'expose_section_id' => $section->getId(),
+            'parameters' => serialize($section->getParameters()),
+        );
+
+        $this->db->insert('expose_section_trans', $transactionData);
+    }
+
+    /**
+     * @param Section $section
+     */
+    public function update(Section $section)
+    {
+        // Reset old homepage visibility in case of section
+        // was newly defined as the homepage.
+        // Also remove section from sub-folder.
+        if ($section->isHomepage()) {
+            $this->db->update('expose_section',
+                array('visibility' => Section::VISIBILITY_CLOSED),
+                array('visibility' => Section::VISIBILITY_HOMEPAGE)
+            );
+            $section->setExposeSectionId(null);
+        }
+
+        $this->uniqueSlug($section);
+        $this->blameAndTimestamp($section);
+
+        $sectionData = $this->objectToArray($section, 'expose_section');
+
+        $this->db->update('expose_section',
+            $sectionData,
+            array('id' => $section->getId()));
+
+        $transactionData = $this->objectToArray($section, 'expose_section_trans');
+
+        $this->db->update('expose_section_trans',
+            $transactionData,
+            array(
+                'expose_section_id' => $section->getId(),
+                'language' => $section->getLanguage(),
+            ));
+
+        // Update other sections parameters with identical tag
+        if ($section->getTag() != null) {
+            $this->updateGroupedSections($section);
+        }
+    }
+
+    /**
+     * Increments slugs for identical name sections:
+     * new-section / new-section-2 / new-section-4 => new-section-5
+     *
+     * @param Section $section
+     */
+    private function uniqueSlug(Section $section)
+    {
+        $title = $section->getTitle();
+
+        // Add a "-dir" suffix to dir sections.
+        if ($section->getType() === Section::SECTION_DIR) {
+            $title .= '-dir';
+        }
+
+        $slug = String::slugify($title);
+
+        $sections = $this->db->fetchAll(
+            'SELECT slug FROM expose_section '.
+            'WHERE slug LIKE ? '.
+            'AND id != ?',
+            array($slug.'%', $section->getId())
+        );
+
+        $namesakes = array();
+        foreach($sections as $section) {
+            $e = explode('-', $section['slug']);
+            $prefix = array_pop($e);
+            $namesakes[] = (int)$prefix;
+        }
+
+        if (!empty($namesakes)) {
+            sort($namesakes);
+            $lastRow = array_pop($namesakes);
+            $slug .= '-' . (++$lastRow);
+        }
+
+        $section->setSlug($slug);
     }
 
     /**

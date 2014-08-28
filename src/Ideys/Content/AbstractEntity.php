@@ -10,6 +10,11 @@ abstract class AbstractEntity
     /**
      * @var integer
      */
+    protected $id;
+
+    /**
+     * @var integer
+     */
     protected $createdBy;
 
     /**
@@ -26,6 +31,30 @@ abstract class AbstractEntity
      * @var \DateTime
      */
     protected $updatedAt;
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set createdBy

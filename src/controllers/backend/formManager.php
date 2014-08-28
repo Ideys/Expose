@@ -11,7 +11,7 @@ $formManagerController = SilexHooks::controllerFactory($app);
 
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $formProvider = new FormProvider($app['db']);
+    $formProvider = new FormProvider($app['db'], $app['security']);
     $section = $formProvider->find($id);
 
     $itemTypeFactory = new ItemTypeFactory($app['form.factory']);
@@ -37,7 +37,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
 $formManagerController->get('/{id}/results', function ($id) use ($app) {
 
-    $formProvider = new FormProvider($app['db']);
+    $formProvider = new FormProvider($app['db'], $app['security']);
     $section = $formProvider->find($id);
     $results = $formProvider->getResults($section);
 
@@ -68,7 +68,7 @@ $formManagerController->get('/download/{file}', function ($file) use ($app) {
 
 $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $itemId) use ($app) {
 
-    $formProvider = new FormProvider($app['db']);
+    $formProvider = new FormProvider($app['db'], $app['security']);
     $section = $formProvider->find($id);
     $isDeleted = $section->deleteItem($itemId);
 
@@ -83,7 +83,7 @@ $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $item
 
 $formManagerController->post('/{id}/remove/result/{resultId}', function ($id, $resultId) use ($app) {
 
-    $formProvider = new FormProvider($app['db']);
+    $formProvider = new FormProvider($app['db'], $app['security']);
     $section = $formProvider->find($id);
     $isDeleted = $section->deleteResult($resultId);
 

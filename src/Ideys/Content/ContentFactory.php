@@ -12,8 +12,6 @@ use Ideys\Content\Item\Entity\Page;
 use Ideys\String;
 use Ideys\Settings\Settings;
 use Silex\Application;
-use Symfony\Component\Security\Core\User\User;
-use Doctrine\Common\Inflector\Inflector;
 
 /**
  * App content manager.
@@ -30,10 +28,6 @@ class ContentFactory
      */
     protected $translator;
 
-    /**
-     * @var \Symfony\Component\Security\Core\SecurityContext
-     */
-    protected $security;
 
     /**
      * @var string
@@ -105,7 +99,7 @@ class ContentFactory
 
         $data = array_pop($entities);
 
-        $sectionProvider = new SectionProvider($this->db);
+        $sectionProvider = new SectionProvider($this->db, $this->security);
         $sectionProvider->setLanguage($this->language);
 
         return $sectionProvider->hydrateSection($data);
@@ -139,7 +133,7 @@ class ContentFactory
             ));
             $this->addItem($section, $page);
         } else {
-            $sectionProvider = new SectionProvider($this->db);
+            $sectionProvider = new SectionProvider($this->db, $this->security);
             $sectionProvider->setLanguage($this->language);
             $data = array_pop($entities);
             $section = $sectionProvider->hydrateSection($data);
@@ -161,7 +155,7 @@ class ContentFactory
     {
         if ($section->isComposite()) {
 
-            $sectionProvider = new SectionProvider($this->db);
+            $sectionProvider = new SectionProvider($this->db, $this->security);
             $sectionProvider->setLanguage($this->language);
 
             $items = $section->getDefaultItems();
@@ -244,91 +238,6 @@ class ContentFactory
     }
 
     /**
-     * Persist a new section.
-     *
-     * @param Section $section
-     *
-     * @return Section
-     */
-    public function addSection(Section &$section)
-    {
-        $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM expose_section AS s');
-        $i = $count['total']++;
-
-        $this->db->insert('expose_section', array(
-            'expose_section_id' => $section->getExposeSectionId(),
-            'type' => $section->getType(),
-            'slug' => $this->uniqueSlug($section),
-            'custom_css' => $section->getCustomCss(),
-            'custom_js' => $section->getCustomJs(),
-            'menu_pos' => $section->getMenuPos(),
-            'target_blank' => $section->getTargetBlank(),
-            'visibility' => $section->getVisibility(),
-            'shuffle' => $section->getShuffle(),
-            'archive' => 0,
-            'hierarchy' => $i,
-        ) + $this->blameAndTimestampData(0));
-
-        $section->setId($this->db->lastInsertId());
-        $this->db->insert('expose_section_trans', array(
-            'expose_section_id' => $section->getId(),
-            'title' => $section->getTitle(),
-            'description' => $section->getDescription(),
-            'legend' => $section->getLegend(),
-            'language' => $this->language,
-            'parameters' => serialize($section->getParameters()),
-        ));
-
-        return $section;
-    }
-
-    /**
-     * Edit a section.
-     *
-     * @param Section $section
-     */
-    public function updateSection(Section $section)
-    {
-        // Reset old homepage visibility in case of section
-        // was newly defined as the homepage.
-        // Also remove section from sub-folder.
-        if ($section->isHomepage()) {
-            $this->db->update('expose_section',
-                array('visibility' => Section::VISIBILITY_CLOSED),
-                array('visibility' => Section::VISIBILITY_HOMEPAGE)
-            );
-            $section->setExposeSectionId(null);
-        }
-
-        // Update section
-        $this->db->update('expose_section', array(
-            'slug' => $this->uniqueSlug($section),
-            'custom_css' => $section->getCustomCss(),
-            'custom_js' => $section->getCustomJs(),
-            'tag' => $section->getTag(),
-            'menu_pos' => $section->getMenuPos(),
-            'target_blank' => $section->getTargetBlank(),
-            'visibility' => $section->getVisibility(),
-            'shuffle' => $section->getShuffle(),
-            'expose_section_id' => $section->getExposeSectionId(),
-        ) + $this->blameAndTimestampData($section->getId()),
-        array('id' => $section->getId()));
-
-        // Update translated section attributes
-        $this->db->update('expose_section_trans', array(
-            'title' => $section->getTitle(),
-            'description' => $section->getDescription(),
-            'legend' => $section->getLegend(),
-            'parameters' => serialize($section->getParameters()),
-        ), array('expose_section_id' => $section->getId(), 'language' => $this->language));
-
-        // Update other sections parameters with identical tag
-        if ($section->getTag() != null) {
-            $this->updateGroupedSections($section);
-        }
-    }
-
-    /**
      * Update all sections common parameters with identical tag.
      *
      * @param Section $section
@@ -353,46 +262,6 @@ class ContentFactory
                 'parameters' => serialize($section->getParameters()),
             ), array('expose_section_id' => $id['id'], 'language' => $this->language));
         }
-    }
-
-    /**
-     * Increments slugs for identical name sections:
-     * new-section / new-section-2 / new-section-4 => new-section-5
-     *
-     * @param Section $section
-     *
-     * @return string
-     */
-    protected function uniqueSlug(Section $section)
-    {
-        $title = $section->getTitle();
-
-        // Add a "-dir" suffix to dir sections.
-        if ($section->getType() === Section::SECTION_DIR) {
-            $title .= '-dir';
-        }
-
-        $slug = String::slugify($title);
-
-        $sections = $this->db->fetchAll(
-            'SELECT slug FROM expose_section WHERE slug LIKE ? AND id != ?',
-            array($slug.'%', $section->getId())
-        );
-
-        $namesakes = array();
-        foreach($sections as $section) {
-            $e = explode('-', $section['slug']);
-            $prefix = array_pop($e);
-            $namesakes[] = (int)$prefix;
-        }
-
-        if (!empty($namesakes)) {
-            sort($namesakes);
-            $lastRow = array_pop($namesakes);
-            $slug .= '-' . (++$lastRow);
-        }
-
-        return $slug;
     }
 
     /**
@@ -516,38 +385,5 @@ class ContentFactory
     {
         return ($datetime instanceof \DateTime)
             ? $datetime->format('c') : null;
-    }
-
-    /**
-     * Define user author and timestamp for persisted data.
-     *
-     * @param integer $id
-     *
-     * @return array
-     */
-    private function blameAndTimestampData($id)
-    {
-        $securityToken = $this->security->getToken();
-        $datetime = (new \DateTime())->format('c');
-        $userId = null;
-
-        if (!empty($securityToken)) {
-            $loggedUser = $securityToken->getUser();
-            if ($loggedUser instanceof User) {
-                $user = $this->db
-                        ->fetchAssoc('SELECT id FROM expose_user WHERE username = ?', array(
-                    $loggedUser->getUsername(),
-                ));
-                $userId = $user['id'];
-            }
-        }
-
-        return array(
-            'updated_by' => $userId,
-            'updated_at' => $datetime,
-        ) + (($id == 0) ? array(
-            'created_by' => $userId,
-            'created_at' => $datetime,
-        ) : array());
     }
 }

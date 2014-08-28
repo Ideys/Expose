@@ -51,7 +51,7 @@ $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
     $twig->addGlobal('profile', $app['session']->get('profile'));
 
     // Content sections (for menu)
-    $sectionProvider = new SectionProvider($app['db']);
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
     $twig->addGlobal('sections', $sectionProvider->findAll());
     $twig->addExtension(new Twig_Extension_StringLoader());
 

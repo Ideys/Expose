@@ -12,11 +12,6 @@ class Section extends AbstractEntity
     /**
      * @var integer
      */
-    protected $id;
-
-    /**
-     * @var integer
-     */
     protected $exposeSectionId;
 
     /**
@@ -121,6 +116,11 @@ class Section extends AbstractEntity
      * @var string
      */
     protected $archive = '0';
+
+    /**
+     * @var integer
+     */
+    protected $hierarchy = 0;
 
     /**
      * Define if shuffle mode is activated.
@@ -303,27 +303,7 @@ class Section extends AbstractEntity
     }
 
     /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return int
+     * @return integer
      */
     public function getExposeSectionId()
     {
@@ -776,6 +756,26 @@ class Section extends AbstractEntity
     public function setArchive($archive)
     {
         $this->archive = $archive;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getHierarchy()
+    {
+        return $this->hierarchy;
+    }
+
+    /**
+     * @param integer $hierarchy
+     *
+     * @return $this
+     */
+    public function setHierarchy($hierarchy)
+    {
+        $this->hierarchy = $hierarchy;
 
         return $this;
     }

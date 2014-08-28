@@ -11,7 +11,7 @@ $blogManagerController = SilexHooks::controllerFactory($app);
 
 $blogManagerController->get('/{id}/list', function ($id) use ($app) {
 
-    $blogProvider = new BlogProvider($app['db']);
+    $blogProvider = new BlogProvider($app['db'], $app['security']);
     $section = $blogProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/blogManager/_postsList.html.twig', array(
@@ -26,7 +26,7 @@ $blogManagerController->match('/{id}/new', function (Request $request, $id) use 
 
     $urlGenerator = SilexHooks::urlGenerator($app);
 
-    $blogProvider = new BlogProvider($app['db']);
+    $blogProvider = new BlogProvider($app['db'], $app['security']);
     $section = $blogProvider->find($id);
     $post = new Post();
 
@@ -55,7 +55,7 @@ $blogManagerController->match('/{sectionId}/{id}/edit', function (Request $reque
 
     $urlGenerator = SilexHooks::urlGenerator($app);
 
-    $blogProvider = new BlogProvider($app['db']);
+    $blogProvider = new BlogProvider($app['db'], $app['security']);
     $section = $blogProvider->find($id);
     $post = $blogProvider->findItem($id);
     $blog = new Blog($app['db']);
@@ -63,6 +63,7 @@ $blogManagerController->match('/{sectionId}/{id}/edit', function (Request $reque
     $form = $blog->newPostForm($app['form.factory'], $post);
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
         $blogProvider->editItem($post);
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$sectionId);

@@ -11,7 +11,7 @@ $galleryManagerController = SilexHooks::controllerFactory($app);
 
 $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
-    $galleryProvider = new GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_slideList.html.twig', array(
@@ -24,7 +24,7 @@ $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
 $galleryManagerController->match('/{id}/labels', function (Request $request, $id) use ($app) {
 
-    $galleryProvider = new GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($id);
 
     $formBuilder = SilexHooks::formFactory($app)->createBuilder('form')
@@ -116,8 +116,8 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     if (0 == $sectionId) {
         $sectionId = null;
     }
-    $galleryProvider = new GalleryProvider($app['db']);
-    $slideProvider = new SlideProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
+    $slideProvider = new SlideProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($sectionId);
     $jsonResponse = array();
 
@@ -139,7 +139,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 $galleryManagerController->post('/{id}/delete/slides', function (Request $request, $id) use ($app) {
 
     $itemIds = $request->get('items');
-    $galleryProvider = new GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($id);
 
     $deletedIds = $section->deleteSlides($itemIds);
@@ -152,7 +152,7 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 
 $galleryManagerController->get('/{id}/pic-manager', function ($id) use ($app) {
 
-    $galleryProvider = new GalleryProvider($app['db']);
+    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_contentSectionsPicManager.html.twig', array(

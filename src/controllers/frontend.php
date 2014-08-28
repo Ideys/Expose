@@ -17,7 +17,7 @@ $frontendController = SilexHooks::controllerFactory($app);
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $contentFactory = new ContentFactory($app);
-    $sectionProvider = new ContentProvider\SectionProvider($app['db']);
+    $sectionProvider = new ContentProvider\SectionProvider($app['db'], $app['security']);
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
@@ -73,7 +73,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     // Form sections logic
     $formView = null;
     if ($section instanceof SectionEntity\Form) {
-        $formProvider = new ContentProvider\FormProvider($app['db']);
+        $formProvider = new ContentProvider\FormProvider($app['db'], $app['security']);
         $form = $formProvider->generateFormFields($app['form.factory'], $section);
         if ($formProvider->checkSubmittedForm($request, $form)) {
             $validationMessage = $section->getValidationMessage();

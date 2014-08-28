@@ -1,8 +1,10 @@
 <?php
 
+use Ideys\SilexHooks;
 use Doctrine\DBAL\Schema\Table;
 
-$schema = $app['db']->getSchemaManager();
+$db = SilexHooks::db($app);
+$schema = $db->getSchemaManager();
 
 if (!$schema->tablesExist('expose_user')) {
     $table = new Table('expose_user');
@@ -21,7 +23,7 @@ if (!$schema->tablesExist('expose_user')) {
     $schema->createTable($table);
 
     // User profiles demo (password: hello world)
-    $app['db']->insert('expose_user', array(
+    $db->insert('expose_user', array(
       'username' => 'user',
       'email' => 'user@expose.ideys.com',
       'gender' => 'm',
@@ -30,7 +32,7 @@ if (!$schema->tablesExist('expose_user')) {
       'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
       'roles' => serialize(array('ROLE_USER')),
     ));
-    $app['db']->insert('expose_user', array(
+    $db->insert('expose_user', array(
       'username' => 'editor',
       'email' => 'editor@expose.ideys.com',
       'gender' => 'f',
@@ -39,7 +41,7 @@ if (!$schema->tablesExist('expose_user')) {
       'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
       'roles' => serialize(array('ROLE_EDITOR')),
     ));
-    $app['db']->insert('expose_user', array(
+    $db->insert('expose_user', array(
       'username' => 'admin',
       'email' => 'admin@expose.ideys.com',
       'gender' => 'f',
@@ -48,7 +50,7 @@ if (!$schema->tablesExist('expose_user')) {
       'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
       'roles' => serialize(array('ROLE_ADMIN')),
     ));
-    $app['db']->insert('expose_user', array(
+    $db->insert('expose_user', array(
       'username' => 'superadmin',
       'email' => 'superadmin@expose.ideys.com',
       'gender' => 'm',

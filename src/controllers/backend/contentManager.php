@@ -13,6 +13,7 @@ $contentManagerController = SilexHooks::controllerFactory($app);
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $typeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
     $settingsProvider = new SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
@@ -21,8 +22,9 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
     $form = $typeFactory->createForm($newSection);
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
-        $contentFactory->addSection($newSection);
+        $sectionProvider->persist($newSection);
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$newSection->getId());
     }
 
@@ -133,7 +135,7 @@ $contentManagerController->get('/{id}/archive', function ($id) use ($app) {
 
 $contentManagerController->match('/{id}/edit/dir', function (Request $request, $id) use ($app) {
 
-    $dirProvider = new DirProvider($app['db']);
+    $dirProvider = new DirProvider($app['db'], $app['security']);
     $section = $dirProvider->find($id);
 
     $typeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
@@ -161,7 +163,7 @@ $contentManagerController->match('/{id}/edit/dir', function (Request $request, $
 
 $contentManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $sectionProvider = new SectionProvider($app['db']);
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
     $section = $sectionProvider->find($id);
 
     $sectionTypeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
