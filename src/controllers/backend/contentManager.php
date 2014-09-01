@@ -49,7 +49,7 @@ $contentManagerController->post('/sort/sections', function (Request $request) us
     $hierarchy = $request->get('hierarchy');
 
     foreach ($hierarchy as $key => $value) {
-        $app['db']->update('expose_section',
+        SilexHooks::db($app)->update('expose_section',
                 array('hierarchy' => $key),
                 array('id' => filter_var($value, FILTER_SANITIZE_NUMBER_INT))
         );
@@ -67,7 +67,7 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
 //    $app['monolog']->addDebug(var_export($hierarchy, true));
 
     foreach ($hierarchy as $key => $value) {
-        $app['db']->update('expose_section_item',
+        SilexHooks::db($app)->update('expose_section_item',
                 array('hierarchy' => $key),
                 array('id' => filter_var($value, FILTER_SANITIZE_NUMBER_INT))
         );
@@ -81,9 +81,10 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
 
 $contentManagerController->post('/move/items/{id}', function (Request $request, $id) use ($app) {
 
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+
+    $section = $sectionProvider->find($id);
     $itemIds = $request->get('items');
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
 
     $response = array();
     foreach ($itemIds as $id) {
@@ -100,15 +101,17 @@ $contentManagerController->post('/move/items/{id}', function (Request $request, 
 
 $contentManagerController->post('/toggle/items/{id}', function (Request $request, $id) use ($app) {
 
+    $db = SilexHooks::db($app);
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+
+    $section = $sectionProvider->find($id);
     $itemIds = $request->get('items');
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
 
     $response = array();
     foreach ($section->getItems('Item') as $item) {
         if (in_array($item->id, $itemIds)) {
             $item->toggle();
-            $app['db']->update('expose_section_item',
+            $db->update('expose_section_item',
                 array('published' => $item->published),
                 array('id' => $item->id)
             );
@@ -124,8 +127,12 @@ $contentManagerController->post('/toggle/items/{id}', function (Request $request
 
 $contentManagerController->get('/{id}/archive', function ($id) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
-    $contentFactory->switchArchive($id);
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+
+    $section = $sectionProvider->find($id);
+    $section->toggleArchive();
+
+    $sectionProvider->update($section);
 
     return SilexHooks::redirect($app, 'admin_content_manager');
 })
@@ -144,7 +151,7 @@ $contentManagerController->match('/{id}/edit/dir', function (Request $request, $
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-//        $contentFactory->updateSection($section);
+        $dirProvider->update($section);
         return SilexHooks::redirect($app, 'admin_content_manager');
     }
 
@@ -172,7 +179,7 @@ $contentManagerController->match('/{id}/settings', function (Request $request, $
 
     $editForm->handleRequest($request);
     if ($editForm->isValid()) {
-        $sectionProvider->updateSection($section);
+        $sectionProvider->update($section);
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);
     }
 
@@ -189,19 +196,20 @@ $contentManagerController->match('/{id}/settings', function (Request $request, $
 
 $contentManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
-    $deleteForm = $app['form.factory']->createBuilder('form')->getForm();
-    $contentFactory = new ContentFactory($app);
-    $section = $contentFactory->findSection($id);
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $section = $sectionProvider->find($id);
 
-    // For directories need to have full sections tree
-    if (Section::SECTION_DIR == $section->getType()) {
-        $sections = $contentFactory->findSections();
-        $section = $sections[$section->getId()];
-    }
+//    // For directories need to have full sections tree
+//    if (Section::SECTION_DIR == $section->getType()) {
+//        $sections = $contentFactory->findSections();
+//        $section = $sections[$section->getId()];
+//    }
 
+    $deleteForm = SilexHooks::standardForm($app);
     $deleteForm->handleRequest($request);
+
     if ($deleteForm->isValid()) {
-        $section->delete();
+        $sectionProvider->delete($section);
 
         SilexHooks::flashMessage($app, $section->getType() . '.deleted');
     }

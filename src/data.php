@@ -67,7 +67,7 @@ if (!$schema->tablesExist('expose_section')) {
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
     $table->addIndex(array('expose_section_id'));
-    $table->addColumn('connected_sections', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
+    $table->addColumn('connected_sections', 'array', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('type', 'string', array('length' => 32));
     $table->addColumn('slug', 'string', array('length' => 255));
     $table->addColumn('custom_css', 'text', array('default' => null, 'notnull' => false));
@@ -93,7 +93,7 @@ if (!$schema->tablesExist('expose_section_trans')) {
     $table->addColumn('title', 'string', array('length' => 255));
     $table->addColumn('description', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('legend', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
-    $table->addColumn('parameters', 'text', array('default' => null, 'notnull' => false));
+    $table->addColumn('parameters', 'object', array('default' => null, 'notnull' => false));
     $table->addColumn('language', 'string', array('length' => 5));
 
     $schema->createTable($table);
@@ -131,7 +131,7 @@ if (!$schema->tablesExist('expose_section_item_trans')) {
     $table->addColumn('description', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('content', 'text', array('default' => null, 'notnull' => false));
     $table->addColumn('link', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
-    $table->addColumn('parameters', 'text', array('default' => null, 'notnull' => false));
+    $table->addColumn('parameters', 'object', array('default' => null, 'notnull' => false));
     $table->addColumn('language', 'string', array('length' => 5));
 
     $schema->createTable($table);

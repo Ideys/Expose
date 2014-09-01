@@ -3,6 +3,8 @@
 namespace Ideys\Content;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\Column;
+use Doctrine\DBAL\Types as DbTypes;
 use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Security\Core\User\User;
 use Symfony\Component\Security\Core\SecurityContext;
@@ -63,17 +65,21 @@ abstract class AbstractProvider
      * @param object $object
      * @param array  $data
      */
-    protected static function hydrate(&$object, $data)
+    protected static function hydrate($object, $data)
     {
         $class = new \ReflectionClass($object);
 
         do {
             foreach ($class->getProperties() as $property) {
                 $propertyName = $property->getName();
-                if ($class->hasMethod('get' . ucfirst($propertyName))
-                    && array_key_exists($propertyName, $data)) {
+                $setterName = 'set' . ucfirst($propertyName);
+                $columnName = Inflector::tableize($propertyName);
 
-                    $object->{'set' . ucfirst($propertyName)}($data[$propertyName]);
+                if ($class->hasMethod($setterName)
+                    && array_key_exists($columnName, $data)) {
+
+                    $value = static::convertValue($data[$columnName], $property->getDocComment());
+                    $object->{$setterName}($value);
                 }
             }
         } while ($class = $class->getParentClass());
@@ -82,23 +88,102 @@ abstract class AbstractProvider
     /**
      * Convert an entity to an array relative to database table schema.
      *
-     * @param AbstractEntity $entity
      * @param string         $tableName
+     * @param AbstractEntity $entity
      *
      * @return array
      */
-    protected function objectToArray(AbstractEntity $entity, $tableName)
+    protected function objectToArray($tableName, AbstractEntity $entity)
     {
-        $data = array();
-
         // Extract table columns
         $sectionColumns = $this->db
             ->getSchemaManager()
             ->listTableColumns($tableName);
 
-//        Inflector::tableize($attribute);
+        unset($sectionColumns['id']);
+
+        // Filter class property with same name than table columns
+        $data = array();
+        $class = new \ReflectionClass($entity);
+
+        foreach ($class->getProperties() as $property) {
+
+            $propertyName = $property->getName();
+            $getterName = 'get' . ucfirst($propertyName);
+            $columnName = Inflector::tableize($propertyName);
+
+            if ($class->hasMethod($getterName)
+                && array_key_exists($columnName, $sectionColumns)) {
+
+                $value = $entity->{$getterName}();
+                $data[$columnName] = static::revertValue($value, $sectionColumns[$columnName]);
+            }
+        }
 
         return $data;
+    }
+
+    /**
+     * Tinny ORM : convert database data to object data.
+     *
+     * @param mixed  $tableValue
+     * @param string $docComment
+     *
+     * @return mixed
+     */
+    protected static function convertValue($tableValue, $docComment)
+    {
+        $objectValue = null;
+
+        switch (true) {
+            case strpos($docComment, '@var \DateTime') :
+                $objectValue = new \DateTime($tableValue);
+                break;
+            case strpos($docComment, '@var boolean') :
+                $objectValue = (bool) $tableValue;
+                break;
+            case strpos($docComment, '@var array') :
+                $objectValue = unserialize($tableValue);
+                break;
+            default:
+                $objectValue = $tableValue;
+        }
+
+        return $objectValue;
+    }
+
+    /**
+     * Tinny ORM : convert object data to database data.
+     *
+     * @param mixed  $objectValue
+     * @param Column $column
+     *
+     * @return mixed
+     */
+    protected static function revertValue($objectValue, Column $column)
+    {
+        $tableValue = null;
+
+        switch (true) {
+            case $column->getType() instanceof DbTypes\DateTimeType :
+                if ($objectValue instanceof \DateTime) {
+                    $tableValue = $objectValue->format('Y-m-d H:i:s');
+                }
+                break;
+            case $column->getType() instanceof DbTypes\BooleanType :
+                $tableValue = (int) $objectValue;
+                break;
+            case $column->getType() instanceof DbTypes\ArrayType :
+                $tableValue = serialize($objectValue);
+                break;
+            case $column->getType() instanceof DbTypes\ObjectType :
+                $tableValue = serialize($objectValue);
+                break;
+            default:
+                $tableValue = $objectValue;
+        }
+
+        return $tableValue;
     }
 
     /**

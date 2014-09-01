@@ -117,8 +117,9 @@ class SectionProvider extends AbstractProvider
             . 'ORDER BY i.hierarchy ASC ';
         $rows = $this->db->fetchAll($sql, array($section->getId(), $this->language));
 
+        $itemProvider = new ItemProvider($this->db, $this->security);
         foreach ($rows as $data) {
-            $items[$data['id']] = ItemProvider::hydrateItem($data);
+            $items[$data['id']] = $itemProvider->hydrateItem($data);
         }
 
         $section->setItems($items);
@@ -170,18 +171,15 @@ class SectionProvider extends AbstractProvider
         $this->uniqueSlug($section);
         $this->blameAndTimestamp($section);
 
-        $sectionData = $this->objectToArray($section, 'expose_section');
+        $sectionData = $this->objectToArray('expose_section', $section);
 
         $this->db->insert('expose_section', $sectionData);
         $section->setId($this->db->lastInsertId());
 
-        $transactionData = $this->objectToArray($section, 'expose_section_trans');
-        array(
-            'expose_section_id' => $section->getId(),
-            'parameters' => serialize($section->getParameters()),
-        );
+        $translationData = $this->objectToArray('expose_section_trans', $section);
+        $translationData['expose_section_id'] = $section->getId();
 
-        $this->db->insert('expose_section_trans', $transactionData);
+        $this->db->insert('expose_section_trans', $translationData);
     }
 
     /**
@@ -203,16 +201,17 @@ class SectionProvider extends AbstractProvider
         $this->uniqueSlug($section);
         $this->blameAndTimestamp($section);
 
-        $sectionData = $this->objectToArray($section, 'expose_section');
+        $sectionData = $this->objectToArray('expose_section', $section);
 
         $this->db->update('expose_section',
             $sectionData,
             array('id' => $section->getId()));
 
-        $transactionData = $this->objectToArray($section, 'expose_section_trans');
+        $translationData = $this->objectToArray('expose_section_trans', $section);
+        $translationData['expose_section_id'] = $section->getId();
 
         $this->db->update('expose_section_trans',
-            $transactionData,
+            $translationData,
             array(
                 'expose_section_id' => $section->getId(),
                 'language' => $section->getLanguage(),
@@ -220,7 +219,7 @@ class SectionProvider extends AbstractProvider
 
         // Update other sections parameters with identical tag
         if ($section->getTag() != null) {
-            $this->updateGroupedSections($section);
+//            $this->updateGroupedSections($section);
         }
     }
 

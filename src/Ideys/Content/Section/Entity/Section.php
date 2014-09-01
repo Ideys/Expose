@@ -761,6 +761,16 @@ class Section extends AbstractEntity
     }
 
     /**
+     * @return $this
+     */
+    public function toggleArchive()
+    {
+        $this->archive = ! $this->archive;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getHierarchy()

@@ -50,7 +50,7 @@ $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use
 
     $form->handleRequest($request);
     if ($form->isValid()) {
-        $contentFactory->editItem($page);
+        $sectionProvider->update($page);
     }
 
     return SilexHooks::twig($app)->render('backend/htmlManager/_pageEdit.html.twig', array(
