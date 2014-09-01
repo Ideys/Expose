@@ -12,11 +12,6 @@ class Section extends AbstractEntity
     /**
      * @var integer
      */
-    protected $exposeSectionId;
-
-    /**
-     * @var integer
-     */
     protected $parentId;
 
     /**
@@ -41,21 +36,6 @@ class Section extends AbstractEntity
     /**
      * @var string
      */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $slug;
-
-    /**
-     * @var string
-     */
-    protected $description;
-
-    /**
-     * @var string
-     */
     protected $legend;
 
     /**
@@ -72,11 +52,6 @@ class Section extends AbstractEntity
      * @var string
      */
     protected $tag;
-
-    /**
-     * @var array
-     */
-    protected $parameters = array();
 
     /**
      * @var string
@@ -110,17 +85,7 @@ class Section extends AbstractEntity
     /**
      * @var string
      */
-    protected $language = 'en';
-
-    /**
-     * @var string
-     */
     protected $archive = '0';
-
-    /**
-     * @var integer
-     */
-    protected $hierarchy = 0;
 
     /**
      * Define if shuffle mode is activated.
@@ -303,26 +268,6 @@ class Section extends AbstractEntity
     }
 
     /**
-     * @return integer
-     */
-    public function getExposeSectionId()
-    {
-        return $this->exposeSectionId;
-    }
-
-    /**
-     * @param int $exposeSectionId
-     *
-     * @return $this
-     */
-    public function setExposeSectionId($exposeSectionId)
-    {
-        $this->exposeSectionId = $exposeSectionId;
-
-        return $this;
-    }
-
-    /**
      * @return int
      */
     public function getParentId()
@@ -423,66 +368,6 @@ class Section extends AbstractEntity
     /**
      * @return string
      */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSlug()
-    {
-        return $this->slug;
-    }
-
-    /**
-     * @param string $slug
-     *
-     * @return $this
-     */
-    public function setSlug($slug)
-    {
-        $this->slug = $slug;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getLegend()
     {
         return $this->legend;
@@ -556,27 +441,6 @@ class Section extends AbstractEntity
     public function setTag($tag)
     {
         $this->tag = $tag;
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * @param array|string $parameters
-     *
-     * @return $this
-     */
-    public function setParameters($parameters)
-    {
-        $this->parameters = is_array($parameters) ? $parameters :
-            (array) unserialize($parameters);
 
         return $this;
     }
@@ -723,26 +587,6 @@ class Section extends AbstractEntity
     /**
      * @return string
      */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
-     * @param string $language
-     *
-     * @return $this
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
     public function getArchive()
     {
         return $this->archive;
@@ -766,26 +610,6 @@ class Section extends AbstractEntity
     public function toggleArchive()
     {
         $this->archive = ! $this->archive;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getHierarchy()
-    {
-        return $this->hierarchy;
-    }
-
-    /**
-     * @param integer $hierarchy
-     *
-     * @return $this
-     */
-    public function setHierarchy($hierarchy)
-    {
-        $this->hierarchy = $hierarchy;
 
         return $this;
     }

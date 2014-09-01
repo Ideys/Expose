@@ -10,11 +10,6 @@ use Ideys\Content\AbstractEntity;
 abstract class Item extends AbstractEntity
 {
     /**
-     * @var integer
-     */
-    protected $exposeSectionId;
-
-    /**
      * @var string
      */
     protected $type;
@@ -35,16 +30,6 @@ abstract class Item extends AbstractEntity
      * @var string
      */
     protected $tags;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
-     * @var string
-     */
-    protected $description;
 
     /**
      * @var string
@@ -72,16 +57,6 @@ abstract class Item extends AbstractEntity
     protected $longitude;
 
     /**
-     * @var array
-     */
-    protected $parameters = array();
-
-    /**
-     * @var string
-     */
-    protected $language;
-
-    /**
      * @var \DateTime
      */
     protected $postingDate;
@@ -95,11 +70,6 @@ abstract class Item extends AbstractEntity
      * @var string
      */
     protected $published = '1';
-
-    /**
-     * @var integer
-     */
-    protected $hierarchy = 0;
 
     /**
      * Set type
@@ -188,54 +158,6 @@ abstract class Item extends AbstractEntity
     public function getTags()
     {
         return $this->tags;
-    }
-
-    /**
-     * Set title
-     *
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Get title
-     *
-     * @return string|null
-     */
-    public function getTitle()
-    {
-        return $this->title;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string|null
-     */
-    public function getDescription()
-    {
-        return $this->description;
     }
 
     /**
@@ -370,83 +292,6 @@ abstract class Item extends AbstractEntity
     }
 
     /**
-     * Set parameters
-     *
-     * @param array $parameters
-     *
-     * @return $this
-     */
-    public function setParameters($parameters)
-    {
-        $this->parameters = empty($parameters)
-            ? array() : $parameters;
-
-        return $this;
-    }
-
-    /**
-     * Add a parameter
-     *
-     * @param string $key
-     * @param string $value
-     *
-     * @return $this
-     */
-    public function addParameter($key, $value)
-    {
-        $this->parameters[$key] = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get parameters
-     *
-     * @return array
-     */
-    public function getParameters()
-    {
-        return (array) $this->parameters;
-    }
-
-    /**
-     * Get a parameter
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function retrieveParameter($key)
-    {
-        return array_key_exists($key, $this->getParameters())
-            ? $this->parameters[$key] : null;
-    }
-
-    /**
-     * Set language
-     *
-     * @param string $language
-     *
-     * @return $this
-     */
-    public function setLanguage($language)
-    {
-        $this->language = $language;
-
-        return $this;
-    }
-
-    /**
-     * Get language
-     *
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return $this->language;
-    }
-
-    /**
      * Set postingDate
      *
      * @param \DateTime $postingDate
@@ -534,29 +379,5 @@ abstract class Item extends AbstractEntity
     public function isPublished()
     {
         return ($this->published == '1');
-    }
-
-    /**
-     * Set hierarchy
-     *
-     * @param string $hierarchy
-     *
-     * @return $this
-     */
-    public function setHierarchy($hierarchy)
-    {
-        $this->hierarchy = $hierarchy;
-
-        return $this;
-    }
-
-    /**
-     * Get hierarchy
-     *
-     * @return string
-     */
-    public function getHierarchy()
-    {
-        return $this->hierarchy;
     }
 }

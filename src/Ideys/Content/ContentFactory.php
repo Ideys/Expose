@@ -265,82 +265,6 @@ class ContentFactory
     }
 
     /**
-     * Insert a new content.
-     *
-     * @param Section    $section
-     * @param Item       $item
-     *
-     * @return Item $item
-     */
-    public function addItem(Section $section, Item $item)
-    {
-        $this->db->insert('expose_section_item', array(
-            'expose_section_id' => $section->getId(),
-            'type' => $item->getType(),
-            'category' => $item->getCategory(),
-            'tags' => $item->getTags(),
-            'slug' => String::slugify($item->getTitle()),
-            'path' => $item->getPath(),
-            'latitude' => $item->getLatitude(),
-            'longitude' => $item->getLongitude(),
-            'posting_date' => static::dateToDatabase($item->getPostingDate()),
-            'author' => $item->getAuthor(),
-            'published' => $item->getPublished(),
-            'hierarchy' => $item->getHierarchy(),
-        ) + $this->blameAndTimestampData(0));
-
-        $item->setId($this->db->lastInsertId());
-        $this->db->insert('expose_section_item_trans', array(
-            'expose_section_item_id' => $item->getId(),
-            'title' => $item->getTitle(),
-            'description' => $item->getDescription(),
-            'content' => $item->getContent(),
-            'parameters' => serialize($item->getParameters()),
-            'language' => $this->language,
-        ));
-
-        return $item;
-    }
-
-    /**
-     * Update a content.
-     *
-     * @param Item $item
-     *
-     * @return Item
-     */
-    public function editItem(Item $item)
-    {
-        $this->db->update(
-            'expose_section_item',
-            array(
-                'path' => $item->getPath(),
-                'latitude' => $item->getLatitude(),
-                'longitude' => $item->getLongitude(),
-                'posting_date' => static::dateToDatabase($item->getPostingDate()),
-                'tags' => $item->getTags(),
-                'author' => $item->getAuthor(),
-            ) + $this->blameAndTimestampData($item->getId()),
-            array('id' => $item->getId())
-        );
-        $this->db->update(
-            'expose_section_item_trans',
-            array(
-                'title' => $item->getTitle(),
-                'description' => $item->getDescription(),
-                'parameters' => serialize($item->getParameters()),
-                'content' => $item->getContent(),
-            ),
-            array(
-                'expose_section_item_id' => $item->getId(),
-                'language' => $this->language,
-            )
-        );
-
-        return $item;
-    }
-
-    /**
      * Update item title and description.
      *
      * @param integer $id
@@ -372,18 +296,5 @@ class ContentFactory
                 'language' => $this->language,
             )
         );
-    }
-
-    /**
-     * Format a datetime to be persisted.
-     *
-     * @param \DateTime $datetime
-     *
-     * @return null|string
-     */
-    private static function dateToDatabase(\DateTime $datetime = null)
-    {
-        return ($datetime instanceof \DateTime)
-            ? $datetime->format('c') : null;
     }
 }

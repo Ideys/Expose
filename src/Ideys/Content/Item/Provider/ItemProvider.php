@@ -4,6 +4,8 @@ namespace Ideys\Content\Item\Provider;
 
 use Ideys\Content\AbstractProvider;
 use Ideys\Content\Item\Entity\Item;
+use Ideys\Content\Section\Entity\Section;
+use Ideys\String;
 
 /**
  * Item provider global class.
@@ -42,6 +44,60 @@ class ItemProvider extends AbstractProvider
         static::hydrate($itemClass, $data);
 
         return $itemClass;
+    }
+
+    /**
+     * Insert a new item.
+     *
+     * @param Section    $section
+     * @param Item       $item
+     *
+     * @return Item $item
+     */
+    public function create(Section $section, Item $item)
+    {
+        $item->setLanguage($this->language);
+        $item->setSlug(String::slugify($item->getTitle()));
+        $item->setExposeSectionId($section->getId());
+
+        $this->blameAndTimestamp($item);
+
+        $this->db->insert('expose_section_item', array());
+
+        $item->setId($this->db->lastInsertId());
+        $this->db->insert('expose_section_item_trans', array(
+            'expose_section_item_id' => $item->getId(),
+        ));
+
+        return $item;
+    }
+
+    /**
+     * Update an item.
+     *
+     * @param Item $item
+     *
+     * @return Item
+     */
+    public function update(Item $item)
+    {
+        $this->blameAndTimestamp($item);
+
+        $this->db->update(
+            'expose_section_item',
+            array(),
+            array('id' => $item->getId())
+        );
+        $this->db->update(
+            'expose_section_item_trans',
+            array(),
+            array(
+                'expose_section_item_id' => $item->getId(),
+                'language' => $this->language,
+            )
+        );
+
+        return $item;
     }
 
     /**

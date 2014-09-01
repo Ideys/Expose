@@ -15,6 +15,41 @@ abstract class AbstractEntity
     /**
      * @var integer
      */
+    protected $exposeSectionId;
+
+    /**
+     * @var string
+     */
+    protected $title;
+
+    /**
+     * @var string
+     */
+    protected $slug;
+
+    /**
+     * @var string
+     */
+    protected $description;
+
+    /**
+     * @var array
+     */
+    protected $parameters = array();
+
+    /**
+     * @var string
+     */
+    protected $language = 'en';
+
+    /**
+     * @var integer
+     */
+    protected $hierarchy = 0;
+
+    /**
+     * @var integer
+     */
     protected $createdBy;
 
     /**
@@ -54,6 +89,190 @@ abstract class AbstractEntity
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getExposeSectionId()
+    {
+        return $this->exposeSectionId;
+    }
+
+    /**
+     * @param integer $exposeSectionId
+     *
+     * @return $this
+     */
+    public function setExposeSectionId($exposeSectionId)
+    {
+        $this->exposeSectionId = $exposeSectionId;
+
+        return $this;
+    }
+
+    /**
+     * Set title
+     *
+     * @param string $title
+     *
+     * @return $this
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * Get title
+     *
+     * @return string|null
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @param string $slug
+     *
+     * @return $this
+     */
+    public function setSlug($slug)
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return $this
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string|null
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param array|string $parameters
+     *
+     * @return $this
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+
+        return $this;
+    }
+
+    /**
+     * Add a parameter
+     *
+     * @param string $key
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function addParameter($key, $value)
+    {
+        $this->parameters[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * Get a parameter
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function retrieveParameter($key)
+    {
+        return array_key_exists($key, $this->getParameters())
+            ? $this->parameters[$key] : null;
+    }
+
+    /**
+     * Set language
+     *
+     * @param string $language
+     *
+     * @return $this
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Set hierarchy
+     *
+     * @param string $hierarchy
+     *
+     * @return $this
+     */
+    public function setHierarchy($hierarchy)
+    {
+        $this->hierarchy = $hierarchy;
+
+        return $this;
+    }
+
+    /**
+     * Get hierarchy
+     *
+     * @return string
+     */
+    public function getHierarchy()
+    {
+        return $this->hierarchy;
     }
 
     /**
