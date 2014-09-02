@@ -24,8 +24,8 @@
           </h5>
         </div>
         <div class="medium-4 columns">
-            {% if post.posting_date|length %}
-                {{ post.posting_date|date('d/m/Y') }}
+            {% if post.postingDate|length %}
+                {{ post.postingDate|date('d/m/Y') }}
             {% endif %}
 
             {{ widgets.btn_dropdown_actions('post-actions-'~post.id, '', 'right') }}

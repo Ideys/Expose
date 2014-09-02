@@ -5,6 +5,7 @@ use Ideys\Content\Section\Entity\Blog;
 use Ideys\Content\Section\Provider\BlogProvider;
 use Ideys\Content\Item\Entity\Post;
 use Ideys\Content\Item\Type\PostType;
+use Ideys\Content\Item\Provider\PostProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 $blogManagerController = SilexHooks::controllerFactory($app);
@@ -36,7 +37,9 @@ $blogManagerController->match('/{id}/new', function (Request $request, $id) use 
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-        $blogProvider->addItem($section, $post);
+        $postProvider = new PostProvider($app['db'], $app['security']);
+        $postProvider->create($section, $post);
+
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$id);
     }
 
@@ -57,15 +60,22 @@ $blogManagerController->match('/{sectionId}/{id}/edit', function (Request $reque
 
     $blogProvider = new BlogProvider($app['db'], $app['security']);
     $section = $blogProvider->find($id);
-    $post = $blogProvider->findItem($id);
-    $blog = new Blog($app['db']);
 
-    $form = $blog->newPostForm($app['form.factory'], $post);
+    $postProvider = new PostProvider($app['db'], $app['security']);
+    $post = $postProvider->find($id);
+
+    if (! $post instanceof Post) {
+        throw new \Exception('The item is not a blog post.');
+    }
+
+    $postType = new PostType($app['form.factory']);
+    $form = $postType->formBuilder($post)->getForm();
 
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-        $blogProvider->editItem($post);
+        $postProvider->update($post);
+
         return SilexHooks::redirect($app, 'admin_content_manager', array(), '#panel'.$sectionId);
     }
 

@@ -17,7 +17,7 @@ class ItemProvider extends AbstractProvider
      *
      * @param integer $id
      *
-     * @return Item
+     * @return Item|null
      */
     public function find($id)
     {
@@ -25,6 +25,10 @@ class ItemProvider extends AbstractProvider
             . 'WHERE i.id = ? '
             . 'ORDER BY s.hierarchy ASC ';
         $data = $this->db->fetchAssoc($sql, array($id));
+
+        if (! $data) {
+            return null;
+        }
 
         return static::hydrateItem($data);
     }
@@ -49,8 +53,8 @@ class ItemProvider extends AbstractProvider
     /**
      * Insert a new item.
      *
-     * @param Section    $section
-     * @param Item       $item
+     * @param Section $section
+     * @param Item    $item
      *
      * @return Item $item
      */
@@ -62,12 +66,16 @@ class ItemProvider extends AbstractProvider
 
         $this->blameAndTimestamp($item);
 
-        $this->db->insert('expose_section_item', array());
+        $itemData = $this->objectToArray('expose_section_item', $item);
+
+        $this->db->insert('expose_section_item', $itemData);
 
         $item->setId($this->db->lastInsertId());
-        $this->db->insert('expose_section_item_trans', array(
-            'expose_section_item_id' => $item->getId(),
-        ));
+
+        $translationData = $this->objectToArray('expose_section_item_trans', $item);
+        $translationData['expose_section_item_id'] = $item->getId();
+
+        $this->db->insert('expose_section_item_trans', $translationData);
 
         return $item;
     }
@@ -81,16 +89,23 @@ class ItemProvider extends AbstractProvider
      */
     public function update(Item $item)
     {
+        $item->setSlug(String::slugify($item->getTitle()));
         $this->blameAndTimestamp($item);
+
+        $itemData = $this->objectToArray('expose_section_item', $item);
 
         $this->db->update(
             'expose_section_item',
-            array(),
+            $itemData,
             array('id' => $item->getId())
         );
+
+        $translationData = $this->objectToArray('expose_section_item_trans', $item);
+        $translationData['expose_section_id'] = $item->getId();
+
         $this->db->update(
             'expose_section_item_trans',
-            array(),
+            $translationData,
             array(
                 'expose_section_item_id' => $item->getId(),
                 'language' => $this->language,
@@ -103,16 +118,21 @@ class ItemProvider extends AbstractProvider
     /**
      * Delete a section item.
      *
-     * @param integer $id
+     * @param Item $item
      *
      * @return boolean
      */
-    public function delete($id)
+    public function delete(Item $item)
     {
         // Delete item's translations
-        $this->db->delete('expose_section_item_trans', array('expose_section_item_id' => $id));
+        $this->db->delete('expose_section_item_trans', array(
+            'expose_section_item_id' => $item->getId(),
+        ));
+
         // Delete item
-        $rows = $this->db->delete('expose_section_item', array('id' => $id));
+        $rows = $this->db->delete('expose_section_item', array(
+            'id' => $item->getId(),
+        ));
 
         return (0 < $rows);
     }

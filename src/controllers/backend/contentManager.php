@@ -64,7 +64,6 @@ $contentManagerController->post('/sort/sections', function (Request $request) us
 $contentManagerController->post('/sort/items', function (Request $request) use ($app) {
 
     $hierarchy = $request->get('hierarchy');
-//    $app['monolog']->addDebug(var_export($hierarchy, true));
 
     foreach ($hierarchy as $key => $value) {
         SilexHooks::db($app)->update('expose_section_item',
@@ -88,7 +87,7 @@ $contentManagerController->post('/move/items/{id}', function (Request $request, 
 
     $response = array();
     foreach ($itemIds as $id) {
-        if ($section->attachItem($id)) {
+        if ($sectionProvider->attachItem($section, $id)) {
             $response[] = $id;
         }
     }
@@ -108,14 +107,15 @@ $contentManagerController->post('/toggle/items/{id}', function (Request $request
     $itemIds = $request->get('items');
 
     $response = array();
+
     foreach ($section->getItems('Item') as $item) {
-        if (in_array($item->id, $itemIds)) {
+        if (in_array($item->getId(), $itemIds)) {
             $item->toggle();
             $db->update('expose_section_item',
-                array('published' => $item->published),
-                array('id' => $item->id)
+                array('published' => $item->isPublished()),
+                array('id' => $item->getId())
             );
-            $response[] = $item->id;
+            $response[] = $item->getId();
         }
     }
 

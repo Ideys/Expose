@@ -4,6 +4,7 @@ use Ideys\SilexHooks;
 use Ideys\Content\Item\Entity\Field;
 use Ideys\Content\Item\Type\ItemTypeFactory;
 use Ideys\Content\Section\Provider\FormProvider;
+use Ideys\Content\Item\Provider\FieldProvider;
 use Ideys\Files\File;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -21,7 +22,9 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-        $contentFactory->addItem($section, $field);
+        $fieldProvider = new FieldProvider($app['db'], $app['security']);
+        $fieldProvider->create($section, $field);
+
         return SilexHooks::redirect($app, 'admin_form_manager_edit', array('id' => $id));
     }
 
@@ -68,9 +71,10 @@ $formManagerController->get('/download/{file}', function ($file) use ($app) {
 
 $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $itemId) use ($app) {
 
-    $formProvider = new FormProvider($app['db'], $app['security']);
-    $section = $formProvider->find($id);
-    $isDeleted = $section->deleteItem($itemId);
+    $fieldProvider = new FieldProvider($app['db'], $app['security']);
+    $field = $fieldProvider->find($itemId);
+
+    $isDeleted = $fieldProvider->delete($field);
 
     $jsonResponse = $isDeleted;
 
@@ -84,8 +88,8 @@ $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $item
 $formManagerController->post('/{id}/remove/result/{resultId}', function ($id, $resultId) use ($app) {
 
     $formProvider = new FormProvider($app['db'], $app['security']);
-    $section = $formProvider->find($id);
-    $isDeleted = $section->deleteResult($resultId);
+
+    $isDeleted = $formProvider->deleteResult($resultId);
 
     return $app->json($isDeleted);
 })

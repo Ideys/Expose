@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Entity;
 
 use Ideys\Content\Item\Entity;
+use Ideys\Content\Item\Entity\Place;
 
 /**
  * Map content manager.
@@ -60,7 +61,7 @@ class Map extends Section implements SectionInterface
     /**
      * Return Place Items.
      *
-     * @return array
+     * @return Place[]
      */
     public function getPlaces()
     {

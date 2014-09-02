@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Entity;
 
 use Ideys\Content\Item\Entity;
+use Ideys\Content\Item\Entity\Video;
 
 /**
  * Channel content manager.
@@ -28,7 +29,7 @@ class Channel extends Section implements SectionInterface
     /**
      * Get Video Items.
      *
-     * @return array
+     * @return Video[]
      */
     public function getVideos()
     {

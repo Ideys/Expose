@@ -9,7 +9,6 @@ use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Section\Entity\Html;
 use Ideys\Content\Item\Entity\Item;
 use Ideys\Content\Item\Entity\Page;
-use Ideys\String;
 use Ideys\Settings\Settings;
 use Silex\Application;
 
@@ -221,23 +220,6 @@ class ContentFactory
     }
 
     /**
-     * Attach an item from another section to this section.
-     *
-     * @param integer $id The item id
-     *
-     * @return boolean
-     */
-    public function attachItem($id)
-    {
-        $affectedRows = $this->db->update('expose_section_item',
-            array('expose_section_id' => $this->id),
-            array('id' => $id)
-        );
-
-        return (boolean) $affectedRows;
-    }
-
-    /**
      * Update all sections common parameters with identical tag.
      *
      * @param Section $section
@@ -262,39 +244,5 @@ class ContentFactory
                 'parameters' => serialize($section->getParameters()),
             ), array('expose_section_id' => $id['id'], 'language' => $this->language));
         }
-    }
-
-    /**
-     * Update item title and description.
-     *
-     * @param integer $id
-     * @param string  $title
-     * @param string  $description
-     * @param string  $tags
-     * @param string  $link
-     */
-    public function updateItemTitle($id, $title, $description, $tags, $link)
-    {
-        $this->db->update(
-            'expose_section_item',
-            array(
-                'tags' => $tags,
-            ),
-            array(
-                'id' => $id,
-            )
-        );
-        $this->db->update(
-            'expose_section_item_trans',
-            array(
-                'title' => $title,
-                'description' => $description,
-                'link' => $link,
-            ),
-            array(
-                'expose_section_item_id' => $id,
-                'language' => $this->language,
-            )
-        );
     }
 }

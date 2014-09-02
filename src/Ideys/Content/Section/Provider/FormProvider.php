@@ -28,31 +28,34 @@ class FormProvider extends SectionProvider
         $form = $formFactory->createBuilder('form');
 
         foreach ($formSection->getItems() as $item) {
-            if (Field::HTML == $item->category) {
+            if (Field::HTML == $item->getCategory()) {
                 continue;
             }
-            $fieldType = Field::getSymfonyEquivalent($item->category);
+            if (! $item instanceof Field) {
+                continue;
+            }
+            $fieldType = Field::getSymfonyEquivalent($item->getCategory());
             $options =  array(
-                'label' => $item->title,
-                'required' => (boolean) $item->required,
+                'label' => $item->getTitle(),
+                'required' => (boolean) $item->isRequired(),
             );
             if ('choice' == $fieldType) {
-                $choices = array_map('trim', explode("\n", $item->choices));
+                $choices = array_map('trim', explode("\n", $item->getChoices()));
                 $options += array(
                     'choices' => array_combine($choices, $choices),
                 );
             }
-            if (Field::MULTIPLE_SELECT == $item->category) {
+            if (Field::MULTIPLE_SELECT == $item->getCategory()) {
                 $options += array(
                     'multiple' => true,
                 );
             }
-            if (Field::RADIO == $item->category) {
+            if (Field::RADIO == $item->getCategory()) {
                 $options += array(
                     'expanded' => true,
                 );
             }
-            $form->add($item->slug, $fieldType, $options);
+            $form->add($item->getSlug(), $fieldType, $options);
         }
 
         return $form->getForm();

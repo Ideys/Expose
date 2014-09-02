@@ -5,8 +5,8 @@ namespace Ideys\Content\Item\Provider;
 use Ideys\Content\Item\Entity;
 
 /**
- * Place item provider.
+ * Form field item provider.
  */
-class PlaceProvider extends ItemProvider
+class FieldProvider extends ItemProvider
 {
 }

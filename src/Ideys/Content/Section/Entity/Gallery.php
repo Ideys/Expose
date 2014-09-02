@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Entity;
 
 use Ideys\Content\Item\Entity;
+use Ideys\Content\Item\Entity\Slide;
 
 /**
  * Gallery content manager.
@@ -76,7 +77,7 @@ class Gallery extends Section implements SectionInterface
     /**
      * Return Slide Items.
      *
-     * @return array
+     * @return Slide[]
      */
     public function getSlides()
     {

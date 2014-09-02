@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Entity;
 
 use Ideys\Content\Item\Entity;
+use Ideys\Content\Item\Entity\Page;
 
 /**
  * HTML content manager.
@@ -28,7 +29,7 @@ class Html extends Section implements SectionInterface
     /**
      * Return Page Items.
      *
-     * @return array
+     * @return Page[]
      */
     public function getPages()
     {
@@ -37,6 +38,8 @@ class Html extends Section implements SectionInterface
 
     /**
      * Return HTML section first page.
+     *
+     * @return Page|null
      */
     public function getFirstPage()
     {

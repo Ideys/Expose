@@ -126,6 +126,24 @@ class SectionProvider extends AbstractProvider
     }
 
     /**
+     * Attach an item from another section to this section.
+     *
+     * @param Section $section
+     * @param integer $id The item id
+     *
+     * @return boolean
+     */
+    public function attachItem(Section $section, $id)
+    {
+        $affectedRows = $this->db->update('expose_section_item',
+            array('expose_section_id' => $section->getId()),
+            array('id' => $id)
+        );
+
+        return (boolean) $affectedRows;
+    }
+
+    /**
      * Archive or restore a section.
      *
      * @param Section $section
@@ -277,7 +295,7 @@ class SectionProvider extends AbstractProvider
             if ($item instanceof Slide) {
                 $this->deleteItemAndRelatedFile($item);
             } else {
-                $this->deleteItem($item->id);
+                $this->deleteItem($item->getId());
             }
         }
 

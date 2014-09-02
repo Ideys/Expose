@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Entity;
 
 use Ideys\Content\Item\Entity;
+use Ideys\Content\Item\Entity\Post;
 
 /**
  * Blog section manager.
@@ -37,7 +38,7 @@ class Blog extends Section implements SectionInterface
     /**
      * Get Post Items.
      *
-     * @return array
+     * @return Post[]
      */
     public function getPosts()
     {

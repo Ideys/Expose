@@ -4,6 +4,7 @@ use Ideys\SilexHooks;
 use Ideys\Picture;
 use Ideys\Content\Item\Entity\Slide;
 use Ideys\Content\Item\Provider\SlideProvider;
+use Ideys\Content\Section\Entity\Gallery;
 use Ideys\Content\Section\Provider\GalleryProvider;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -27,6 +28,10 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     $galleryProvider = new GalleryProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($id);
 
+    if (! $section instanceof Gallery) {
+        throw new \Exception('The section is not a gallery.');
+    }
+
     $formBuilder = SilexHooks::formFactory($app)->createBuilder('form')
         ->add('global_legend', 'textarea', array(
             'label'     => 'gallery.global.legend',
@@ -34,7 +39,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
             'required'  => false,
         ));
 
-    foreach ($section->getItems('Slide') as $slide) {
+    foreach ($section->getSlides() as $slide) {
         if ($slide instanceof Slide)
         // Generate related slide fields
         $formBuilder
@@ -83,19 +88,20 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
 
         // Update the global legend
         $section->setLegend($data['global_legend']);
-        $galleryProvider->updateSection($section);
+        $galleryProvider->update($section);
 
         // Update each items legends
-        foreach ($section->getItems('Slide') as $slide) {
-            if ($slide instanceof Slide)
-            $galleryProvider->updateItemTitle(
-                $slide->getId(),
-                $data['title'.$slide->getId()],
-                $data['description'.$slide->getId()],
-                $data['tags'.$slide->getId()],
-                $data['link'.$slide->getId()]
-            );
+        $slideProvider = new SlideProvider($app['db'], $app['security']);
+        foreach ($section->getSlides() as $slide) {
+            $slideId = $slide->getId();
+            $slide
+                ->setTitle($data['title'.$slideId])
+                ->setDescription($data['description'.$slideId])
+                ->setTags($data['tags'.$slideId])
+                ->setLink($data['link'.$slideId]);
+            $slideProvider->update($slide);
         }
+
         return SilexHooks::redirect($app, 'admin_gallery_manager_labels', array('id' => $id));
     }
 
@@ -122,8 +128,8 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
-        $slide = $section->addSlide($app['imagine'], $file);
-        $galleryProvider->addItem($section, $slide);
+        $slide = $slideProvider->addSlide($app['imagine'], $file);
+        $slideProvider->create($section, $slide);
 
         $jsonResponse[] = array(
             'path' => $slide->getPath(),

@@ -3,6 +3,7 @@
 namespace Ideys;
 
 use Silex\Application as App;
+use Silex\Provider\MonologServiceProvider;
 
 /**
  * Useful hooks to inform IDE of objects
@@ -72,6 +73,13 @@ class SilexHooks
      * @return \Doctrine\DBAL\Connection
      */
     public static function db(App $app) { return $app['db']; }
+
+    /**
+     * @param App $app
+     *
+     * @return \Monolog\Logger
+     */
+    public static function monolog(App $app) { return $app['monolog']; }
 
     /**
      * Shortcut for redirect responses.

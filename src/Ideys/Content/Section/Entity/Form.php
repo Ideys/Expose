@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Entity;
 
 use Ideys\Content\Item\Entity;
+use Ideys\Content\Item\Entity\Field;
 
 /**
  * Form content manager.
@@ -33,7 +34,7 @@ class Form extends Section implements SectionInterface
     /**
      * Get Field Items.
      *
-     * @return array
+     * @return Field[]
      */
     public function getFields()
     {

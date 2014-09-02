@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Entity;
 
 use Ideys\Content\AbstractEntity;
+use Ideys\Content\Item\Entity\Item;
 
 /**
  * Sections prototype class.
@@ -181,16 +182,6 @@ class Section extends AbstractEntity
     public function hasMultiplePages()
     {
         return false;
-    }
-
-    /**
-     * Test if the section is archived.
-     *
-     * @return boolean
-     */
-    public function isArchived()
-    {
-        return 1 == $this->archive;
     }
 
     /**
@@ -593,6 +584,16 @@ class Section extends AbstractEntity
     }
 
     /**
+     * Test if the section is archived.
+     *
+     * @return boolean
+     */
+    public function isArchived()
+    {
+        return 1 == $this->archive;
+    }
+
+    /**
      * @param string $archive
      *
      * @return $this
@@ -637,7 +638,7 @@ class Section extends AbstractEntity
     /**
      * Return section items.
      *
-     * @return array
+     * @return Item[]
      */
     public function getItems()
     {
@@ -710,7 +711,7 @@ class Section extends AbstractEntity
     /**
      * Return section child sections.
      *
-     * @return array
+     * @return Section[]
      */
     public function getSections()
     {

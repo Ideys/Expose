@@ -68,6 +68,10 @@ class VideoProvider extends ItemProvider
      */
     private function extractIframeSrc($content)
     {
+        // Remove useless HTML after iframe block
+        $e = explode('</iframe>', $content);
+        $content = $e[0] . '</iframe>';
+
         $dom = new \DOMDocument();
         $dom->loadHTML($content);
 
