@@ -180,13 +180,13 @@ abstract class AbstractEntity
     }
 
     /**
-     * @param array|string $parameters
+     * @param array $parameters
      *
      * @return $this
      */
     public function setParameters($parameters)
     {
-        $this->parameters = $parameters;
+        $this->parameters = (array) $parameters;
 
         return $this;
     }
@@ -199,7 +199,7 @@ abstract class AbstractEntity
      *
      * @return $this
      */
-    public function addParameter($key, $value)
+    protected function addParameter($key, $value)
     {
         $this->parameters[$key] = $value;
 
@@ -211,20 +211,21 @@ abstract class AbstractEntity
      */
     public function getParameters()
     {
-        return $this->parameters;
+        return (array) $this->parameters;
     }
 
     /**
      * Get a parameter
      *
      * @param string $key
+     * @param mixed  $default
      *
      * @return mixed
      */
-    public function retrieveParameter($key)
+    protected function retrieveParameter($key, $default = null)
     {
         return array_key_exists($key, $this->getParameters())
-            ? $this->parameters[$key] : null;
+            ? $this->parameters[$key] : $default;
     }
 
     /**

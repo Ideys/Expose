@@ -8,16 +8,35 @@ namespace Ideys\Content\Item\Entity;
 class Slide extends Item
 {
     /**
-     * @var array
-     */
-    private $metaData = array();
-
-    /**
      * Constructor.
      */
     public function __construct()
     {
         $this->type = self::ITEM_SLIDE;
+    }
+
+    /**
+     * Set real extension
+     *
+     * @param string $realExtension
+     *
+     * @return Slide
+     */
+    public function setRealExtension($realExtension)
+    {
+        $this->addParameter('real_ext', $realExtension);
+
+        return $this;
+    }
+
+    /**
+     * Get real extension
+     *
+     * @return string
+     */
+    public function getRealExtension()
+    {
+        return $this->retrieveParameter('real_ext');
     }
 
     /**
@@ -77,7 +96,7 @@ class Slide extends Item
      */
     public function setMetaData($metaData)
     {
-        $this->metaData = $metaData;
+        $this->addParameter('metaData', (array) $metaData);
 
         return $this;
     }
@@ -89,6 +108,6 @@ class Slide extends Item
      */
     public function getMetaData()
     {
-        return $this->metaData;
+        return $this->retrieveParameter('metaData', array());
     }
 }

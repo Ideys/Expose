@@ -9,8 +9,6 @@ namespace Ideys\Content\Section\Entity;
  */
 class Link extends Section
 {
-    private $url = 'http://';
-
     /**
      * Constructor.
      */
@@ -24,7 +22,7 @@ class Link extends Section
      */
     public function getUrl()
     {
-        return $this->url;
+        return $this->retrieveParameter('url', 'http://');
     }
 
     /**
@@ -34,7 +32,7 @@ class Link extends Section
      */
     public function setUrl($url)
     {
-        $this->url = $url;
+        $this->addParameter('url', $url);
 
         return $this;
     }

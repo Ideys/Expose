@@ -10,53 +10,13 @@ use Ideys\Content\Item\Entity\Slide;
  */
 class Gallery extends Section implements SectionInterface
 {
-    /**
-     * @var string
-     */
-    private $galleryMode = self::GALLERY_MODE_SLIDESHOW;
-
     const GALLERY_MODE_SLIDESHOW    = 'slideshow';
     const GALLERY_MODE_FULL_SCREEN  = 'fullScreen';
     const GALLERY_MODE_VERTICAL     = 'vertical';
     const GALLERY_MODE_MASONRY      = 'masonry';
 
-    /**
-     * @var string
-     */
-    private $slideMode = self::SLIDE_MODE_SLIDE;
-
     const SLIDE_MODE_SLIDE  = 'slide';
     const SLIDE_MODE_FADE   = 'fade';
-
-    /**
-     * @var string
-     */
-    private $extended = '0';
-
-    /**
-     * @var string
-     */
-    private $navBar = '0';
-
-    /**
-     * @var string
-     */
-    private $thumbList = '0';
-
-    /**
-     * @var string
-     */
-    private $gridRows = '1';
-
-    /**
-     * @var string
-     */
-    private $gridRowsMedium = '1';
-
-    /**
-     * @var string
-     */
-    private $gridRowsSmall = '1';
 
     /**
      * Constructor.
@@ -202,7 +162,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getGalleryMode()
     {
-        return $this->galleryMode;
+        return $this->retrieveParameter('gallery_mode', self::GALLERY_MODE_SLIDESHOW);
     }
 
     /**
@@ -212,7 +172,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setGalleryMode($galleryMode)
     {
-        $this->galleryMode = $galleryMode;
+        $this->addParameter('gallery_mode', $galleryMode);
 
         return $this;
     }
@@ -222,7 +182,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getSlideMode()
     {
-        return $this->slideMode;
+        return $this->retrieveParameter('slide_mode', self::SLIDE_MODE_SLIDE);
     }
 
     /**
@@ -232,7 +192,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setSlideMode($slideMode)
     {
-        $this->slideMode = $slideMode;
+        $this->addParameter('slide_mode', $slideMode);
 
         return $this;
     }
@@ -242,7 +202,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getExtended()
     {
-        return $this->extended;
+        return $this->retrieveParameter('extended', '0');
     }
 
     /**
@@ -252,7 +212,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setExtended($extended)
     {
-        $this->extended = $extended;
+        $this->addParameter('extended', $extended);
 
         return $this;
     }
@@ -262,7 +222,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getNavBar()
     {
-        return $this->navBar;
+        return $this->retrieveParameter('nav_bar', '0');
     }
 
     /**
@@ -272,7 +232,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setNavBar($navBar)
     {
-        $this->navBar = $navBar;
+        $this->addParameter('nav_bar', $navBar);
 
         return $this;
     }
@@ -282,7 +242,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getThumbList()
     {
-        return $this->thumbList;
+        return $this->retrieveParameter('thumb_list', '0');
     }
 
     /**
@@ -292,7 +252,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setThumbList($thumbList)
     {
-        $this->thumbList = $thumbList;
+        $this->addParameter('thumb_list', $thumbList);
 
         return $this;
     }
@@ -302,7 +262,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getGridRows()
     {
-        return $this->gridRows;
+        return $this->retrieveParameter('grid_rows', '1');
     }
 
     /**
@@ -312,7 +272,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setGridRows($gridRows)
     {
-        $this->gridRows = $gridRows;
+        $this->addParameter('grid_rows', $gridRows);
 
         return $this;
     }
@@ -322,7 +282,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getGridRowsMedium()
     {
-        return $this->gridRowsMedium;
+        return $this->retrieveParameter('grid_rows_medium', '1');
     }
 
     /**
@@ -332,7 +292,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setGridRowsMedium($gridRowsMedium)
     {
-        $this->gridRowsMedium = $gridRowsMedium;
+        $this->addParameter('grid_rows_medium', $gridRowsMedium);
 
         return $this;
     }
@@ -342,7 +302,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function getGridRowsSmall()
     {
-        return $this->gridRowsSmall;
+        return $this->retrieveParameter('grid_rows_small', '1');
     }
 
     /**
@@ -352,7 +312,7 @@ class Gallery extends Section implements SectionInterface
      */
     public function setGridRowsSmall($gridRowsSmall)
     {
-        $this->gridRowsSmall = $gridRowsSmall;
+        $this->addParameter('grid_rows_small', $gridRowsSmall);
 
         return $this;
     }

@@ -35,7 +35,7 @@ class MapType extends SectionType
             ))
             ->add('mapMode', 'choice', array(
                 'label' => 'map.mode.mode',
-                'choices' => Map::getModeChoice(),
+                'choices' => Map::getMapModeChoice(),
             ))
         ;
 

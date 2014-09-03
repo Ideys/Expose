@@ -5,6 +5,7 @@ use Ideys\Content\Item\Entity\Place;
 use Ideys\Content\Section\Provider\MapProvider;
 use Ideys\Content\Item\Type\PlaceType;
 use Ideys\Content\Item\Type\CoordinatesType;
+use Ideys\Content\Item\Provider\PlaceProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 $mapManagerController = SilexHooks::controllerFactory($app);
@@ -36,7 +37,8 @@ $mapManagerController->match('/{id}/places', function (Request $request, $id) us
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-        $mapProvider->addItem($section, $place);
+        $placeProvider = new PlaceProvider($app['db'], $app['security']);
+        $placeProvider->create($section, $place);
     }
 
     return SilexHooks::twig($app)->render('backend/mapManager/_mapPlaces.html.twig', array(
@@ -57,13 +59,7 @@ $mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionI
 
     $section->toggleConnectedSectionId($sectionId);
 
-    $app['db']->update(
-        'expose_section',
-        array(
-            'connected_sections' => implode(',', $section->getConnectedSectionsId()),
-        ),
-        array('id' => $id)
-    );
+    $mapProvider->persist($section);
 
     return SilexHooks::twig($app)->render('backend/mapManager/_placesList.html.twig', array(
         'section' => $section,
@@ -76,8 +72,8 @@ $mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionI
 
 $mapManagerController->match('/{id}/coordinates', function (Request $request, $id) use ($app) {
 
-    $mapProvider = new MapProvider($app['db'], $app['security']);
-    $item = $mapProvider->find($id);
+    $placeProvider = new PlaceProvider($app['db'], $app['security']);
+    $item = $placeProvider->find($id);
 
     $coordinatesType = new CoordinatesType($app['form.factory']);
     $form = $coordinatesType->formBuilder($item)->getForm();
@@ -85,7 +81,7 @@ $mapManagerController->match('/{id}/coordinates', function (Request $request, $i
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-        $contentFactory->editItem($item);
+        $placeProvider->update($item);
         return $app->json(true);
     }
 

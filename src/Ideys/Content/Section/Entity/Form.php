@@ -11,11 +11,6 @@ use Ideys\Content\Item\Entity\Field;
 class Form extends Section implements SectionInterface
 {
     /**
-     * @var string
-     */
-    private $validationMessage;
-
-    /**
      * Constructor.
      */
     public function __construct()
@@ -64,7 +59,7 @@ class Form extends Section implements SectionInterface
      */
     public function getValidationMessage()
     {
-        return $this->validationMessage;
+        return $this->retrieveParameter('validation_message');
     }
 
     /**
@@ -74,7 +69,7 @@ class Form extends Section implements SectionInterface
      */
     public function setValidationMessage($validationMessage)
     {
-        $this->validationMessage = $validationMessage;
+        $this->addParameter('validation_message', $validationMessage);
 
         return $this;
     }

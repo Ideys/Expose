@@ -48,7 +48,7 @@ $(function(){
         section.prop('class', 'section active '+visibility+'-section');
         stateIcon.prop('class', 'state-icon fi-'+visibilityIcons[visibility]);
     })
-    .on('change', '#form_gallery_mode', function() {
+    .on('change', '#form_galleryMode', function() {
         var mode = $(this).val()
           , form = $(this).parents('form')
           ;

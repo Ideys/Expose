@@ -18,11 +18,6 @@ class Section extends AbstractEntity
     /**
      * @var string
      */
-    protected $connectedSections;
-
-    /**
-     * @var string
-     */
     protected $type = 'section';
 
     const SECTION_GALLERY   = 'gallery';
@@ -109,40 +104,6 @@ class Section extends AbstractEntity
      * @var array
      */
     protected $sections = array();
-
-    /**
-     * Remove a connected section id.
-     *
-     * @param integer $sectionId
-     *
-     * @return Section
-     */
-    public function removeConnectedSectionId($sectionId)
-    {
-        $this->connectedSectionsId = array_filter($this->connectedSectionsId, function($var) use ($sectionId) {
-            return $var != $sectionId;
-        });
-
-        return $this;
-    }
-
-    /**
-     * Remove or add a connected section id.
-     *
-     * @param integer $sectionId
-     *
-     * @return Section
-     */
-    public function toggleConnectedSectionId($sectionId)
-    {
-        if (in_array($sectionId, $this->connectedSectionsId)) {
-            $this->removeConnectedSectionId($sectionId);
-        } else {
-            $this->addConnectedSectionId($sectionId);
-        }
-
-        return $this;
-    }
 
     /**
      * Trigger shuffle on section items if option was set.
@@ -274,26 +235,6 @@ class Section extends AbstractEntity
     public function setParentId($parentId)
     {
         $this->parentId = $parentId;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getConnectedSections()
-    {
-        return $this->connectedSections;
-    }
-
-    /**
-     * @param string $connectedSections
-     *
-     * @return $this
-     */
-    public function setConnectedSections($connectedSections)
-    {
-        $this->connectedSections = $connectedSections;
 
         return $this;
     }
@@ -704,6 +645,40 @@ class Section extends AbstractEntity
     public function addConnectedSectionId($connectedSectionsId)
     {
         $this->connectedSectionsId[] = $connectedSectionsId;
+
+        return $this;
+    }
+
+    /**
+     * Remove a connected section id.
+     *
+     * @param integer $sectionId
+     *
+     * @return Section
+     */
+    public function removeConnectedSectionId($sectionId)
+    {
+        $this->connectedSectionsId = array_filter($this->connectedSectionsId, function($var) use ($sectionId) {
+            return $var != $sectionId;
+        });
+
+        return $this;
+    }
+
+    /**
+     * Remove or add a connected section id.
+     *
+     * @param integer $sectionId
+     *
+     * @return Section
+     */
+    public function toggleConnectedSectionId($sectionId)
+    {
+        if (in_array($sectionId, $this->connectedSectionsId)) {
+            $this->removeConnectedSectionId($sectionId);
+        } else {
+            $this->addConnectedSectionId($sectionId);
+        }
 
         return $this;
     }

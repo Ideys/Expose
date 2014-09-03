@@ -119,16 +119,19 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 
     $uploadedFiles = $request->files->all();
     $sectionId = (int) $request->request->get('sectionId');
+
     if (0 == $sectionId) {
         $sectionId = null;
     }
+
     $galleryProvider = new GalleryProvider($app['db'], $app['security']);
     $slideProvider = new SlideProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($sectionId);
+
     $jsonResponse = array();
 
     foreach ($uploadedFiles['files'] as $file) {
-        $slide = $slideProvider->addSlide($app['imagine'], $file);
+        $slide = $slideProvider->addSlide($section, $app['imagine'], $file);
         $slideProvider->create($section, $slide);
 
         $jsonResponse[] = array(
@@ -148,7 +151,8 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
     $galleryProvider = new GalleryProvider($app['db'], $app['security']);
     $section = $galleryProvider->find($id);
 
-    $deletedIds = $section->deleteSlides($itemIds);
+    $slideProvider = new SlideProvider($app['db'], $app['security']);
+    $deletedIds = $slideProvider->deleteSlides($section, $itemIds);
 
     return $app->json($deletedIds);
 })

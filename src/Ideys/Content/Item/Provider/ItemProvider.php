@@ -101,7 +101,7 @@ class ItemProvider extends AbstractProvider
         );
 
         $translationData = $this->objectToArray('expose_section_item_trans', $item);
-        $translationData['expose_section_id'] = $item->getId();
+        $translationData['expose_section_item_id'] = $item->getId();
 
         $this->db->update(
             'expose_section_item_trans',

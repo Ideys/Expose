@@ -2,7 +2,9 @@
 
 namespace Ideys\Content\Item\Provider;
 
-use Ideys\Content\Item\Entity;
+use Ideys\Content\Section\Entity\Section;
+use Ideys\Content\Item\Entity\Item;
+use Ideys\Content\Item\Entity\Slide;
 use Ideys\Content\Section\Provider\GalleryProvider;
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\Box;
@@ -24,27 +26,26 @@ class SlideProvider extends ItemProvider
     /**
      * Add a slide into gallery.
      *
-     * @param \Imagine\Image\ImagineInterface                       $imagine
-     * @param \Symfony\Component\HttpFoundation\File\UploadedFile   $file
+     * @param Section          $section
+     * @param ImagineInterface $imagine
+     * @param UploadedFile     $file
      *
-     * @return Entity\Slide
+     * @return Slide
      */
-    public function addSlide(ImagineInterface $imagine, UploadedFile $file)
+    public function addSlide(Section $section, ImagineInterface $imagine, UploadedFile $file)
     {
         $fileExt = $file->guessClientExtension();
         $realExt = $file->guessExtension();// from mime type
         $fileSize = $file->getClientSize();
 
-        $slide = new Entity\Slide(array(
-            'category' => $file->getMimeType(),
-            'type' => Entity\Item::ITEM_SLIDE,
-            'hierarchy' => ($this->countItemsOfType(Entity\Item::ITEM_SLIDE) + 1),
-        ));
-
-        $slide->setPath(uniqid('expose').'.'.$fileExt);
-        $slide->addParameter('real_ext', $realExt);
-        $slide->addParameter('file_size', $fileSize);
-        $slide->addParameter('original_name', $file->getClientOriginalName());
+        $slide = new Slide();
+        $slide
+            ->setCategory($file->getMimeType())
+            ->setHierarchy($section->countItemsOfType(Item::ITEM_SLIDE) + 1)
+            ->setPath(uniqid('expose').'.'.$fileExt)
+            ->setRealExtension($realExt)
+            ->setFileSize($fileSize)
+            ->setOriginalName($file->getClientOriginalName());
 
         $file->move(GalleryProvider::getGalleryDir(), $slide->getPath());
 
@@ -59,13 +60,13 @@ class SlideProvider extends ItemProvider
      * Resize and save a slide file into dedicated directory.
      *
      * @param ImagineInterface $imagine
-     * @param Entity\Slide     $slide
+     * @param Slide            $slide
      * @param integer          $maxWidth
      * @param integer          $maxHeight
      *
-     * @return Entity\Slide
+     * @return Slide
      */
-    public function createResizeSlide(ImagineInterface $imagine, Entity\Slide $slide, $maxWidth, $maxHeight = null)
+    public function createResizeSlide(ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
     {
         $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
 
@@ -86,39 +87,44 @@ class SlideProvider extends ItemProvider
     /**
      * Delete a selection of slides.
      *
-     * @param array    $itemIds
+     * @param Section $section
+     * @param array   $itemIds
      *
      * @return array
      */
-    public function deleteSlides($itemIds)
+    public function deleteSlides(Section $section, $itemIds)
     {
         $deletedIds = array();
+        $items = $section->getItems();
 
-        foreach ($itemIds as $id) {
-            if (is_numeric($id)
-                && $this->deleteItemAndRelatedFile($this->items[$id])) {
-                $deletedIds[] = $id;
+        foreach ($items as $item) {
+            if (in_array($item->getId(), $itemIds)
+                && $item instanceof Slide
+                && $this->deleteItemAndRelatedFile($item)) {
+                $deletedIds[] = $item->getId();
             }
         }
+
         return $deletedIds;
     }
 
     /**
      * Delete item's data entry and related files.
      *
-     * @param Entity\Slide $slide
+     * @param Slide $slide
      *
      * @return boolean
      */
-    protected function deleteItemAndRelatedFile(Entity\Slide $slide)
+    protected function deleteItemAndRelatedFile(Slide $slide)
     {
-        if ($this->deleteItem($slide->getId())) {
+        if ($this->delete($slide)) {
             @unlink(WEB_DIR.'/gallery/'.$slide->getPath());
             foreach ($this->thumbSizes as $thumbSize){
                 @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->getPath());
             }
             return true;
         }
+
         return false;
     }
 }

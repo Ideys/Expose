@@ -11,21 +11,6 @@ use Ideys\Content\Item\Entity\Place;
 class Map extends Section implements SectionInterface
 {
     /**
-     * @param integer
-     */
-    private $zoom = 1;
-
-    /**
-     * @param integer
-     */
-    private $latitude = 0;
-
-    /**
-     * @param integer
-     */
-    private $longitude = 0;
-
-    /**
      * @param string
      */
     private $mapMode = self::MAP_MODE_ROAD_MAP;
@@ -40,7 +25,7 @@ class Map extends Section implements SectionInterface
      *
      * @var array
      */
-    private $linkedItems = array();
+    private $linkedSectionsItems = array();
 
     /**
      * Constructor.
@@ -127,11 +112,11 @@ class Map extends Section implements SectionInterface
     }
 
     /**
-     * @return mixed
+     * @return integer
      */
     public function getZoom()
     {
-        return $this->zoom;
+        return $this->retrieveParameter('zoom', 1);
     }
 
     /**
@@ -141,53 +126,53 @@ class Map extends Section implements SectionInterface
      */
     public function setZoom($zoom)
     {
-        $this->zoom = $zoom;
+        $this->addParameter('zoom', $zoom);
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getLatitude()
     {
-        return $this->latitude;
+        return $this->retrieveParameter('latitude', 0);
     }
 
     /**
-     * @param mixed $latitude
+     * @param float $latitude
      *
      * @return Map
      */
     public function setLatitude($latitude)
     {
-        $this->latitude = $latitude;
+        $this->addParameter('latitude', $latitude);
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return float
      */
     public function getLongitude()
     {
-        return $this->longitude;
+        return $this->retrieveParameter('longitude', 0);
     }
 
     /**
-     * @param mixed $longitude
+     * @param float $longitude
      *
      * @return Map
      */
     public function setLongitude($longitude)
     {
-        $this->longitude = $longitude;
+        $this->addParameter('longitude', $longitude);
 
         return $this;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMapMode()
     {
@@ -195,7 +180,7 @@ class Map extends Section implements SectionInterface
     }
 
     /**
-     * @param mixed $mapMode
+     * @param string $mapMode
      *
      * @return Map
      */
@@ -211,7 +196,7 @@ class Map extends Section implements SectionInterface
      *
      * @return array
      */
-    public static function getModeChoice()
+    public static function getMapModeChoice()
     {
         return array(
             self::MAP_MODE_HYBRID    => 'maps.mode.hybrid',
@@ -219,5 +204,25 @@ class Map extends Section implements SectionInterface
             self::MAP_MODE_SATELLITE => 'maps.mode.satellite',
             self::MAP_MODE_TERRAIN   => 'maps.mode.terrain',
         );
+    }
+
+    /**
+     * @return Section[]
+     */
+    public function getLinkedSectionsItems()
+    {
+        return $this->linkedSectionsItems;
+    }
+
+    /**
+     * @param array $linkedSectionsItems
+     *
+     * @return Map
+     */
+    public function setLinkedSectionsItems($linkedSectionsItems)
+    {
+        $this->linkedSectionsItems = $linkedSectionsItems;
+
+        return $this;
     }
 }

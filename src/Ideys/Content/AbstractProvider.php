@@ -177,7 +177,6 @@ abstract class AbstractProvider
                 $tableValue = serialize($objectValue);
                 break;
             case $column->getType() instanceof DbTypes\ObjectType :
-                var_dump('OBJECT');
                 $tableValue = serialize($objectValue);
                 break;
             default:

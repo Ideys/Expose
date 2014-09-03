@@ -7,16 +7,6 @@ namespace Ideys\Content\Item\Entity;
  */
 class Field extends Item
 {
-    /**
-     * @var string
-     */
-    private $required = '0';
-
-    /**
-     * @var string
-     */
-    private $choices = '';
-
     const TEXT     = 'text';
     const EMAIL    = 'email';
     const INTEGER  = 'integer';
@@ -45,7 +35,7 @@ class Field extends Item
      */
     public function setRequired($required)
     {
-        $this->required = $required;
+        $this->addParameter('required', $required);
 
         return $this;
     }
@@ -57,7 +47,7 @@ class Field extends Item
      */
     public function getRequired()
     {
-        return $this->required;
+        return $this->retrieveParameter('required', '0');
     }
 
     /**
@@ -67,7 +57,7 @@ class Field extends Item
      */
     public function isRequired()
     {
-        return ($this->required == '1');
+        return ($this->getRequired() == '1');
     }
 
     /**
@@ -79,7 +69,7 @@ class Field extends Item
      */
     public function setChoices($choices)
     {
-        $this->choices = $choices;
+        $this->addParameter('choices', $choices);
 
         return $this;
     }
@@ -91,7 +81,7 @@ class Field extends Item
      */
     public function getChoices()
     {
-        return $this->choices;
+        return $this->retrieveParameter('choices');
     }
 
     /**
