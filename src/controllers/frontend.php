@@ -4,8 +4,9 @@ use Ideys\SilexHooks;
 use Ideys\Settings;
 use Ideys\Messaging;
 use Ideys\Files;
-use Ideys\Content\Section\Provider as ContentProvider;
-use Ideys\Content\Section\Entity as SectionEntity;
+use Ideys\Content\Section\Provider\SectionProvider;
+use Ideys\Content\Section\Provider\FormProvider;
+use Ideys\Content\Section\Entity\Form;
 use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
@@ -17,7 +18,7 @@ $frontendController = SilexHooks::controllerFactory($app);
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $contentFactory = new ContentFactory($app);
-    $sectionProvider = new ContentProvider\SectionProvider($app['db'], $app['security']);
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
@@ -72,13 +73,14 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
 
     // Form sections logic
     $formView = null;
-    if ($section instanceof SectionEntity\Form) {
-        $formProvider = new ContentProvider\FormProvider($app['db'], $app['security']);
+    if ($section instanceof Form) {
+        $formProvider = new FormProvider($app['db'], $app['security']);
         $form = $formProvider->generateFormFields($app['form.factory'], $section);
-        if ($formProvider->checkSubmittedForm($request, $form)) {
+        if ($formProvider->checkSubmittedForm($section, $request, $form)) {
             $validationMessage = $section->getValidationMessage();
             $flashMessage = empty($validationMessage) ? 'form.validation.message.default': $validationMessage;
             SilexHooks::flashMessage($app, $flashMessage, SilexHooks::FLASH_SUCCESS);
+
             return $app->redirect($urlGenerator->generate('section', array('slug' => $slug)));
         }
         $formView = $form->createView();
@@ -147,7 +149,7 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
-$frontendController->match('/profile', function (Request $request, $id = null) use ($app) {
+$frontendController->match('/profile', function (Request $request) use ($app) {
 
     $session = SilexHooks::session($app);
 

@@ -2,7 +2,6 @@
 
 namespace Ideys\Content;
 
-use Ideys\Content\Item\Provider\ItemProvider;
 use Ideys\Content\Section\Provider\SectionProvider;
 use Ideys\Content\Section\Entity\SectionInterface;
 use Ideys\Content\Section\Entity\Section;
@@ -27,7 +26,6 @@ class ContentFactory
      */
     protected $translator;
 
-
     /**
      * @var string
      */
@@ -49,34 +47,6 @@ class ContentFactory
         $this->translator = $app['translator'];
         $this->security = $app['security'];
         $this->language = $this->translator->getLocale();
-    }
-
-    /**
-     * Return linked Sections Items.
-     *
-     * @param Section $section
-     *
-     * @return array
-     */
-    public function getLinkedSectionsItems(Section $section)
-    {
-        $linkedItems = array();
-
-        if (empty($this->connectedSectionsId)) {
-            $entities = array();
-        } else {
-            $entities = $this->db
-                ->fetchAll(
-                    ItemProvider::baseQuery().
-                    'WHERE s.id IN  ('.implode(',', $section->getConnectedSectionsId()).') '.
-                    'ORDER BY s.hierarchy, i.hierarchy ');
-        }
-
-        foreach ($entities as $data) {
-            $linkedItems[$data['id']] = ContentFactory::instantiateItem($data);
-        }
-
-        return $linkedItems;
     }
 
     /**
@@ -147,8 +117,8 @@ class ContentFactory
      * - Gallery integration
      * - Video integration
      *
-     * @param SectionInterface $section
-     * @param \Twig_Environment        $twig
+     * @param SectionInterface  $section
+     * @param \Twig_Environment $twig
      */
     public function composeSectionItems(SectionInterface $section, \Twig_Environment $twig)
     {
@@ -224,7 +194,7 @@ class ContentFactory
      *
      * @param Section $section
      */
-    private function updateGroupedSections(Section $section)
+    public function updateGroupedSections(Section $section)
     {
         $this->db->update('expose_section', array(
             'custom_css' => $section->getCustomCss(),
@@ -235,7 +205,8 @@ class ContentFactory
 
         // Update translated sections parameters
         $sectionsIds = $this->db->fetchAll(
-            'SELECT id FROM expose_section WHERE tag = ? AND type = ?',
+              'SELECT id FROM expose_section '
+            . 'WHERE tag = ? AND type = ?',
             array($section->getTag(), $section->getType())
         );
 

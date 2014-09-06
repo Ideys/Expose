@@ -21,13 +21,6 @@ class Map extends Section implements SectionInterface
     const MAP_MODE_TERRAIN      = 'TERRAIN';
 
     /**
-     * Hold linked sections items.
-     *
-     * @var array
-     */
-    private $linkedSectionsItems = array();
-
-    /**
      * Constructor.
      */
     public function __construct()
@@ -84,11 +77,13 @@ class Map extends Section implements SectionInterface
         }
 
         // Test if at least one linked sections item has coordinates defined.
-        foreach ($this->getLinkedSectionsItems() as $linkedItem)
-            if ($linkedItem instanceof Entity\Item
-                && $linkedItem->hasCoordinates()) {
-                return true;
+        foreach ($this->getConnectedSections() as $connectedSection) {
+            foreach ($connectedSection->getItems() as $item) {
+                if ($item->hasCoordinates()) {
+                    return true;
+                }
             }
+        }
 
         return false;
     }
@@ -199,30 +194,10 @@ class Map extends Section implements SectionInterface
     public static function getMapModeChoice()
     {
         return array(
-            self::MAP_MODE_HYBRID    => 'maps.mode.hybrid',
-            self::MAP_MODE_ROAD_MAP  => 'maps.mode.road.map',
-            self::MAP_MODE_SATELLITE => 'maps.mode.satellite',
-            self::MAP_MODE_TERRAIN   => 'maps.mode.terrain',
+            self::MAP_MODE_HYBRID    => 'map.mode.hybrid',
+            self::MAP_MODE_ROAD_MAP  => 'map.mode.road.map',
+            self::MAP_MODE_SATELLITE => 'map.mode.satellite',
+            self::MAP_MODE_TERRAIN   => 'map.mode.terrain',
         );
-    }
-
-    /**
-     * @return Section[]
-     */
-    public function getLinkedSectionsItems()
-    {
-        return $this->linkedSectionsItems;
-    }
-
-    /**
-     * @param array $linkedSectionsItems
-     *
-     * @return Map
-     */
-    public function setLinkedSectionsItems($linkedSectionsItems)
-    {
-        $this->linkedSectionsItems = $linkedSectionsItems;
-
-        return $this;
     }
 }

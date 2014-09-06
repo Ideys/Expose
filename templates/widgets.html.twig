@@ -18,7 +18,7 @@
     'map': 'map',
     'link': 'link'
 } %}
-<i class="fi-{{ typeIcons[type] }} {{ class }}"></i>
+<i class="fi-{{ typeIcons[type|default('html')] }} {{ class }}"></i>
 {% endmacro %}
 
 {% macro visibility_icon(visibility, class) %}

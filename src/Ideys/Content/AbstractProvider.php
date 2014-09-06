@@ -144,6 +144,7 @@ abstract class AbstractProvider
                 break;
             case strpos($docComment, '@var array') :
                 $objectValue = unserialize($tableValue);
+                $objectValue = is_array($objectValue) ? $objectValue : array();
                 break;
             default:
                 $objectValue = $tableValue;

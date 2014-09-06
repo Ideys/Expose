@@ -6,6 +6,7 @@
     data-sortable="{{ path('admin_content_manager_sort_items') }}">
   {% for video in section.videos %}
   <li data-selectable data-id="{{ video.id }}">
+    <h5>{{ video.title }}</h5>
     <div class="flex-video {{ video.provider }} handle">
         <iframe src="{{ video.path }}" frameborder="0"></iframe>
     </div>

@@ -101,6 +101,14 @@ class Section extends AbstractEntity
     protected $connectedSectionsId = array();
 
     /**
+     * Hold connected sections objects
+     * retrieved from $connectedSectionsId.
+     *
+     * @var array
+     */
+    protected $connectedSections = array();
+
+    /**
      * @var array
      */
     protected $sections = array();
@@ -679,6 +687,26 @@ class Section extends AbstractEntity
         } else {
             $this->addConnectedSectionId($sectionId);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Section[]
+     */
+    public function getConnectedSections()
+    {
+        return $this->connectedSections;
+    }
+
+    /**
+     * @param Section $connectedSection
+     *
+     * @return Map
+     */
+    public function addConnectedSection(Section $connectedSection)
+    {
+        $this->connectedSections[] = $connectedSection;
 
         return $this;
     }

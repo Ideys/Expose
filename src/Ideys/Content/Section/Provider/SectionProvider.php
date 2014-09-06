@@ -7,6 +7,7 @@ use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Item\Provider\ItemProvider;
 use Ideys\Content\Item\Entity\Slide;
 use Ideys\String;
+use Symfony\Component\Validator\Constraints\Currency;
 
 /**
  * Section provider global class.
@@ -86,11 +87,12 @@ class SectionProvider extends AbstractProvider
     /**
      * Instantiate a related content object from database entity.
      *
-     * @param array $data
+     * @param array   $data
+     * @param boolean $hydrateConnectedSections
      *
      * @return Section
      */
-    public function hydrateSection(array $data)
+    public function hydrateSection(array $data, $hydrateConnectedSections = true)
     {
         $sectionClassName = '\Ideys\Content\Section\Entity\\'.ucfirst($data['type']);
         $section = new $sectionClassName();
@@ -98,6 +100,9 @@ class SectionProvider extends AbstractProvider
         static::hydrate($section, $data);
 
         $this->hydrateItems($section);
+
+        if ($hydrateConnectedSections)
+            $this->hydrateConnectedSections($section);
 
         return $section;
     }
@@ -123,6 +128,30 @@ class SectionProvider extends AbstractProvider
         }
 
         $section->setItems($items);
+    }
+
+    /**
+     * Insert connected sections items.
+     * Currently used by Maps to attach others sections content.
+     *
+     * @param Section $section
+     */
+    private function hydrateConnectedSections(Section $section)
+    {
+        $connectedSectionsId = $section->getConnectedSectionsId();
+
+        if (! empty($connectedSectionsId)) {
+            $entities = $this->db
+                ->fetchAll(static::baseQuery()
+                    . 'WHERE s.id IN  ('.implode(',', $connectedSectionsId).') '
+                    . 'GROUP BY s.id '
+                    . 'ORDER BY s.hierarchy, i.hierarchy ');
+
+            foreach ($entities as $data) {
+                $connectedSection = $this->hydrateSection($data, false);
+                $section->addConnectedSection($connectedSection);
+            }
+        }
     }
 
     /**

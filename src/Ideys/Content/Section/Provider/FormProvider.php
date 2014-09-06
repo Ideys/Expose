@@ -64,12 +64,13 @@ class FormProvider extends SectionProvider
     /**
      * Return the form object with dynamic fields.
      *
+     * @param  \Ideys\Content\Section\Entity\Form        $sectionForm
      * @param  \Symfony\Component\HttpFoundation\Request $request
      * @param  \Symfony\Component\Form\Form              $form
      *
      * @return boolean true if form is submitted
      */
-    public function checkSubmittedForm(Request $request, SfForm\Form $form)
+    public function checkSubmittedForm(Entity\Form $sectionForm, Request $request, SfForm\Form $form)
     {
         $form->handleRequest($request);
 
@@ -77,7 +78,7 @@ class FormProvider extends SectionProvider
             $data = $form->getData();
             $this->handleFiles($data);
             $this->db->insert('expose_form_result', array(
-                'expose_section_id' => $this->id,
+                'expose_section_id' => $sectionForm->getId(),
                 'result' => serialize($data),
                 'language' => $this->language,
                 'date' => (new \DateTime())->format('Y-m-d H:i:s'),

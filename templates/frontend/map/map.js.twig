@@ -8,7 +8,7 @@
             var mapOptions = {
                 center: new google.maps.LatLng({{ section.latitude }}, {{ section.longitude }}),
                 zoom: {{ section.zoom }},
-                mapTypeId: google.maps.MapTypeId.{{ section.map_mode }}
+                mapTypeId: google.maps.MapTypeId.{{ section.mapMode }}
             };
 
             {# Generate the map #}
@@ -21,18 +21,20 @@
             {% endfor %}
 
             {# Add linked items markers to the map #}
-            {% for linked_item in section.linkedSectionsItems
-                if linked_item.hasCoordinates %}
+            {% for connectedSection in section.connectedSections %}
+                {% for linked_item in connectedSection.items
+                    if linked_item.hasCoordinates %}
 
-                {{ mapWidget.marker_position(linked_item) }}
+                    {{ mapWidget.marker_position(linked_item) }}
 
-                var contentPanel{{ linked_item.id }} = new google.maps.InfoWindow({
-                    content: '{{ mapWidget.item_content(linked_item) }}'
-                });
-                google.maps.event.addListener(marker{{ linked_item.id }}, 'click', function() {
-                    contentPanel{{ linked_item.id }}.open(map, marker{{ linked_item.id }});
-                });
+                    var contentPanel{{ linked_item.id }} = new google.maps.InfoWindow({
+                        content: '{{ mapWidget.item_content(linked_item) }}'
+                    });
+                    google.maps.event.addListener(marker{{ linked_item.id }}, 'click', function() {
+                        contentPanel{{ linked_item.id }}.open(map, marker{{ linked_item.id }});
+                    });
 
+                {% endfor %}
             {% endfor %}
         }
 
