@@ -2,12 +2,14 @@
 
 namespace Ideys\Content\Section\Provider;
 
+use Ideys\Settings\Settings;
 use Ideys\Content\AbstractProvider;
 use Ideys\Content\Section\Entity\Section;
+use Ideys\Content\Section\Entity\Html;
 use Ideys\Content\Item\Provider\ItemProvider;
 use Ideys\Content\Item\Entity\Slide;
+use Ideys\Content\Item\Entity\Page;
 use Ideys\String;
-use Symfony\Component\Validator\Constraints\Currency;
 
 /**
  * Section provider global class.
@@ -82,6 +84,48 @@ class SectionProvider extends AbstractProvider
         $data = $this->db->fetchAssoc($sql, array($slug, $this->language));
 
         return $this->hydrateSection($data);
+    }
+
+    /**
+     * Find the homepage section, create it if not exists.
+     *
+     * @return Section
+     */
+    public function findHomepage()
+    {
+        $sql = static::baseQuery()
+            . 'WHERE s.visibility = ? '
+            . 'AND t.language = ? '
+            . 'ORDER BY s.hierarchy ASC ';
+
+        $entities = $this->db->fetchAll($sql, array(
+            Section::VISIBILITY_HOMEPAGE,
+            $this->language
+        ));
+
+        // Generate default homepage
+        if (empty($entities)) {
+            $settings = new Settings($this->db);
+
+            $homepage = new Html();
+            $homepage->setTitle($settings->getName());
+            $homepage->setVisibility(Section::VISIBILITY_HOMEPAGE);
+            $this->persist($homepage);
+
+            $page = new Page();
+            $page->setExposeSectionId($homepage->getId());
+            $page->setTitle($settings->getName());
+            $page->setContent('<div id="homepage"><h1>'.$settings->getName().'</h1></div>');
+
+            $itemProvider = new ItemProvider($this->db, $this->security);
+            $itemProvider->create($homepage, $page);
+        } else {
+
+            $data = array_pop($entities);
+            $homepage = $this->hydrateSection($data);
+        }
+
+        return $homepage;
     }
 
     /**

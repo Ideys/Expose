@@ -17,13 +17,12 @@ $frontendController = SilexHooks::controllerFactory($app);
 
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
-    $contentFactory = new ContentFactory($app);
     $sectionProvider = new SectionProvider($app['db'], $app['security']);
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
     if (null === $slug) {
-        $section = $contentFactory->findHomepage($slug);
+        $section = $sectionProvider->findHomepage($slug);
     } else {
         $section = $sectionProvider->findBySlug($slug);
     }
@@ -69,7 +68,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     }
 
     // Handle composite sections with other sections inclusions
-    $contentFactory->composeSectionItems($section, $app['twig']);
+//    $contentFactory->composeSectionItems($section, $app['twig']);
 
     // Form sections logic
     $formView = null;

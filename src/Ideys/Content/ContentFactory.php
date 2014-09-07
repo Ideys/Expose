@@ -5,10 +5,7 @@ namespace Ideys\Content;
 use Ideys\Content\Section\Provider\SectionProvider;
 use Ideys\Content\Section\Entity\SectionInterface;
 use Ideys\Content\Section\Entity\Section;
-use Ideys\Content\Section\Entity\Html;
 use Ideys\Content\Item\Entity\Item;
-use Ideys\Content\Item\Entity\Page;
-use Ideys\Settings\Settings;
 use Silex\Application;
 
 /**
@@ -72,43 +69,6 @@ class ContentFactory
         $sectionProvider->setLanguage($this->language);
 
         return $sectionProvider->hydrateSection($data);
-    }
-
-    /**
-     * Find the homepage section, create it if not exists.
-     *
-     * @return Section
-     */
-    public function findHomepage()
-    {
-        $sql = SectionProvider::baseQuery()
-           . 'WHERE s.visibility = ? '
-           . 'AND t.language = ? '
-           . 'ORDER BY s.hierarchy ASC ';
-        $entities = $this->db->fetchAll($sql, array(Section::VISIBILITY_HOMEPAGE, $this->language));
-
-        // Generate default homepage
-        if (empty($entities)) {
-            $settings = new Settings($this->db);
-            $section = $this->addSection(new Html($this->db, array(
-                'type' => Section::SECTION_HTML,
-                'title' => $settings->getName(),
-                'visibility' => Section::VISIBILITY_HOMEPAGE,
-            )));
-            $page = new Page(array(
-                'type' => Item::ITEM_PAGE,
-                'title' => $settings->getName(),
-                'content' => '<div id="homepage"><h1>'.$settings->getName().'</h1></div>',
-            ));
-            $this->addItem($section, $page);
-        } else {
-            $sectionProvider = new SectionProvider($this->db, $this->security);
-            $sectionProvider->setLanguage($this->language);
-            $data = array_pop($entities);
-            $section = $sectionProvider->hydrateSection($data);
-        }
-
-        return $section;
     }
 
     /**
