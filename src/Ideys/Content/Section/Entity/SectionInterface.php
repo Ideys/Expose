@@ -22,6 +22,20 @@ interface SectionInterface
     public function getType();
 
     /**
+     * Return Section title.
+     *
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     * Return Section slugged title.
+     *
+     * @return string
+     */
+    public function getSlug();
+
+    /**
      * Return default Section Items.
      *
      * @return array

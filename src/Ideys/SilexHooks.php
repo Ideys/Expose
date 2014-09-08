@@ -82,6 +82,18 @@ class SilexHooks
     public static function monolog(App $app) { return $app['monolog']; }
 
     /**
+     * Shortcut to extract locale language string from translator service.
+     *
+     * @param App $app
+     *
+     * @return string
+     */
+    public static function language(App $app)
+    {
+        return static::translator($app)->getLocale();
+    }
+
+    /**
      * Shortcut for redirect responses.
      *
      * @param App    $app

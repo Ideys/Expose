@@ -115,7 +115,7 @@ class SectionProvider extends AbstractProvider
             $page = new Page();
             $page->setExposeSectionId($homepage->getId());
             $page->setTitle($settings->getName());
-            $page->setContent('<div id="homepage"><h1>'.$settings->getName().'</h1></div>');
+            $page->setContent('<a href="__path:first_section__" id="homepage"><h1>'.$settings->getName().'</h1></a>');
 
             $itemProvider = new ItemProvider($this->db, $this->security);
             $itemProvider->create($homepage, $page);
@@ -126,6 +126,28 @@ class SectionProvider extends AbstractProvider
         }
 
         return $homepage;
+    }
+
+    /**
+     * Return the first viewable section.
+     *
+     * @return Section|null
+     */
+    public function findFirstSection()
+    {
+        $sql = static::baseQuery()
+            . "WHERE s.type NOT IN ('link', 'dir') "
+            . "AND t.language = ? "
+            . "AND s.visibility NOT IN ('homepage', 'closed') ";
+        $entities = $this->db->fetchAll($sql, array($this->language));
+
+        if (empty($entities)) {
+            return null;
+        }
+
+        $data = array_pop($entities);
+
+        return $this->hydrateSection($data);
     }
 
     /**

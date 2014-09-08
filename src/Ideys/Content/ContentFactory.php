@@ -19,19 +19,9 @@ class ContentFactory
     protected $db;
 
     /**
-     * @var \Symfony\Component\Translation\Translator
-     */
-    protected $translator;
-
-    /**
      * @var string
      */
-    protected $language;
-
-    /**
-     * @var array
-     */
-    protected $sections = array();
+    protected $language = 'en';
 
     /**
      * Constructor: inject required Silex dependencies.
@@ -41,34 +31,7 @@ class ContentFactory
     public function __construct(Application $app)
     {
         $this->db = $app['db'];
-        $this->translator = $app['translator'];
         $this->security = $app['security'];
-        $this->language = $this->translator->getLocale();
-    }
-
-    /**
-     * Return the first viewable section.
-     *
-     * @return Section
-     */
-    public function findFirstSection()
-    {
-        $sql = SectionProvider::baseQuery()
-            . "WHERE s.type NOT IN ('link', 'dir') "
-            . "AND t.language = ? "
-            . "AND s.visibility NOT IN ('homepage', 'closed') ";
-        $entities = $this->db->fetchAll($sql, array($this->language));
-
-        if (empty($entities)) {
-            return null;
-        }
-
-        $data = array_pop($entities);
-
-        $sectionProvider = new SectionProvider($this->db, $this->security);
-        $sectionProvider->setLanguage($this->language);
-
-        return $sectionProvider->hydrateSection($data);
     }
 
     /**

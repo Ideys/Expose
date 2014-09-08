@@ -256,6 +256,7 @@ table {
     position: relative;
     height: 90vh;
     text-align: center;
+    display: block;
 }
 
 #homepage h1 {

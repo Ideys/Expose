@@ -6,8 +6,8 @@ use Ideys\Messaging;
 use Ideys\Files;
 use Ideys\Content\Section\Provider\SectionProvider;
 use Ideys\Content\Section\Provider\FormProvider;
+use Ideys\Content\Section\Entity\SectionInterface;
 use Ideys\Content\Section\Entity\Form;
-use Ideys\Content\ContentFactory;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +18,8 @@ $frontendController = SilexHooks::controllerFactory($app);
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider->setLanguage(SilexHooks::language($app));
+
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
@@ -97,11 +99,17 @@ $frontendController->get('/', $frontendContent)
 ;
 
 $frontendController->get('/first', function() use ($app) {
-    $contentFactory = new ContentFactory($app);
 
-    $firstSection = $contentFactory->findFirstSection();
+    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider->setLanguage(SilexHooks::language($app));
 
-    return SilexHooks::redirect($app, 'section', array('slug' => $firstSection->getSlug()));
+    $firstSection = $sectionProvider->findFirstSection();
+
+    if ($firstSection instanceof SectionInterface) {
+        return SilexHooks::redirect($app, 'section', array('slug' => $firstSection->getSlug()));
+    } else {
+        return SilexHooks::redirect($app, 'homepage');
+    }
 })
 ->bind('first_section')
 ;
