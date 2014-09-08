@@ -377,6 +377,11 @@ body.gallery-fullScreen .orbit-container .orbit-slides-container > * .orbit-capt
 }
 
 /* Gallery full screen thumbs */
+
+body.gallery-fullScreen.gallery-thumb .orbit-container .orbit-slides-container > * .orbit-caption {
+    margin-bottom: 90px;
+}
+
 #slide-thumbs {
     width: 100%;
     position: fixed;
