@@ -40,7 +40,7 @@ class SettingsProvider
      */
     public function getSettings()
     {
-        $parameterRows = $this->db->fetchAll('SELECT * FROM expose_settings');
+        $parameterRows = $this->db->fetchAll('SELECT * FROM '.'expose_settings');
 
         // Flatten extracted data
         $parameters = array();
@@ -93,9 +93,18 @@ class SettingsProvider
                 // Save parameters that have been changed
                 if ($settingsParameter != $previousSettingsParameter) {
 
-                    $this->db->update('expose_settings', array(
+                    // Update if parameter is already persisted...
+                    $isUpdated = $this->db->update('expose_settings', array(
                         'value' => $settingsParameter,
                     ), array('attribute' => $propertyName));
+
+                    // ...create entry otherwise
+                    if (! $isUpdated) {
+                        $this->db->insert('expose_settings', array(
+                            'attribute' => $propertyName,
+                            'value' => $settingsParameter,
+                        ));
+                    }
 
                     $updatedParameters[] = $propertyName;
                 }
