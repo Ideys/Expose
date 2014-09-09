@@ -47,7 +47,7 @@
   } only %}
 {% elseif 'left' == settings.menuPosition
   and not hideMenu %}
-  <div class="off-canvas-wrap">
+  <div class="off-canvas-wrap" data-offcanvas>
     <div class="inner-wrap">
     {% include "frontend/menu/_sidebar.html.twig" with {
         'widgets': widgets
