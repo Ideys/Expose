@@ -13,7 +13,7 @@ $contentManagerController = SilexHooks::controllerFactory($app);
 $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $typeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider = new SectionProvider($app);
     $settingsProvider = new SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
@@ -80,7 +80,7 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
 
 $contentManagerController->post('/move/items/{id}', function (Request $request, $id) use ($app) {
 
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider = new SectionProvider($app);
 
     $section = $sectionProvider->find($id);
     $itemIds = $request->get('items');
@@ -101,7 +101,7 @@ $contentManagerController->post('/move/items/{id}', function (Request $request, 
 $contentManagerController->post('/toggle/items/{id}', function (Request $request, $id) use ($app) {
 
     $db = SilexHooks::db($app);
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider = new SectionProvider($app);
 
     $section = $sectionProvider->find($id);
     $itemIds = $request->get('items');
@@ -127,7 +127,7 @@ $contentManagerController->post('/toggle/items/{id}', function (Request $request
 
 $contentManagerController->get('/{id}/archive', function ($id) use ($app) {
 
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider = new SectionProvider($app);
 
     $section = $sectionProvider->find($id);
     $section->toggleArchive();
@@ -142,7 +142,7 @@ $contentManagerController->get('/{id}/archive', function ($id) use ($app) {
 
 $contentManagerController->match('/{id}/edit/dir', function (Request $request, $id) use ($app) {
 
-    $dirProvider = new DirProvider($app['db'], $app['security']);
+    $dirProvider = new DirProvider($app);
     $section = $dirProvider->find($id);
 
     $typeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
@@ -170,7 +170,7 @@ $contentManagerController->match('/{id}/edit/dir', function (Request $request, $
 
 $contentManagerController->match('/{id}/settings', function (Request $request, $id) use ($app) {
 
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider = new SectionProvider($app);
     $section = $sectionProvider->find($id);
 
     $sectionTypeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
@@ -196,7 +196,7 @@ $contentManagerController->match('/{id}/settings', function (Request $request, $
 
 $contentManagerController->post('/{id}/delete', function (Request $request, $id) use ($app) {
 
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
+    $sectionProvider = new SectionProvider($app);
     $section = $sectionProvider->find($id);
 
 //    // For directories need to have full sections tree

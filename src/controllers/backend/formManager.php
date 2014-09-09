@@ -12,7 +12,7 @@ $formManagerController = SilexHooks::controllerFactory($app);
 
 $formManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $formProvider = new FormProvider($app['db'], $app['security']);
+    $formProvider = new FormProvider($app);
     $section = $formProvider->find($id);
 
     $itemTypeFactory = new ItemTypeFactory($app['form.factory']);
@@ -22,7 +22,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-        $fieldProvider = new FieldProvider($app['db'], $app['security']);
+        $fieldProvider = new FieldProvider($app);
         $fieldProvider->create($section, $field);
 
         return SilexHooks::redirect($app, 'admin_form_manager_edit', array('id' => $id));
@@ -40,7 +40,7 @@ $formManagerController->match('/{id}/edit', function (Request $request, $id) use
 
 $formManagerController->get('/{id}/results', function ($id) use ($app) {
 
-    $formProvider = new FormProvider($app['db'], $app['security']);
+    $formProvider = new FormProvider($app);
     $section = $formProvider->find($id);
     $results = $formProvider->getResults($section);
 
@@ -71,7 +71,7 @@ $formManagerController->get('/download/{file}', function ($file) use ($app) {
 
 $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $itemId) use ($app) {
 
-    $fieldProvider = new FieldProvider($app['db'], $app['security']);
+    $fieldProvider = new FieldProvider($app);
     $field = $fieldProvider->find($itemId);
 
     $isDeleted = $fieldProvider->delete($field);
@@ -87,7 +87,7 @@ $formManagerController->post('/{id}/remove/field/{itemId}', function ($id, $item
 
 $formManagerController->post('/{id}/remove/result/{resultId}', function ($id, $resultId) use ($app) {
 
-    $formProvider = new FormProvider($app['db'], $app['security']);
+    $formProvider = new FormProvider($app);
 
     $isDeleted = $formProvider->deleteResult($resultId);
 

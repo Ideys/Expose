@@ -10,12 +10,30 @@ use Ideys\Content\Item\Provider\ItemProvider;
 use Ideys\Content\Item\Entity\Slide;
 use Ideys\Content\Item\Entity\Page;
 use Ideys\String;
+use Silex\Application as SilexApp;
 
 /**
  * Section provider global class.
  */
 class SectionProvider extends AbstractProvider
 {
+    /**
+     * @var \Ideys\Content\Item\Provider\ItemProvider
+     */
+    protected $itemProvider;
+
+    /**
+     * Constructor.
+     *
+     * @param \Silex\Application $app
+     */
+    public function __construct(SilexApp $app)
+    {
+        parent::__construct($app);
+
+        $this->itemProvider = new ItemProvider($app);
+    }
+
     /**
      * Return sections.
      *
@@ -89,9 +107,11 @@ class SectionProvider extends AbstractProvider
     /**
      * Find the homepage section, create it if not exists.
      *
+     * @param \Silex\Application $app
+     *
      * @return Section
      */
-    public function findHomepage()
+    public function findHomepage(SilexApp $app)
     {
         $sql = static::baseQuery()
             . 'WHERE s.visibility = ? '
@@ -117,8 +137,7 @@ class SectionProvider extends AbstractProvider
             $page->setTitle($settings->getName());
             $page->setContent('<a href="__path:first_section__" id="homepage"><h1>'.$settings->getName().'</h1></a>');
 
-            $itemProvider = new ItemProvider($this->db, $this->security);
-            $itemProvider->create($homepage, $page);
+            $this->itemProvider->create($homepage, $page);
         } else {
 
             $data = array_pop($entities);
@@ -178,7 +197,7 @@ class SectionProvider extends AbstractProvider
      *
      * @param Section $section
      */
-    public function hydrateItems(Section $section)
+    protected function hydrateItems(Section $section)
     {
         $items = array();
 
@@ -188,9 +207,8 @@ class SectionProvider extends AbstractProvider
             . 'ORDER BY i.hierarchy ASC ';
         $rows = $this->db->fetchAll($sql, array($section->getId(), $this->language));
 
-        $itemProvider = new ItemProvider($this->db, $this->security);
         foreach ($rows as $data) {
-            $items[$data['id']] = $itemProvider->hydrateItem($data);
+            $items[$data['id']] = $this->itemProvider->hydrateItem($data);
         }
 
         $section->setItems($items);

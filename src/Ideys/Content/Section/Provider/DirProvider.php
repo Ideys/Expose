@@ -22,8 +22,7 @@ class DirProvider extends SectionProvider
         foreach ($section->getSections() as $section) {
             // Retrieve all section items,
             // to manage for example gallery pictures deletion.
-            $section->hydrateItems();
-            $section->delete();
+            $this->hydrateItems($section);
         }
 
         return parent::delete($section);

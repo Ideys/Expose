@@ -2,12 +2,12 @@
 
 namespace Ideys\Content;
 
-use Doctrine\DBAL\Connection;
+use Ideys\SilexHooks;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types as DbTypes;
 use Doctrine\Common\Inflector\Inflector;
 use Symfony\Component\Security\Core\User\User;
-use Symfony\Component\Security\Core\SecurityContext;
+use Silex\Application as SilexApp;
 
 /**
  * Content provider global class.
@@ -34,13 +34,13 @@ abstract class AbstractProvider
     /**
      * Constructor.
      *
-     * @param Connection      $connection
-     * @param SecurityContext $securityContext
+     * @param \Silex\Application $app
      */
-    public function __construct(Connection $connection, SecurityContext $securityContext)
+    public function __construct(SilexApp $app)
     {
-        $this->db = $connection;
-        $this->security = $securityContext;
+        $this->db = SilexHooks::db($app);
+        $this->security = SilexHooks::security($app);
+        $this->language = SilexHooks::language($app);
     }
 
     /**
