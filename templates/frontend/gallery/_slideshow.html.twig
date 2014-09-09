@@ -1,16 +1,16 @@
 {% spaceless %}
 <div class="row">
-  <div class="large-12 columns">
-    <ul class="gallery-slideshow" data-orbit>
-      {% for row, slide in section.slides if slide.published %}
-      <li class="text-center" data-orbit-slide="pic-{{ row }}">
-        <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
-             alt="{{ slide.title|e }}">
-        {{ widgets.gallery_slide_legend(slide, section, 'orbit-caption') }}
-      </li>
-      {% endfor %}
-    </ul>
-  </div>
+    <div class="large-12 columns">
+
+        <div class="gallery-slideshow">
+            {% for row, slide in section.slides if slide.published %}
+                <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
+                     alt="{{ slide.title|e }}">
+                {{ widgets.gallery_slide_legend(slide, section) }}
+            {% endfor %}
+        </div>
+
+    </div>
 </div>
 {% include "frontend/gallery/_thumbList.html.twig" with { 'section': section } only %}
 {% endspaceless %}

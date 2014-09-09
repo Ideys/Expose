@@ -108,10 +108,10 @@
 {% endmacro %}
 
 {# HTML formatter for galleries slides legend #}
-{% macro gallery_slide_legend(slide, section, wrapper_class) %}
+{% macro gallery_slide_legend(slide, section) %}
 {% spaceless %}
 {% if slide.description|length or section.legend|length %}
-  <div class="{{ wrapper_class|default('caption') }}">
+  <div class="caption">
     {{ section.legend|default('%s')|replace({'%s': slide.description})|raw }}
   </div>
 {% endif %}

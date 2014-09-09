@@ -1,12 +1,12 @@
 {% spaceless %}
-<ul class="gallery-slideshow" data-orbit>
+<div class="gallery-slideshow">
   {% for row, slide in section.slides if slide.published %}
-    <li data-orbit-slide="pic-{{ row }}">
-      <div class="slide"
-           style="background-image: url('{{ app.request.basepath }}/gallery/{{ slide.path }}');"></div>
-      {{ widgets.gallery_slide_legend(slide, section, 'orbit-caption') }}
-     </li>
+      <div>
+          <div class="slide"
+               style="background-image: url('{{ app.request.basepath }}/gallery/{{ slide.path }}');"></div>
+          {{ widgets.gallery_slide_legend(slide, section) }}
+      </div>
   {% endfor %}
-</ul>
+</div>
 {% include "frontend/gallery/_thumbList.html.twig" with { 'section': section } only %}
 {% endspaceless %}
