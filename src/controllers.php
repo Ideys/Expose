@@ -1,5 +1,6 @@
 <?php
 
+use Ideys\SilexHooks;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -9,7 +10,7 @@ $app->get('/', function () use ($app) {
 
     $language = client_language_guesser($app);
 
-    return $app->redirect($app['url_generator']->generate('homepage', array('_locale' => $language)));
+    return SilexHooks::redirect($app, 'homepage', array('_locale' => $language));
 })
 ->bind('root')
 ;
@@ -18,7 +19,7 @@ $app->get('/admin', function () use ($app) {
 
     $language = client_language_guesser($app);
 
-    return $app->redirect($app['url_generator']->generate('admin_content_manager', array('_locale' => $language)));
+    return SilexHooks::redirect($app, 'admin_content_manager', array('_locale' => $language));
 })
 ->bind('admin')
 ;
@@ -26,24 +27,25 @@ $app->get('/admin', function () use ($app) {
 $app->get('/admin-redirect', function () use ($app) {
 
     $language = client_language_guesser($app);
+    $security = SilexHooks::security($app);
 
-    if ($app['security']->isGranted('ROLE_EDITOR')) {
-        $redirectRoute = $app['url_generator']->generate('admin_content_manager', array('_locale' => $language));
-    } elseif ($app['security']->isGranted('ROLE_USER')) {
-        $redirectRoute = $app['url_generator']->generate('user_profile', array('_locale' => $language));
+    if ($security->isGranted('ROLE_EDITOR')) {
+        $redirectRoute = 'admin_content_manager';
+    } elseif ($security->isGranted('ROLE_USER')) {
+        $redirectRoute = 'user_profile';
     } else {
-        $redirectRoute = $app['url_generator']->generate('login');
+        $redirectRoute = 'login';
     }
 
-    return $app->redirect($redirectRoute);
+    return SilexHooks::redirect($app, $redirectRoute, array('_locale' => $language));
 })
 ->bind('admin_redirection')
 ;
 
 $app->get('/login', function(Request $request) use ($app) {
-    return $app['twig']->render('backend/login.html.twig', array(
+    return SilexHooks::twig($app)->render('backend/login.html.twig', array(
         'error'         => $app['security.last_error']($request),
-        'last_username' => $app['session']->get('_security.last_username'),
+        'last_username' => SilexHooks::session($app)->get('_security.last_username'),
     ));
 })
 ->bind('login')
@@ -86,7 +88,7 @@ $app->error(function (\Exception $e, $code) use ($app) {
         'errors/default.html.twig',
     );
 
-    return new Response($app['twig']->resolveTemplate($templates)->render(array('code' => $code)), $code);
+    return new Response(SilexHooks::twig($app)->resolveTemplate($templates)->render(array('code' => $code)), $code);
 });
 
 /**

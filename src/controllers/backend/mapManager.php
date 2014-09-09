@@ -12,7 +12,7 @@ $mapManagerController = SilexHooks::controllerFactory($app);
 
 $mapManagerController->get('/{id}/preview', function ($id) use ($app) {
 
-    $mapProvider = new MapProvider($app['db'], $app['security']);
+    $mapProvider = new MapProvider($app);
     $section = $mapProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/mapManager/_mapPreview.html.twig', array(
@@ -25,7 +25,7 @@ $mapManagerController->get('/{id}/preview', function ($id) use ($app) {
 
 $mapManagerController->match('/{id}/places', function (Request $request, $id) use ($app) {
 
-    $mapProvider = new MapProvider($app['db'], $app['security']);
+    $mapProvider = new MapProvider($app);
     $section = $mapProvider->find($id);
 
     $linkableSections = $mapProvider->findLinkableSections();
@@ -37,7 +37,7 @@ $mapManagerController->match('/{id}/places', function (Request $request, $id) us
     $form->handleRequest($request);
 
     if ($form->isValid()) {
-        $placeProvider = new PlaceProvider($app['db'], $app['security']);
+        $placeProvider = new PlaceProvider($app);
         $placeProvider->create($section, $place);
     }
 
@@ -54,7 +54,7 @@ $mapManagerController->match('/{id}/places', function (Request $request, $id) us
 
 $mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionId) use ($app) {
 
-    $mapProvider = new MapProvider($app['db'], $app['security']);
+    $mapProvider = new MapProvider($app);
     $section = $mapProvider->find($id);
 
     $section->toggleConnectedSectionId($sectionId);
@@ -72,7 +72,7 @@ $mapManagerController->post('/{id}/attach/{sectionId}', function ($id, $sectionI
 
 $mapManagerController->match('/{id}/coordinates', function (Request $request, $id) use ($app) {
 
-    $placeProvider = new PlaceProvider($app['db'], $app['security']);
+    $placeProvider = new PlaceProvider($app);
     $item = $placeProvider->find($id);
 
     $coordinatesType = new CoordinatesType($app['form.factory']);

@@ -12,7 +12,7 @@ $galleryManagerController = SilexHooks::controllerFactory($app);
 
 $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
-    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
+    $galleryProvider = new GalleryProvider($app);
     $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_slideList.html.twig', array(
@@ -25,7 +25,7 @@ $galleryManagerController->get('/{id}/list', function ($id) use ($app) {
 
 $galleryManagerController->match('/{id}/labels', function (Request $request, $id) use ($app) {
 
-    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
+    $galleryProvider = new GalleryProvider($app);
     $section = $galleryProvider->find($id);
 
     if (! $section instanceof Gallery) {
@@ -91,7 +91,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         $galleryProvider->update($section);
 
         // Update each items legends
-        $slideProvider = new SlideProvider($app['db'], $app['security']);
+        $slideProvider = new SlideProvider($app);
         foreach ($section->getSlides() as $slide) {
             $slideId = $slide->getId();
             $slide
@@ -124,8 +124,8 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
         $sectionId = null;
     }
 
-    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
-    $slideProvider = new SlideProvider($app['db'], $app['security']);
+    $galleryProvider = new GalleryProvider($app);
+    $slideProvider = new SlideProvider($app);
     $section = $galleryProvider->find($sectionId);
 
     $jsonResponse = array();
@@ -148,7 +148,7 @@ $galleryManagerController->post('/upload', function (Request $request) use ($app
 $galleryManagerController->post('/{id}/delete/slides', function (Request $request, $id) use ($app) {
 
     $itemIds = $request->get('items');
-    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
+    $galleryProvider = new GalleryProvider($app);
     $section = $galleryProvider->find($id);
 
     $slideProvider = new SlideProvider($app['db'], $app['security']);
@@ -162,7 +162,7 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
 
 $galleryManagerController->get('/{id}/pic-manager', function ($id) use ($app) {
 
-    $galleryProvider = new GalleryProvider($app['db'], $app['security']);
+    $galleryProvider = new GalleryProvider($app);
     $section = $galleryProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/galleryManager/_contentSectionsPicManager.html.twig', array(

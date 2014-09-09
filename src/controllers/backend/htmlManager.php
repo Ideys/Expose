@@ -12,7 +12,7 @@ $htmlManagerController = SilexHooks::controllerFactory($app);
 
 $htmlManagerController->get('/{id}/preview', function ($id) use ($app) {
 
-    $sectionProvider = new HtmlProvider($app['db'], $app['security']);
+    $sectionProvider = new HtmlProvider($app);
     $section = $sectionProvider->find($id);
 
     return SilexHooks::twig($app)->render('backend/htmlManager/_pagePreview.html.twig', array(
@@ -25,7 +25,7 @@ $htmlManagerController->get('/{id}/preview', function ($id) use ($app) {
 
 $htmlManagerController->get('/{id}/display-preview', function ($id) use ($app) {
 
-    $sectionProvider = new HtmlProvider($app['db'], $app['security']);
+    $sectionProvider = new HtmlProvider($app);
     $section = $sectionProvider->find($id);
 
     return SilexHooks::twig($app)->render('frontend/html/html.html.twig', array(
@@ -38,8 +38,8 @@ $htmlManagerController->get('/{id}/display-preview', function ($id) use ($app) {
 
 $htmlManagerController->match('/{id}/edit', function (Request $request, $id) use ($app) {
 
-    $sectionProvider = new HtmlProvider($app['db'], $app['security']);
-    $pageProvider = new PageProvider($app['db'], $app['security']);
+    $sectionProvider = new HtmlProvider($app);
+    $pageProvider = new PageProvider($app);
     $section = $sectionProvider->find($id);
 
     if (! $section instanceof Html) {

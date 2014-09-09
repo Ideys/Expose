@@ -17,14 +17,13 @@ $frontendController = SilexHooks::controllerFactory($app);
 
 $frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
-    $sectionProvider->setLanguage(SilexHooks::language($app));
+    $sectionProvider = new SectionProvider($app);
 
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
 
     if (null === $slug) {
-        $section = $sectionProvider->findHomepage($slug);
+        $section = $sectionProvider->findHomepage($app);
     } else {
         $section = $sectionProvider->findBySlug($slug);
     }
@@ -75,7 +74,7 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     // Form sections logic
     $formView = null;
     if ($section instanceof Form) {
-        $formProvider = new FormProvider($app['db'], $app['security']);
+        $formProvider = new FormProvider($app);
         $form = $formProvider->generateFormFields($app['form.factory'], $section);
         if ($formProvider->checkSubmittedForm($section, $request, $form)) {
             $validationMessage = $section->getValidationMessage();
@@ -100,8 +99,7 @@ $frontendController->get('/', $frontendContent)
 
 $frontendController->get('/first', function() use ($app) {
 
-    $sectionProvider = new SectionProvider($app['db'], $app['security']);
-    $sectionProvider->setLanguage(SilexHooks::language($app));
+    $sectionProvider = new SectionProvider($app);
 
     $firstSection = $sectionProvider->findFirstSection();
 

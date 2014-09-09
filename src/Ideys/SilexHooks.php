@@ -3,7 +3,6 @@
 namespace Ideys;
 
 use Silex\Application as App;
-use Silex\Provider\MonologServiceProvider;
 
 /**
  * Useful hooks to inform IDE of objects
