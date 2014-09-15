@@ -30,7 +30,4 @@ $(function(){
         displayTopLink();
     });
 });
-$(window).load(function() {
-    $('.hold-on').remove();
-});
 }(window.jQuery);

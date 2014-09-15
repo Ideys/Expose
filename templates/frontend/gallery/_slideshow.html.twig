@@ -2,11 +2,13 @@
 <div class="row">
     <div class="large-12 columns">
 
-        <div class="gallery-slideshow">
+        <div class="gallery-slider">
             {% for row, slide in section.slides if slide.published %}
-                <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
-                     alt="{{ slide.title|e }}">
-                {{ widgets.gallery_slide_legend(slide, section) }}
+                <div>
+                    <img data-lazy="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
+                         alt="{{ slide.title|e }}">
+                    {{ widgets.gallery_slide_legend(slide, section) }}
+                </div>
             {% endfor %}
         </div>
 
