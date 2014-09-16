@@ -1,0 +1,73 @@
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.3.7/slick.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+
+        var gallerySlider = $('.gallery-slider');
+
+        {# Slider mechanism #}
+        gallerySlider.slick({
+            dots: false,
+            infinite: true,
+            arrows: false,
+            lazyLoad: 'progressive',
+            asNavFor: '#slide-thumb',
+            fade: {{ (section.slideMode == 'fade') ? 'true' : 'false' }}
+        });
+
+        {# Add space key navigation to arrows key #}
+        $('body').on('keydown', function(event) {
+            if (event.which == 32) {
+                gallerySlider.slickNext();
+            }
+        });
+
+        {# Add navigation on mouse click #}
+        gallerySlider.on('click', 'img', function() {
+            gallerySlider.slickNext();
+        });
+
+        {# Optional thumblist #}
+        {% if section.thumbList %}
+
+        var galleryThumbs = $('#slide-thumbs');
+
+        galleryThumbs.slick({
+            dots: false,
+            infinite: false,
+            lazyLoad: 'ondemand',
+            slidesToShow: 12,
+            slidesToScroll: 1,
+            responsive: [
+                {
+                    breakpoint: 1024,
+                    settings: {
+                        slidesToShow: 7,
+                        slidesToScroll: 3
+                    }
+                },
+                {
+                    breakpoint: 600,
+                    settings: {
+                        slidesToShow: 5,
+                        slidesToScroll: 5
+                    }
+                },
+                {
+                    breakpoint: 480,
+                    settings: {
+                        slidesToShow: 3,
+                        slidesToScroll: 3
+                    }
+                }
+            ]
+        });
+
+        galleryThumbs.on('click', '.slick-slide', function() {
+            var slideIndex = $(this).attr('index');
+
+            gallerySlider.slickGoTo(slideIndex);
+        });
+        {% endif %}
+
+    });
+</script>
