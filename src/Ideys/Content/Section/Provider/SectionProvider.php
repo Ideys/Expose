@@ -405,11 +405,7 @@ class SectionProvider extends AbstractProvider
     {
         // Delete section items
         foreach ($section->getItems() as $item) {
-            if ($item instanceof Slide) {
-                $this->deleteItemAndRelatedFile($item);
-            } else {
-                $this->deleteItem($item->getId());
-            }
+            $this->itemProvider->delete($item);
         }
 
         // Delete section's translations

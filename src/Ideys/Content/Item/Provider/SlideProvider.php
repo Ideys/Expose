@@ -17,13 +17,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class SlideProvider extends ItemProvider
 {
     /**
-     * Slides thumbs sizes.
-     *
-     * @var array
-     */
-    private $thumbSizes = array(1200, 220);
-
-    /**
      * Add a slide into gallery.
      *
      * @param Section          $section
@@ -82,49 +75,5 @@ class SlideProvider extends ItemProvider
             ->open(GalleryProvider::getGalleryDir().'/'.$slide->getPath()));
 
         return $slide;
-    }
-
-    /**
-     * Delete a selection of slides.
-     *
-     * @param Section $section
-     * @param array   $itemIds
-     *
-     * @return array
-     */
-    public function deleteSlides(Section $section, $itemIds)
-    {
-        $deletedIds = array();
-        $items = $section->getItems();
-
-        foreach ($items as $item) {
-            if (in_array($item->getId(), $itemIds)
-                && $item instanceof Slide
-                && $this->deleteItemAndRelatedFile($item)) {
-                $deletedIds[] = $item->getId();
-            }
-        }
-
-        return $deletedIds;
-    }
-
-    /**
-     * Delete item's data entry and related files.
-     *
-     * @param Slide $slide
-     *
-     * @return boolean
-     */
-    protected function deleteItemAndRelatedFile(Slide $slide)
-    {
-        if ($this->delete($slide)) {
-            @unlink(WEB_DIR.'/gallery/'.$slide->getPath());
-            foreach ($this->thumbSizes as $thumbSize){
-                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$slide->getPath());
-            }
-            return true;
-        }
-
-        return false;
     }
 }

@@ -199,12 +199,6 @@ $contentManagerController->post('/{id}/delete', function (Request $request, $id)
     $sectionProvider = new SectionProvider($app);
     $section = $sectionProvider->find($id);
 
-//    // For directories need to have full sections tree
-//    if (Section::SECTION_DIR == $section->getType()) {
-//        $sections = $contentFactory->findSections();
-//        $section = $sections[$section->getId()];
-//    }
-
     $deleteForm = SilexHooks::standardForm($app);
     $deleteForm->handleRequest($request);
 

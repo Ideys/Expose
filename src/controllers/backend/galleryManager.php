@@ -151,8 +151,8 @@ $galleryManagerController->post('/{id}/delete/slides', function (Request $reques
     $galleryProvider = new GalleryProvider($app);
     $section = $galleryProvider->find($id);
 
-    $slideProvider = new SlideProvider($app['db'], $app['security']);
-    $deletedIds = $slideProvider->deleteSlides($section, $itemIds);
+    $slideProvider = new SlideProvider($app);
+    $deletedIds = $slideProvider->deleteSelection($section, $itemIds);
 
     return $app->json($deletedIds);
 })

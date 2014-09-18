@@ -4,6 +4,7 @@ namespace Ideys\Content\Item\Provider;
 
 use Ideys\Content\AbstractProvider;
 use Ideys\Content\Item\Entity\Item;
+use Ideys\Content\Item\Entity\Slide;
 use Ideys\Content\Section\Entity\Section;
 use Ideys\String;
 
@@ -12,6 +13,13 @@ use Ideys\String;
  */
 class ItemProvider extends AbstractProvider
 {
+    /**
+     * Slides thumbs sizes.
+     *
+     * @var array
+     */
+    protected $thumbSizes = array(1200, 220);
+
     /**
      * Return an Item.
      *
@@ -134,7 +142,38 @@ class ItemProvider extends AbstractProvider
             'id' => $item->getId(),
         ));
 
+        // Delete related slides if exists and item removed from database
+        if ((0 < $rows) && ($item instanceof Slide)) {
+            @unlink(WEB_DIR.'/gallery/'.$item->getPath());
+            foreach ($this->thumbSizes as $thumbSize){
+                @unlink(WEB_DIR.'/gallery/'.$thumbSize.'/'.$item->getPath());
+            }
+        }
+
         return (0 < $rows);
+    }
+
+    /**
+     * Delete a selection of items.
+     *
+     * @param Section $section
+     * @param array   $itemIds
+     *
+     * @return array
+     */
+    public function deleteSelection(Section $section, $itemIds)
+    {
+        $deletedIds = array();
+        $items = $section->getItems();
+
+        foreach ($items as $item) {
+            if (in_array($item->getId(), $itemIds)
+                && $this->delete($item)) {
+                $deletedIds[] = $item->getId();
+            }
+        }
+
+        return $deletedIds;
     }
 
     /**
