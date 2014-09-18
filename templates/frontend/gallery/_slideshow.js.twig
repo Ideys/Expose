@@ -22,7 +22,7 @@
         });
 
         {# Add navigation on mouse click #}
-        gallerySlider.on('click', 'img', function() {
+        gallerySlider.on('click', '.slick-slide', function() {
             gallerySlider.slickNext();
         });
 
@@ -36,7 +36,7 @@
             infinite: false,
             lazyLoad: 'ondemand',
             slidesToShow: 12,
-            slidesToScroll: 1,
+            slidesToScroll: 4,
             responsive: [
                 {
                     breakpoint: 1024,

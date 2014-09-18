@@ -356,7 +356,6 @@ body.gallery-fullScreen .caption {
 }
 
 #slide-thumbs {
-    width: 100%;
     position: fixed;
     bottom: 0;
     margin-bottom: 0;
@@ -364,6 +363,14 @@ body.gallery-fullScreen .caption {
     z-index: 100;
     overflow: hidden;
     background: #fff;
+}
+
+#slide-thumbs .slick-prev {
+    left: 0;
+}
+
+#slide-thumbs .slick-next {
+     right: 0;
 }
 
 .background-black #slide-thumbs {
