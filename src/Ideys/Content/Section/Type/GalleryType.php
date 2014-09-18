@@ -30,9 +30,9 @@ class GalleryType extends SectionType
                 'label' => 'gallery.slide.mode',
                 'choices' => Gallery::getSlideModeChoice(),
             ))
-            ->add('extended', 'choice', array(
-                'label' => 'gallery.mode.full.screen.extended',
-                'choices' => Settings::getIOChoices(),
+            ->add('size', 'choice', array(
+                'label' => 'gallery.slide.size.size',
+                'choices' => Gallery::getSizeChoice(),
             ))
             ->add('navBar', 'choice', array(
                 'label' => 'gallery.nav.bar.display',

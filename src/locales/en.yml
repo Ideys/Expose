@@ -114,8 +114,6 @@ gallery:
     mode:
         mode: Gallery display mode
         slideshow: Slideshow
-        fullScreen: Full screen slideshow
-        full.screen.extended: Pictures extended
         vertical: Vertical scroll
         masonry: Imbricated thumbs
     slide:
@@ -127,6 +125,11 @@ gallery:
         thumb: Thumb
         large: Large picture
         original: Original size
+        size:
+          size: Pictures size
+          centered: Centered pictures
+          full.screen: Full screen pictures
+          extended: Pictures extended
     grid:
         rows: Gallery rows
         rows.medium: Gallery rows (Tablets)

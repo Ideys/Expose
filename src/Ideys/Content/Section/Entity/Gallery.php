@@ -11,12 +11,15 @@ use Ideys\Content\Item\Entity\Slide;
 class Gallery extends Section implements SectionInterface
 {
     const GALLERY_MODE_SLIDESHOW    = 'slideshow';
-    const GALLERY_MODE_FULL_SCREEN  = 'fullScreen';
     const GALLERY_MODE_VERTICAL     = 'vertical';
     const GALLERY_MODE_MASONRY      = 'masonry';
 
     const SLIDE_MODE_SLIDE  = 'slide';
     const SLIDE_MODE_FADE   = 'fade';
+
+    const SIZE_CENTERED     = 'centered';
+    const SIZE_FULL_SCREEN  = 'full.screen';
+    const SIZE_EXTENDED     = 'extended';
 
     /**
      * Constructor.
@@ -89,19 +92,6 @@ class Gallery extends Section implements SectionInterface
     }
 
     /**
-     * Test if gallery is in a slideshow mode.
-     *
-     * @return boolean
-     */
-    public function isSlidable()
-    {
-        return in_array($this->getGalleryMode(), array(
-            self::GALLERY_MODE_SLIDESHOW,
-            self::GALLERY_MODE_FULL_SCREEN,
-        ));
-    }
-
-    /**
      * Test if gallery slides could have a link on current mode.
      *
      * @return boolean
@@ -122,7 +112,6 @@ class Gallery extends Section implements SectionInterface
     {
         return array(
             self::GALLERY_MODE_SLIDESHOW    => 'gallery.mode.slideshow',
-            self::GALLERY_MODE_FULL_SCREEN  => 'gallery.mode.fullScreen',
             self::GALLERY_MODE_VERTICAL     => 'gallery.mode.vertical',
             self::GALLERY_MODE_MASONRY      => 'gallery.mode.masonry',
         );
@@ -200,21 +189,35 @@ class Gallery extends Section implements SectionInterface
     /**
      * @return string
      */
-    public function getExtended()
+    public function getSize()
     {
-        return $this->retrieveParameter('extended', '0');
+        return $this->retrieveParameter('size', self::SIZE_CENTERED);
     }
 
     /**
-     * @param string $extended
+     * @param string $size
      *
      * @return Gallery
      */
-    public function setExtended($extended)
+    public function setSize($size)
     {
-        $this->addParameter('extended', $extended);
+        $this->addParameter('size', $size);
 
         return $this;
+    }
+
+    /**
+     * Return slides size choices.
+     *
+     * @return array
+     */
+    public static function getSizeChoice()
+    {
+        return array(
+            self::SIZE_CENTERED     => 'gallery.slide.size.centered',
+            self::SIZE_FULL_SCREEN  => 'gallery.slide.size.full.screen',
+            self::SIZE_EXTENDED     => 'gallery.slide.size.extended',
+        );
     }
 
     /**

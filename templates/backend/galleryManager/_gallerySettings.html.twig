@@ -1,17 +1,20 @@
 {% spaceless %}
-{{ form_row(edit_form.galleryMode) }}
-<div class="for-mode for-fullScreen{% if section.galleryMode != 'fullScreen' %} hidden{% endif %}">
-  {{ form_row(edit_form.extended) }}
-</div>
-<div class="for-mode for-slideshow for-fullScreen{% if section.galleryMode not in ['slideshow', 'fullScreen'] %} hidden{% endif %}">
-  {{ form_row(edit_form.slideMode) }}
-  {{ form_row(edit_form.navBar) }}
-  {{ form_row(edit_form.thumbList) }}
-</div>
-<div class="for-mode for-vertical{% if section.galleryMode != 'vertical' %} hidden{% endif %}">
-  {{ form_row(edit_form.gridRows) }}
-  {{ form_row(edit_form.gridRowsMedium) }}
-  {{ form_row(edit_form.gridRowsSmall) }}
-</div>
-{{ form_row(edit_form.shuffle) }}
+
+    {{ form_row(edit_form.galleryMode) }}
+
+    <div class="for-mode for-slideshow for-fullScreen{% if section.galleryMode not in ['slideshow'] %} hidden{% endif %}">
+        {{ form_row(edit_form.size) }}
+        {{ form_row(edit_form.slideMode) }}
+        {{ form_row(edit_form.navBar) }}
+        {{ form_row(edit_form.thumbList) }}
+    </div>
+
+    <div class="for-mode for-vertical{% if section.galleryMode != 'vertical' %} hidden{% endif %}">
+        {{ form_row(edit_form.gridRows) }}
+        {{ form_row(edit_form.gridRowsMedium) }}
+        {{ form_row(edit_form.gridRowsSmall) }}
+    </div>
+
+    {{ form_row(edit_form.shuffle) }}
+
 {% endspaceless %}

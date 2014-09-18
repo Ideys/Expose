@@ -2,12 +2,12 @@
 
 {% if not section.navBar %}{% set nav_class = ' no-nav' %}{% else %}{% set nav_class = '' %}{% endif %}
 {% if section.thumbList %}{% set thumb_class = ' gallery-thumb' %}{% else %}{% set thumb_class = '' %}{% endif %}
-{% if section.extended %}{% set extended_class = ' gallery-extended' %}{% else %}{% set extended_class = '' %}{% endif %}
 {% block body_class parent()
     ~ widgets.section_body_classes(section)
     ~ ' gallery-'
     ~ section.galleryMode
-    ~ extended_class
+    ~ ' gallery-'
+    ~ section.size|replace({'.':'-'})
     ~ nav_class
     ~ thumb_class
 %}
@@ -33,7 +33,7 @@
         {% include "frontend/gallery/_masonry.js.twig" with {
             'section': section
         } only  %}
-    {% elseif section.isSlidable %}
+    {% elseif 'slideshow' == section.galleryMode %}
         {% include "frontend/gallery/_slideshow.js.twig" with {
             'section': section
         } only %}
