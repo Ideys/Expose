@@ -26,12 +26,19 @@
     {# Optional thumb list #}
     {% if section.thumbList %}
         <div id="slide-thumbs" class="large-10 columns">
-            {% for row, slide in section.slides if slide.published %}
-                <div>
-                    <img data-lazy="{{ app.request.basepath }}/gallery/220/{{ slide.path }}"
-                         alt="{{ slide.title|e }}">
-                </div>
-            {% endfor %}
+            <table>
+                <tbody>
+                <tr>
+                    {% for row, slide in section.slides if slide.published %}
+                        <td class="thumb" index="{{ loop.index0 }}">
+                            <img src="{{ app.request.basepath }}/gallery/220/{{ slide.path }}"
+                                 alt="{{ slide.title|e }}">
+                        </td>
+                    {% endfor %}
+                    <td><div class="scroll-fix">&nbsp;</div></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     {% endif %}
 
