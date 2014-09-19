@@ -1,13 +1,12 @@
 {% spaceless %}
 
-    <div class="row">
-        <div class="large-12 columns">
-
-            {% if section.size == 'centered' %}
-                {% set sub_folder = '/1200' %}
-            {% else %}
-                {% set sub_folder = '' %}
-            {% endif %}
+    {% if section.size == 'centered' %}
+        {% set sub_folder = '/1200' %}
+        <div class="row">
+            <div class="large-12 columns">
+    {% else %}
+        {% set sub_folder = '' %}
+    {% endif %}
 
             <div class="gallery-slider">
                 {% for row, slide in section.slides if slide.published %}
@@ -19,12 +18,14 @@
                 {% endfor %}
             </div>
 
+    {% if section.size == 'centered' %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     {# Optional thumb list #}
     {% if section.thumbList %}
-        <div id="slide-thumbs" class="large-10 medium-9 columns">
+        <div id="slide-thumbs" class="large-10 columns">
             {% for row, slide in section.slides if slide.published %}
                 <div>
                     <img data-lazy="{{ app.request.basepath }}/gallery/220/{{ slide.path }}"

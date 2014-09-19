@@ -1,5 +1,5 @@
 {% spaceless %}
-<nav class="main-nav tab-bar hide-for-medium-up">
+<nav class="main-nav tab-bar hide-for-large-up">
   <section class="left-small">
     <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
   </section>
@@ -11,14 +11,14 @@
     </h1>
   </section>
 </nav>
-<aside class="main-nav left-off-canvas-menu hide-for-medium-up">
+<aside class="main-nav left-off-canvas-menu hide-for-large-up">
   {% include "frontend/menu/_sidenav.html.twig" with {
     'class': 'off-canvas-list',
     'widgets': widgets,
     'follow': ' rel="no-follow"'
   } only %}
 </aside>
-<div class="main-nav sidebar show-for-medium-up large-2 medium-3 columns">
+<div class="main-nav sidebar show-for-large-up large-2 columns">
   <h1><a href="{{ path('homepage') }}">{{ settings.name }}</a></h1>
   {% include "frontend/menu/_sidenav.html.twig" with {
     'class': 'side-nav',
