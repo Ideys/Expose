@@ -271,6 +271,22 @@ table {
 }
 
 /*
+ * Gallery pre-loader
+ */
+
+.hold-on {
+    background: #fff;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+}
+
+.background-black .hold-on {
+    background: #000;
+}
+
+/*
  * Gallery slideshow
  */
 

@@ -1,6 +1,6 @@
 {% extends "backend/layout.html.twig" %}
 
-{% block main -%}
+{%- block main -%}
 <div class="row">
   <div class="large-12 columns">
     <dl class="accordion" data-accordion><dd>
@@ -49,7 +49,7 @@
     </a>
   </div>
 </div>
-{%- endblock main %}
+{%- endblock main -%}
 
 {% block javascripts %}
 {{ parent() }}
@@ -57,3 +57,12 @@
 <script src="{{ app.request.basepath }}/js/vendor/jquery.iframe-transport.js"></script>
 <script src="{{ app.request.basepath }}/js/vendor/jquery.fileupload.js"></script>
 {% endblock javascripts %}
+
+{%- block head -%}
+    {{ parent() }}
+    <style>
+        #content {
+            margin-bottom: 500px;
+        }
+    </style>
+{%- endblock head -%}

@@ -22,10 +22,14 @@
 {% endif %}
 {% endblock description %}
 
-{% block head %}
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.3.7/slick.css"/>
+{%- block head -%}
+    {% if 'slideshow' == section.galleryMode %}
+        <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.3.7/slick.css"/>
+    {% else %}
+        {% include "frontend/gallery/preloader.css.twig" %}
+    {% endif %}
     {{ parent() }}
-{% endblock head %}
+{%- endblock head -%}
 
 {% block javascripts %}
     {{ parent() }}
@@ -42,13 +46,22 @@
 
 {%- block main -%}
 {% if section.hasSlides %}
-  {{ section.triggerShuffle }}
-  <div id="gallery">
-    {% include "frontend/gallery/_"~ section.galleryMode ~".html.twig" %}
-  </div>
+    {{ section.triggerShuffle }}
+    <div id="gallery">
+        {% include "frontend/gallery/_"~ section.galleryMode ~".html.twig" %}
+    </div>
+    {% if 'slideshow' != section.galleryMode %}
+    <div class="hold-on">
+        <div class="sandglass">
+            <span id="sandglass_1"></span>
+            <span id="sandglass_2"></span>
+            <span id="sandglass_3"></span>
+        </div>
+    </div>
+    {% endif %}
 {% else %}
-<p class="coming-soon">
-  {{ 'section.coming.soon'|trans }}
-</p>
+    <p class="coming-soon">
+        {{ 'section.coming.soon'|trans }}
+    </p>
 {% endif %}
 {%- endblock main -%}
