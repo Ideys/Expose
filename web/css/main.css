@@ -308,15 +308,38 @@ table {
     max-height: 80vh;
 }
 
-@media only screen and (max-height: 700px) {
+.gallery-full-screen .gallery-slider .slick-slide img {
+    max-height: 78vh;
+    margin-top: 2vh;
+}
+
+@media only screen and (max-height: 750px) {
     .gallery-slider .slick-slide img {
+        max-height: 74vh;
+    }
+    .gallery-full-screen .gallery-slider .slick-slide img {
         max-height: 72vh;
+        margin-top: 3vh;
+    }
+}
+
+@media only screen and (max-height: 750px) and (max-width: 1024px) {
+    /* Display slide legend when top menu is displayed */
+    .gallery-thumb .gallery-slider .slick-slide img {
+        max-height: 67vh;
     }
 }
 
 @media only screen and (max-height: 500px) {
     .gallery-slider .slick-slide img {
         max-height: 68vh;
+    }
+}
+
+@media only screen and (min-width: 570px) and (max-height: 550px) {
+    /* Display slide legend when thumbs are displayed and screen is tight but wide */
+    .gallery-thumb .gallery-slider .slick-slide img {
+        max-height: 58vh;
     }
 }
 
