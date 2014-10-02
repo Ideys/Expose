@@ -1,6 +1,7 @@
 ## Français.
 
 user:
+    profile: Profil
     you: Vous
     name: Nom d'utilisateur
     gender: Civilité
@@ -8,7 +9,13 @@ user:
     m: Monsieur
     first.name: Prénom
     last.name: Nom
+    organization: Organisation
+    particulars: Coordonnées
     email: Email
+    website: Site web
+    phone: Téléphone
+    mobile: Portable
+    address: Adresse
     new: Nouvel accès
     edit: Modifier l'utilisateur
     updated: Profil mis à jour

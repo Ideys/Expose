@@ -1,0 +1,76 @@
+{% extends "frontend/layout.html.twig" %}
+
+{% block title 'user.you'|trans~' | '~parent() %}
+
+{%- block main -%}
+    <div class="row">
+
+        <div class="medium-6 columns">
+
+            <h2>{{ 'user.profile'|trans }}</h2>
+
+            <dl>
+
+                <dt>{{ 'user.you'|trans }}</dt>
+                <dd>
+                    {{ ('user.'~profile.gender)|trans }}
+                    {{ profile.firstName }}
+                    {{ profile.lastName }}
+                </dd>
+
+                {% if profile.organization|length %}
+                <dt>{{ 'user.organization'|trans }}</dt>
+                <dd>{{ profile.organization }}</dd>
+                {% endif %}
+
+                <dt>{{ 'user.name'|trans }}</dt>
+                <dd>{{ profile.username }}</dd>
+
+            </dl>
+
+        </div>
+
+
+        <div class="medium-6 columns">
+
+            <h2>{{ 'user.particulars'|trans }}</h2>
+
+            <dl>
+
+                <dt>{{ 'user.email'|trans }}</dt>
+                <dd>{{ profile.email }}</dd>
+
+                {% if profile.phone|length %}
+                <dt>{{ 'user.phone'|trans }}</dt>
+                <dd>{{ profile.phone }}</dd>
+                {% endif %}
+
+                {% if profile.mobile|length %}
+                <dt>{{ 'user.mobile'|trans }}</dt>
+                <dd>{{ profile.mobile }}</dd>
+                {% endif %}
+
+                {% if profile.website|length %}
+                <dt>{{ 'user.website'|trans }}</dt>
+                <dd>
+                    <a href="{{ profile.website }}">{{ profile.website }}</a>
+                </dd>
+                {% endif %}
+
+                {% if profile.address|length %}
+                <dt>{{ 'user.address'|trans }}</dt>
+                <dd>{{ profile.address|nl2br }}</dd>
+                {% endif %}
+
+            </dl>
+
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="medium-12 columns text-right">
+            <a href="{{ path('user_profile_edit') }}" class="tiny secondary button">{{ 'edit'|trans }}</a>
+        </div>
+    </div>
+{%- endblock main -%}

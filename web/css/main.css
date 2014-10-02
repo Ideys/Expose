@@ -258,6 +258,10 @@ table {
     margin-top: 10%;
 }
 
+fieldset legend {
+    background: none;
+}
+
 /*
  * Homepage
  */

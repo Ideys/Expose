@@ -1,6 +1,7 @@
 ## English.
 
 user:
+    profile: Profile
     you: You
     name: Username
     gender: Title
@@ -8,7 +9,13 @@ user:
     m: Mr.
     first.name: First name
     last.name: Last name
+    organization: Organization
+    particulars: Particulars
     email: Email
+    website: Website
+    phone: Phone
+    mobile: Mobile
+    address: Address
     new: New access
     edit: Edit user
     updated: Profile updated

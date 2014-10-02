@@ -45,7 +45,32 @@ class Profile
     /**
      * @var string
      */
+    private $organization;
+
+    /**
+     * @var string
+     */
     private $email;
+
+    /**
+     * @var string
+     */
+    private $website;
+
+    /**
+     * @var string
+     */
+    private $phone;
+
+    /**
+     * @var string
+     */
+    private $mobile;
+
+    /**
+     * @var string
+     */
+    private $address;
 
     /**
      * @var array
@@ -67,7 +92,7 @@ class Profile
      *
      * @return Profile
      */
-    private function setId($id)
+    public function setId($id)
     {
         $this->id = $id;
 
@@ -229,6 +254,26 @@ class Profile
     }
 
     /**
+     * @param string $organization
+     *
+     * @return Profile
+     */
+    public function setOrganization($organization)
+    {
+        $this->organization = $organization;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOrganization()
+    {
+        return $this->organization;
+    }
+
+    /**
      * @param string $email
      *
      * @return Profile
@@ -246,6 +291,86 @@ class Profile
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $website
+     *
+     * @return Profile
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * @param string $phone
+     *
+     * @return Profile
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $mobile
+     *
+     * @return Profile
+     */
+    public function setMobile($mobile)
+    {
+        $this->mobile = $mobile;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMobile()
+    {
+        return $this->mobile;
+    }
+
+    /**
+     * @param string $address
+     *
+     * @return Profile
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
     }
 
     /**

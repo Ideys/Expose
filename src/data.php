@@ -12,9 +12,14 @@ if (!$schema->tablesExist('expose_user')) {
     $table->setPrimaryKey(array('id'));
     $table->addColumn('username', 'string', array('length' => 32));
     $table->addColumn('email', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
+    $table->addColumn('website', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
+    $table->addColumn('phone', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
+    $table->addColumn('mobile', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
+    $table->addColumn('address', 'string', array('length' => 500, 'default' => null, 'notnull' => false));
     $table->addColumn('gender', 'string', array('length' => 1));
     $table->addColumn('firstname', 'string', array('length' => 255));
     $table->addColumn('lastname', 'string', array('length' => 255));
+    $table->addColumn('organization', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addUniqueIndex(array('username'));
     $table->addColumn('password', 'string', array('length' => 255));
     $table->addColumn('roles', 'string', array('length' => 255));

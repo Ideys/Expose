@@ -8,14 +8,12 @@ use Ideys\Content\Section\Provider\SectionProvider;
 use Ideys\Content\Section\Provider\FormProvider;
 use Ideys\Content\Section\Entity\SectionInterface;
 use Ideys\Content\Section\Entity\Form;
-use Ideys\User\UserProvider;
-use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception;
 
-$frontendController = SilexHooks::controllerFactory($app);
+$showcaseController = SilexHooks::controllerFactory($app);
 
-$frontendContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
+$showcaseContent = function (Request $request, $slug = null, $itemSlug = null) use ($app) {
 
     $sectionProvider = new SectionProvider($app);
 
@@ -93,11 +91,11 @@ $frontendContent = function (Request $request, $slug = null, $itemSlug = null) u
     ));
 };
 
-$frontendController->get('/', $frontendContent)
+$showcaseController->get('/', $showcaseContent)
 ->bind('homepage')
 ;
 
-$frontendController->get('/first', function() use ($app) {
+$showcaseController->get('/first', function() use ($app) {
 
     $sectionProvider = new SectionProvider($app);
 
@@ -112,17 +110,17 @@ $frontendController->get('/first', function() use ($app) {
 ->bind('first_section')
 ;
 
-$frontendController->match('/s/{slug}', $frontendContent)
+$showcaseController->match('/s/{slug}', $showcaseContent)
 ->bind('section')
 ->method('GET|POST')
 ;
 
-$frontendController->match('/s/{slug}/{itemSlug}', $frontendContent)
+$showcaseController->match('/s/{slug}/{itemSlug}', $showcaseContent)
 ->bind('section_item')
 ->method('GET|POST')
 ;
 
-$frontendController->match('/contact', function (Request $request) use ($app) {
+$showcaseController->match('/contact', function (Request $request) use ($app) {
 
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
@@ -154,36 +152,7 @@ $frontendController->match('/contact', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
-$frontendController->match('/profile', function (Request $request) use ($app) {
-
-    $session = SilexHooks::session($app);
-
-    $userProvider = new UserProvider($app['db'], $app['session']);
-
-    $profile = $session->get('profile');
-
-    $profileType = new ProfileType($app['form.factory']);
-    $form = $profileType->form($profile);
-
-    $form->handleRequest($request);
-    if ($form->isValid()) {
-        $userProvider->persist($app['security.encoder_factory'], $profile);
-        SilexHooks::flashMessage($app, 'user.updated');
-        return SilexHooks::redirect($app, 'user_profile');
-    }
-
-    return SilexHooks::twig($app)->render('frontend/userProfile.html.twig', array(
-        'form' => $form->createView(),
-    ));
-})
-->value('id', null)
-->assert('id', '\d+')
-->bind('user_profile')
-->method('GET|POST')
-->secure('ROLE_USER')
-;
-
-$frontendController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
+$showcaseController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
 
     $settingsProvider = new Settings\SettingsProvider($app['db']);
     $settings = $settingsProvider->getSettings();
@@ -214,6 +183,6 @@ $frontendController->get('/files/{token}/{slug}', function ($token, $slug) use (
 ->assert('slug', '[\w-\.]+')
 ;
 
-$frontendController->assert('_locale', implode('|', $app['languages']));
+$showcaseController->assert('_locale', implode('|', $app['languages']));
 
-return $frontendController;
+return $showcaseController;

@@ -86,12 +86,35 @@ class ProfileType
                 ),
                 'label'         => 'user.last.name',
             ))
+            ->add('organization', 'text', array(
+                'required'      => false,
+                'label'         => 'user.organization',
+            ))
             ->add('email', 'email', array(
                 'constraints'   => array(
                     new Assert\Email(),
                 ),
                 'required'      => false,
                 'label'         => 'user.email',
+            ))
+            ->add('phone', 'text', array(
+                'required'      => false,
+                'label'         => 'user.phone',
+            ))
+            ->add('mobile', 'text', array(
+                'required'      => false,
+                'label'         => 'user.mobile',
+            ))
+            ->add('website', 'url', array(
+                'required'      => false,
+                'label'         => 'user.website',
+            ))
+            ->add('address', 'textarea', array(
+                'required'      => false,
+                'label'         => 'user.address',
+                'attr'          => array(
+                    'rows' => 5,
+                )
             ))
             ->add('plainPassword', 'password', array(
                 'constraints'   => ($profile->getId() > 0) ? array() : array(

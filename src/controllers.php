@@ -6,9 +6,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
-$app->mount('/', include 'controllers/root.php');
+$app->mount('/', include 'controllers/frontend/root.php');
 
-$app->mount('/{_locale}', include 'controllers/frontend.php');
+$app->mount('/{_locale}', include 'controllers/frontend/showcase.php');
+
+$app->mount('/{_locale}/profile', include 'controllers/frontend/profile.php');
 
 $app->mount('/admin/{_locale}/content', include 'controllers/backend/contentManager.php');
 

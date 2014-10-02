@@ -109,7 +109,7 @@ class UserProvider implements UserProviderInterface
      * Persist a user profile.
      *
      * @param \Symfony\Component\Security\Core\Encoder\EncoderFactory $security
-     * @param \Ideys\User\Profile $profile
+     * @param \Ideys\User\Profile                                     $profile
      *
      * @return \Symfony\Component\Security\Core\User\User
      */
@@ -128,9 +128,14 @@ class UserProvider implements UserProviderInterface
             'username' => $profile->getUsername(),
             'password' => $profile->getPassword(),
             'email' => $profile->getEmail(),
+            'phone' => $profile->getPhone(),
+            'mobile' => $profile->getMobile(),
+            'website' => $profile->getWebsite(),
+            'address' => $profile->getAddress(),
             'gender' => $profile->getGender(),
             'firstname' => $profile->getFirstName(),
             'lastname' => $profile->getLastName(),
+            'organization' => $profile->getOrganization(),
             'roles' => serialize($profile->getRoles()),
         );
 
