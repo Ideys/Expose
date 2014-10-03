@@ -299,6 +299,12 @@ admin:
     link.on.menu: Dans le menu
     link.disabled: Invisible
 
+error:
+    unknown: Une erreur s'est produite
+    not.found: Page introuvable
+    client: Une erreur de requête s'est produite
+    server: Une erreur s'est produite sur le server
+
 weight:
     b: o
     kb: Ko

@@ -229,6 +229,10 @@ ul.side-sub-menu {
     }
 }
 
+#error-page {
+    padding-top: 5vh;
+}
+
 table {
     border: none;
 }

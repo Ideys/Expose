@@ -21,19 +21,19 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
     $settings = $settingsProvider->getSettings();
 
     if (null === $slug) {
-        $section = $sectionProvider->findHomepage($app);
+        $section = $sectionProvider->findHomepage();
     } else {
         $section = $sectionProvider->findBySlug($slug);
     }
 
-    if (!$section) {
+    if (! $section) {
         throw new Exception\NotFoundHttpException();
     }
 
     $security = SilexHooks::security($app);
     $urlGenerator = SilexHooks::urlGenerator($app);
 
-    if (!$section->isHomepage() && $settings->getMaintenance()
+    if (! $section->isHomepage() && $settings->getMaintenance()
             && (false === $security->isGranted('ROLE_ADMIN')) ) {
         SilexHooks::flashMessage($app, 'site.maintenance.message', SilexHooks::FLASH_WARNING);
         return $app->redirect($urlGenerator->generate('homepage'));
@@ -50,7 +50,7 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
     if (null !== $itemSlug) {
         $item = $section->getItemFromSlug($itemSlug);
 
-        if (!$item) {
+        if (! $item) {
             throw new Exception\NotFoundHttpException();
         }
 

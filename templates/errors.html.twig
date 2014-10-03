@@ -1,0 +1,38 @@
+{% extends "layout.html.twig" %}
+
+{% block body_class parent()~' background-'~settings.layoutBackground %}
+
+{%- block content -%}
+    <div id="error-page" class="row">
+        <div class="medium-6 medium-centered columns text-center">
+            <h1>{{ settings.name }}</h1>
+            <p>
+                {% if '404' == code %}
+                    {{ 'error.not.found'|trans }}
+                {% elseif '4' == code[:1] %}
+                    {{ 'error.client' }}
+                {% elseif '500' == code %}
+                    {{ 'error.server' }}
+                {% else %}
+                    {{ 'error.unknown'|trans }}
+                {% endif %}
+            </p>
+            <p>
+                <a href="{{ path('homepage') }}">
+                    &larr; {{ 'back'|trans }}
+                </a>
+            </p>
+        </div>
+    </div>
+{%- endblock content -%}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(function() {
+            setTimeout(function() {
+                window.location = '{{ path('homepage') }}';
+            }, 5000);
+        });
+    </script>
+{% endblock javascripts %}

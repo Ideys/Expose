@@ -299,6 +299,12 @@ admin:
     link.on.menu: Under main menu
     link.disabled: Hidden
 
+error:
+    unknown: An error occured
+    not.found: Page not found
+    client: An error occurred on the client
+    server: Internal server error
+
 weight:
     b: B
     kb: KB

@@ -7,7 +7,6 @@ use Ideys\Content\AbstractProvider;
 use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Section\Entity\Html;
 use Ideys\Content\Item\Provider\ItemProvider;
-use Ideys\Content\Item\Entity\Slide;
 use Ideys\Content\Item\Entity\Page;
 use Ideys\String;
 use Silex\Application as SilexApp;
@@ -107,11 +106,9 @@ class SectionProvider extends AbstractProvider
     /**
      * Find the homepage section, create it if not exists.
      *
-     * @param \Silex\Application $app
-     *
      * @return Section
      */
-    public function findHomepage(SilexApp $app)
+    public function findHomepage()
     {
         $sql = static::baseQuery()
             . 'WHERE s.visibility = ? '
@@ -175,10 +172,14 @@ class SectionProvider extends AbstractProvider
      * @param array   $data
      * @param boolean $hydrateConnectedSections
      *
-     * @return Section
+     * @return Section|false
      */
-    public function hydrateSection(array $data, $hydrateConnectedSections = true)
+    public function hydrateSection($data, $hydrateConnectedSections = true)
     {
+        if (! $data) {
+            return false;
+        }
+
         $sectionClassName = '\Ideys\Content\Section\Entity\\'.ucfirst($data['type']);
         $section = new $sectionClassName();
 

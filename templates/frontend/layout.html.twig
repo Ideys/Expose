@@ -31,7 +31,7 @@
 
 {% block body_class parent()~' background-'~settings.layoutBackground %}
 
-{% block content -%}
+{%- block content -%}
 {# Hide menu on homepage option #}
 {% if settings.hideMenuOnHomepage
   and section|default('')|length
@@ -65,4 +65,4 @@
     </div>
   </div>
 {% endif %}
-{%- endblock content%}
+{%- endblock content -%}
