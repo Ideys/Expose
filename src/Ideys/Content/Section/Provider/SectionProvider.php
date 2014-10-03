@@ -380,8 +380,8 @@ class SectionProvider extends AbstractProvider
         );
 
         $namesakes = array();
-        foreach($sections as $section) {
-            $e = explode('-', $section['slug']);
+        foreach($sections as $namesakeSection) {
+            $e = explode('-', $namesakeSection['slug']);
             $prefix = array_pop($e);
             $namesakes[] = (int)$prefix;
         }
