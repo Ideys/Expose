@@ -10,9 +10,8 @@
         gallerySlider.slick({
             dots: false,
             infinite: true,
-            arrows: false,
-            lazyLoad: 'progressive',
-            asNavFor: '#slide-thumb',
+            arrows: {{ section.navBar == 1 ? 'true' : 'false' }},
+            lazyLoad: 'ondemand',
             fade: {{ (section.slideMode == 'fade') ? 'true' : 'false' }}
         });
 
