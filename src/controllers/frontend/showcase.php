@@ -58,7 +58,7 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
 
         $items = $section->getItems();
         $firstItem = array_shift($items);
-        $itemSlug = $firstItem->slug;
+        $itemSlug = $firstItem->getSlug();
 
         return $app->redirect($urlGenerator->generate('section_item', array(
             'slug' => $slug,
