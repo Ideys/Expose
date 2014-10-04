@@ -18,7 +18,12 @@ class Picture
         $metaData = array();
 
         if (function_exists('exif_read_data')) {
-            $exifData = exif_read_data($picturePath);
+            $exifData = @exif_read_data($picturePath);
+
+            // Picture could not be analyzed
+            if (! $exifData) {
+                return $metaData;
+            }
 
             if (array_key_exists('DateTimeOriginal', $exifData)) {
                 $metaData['captureDate'] = $exifData['DateTimeOriginal'];
