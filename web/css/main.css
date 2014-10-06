@@ -476,13 +476,18 @@ body.gallery-full-screen .caption {
  * Maps
  */
 
-.content-maps #content {
+.content-map #content {
     height: 100vh;
     margin-top: 0;
 }
 
-.content-maps #content .map {
+.content-map #content .map {
     height: 100%;
+}
+
+.content-map .main-nav {
+    position: fixed;
+    width: 100%;
 }
 
 /* ==========================================================================
