@@ -109,7 +109,7 @@ class Section extends AbstractEntity
     protected $connectedSections = array();
 
     /**
-     * @var array
+     * @var Section[]
      */
     protected $sections = array();
 
@@ -745,5 +745,25 @@ class Section extends AbstractEntity
         $this->sections[] = $section;
 
         return $this;
+    }
+
+    /**
+     * Return menu enabled child sections.
+     *
+     * @param boolean $userHasCredentials
+     *
+     * @return Section[]
+     */
+    public function getActiveSections($userHasCredentials = false)
+    {
+        $activeSections = array();
+
+        foreach ($this->sections as $childSection) {
+            if ($childSection->isMenuEnabled($userHasCredentials)) {
+                $activeSections[] = $childSection;
+            }
+        }
+
+        return $activeSections;
     }
 }

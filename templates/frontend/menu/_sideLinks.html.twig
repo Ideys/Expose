@@ -2,7 +2,7 @@
 {% for section in sections
    if  section.isMenuEnabled(is_granted('ROLE_USER'))
    and section.menuPos == menuPos %}
-  {% if section.sections|length %}
+  {% if section.activeSections(is_granted('ROLE_USER'))|length %}
     <li class="heading">
         <a href="#" data-display="#sub-menu-{{ section.id }}-{{ class }}">
             {{ section.title }}
@@ -10,7 +10,7 @@
     </li>
     <li id="sub-menu-{{ section.id }}-{{ class }}" class="hidden">
         <ul class="side-sub-menu">
-        {% for child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
+        {% for child in section.activeSections(is_granted('ROLE_USER')) %}
             {{ widgets.menu_link(child, follow) }}
         {% endfor %}
         </ul>

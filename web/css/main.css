@@ -485,7 +485,7 @@ body.gallery-full-screen .caption {
     height: 100%;
 }
 
-.content-map .main-nav {
+.content-map .main-nav.top-bar {
     position: fixed;
     width: 100%;
 }

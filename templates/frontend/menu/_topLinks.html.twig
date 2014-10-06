@@ -2,23 +2,15 @@
 {% for section in sections
    if  section.isMenuEnabled(is_granted('ROLE_USER'))
    and section.menuPos == menuPos %}
-    {% if section.sections|length %}
-    {% set activeSubsectionsCount = 0 %}
-    {% if section.sections|length %}
-      {% for row, child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
-        {% set activeSubsectionsCount = activeSubsectionsCount + 1 %}
-      {% endfor %}
-    {% endif %}
-    {% if activeSubsectionsCount > 0 %}
+    {% if section.activeSections(is_granted('ROLE_USER'))|length %}
     <li class="has-dropdown">
       <a href="#">{{ section.title }}</a>
       <ul class="dropdown">
-        {% for child in section.sections if child.isMenuEnabled(is_granted('ROLE_USER')) %}
+        {% for child in section.activeSections(is_granted('ROLE_USER')) %}
             {{ widgets.menu_link(child, follow) }}
         {% endfor %}
       </ul>
     </li>
-    {% endif %}
     {# An empty dir is not a content #}
     {% elseif section.type != 'dir' %}
         {{ widgets.menu_link(section, follow) }}
