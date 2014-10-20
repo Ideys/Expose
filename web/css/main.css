@@ -317,8 +317,8 @@ fieldset legend {
 }
 
 .gallery-full-screen .gallery-slider .slick-slide img {
-    max-height: 76vh;
-    margin-top: 4vh;
+    max-height: 75vh;
+    margin-top: 5vh;
 }
 
 @media only screen and (max-height: 760px) {
