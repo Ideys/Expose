@@ -4,7 +4,8 @@
    and section.menuPos == menuPos %}
   {% if section.activeSections(is_granted('ROLE_USER'))|length %}
     <li class="heading">
-        <a href="#" data-display="#sub-menu-{{ section.id }}-{{ class }}">
+        <a href="#" title="{{ section.title|escape }}"
+           data-display="#sub-menu-{{ section.id }}-{{ class }}">
             {{ section.title }}
         </a>
     </li>

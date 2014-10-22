@@ -19,7 +19,7 @@
   {% include "frontend/menu/_adminLinks.html.twig" only %}
   {% if 'disabled' != settings.contactSection %}
   <li>
-    <a href="{{ path('contact') }}"{{ follow }}>
+    <a href="{{ path('contact') }}" title="{{ 'contact.contact'|trans }}"{{ follow }}>
       {{ 'contact.contact'|trans }}
     </a>
   </li>

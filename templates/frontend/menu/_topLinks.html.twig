@@ -4,7 +4,7 @@
    and section.menuPos == menuPos %}
     {% if section.activeSections(is_granted('ROLE_USER'))|length %}
     <li class="has-dropdown">
-      <a href="#">{{ section.title }}</a>
+      <a href="#" title="{{ section.title|escape }}">{{ section.title }}</a>
       <ul class="dropdown">
         {% for child in section.activeSections(is_granted('ROLE_USER')) %}
             {{ widgets.menu_link(child, follow) }}

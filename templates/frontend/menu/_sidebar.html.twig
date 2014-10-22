@@ -1,11 +1,13 @@
 {% spaceless %}
 <nav class="main-nav tab-bar hide-for-large-up">
   <section class="left-small">
-    <a class="left-off-canvas-toggle menu-icon" ><span></span></a>
+    <a class="left-off-canvas-toggle menu-icon" href="#" title="{{ 'section.menu.menu'|trans }}">
+        <span></span>
+    </a>
   </section>
   <section class="middle tab-bar-section">
     <h1 class="title">
-      <a href="{{ path('homepage') }}">
+      <a href="{{ path('homepage') }}" title="{{ 'section.homepage'|trans }}">
         {{ settings.name }}
       </a>
     </h1>
@@ -19,7 +21,11 @@
   } only %}
 </aside>
 <div class="main-nav sidebar show-for-large-up large-2 columns">
-  <h1><a href="{{ path('homepage') }}">{{ settings.name }}</a></h1>
+  <h1>
+      <a href="{{ path('homepage') }}" title="{{ 'section.homepage'|trans }}">
+          {{ settings.name }}
+      </a>
+  </h1>
   {% include "frontend/menu/_sidenav.html.twig" with {
     'class': 'side-nav',
     'widgets': widgets,

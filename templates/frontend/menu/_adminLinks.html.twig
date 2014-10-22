@@ -2,14 +2,14 @@
 {% if 'menu' == settings.adminLink
    or is_granted('ROLE_ADMIN') %}
 <li>
-  <a href="{{ path('admin_content_manager') }}">
+  <a href="{{ path('admin_content_manager') }}" title="{{ 'admin.admin'|trans }}">
     {{ 'admin.admin'|trans }}
   </a>
 </li>
 {% endif %}
 {% if settings.maintenance and is_granted('ROLE_ADMIN') %}
 <li>
-  <a href="{{ path('admin_site_settings') }}">
+  <a href="{{ path('admin_site_settings') }}" title="{{ 'site.settings'|trans }}">
     <i id="maintenance-indicator" class="fi-flag"></i>
   </a>
 </li>
