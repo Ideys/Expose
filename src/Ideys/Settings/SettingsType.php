@@ -76,6 +76,11 @@ class SettingsType
                 'choices'       => Settings::getSubDomainChoices(),
                 'label'         => 'site.sub.domain',
             ))
+            ->add('languages', 'choice', array(
+                'multiple'      => true,
+                'choices'       => Settings::getLanguagesChoices(),
+                'label'         => 'language.languages',
+            ))
             ->add('maintenance', 'choice', array(
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'site.maintenance.mode',

@@ -313,6 +313,12 @@ weight:
     gb: Go
     tb: To
 
+language:
+    language: Langue
+    languages: Langues
+    en: Anglais
+    fr: Français
+
 yes: Oui
 no: Non
 left: Gauche

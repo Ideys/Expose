@@ -76,6 +76,13 @@ class SilexHooks
     /**
      * @param App $app
      *
+     * @return \Ideys\Settings\SettingsManager
+     */
+    public static function settingsManager(App $app) { return $app['settings']; }
+
+    /**
+     * @param App $app
+     *
      * @return \Monolog\Logger
      */
     public static function monolog(App $app) { return $app['monolog']; }

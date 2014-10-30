@@ -5,7 +5,6 @@ use Ideys\Content\Section\Provider\DirProvider;
 use Ideys\Content\Section\Provider\SectionProvider;
 use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Section\Type\SectionTypeFactory;
-use Ideys\Settings\SettingsProvider;
 use Symfony\Component\HttpFoundation\Request;
 
 $contentManagerController = SilexHooks::controllerFactory($app);
@@ -14,8 +13,7 @@ $contentManagerController->match('/', function (Request $request) use ($app) {
 
     $typeFactory = new SectionTypeFactory($app['db'], $app['form.factory']);
     $sectionProvider = new SectionProvider($app);
-    $settingsProvider = new SettingsProvider($app['db']);
-    $settings = $settingsProvider->getSettings();
+    $settings = SilexHooks::settingsManager($app)->getSettings();
 
     $newSection = new Section();
     $newSection->setVisibility($settings->getNewSectionDefaultVisibility());

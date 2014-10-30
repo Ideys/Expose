@@ -33,6 +33,13 @@ class Settings
     const SUB_DOMAIN_WWW    = 'www';
 
     /**
+     * @var array
+     */
+    private $languages = array('en');
+
+    const LOCALE_FALLBACK = 'en';
+
+    /**
      * @var string
      */
     private $maintenance = '0';
@@ -229,6 +236,39 @@ class Settings
         return array(
             self::SUB_DOMAIN_ROOT => 'http://',
             self::SUB_DOMAIN_WWW  => 'http://www.',
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getLanguages()
+    {
+        return $this->languages;
+    }
+
+    /**
+     * @param array $languages
+     *
+     * @return Settings
+     */
+    public function setLanguages($languages)
+    {
+        $this->languages = $languages;
+
+        return $this;
+    }
+
+    /**
+     * Return available translation languages.
+     *
+     * @return array
+     */
+    public static function getLanguagesChoices()
+    {
+        return array(
+            'en' => 'language.en',
+            'fr' => 'language.fr',
         );
     }
 

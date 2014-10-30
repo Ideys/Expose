@@ -313,6 +313,12 @@ weight:
     gb: GB
     tb: TB
 
+language:
+    language: Language
+    languages: Languages
+    en: English
+    fr: French
+
 yes: Yes
 no: No
 left: Left

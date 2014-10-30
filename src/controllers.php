@@ -1,7 +1,6 @@
 <?php
 
 use Ideys\SilexHooks;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 //Request::setTrustedProxies(array('127.0.0.1'));
@@ -43,18 +42,3 @@ $app->error(function (\Exception $e, $code) use ($app) {
         'code' => $code,
     )), $code);
 });
-
-/**
- * Guess client language, relies on browser data.
- *
- * @param array $app
- *
- * @return string
- */
-function client_language_guesser($app) {
-    $acceptLanguage = $app['request']->headers->get('accept-language');
-    $userLanguage   = strtolower(substr($acceptLanguage, 0, 2));
-    $language       = (in_array($userLanguage, $app['languages']))
-                      ? $userLanguage : $app['locale_fallback'];
-    return $language;
-}

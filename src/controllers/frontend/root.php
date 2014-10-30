@@ -8,7 +8,7 @@ $rootController = SilexHooks::controllerFactory($app);
 
 $rootController->get('/', function () use ($app) {
 
-    $language = client_language_guesser($app);
+    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($app['request']);
 
     return SilexHooks::redirect($app, 'homepage', array('_locale' => $language));
 })
@@ -17,7 +17,7 @@ $rootController->get('/', function () use ($app) {
 
 $rootController->get('/admin', function () use ($app) {
 
-    $language = client_language_guesser($app);
+    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($app['request']);
 
     return SilexHooks::redirect($app, 'admin_content_manager', array('_locale' => $language));
 })
@@ -26,7 +26,7 @@ $rootController->get('/admin', function () use ($app) {
 
 $rootController->get('/admin-redirect', function () use ($app) {
 
-    $language = client_language_guesser($app);
+    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($app['request']);
     $security = SilexHooks::security($app);
 
     if ($security->isGranted('ROLE_EDITOR')) {

@@ -17,8 +17,7 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
 
     $sectionProvider = new SectionProvider($app);
 
-    $settingsProvider = new Settings\SettingsProvider($app['db']);
-    $settings = $settingsProvider->getSettings();
+    $settings = SilexHooks::settingsManager($app)->getSettings();
 
     if (null === $slug) {
         $section = $sectionProvider->findHomepage();
@@ -122,8 +121,7 @@ $showcaseController->match('/s/{slug}/{itemSlug}', $showcaseContent)
 
 $showcaseController->match('/contact', function (Request $request) use ($app) {
 
-    $settingsProvider = new Settings\SettingsProvider($app['db']);
-    $settings = $settingsProvider->getSettings();
+    $settings = SilexHooks::settingsManager($app)->getSettings();
 
     $messageProvider = new Messaging\MessageProvider($app['db']);
     $message = new Messaging\Message();
@@ -154,8 +152,7 @@ $showcaseController->match('/contact', function (Request $request) use ($app) {
 
 $showcaseController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
 
-    $settingsProvider = new Settings\SettingsProvider($app['db']);
-    $settings = $settingsProvider->getSettings();
+    $settings = SilexHooks::settingsManager($app)->getSettings();
     $filesHandler = new Files\FileProvider($app['db']);
     $file = $filesHandler->findBySlugAndToken($slug, $token);
 

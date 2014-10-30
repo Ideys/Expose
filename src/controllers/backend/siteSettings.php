@@ -8,7 +8,7 @@ $siteSettingsController = SilexHooks::controllerFactory($app);
 
 $siteSettingsController->match('/', function (Request $request) use ($app) {
 
-    $settingsProvider = new Settings\SettingsProvider($app['db']);
+    $settingsProvider = SilexHooks::settingsManager($app);
     $settings = $settingsProvider->getSettings();
 
     $settingsType = new Settings\SettingsType($app['form.factory']);

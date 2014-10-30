@@ -1,7 +1,6 @@
 <?php
 
 use Ideys\SilexHooks;
-use Ideys\Content\Section\Entity\Blog;
 use Ideys\Content\Section\Provider\BlogProvider;
 use Ideys\Content\Item\Entity\Post;
 use Ideys\Content\Item\Type\PostType;

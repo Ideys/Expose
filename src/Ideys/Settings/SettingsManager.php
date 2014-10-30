@@ -2,17 +2,33 @@
 
 namespace Ideys\Settings;
 
+use Silex\Application;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
- * App settings provider.
+ * App settings manager.
  */
-class SettingsProvider
+class SettingsManager
 {
     /**
      * @var \Doctrine\DBAL\Connection
      */
     private $db;
+
+    /**
+     * @var Settings
+     */
+    private $settings;
+
+    /**
+     * Parameters that need to be serialized/un-serialized.
+     *
+     * @var array
+     */
+    private $arrayParameters = array(
+        'languages',
+    );
 
     /**
      * Parameters that need a .htaccess file updating.
@@ -40,17 +56,25 @@ class SettingsProvider
      */
     public function getSettings()
     {
+        // Single call
+        if ($this->settings instanceof Settings) {
+            return $this->settings;
+        }
+
         $parameterRows = $this->db->fetchAll('SELECT * FROM '.'expose_settings');
 
         // Flatten extracted data
         $parameters = array();
         foreach ($parameterRows as $row) {
+            if (in_array($row['attribute'], $this->arrayParameters)) {
+                $row['value'] = unserialize($row['value']);
+            }
             $parameters[$row['attribute']] = $row['value'];
         }
 
         // Hydrate Settings with related parameters
-        $settings = new Settings();
-        $reflection = new \ReflectionClass($settings);
+        $this->settings = new Settings();
+        $reflection = new \ReflectionClass($this->settings);
 
         foreach ($reflection->getProperties() as $property) {
 
@@ -59,11 +83,11 @@ class SettingsProvider
             if ($reflection->hasMethod('get' . ucfirst($propertyName))
                 && array_key_exists($propertyName, $parameters)) {
 
-                $settings->{'set' . ucfirst($propertyName)}($parameters[$propertyName]);
+                $this->settings->{'set' . ucfirst($propertyName)}($parameters[$propertyName]);
             }
         }
 
-        return $settings;
+        return $this->settings;
     }
 
     /**
@@ -93,6 +117,11 @@ class SettingsProvider
                 // Save parameters that have been changed
                 if ($settingsParameter != $previousSettingsParameter) {
 
+                    // Handle array parameters
+                    if (in_array($propertyName, $this->arrayParameters)) {
+                        $settingsParameter = serialize($settingsParameter);
+                    }
+
                     // Update if parameter is already persisted...
                     $isUpdated = $this->db->update('expose_settings', array(
                         'value' => $settingsParameter,
@@ -117,5 +146,22 @@ class SettingsProvider
             $htaccessManager = new HtaccessManager();
             $htaccessManager->updateHtaccess($settings);
         }
+    }
+
+    /**
+     * Guess client language, relies on browser data.
+     * Limit to settings allowed languages.
+     *
+     * @param Request $request
+     *
+     * @return string The selected language code
+     */
+    function clientLanguageSelector(Request $request) {
+        $acceptLanguage = $request->headers->get('accept-language');
+        $userLanguage   = strtolower(substr($acceptLanguage, 0, 2));
+        $language       = (in_array($userLanguage, $this->getSettings()->getLanguages()))
+            ? $userLanguage : Settings::LOCALE_FALLBACK;
+
+        return $language;
     }
 }

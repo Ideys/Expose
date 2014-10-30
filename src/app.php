@@ -14,7 +14,7 @@ use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Neutron\Silex\Provider\ImagineServiceProvider;
-use Ideys\Settings\SettingsProvider;
+use Ideys\Settings\SettingsServiceProvider;
 use Ideys\Content\Section\Provider\SectionProvider;
 
 $app = new Application();
@@ -29,6 +29,7 @@ $app->register(new DoctrineServiceProvider());
 $app->register(new SwiftmailerServiceProvider());
 $app->register(new TranslationServiceProvider());
 $app->register(new ImagineServiceProvider());
+$app->register(new SettingsServiceProvider());
 $app->register(new TwigServiceProvider());
 
 $app['route_class'] = 'Ideys\Route';
@@ -45,9 +46,8 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
 
     // Global settings
-    $settingsProvider = new SettingsProvider($app['db']);
     $twig->addGlobal('semver', $app['semver']);
-    $twig->addGlobal('settings', $settingsProvider->getSettings());
+    $twig->addGlobal('settings', $app['settings']->getSettings());
     $twig->addGlobal('profile', $app['session']->get('profile'));
 
     // Content sections (for menu)
