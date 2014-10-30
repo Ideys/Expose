@@ -17,7 +17,12 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
 
     $sectionProvider = new SectionProvider($app);
 
-    $settings = SilexHooks::settingsManager($app)->getSettings();
+    $settingsManager = SilexHooks::settingsManager($app);
+
+    // Redirect if requested language is unavailable
+    if (! $settingsManager->checkAvailableLanguage($request)) {
+        return SilexHooks::redirect($app, 'root');
+    }
 
     if (null === $slug) {
         $section = $sectionProvider->findHomepage();
@@ -32,7 +37,7 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
     $security = SilexHooks::security($app);
     $urlGenerator = SilexHooks::urlGenerator($app);
 
-    if (! $section->isHomepage() && $settings->getMaintenance()
+    if (! $section->isHomepage() && $settingsManager->getSettings()->getMaintenance()
             && (false === $security->isGranted('ROLE_ADMIN')) ) {
         SilexHooks::flashMessage($app, 'site.maintenance.message', SilexHooks::FLASH_WARNING);
         return $app->redirect($urlGenerator->generate('homepage'));

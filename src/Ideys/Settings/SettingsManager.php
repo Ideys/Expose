@@ -159,6 +159,18 @@ class SettingsManager
     }
 
     /**
+     * Check if current requested locale is available on settings.
+     *
+     * @param Request $request
+     *
+     * @return bool True if locale is enabled
+     */
+    function checkAvailableLanguage(Request $request)
+    {
+        return in_array($request->attributes->get('_locale'), $this->getSettings()->getLanguages());
+    }
+
+    /**
      * Guess client language, relies on browser data.
      * Limit to settings allowed languages.
      *
