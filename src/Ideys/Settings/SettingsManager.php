@@ -50,17 +50,27 @@ class SettingsManager
     }
 
     /**
-     * Retrieve settings parameters from database.
+     * Return settings hydrated from database.
+     * Behave as a singleton.
      *
      * @return Settings
      */
     public function getSettings()
     {
-        // Single call
-        if ($this->settings instanceof Settings) {
-            return $this->settings;
+        if (! $this->settings instanceof Settings) {
+            $this->settings = $this->findSettings();
         }
 
+        return $this->settings;
+    }
+
+    /**
+     * Retrieve settings parameters from database.
+     *
+     * @return Settings
+     */
+    private function findSettings()
+    {
         $parameterRows = $this->db->fetchAll('SELECT * FROM '.'expose_settings');
 
         // Flatten extracted data
@@ -73,8 +83,8 @@ class SettingsManager
         }
 
         // Hydrate Settings with related parameters
-        $this->settings = new Settings();
-        $reflection = new \ReflectionClass($this->settings);
+        $settings = new Settings();
+        $reflection = new \ReflectionClass($settings);
 
         foreach ($reflection->getProperties() as $property) {
 
@@ -83,11 +93,11 @@ class SettingsManager
             if ($reflection->hasMethod('get' . ucfirst($propertyName))
                 && array_key_exists($propertyName, $parameters)) {
 
-                $this->settings->{'set' . ucfirst($propertyName)}($parameters[$propertyName]);
+                $settings->{'set' . ucfirst($propertyName)}($parameters[$propertyName]);
             }
         }
 
-        return $this->settings;
+        return $settings;
     }
 
     /**
@@ -99,7 +109,7 @@ class SettingsManager
     {
         $updatedParameters = array();
 
-        $previousSettings = $this->getSettings();
+        $previousSettings = $this->findSettings();
 
         $reflection = new \ReflectionClass($settings);
 
