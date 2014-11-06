@@ -37,8 +37,6 @@ class Settings
      */
     private $languages = array('en');
 
-    const LOCALE_FALLBACK = 'en';
-
     /**
      * @var string
      */

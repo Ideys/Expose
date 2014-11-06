@@ -182,7 +182,7 @@ class SettingsManager
         $acceptLanguage = $request->headers->get('accept-language');
         $userLanguage   = strtolower(substr($acceptLanguage, 0, 2));
         $language       = (in_array($userLanguage, $this->getSettings()->getLanguages()))
-            ? $userLanguage : Settings::LOCALE_FALLBACK;
+            ? $userLanguage : $this->getSettings()->getLanguages()[0];
 
         return $language;
     }
