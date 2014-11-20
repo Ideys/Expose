@@ -1,7 +1,9 @@
 <?php
 
 use Ideys\SilexHooks;
+use Ideys\Seo\SitemapManager;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception;
 
 $rootController = SilexHooks::controllerFactory($app);
@@ -13,6 +15,18 @@ $rootController->get('/', function () use ($app) {
     return SilexHooks::redirect($app, 'homepage', array('_locale' => $language));
 })
 ->bind('root')
+;
+
+$rootController->get('/sitemap.xml', function () use ($app) {
+
+    $sitemapManager = new SitemapManager($app['db'], $app['url_generator'], $app['settings']);
+    $urls = $sitemapManager->generateSitemapData();
+
+    return new Response($app['twig']->render('frontend/sitemap.xml.twig', array(
+        'urls' => $urls
+    )), 200, array('Content-Type' => 'application/xml'));
+ })
+->bind('sitemap')
 ;
 
 $rootController->get('/admin', function () use ($app) {
