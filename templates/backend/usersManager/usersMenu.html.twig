@@ -1,0 +1,20 @@
+{% spaceless %}
+<div class="row">
+    <div class="medium-12 columns">
+        <dl class="tabs">
+            <dd class="tab-title{% if panel == 'users' %} active{% endif %}">
+                <a href="{{ path('admin_users_manager') }}">
+                    <i class="fi-torsos-female-male"></i>
+                    <span class="hide-for-small-only">{{ 'user.users'|trans }}</span>
+                </a>
+            </dd>
+            <dd class="tab-title{% if panel == 'groups' %} active{% endif %}">
+                <a href="{{ path('admin_users_manager_group') }}">
+                    <i class="fi-torsos-all"></i>
+                    <span class="hide-for-small-only">{{ 'user.groups'|trans }}</span>
+                </a>
+            </dd>
+        </dl>
+    </div>
+</div>
+{% endspaceless %}

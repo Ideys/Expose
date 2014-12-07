@@ -1,0 +1,126 @@
+{% extends "backend/layout.html.twig" %}
+
+{%- block main -%}
+
+    {% include "backend/usersManager/usersMenu.html.twig" with {'panel': 'users'} only %}
+
+    <br>
+
+    <div class="row">
+
+        <div class="small-12 large-6 columns">
+
+            {% for user in users %}
+                <div class="user panel">
+                    <h5>
+                        <small>{{ ('user.'~user.gender)|trans }}</small>
+                        {{ user.firstname }} {{ user.lastname }}
+                        {% if user.organization|length %}
+                            | {{ user.organization }}
+                        {% endif %}
+                        <small>{{ user.username }}</small>
+                    </h5>
+
+                    <ul class="no-bullet">
+                        <li>{{ user.email }}</li>
+                        {% if user.phone|length %}
+                            <li>{{ user.phone }}</li>
+                        {% endif %}
+                        {% if user.mobile|length %}
+                            <li>{{ user.mobile }}</li>
+                        {% endif %}
+                        {% if user.website|length %}
+                            <li><a href="{{ user.website }}">{{ user.website }}</a></li>
+                        {% endif %}
+                        {% if user.address|length %}
+                            <li>{{ user.address|nl2br }}</li>
+                        {% endif %}
+                    </ul>
+
+                        {% for role in user.roles %}
+                            <span class="label">{{ ('user.role.'~role)|trans }}</span>
+                        {% endfor %}
+                        {% if user.lastLogin|length %}
+                            {{ user.lastLogin|date('d/m/y H:i') }}
+                        {% else %}
+                            {{ 'user.never.connected'|trans }}
+                        {% endif %}
+                        {{ widgets.btn_dropdown_actions('user-actions-'~user.id) }}
+                    <ul id="user-actions-{{ user.id }}"
+                        data-dropdown-content=""
+                        class="f-dropdown">
+                        <li>
+                            <a href="{{ path('admin_users_manager', {'id': user.id}) }}">
+                                {{ 'edit'|trans }}
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_user_manager_delete', {'id': user.id}) }}"
+                               data-confirm-action="{{ 'confirm'|trans }}">
+                                {{ 'delete'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <br>
+            {% endfor %}
+
+        </div>
+
+        <div class="small-12 large-6 columns">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <fieldset>
+                {% if edited_profile.id > 0 %}
+                    <legend>{{ 'user.edit'|trans }}</legend>
+                {% else %}
+                    <legend>{{ 'user.new'|trans }}</legend>
+                {% endif %}
+                {{ form_row(form.gender) }}
+                {{ form_row(form.firstName) }}
+                {{ form_row(form.lastName) }}
+                {{ form_row(form.organization) }}
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ 'user.particulars'|trans }}</legend>
+
+                {{ form_row(form.email) }}
+
+                <button type="button"
+                        class="tiny secondary right button"
+                        onclick="$('#particulars-more').toggleClass('hidden')">
+                    {{ 'more'|trans }}</button>
+
+                <div id="particulars-more" class="hidden">
+                    <br><br>
+                    {{ form_row(form.phone) }}
+                    {{ form_row(form.mobile) }}
+                    {{ form_row(form.website) }}
+                    {{ form_row(form.address) }}
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>{{ 'user.access'|trans }}</legend>
+                {{ form_row(form.username) }}
+                {{ form_row(form.plainPassword) }}
+                {{ form_row(form.roles) }}
+            </fieldset>
+
+            <div class="hidden">
+                {{ form_rest(form) }}
+            </div>
+
+            <div class="text-right">
+                <input type="submit" name="submit" value="{{ 'submit'|trans }}" class="tiny button">
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+{%- endblock main -%}

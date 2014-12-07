@@ -1,6 +1,7 @@
 ## Français.
 
 user:
+    users: Utilisateurs
     profile: Profil
     you: Vous
     name: Nom d'utilisateur
@@ -16,6 +17,7 @@ user:
     phone: Téléphone
     mobile: Portable
     address: Adresse
+    groups: Groupes
     new: Nouvel accès
     edit: Modifier l'utilisateur
     updated: Profil mis à jour

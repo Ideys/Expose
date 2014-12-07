@@ -1,6 +1,7 @@
 ## English.
 
 user:
+    users: Users
     profile: Profile
     you: You
     name: Username
@@ -16,6 +17,7 @@ user:
     phone: Phone
     mobile: Mobile
     address: Address
+    groups: Groups
     new: New access
     edit: Edit user
     updated: Profile updated

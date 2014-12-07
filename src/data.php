@@ -6,6 +6,16 @@ use Doctrine\DBAL\Schema\Table;
 $db = SilexHooks::db($app);
 $schema = $db->getSchemaManager();
 
+if (!$schema->tablesExist('expose_user_group')) {
+    $table = new Table('expose_user_group');
+    $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
+    $table->setPrimaryKey(array('id'));
+    $table->addColumn('name', 'string', array('length' => 255));
+    $table->addColumn('hierarchy', 'smallint');
+
+    $schema->createTable($table);
+}
+
 if (!$schema->tablesExist('expose_user')) {
     $table = new Table('expose_user');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
