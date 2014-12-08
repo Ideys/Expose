@@ -36,13 +36,14 @@ class ProfileType
     /**
      * Return the edit directory form.
      *
-     * @param \Ideys\User\Profile   $profile
+     * @param \Ideys\User\Profile $profile
+     * @param \Ideys\User\Group[] $groups
      *
      * @return \Symfony\Component\Form\Form
      */
-    public function form(Profile $profile)
+    public function form(Profile $profile, $groups = [])
     {
-        $formBuilder = $this->formBuilder($profile);
+        $formBuilder = $this->formBuilder($profile, $groups);
 
         return $formBuilder->getForm();
     }
@@ -50,11 +51,12 @@ class ProfileType
     /**
      * Return dir form builder.
      *
-     * @param \Ideys\User\Profile   $profile
+     * @param \Ideys\User\Profile $profile
+     * @param \Ideys\User\Group[] $groups
      *
      * @return \Symfony\Component\Form\FormBuilder
      */
-    public function formBuilder(Profile $profile)
+    public function formBuilder(Profile $profile, $groups = [])
     {
         $formBuilder = $this->formFactory
             ->createBuilder('form', $profile)
@@ -139,9 +141,52 @@ class ProfileType
                         )),
                     ),
                 ))
+                ->add('groupsId', 'choice', array(
+                    'label'         => 'user.groups',
+                    'choices'       => $this->groupsAsChoice($groups),
+                    'multiple'      => true,
+                    'constraints'   => array(
+                        new Assert\Choice(array(
+                            'choices' => $this->groupsAsKeys($groups),
+                            'multiple' => true,
+                        )),
+                    ),
+                ))
             ;
         }
 
         return $formBuilder;
+    }
+
+    /**
+     * @param Group[] $groups
+     *
+     * @return array
+     */
+    private function groupsAsChoice($groups)
+    {
+        $choices = [];
+
+        foreach ($groups as $group) {
+            $choices[$group->getId()] = $group->getName();
+        }
+
+        return $choices;
+    }
+
+    /**
+     * @param Group[] $groups
+     *
+     * @return array
+     */
+    private function groupsAsKeys($groups)
+    {
+        $keys = [];
+
+        foreach ($groups as $group) {
+            $keys[] = $group->getId();
+        }
+
+        return $keys;
     }
 }

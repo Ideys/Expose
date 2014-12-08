@@ -14,6 +14,9 @@ $usersManagerController = SilexHooks::controllerFactory($app);
 $usersManagerController->match('/{id}', function (Request $request, $id = null) use ($app) {
 
     $userProvider = new UserProvider($app['db'], $app['session']);
+    $groupProvider = new GroupProvider($app['db']);
+
+    $groups = $groupProvider->findAll();
 
     if ($id > 0) {
         $profile = $userProvider->find($id);
@@ -22,9 +25,10 @@ $usersManagerController->match('/{id}', function (Request $request, $id = null) 
     }
 
     $profileType = new ProfileType($app['form.factory'], true);
-    $form = $profileType->form($profile);
+    $form = $profileType->form($profile, $groups);
 
     $form->handleRequest($request);
+
     if ($form->isValid()) {
         $userProvider->persist($app['security.encoder_factory'], $profile);
         SilexHooks::flashMessage($app, 'user.updated');

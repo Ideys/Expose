@@ -137,6 +137,7 @@ class UserProvider implements UserProviderInterface
             'lastname' => $profile->getLastName(),
             'organization' => $profile->getOrganization(),
             'roles' => serialize($profile->getRoles()),
+            'groups' => serialize($profile->getGroupsId()),
         );
 
         if (null === $profile->getId()) {

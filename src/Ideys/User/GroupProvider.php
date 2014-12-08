@@ -45,7 +45,7 @@ class GroupProvider
      */
     public function findAll()
     {
-        $entities = $this->db->fetchAll('SELECT * FROM expose_user_group');
+        $entities = $this->db->fetchAll('SELECT * FROM expose_user_group ORDER BY hierarchy');
         $groups = array();
 
         foreach ($entities as $entity) {
@@ -63,6 +63,7 @@ class GroupProvider
     private function hydrateGroup($data)
     {
          return (new Group())
+             ->setId($data['id'])
             ->setName($data['name'])
             ->setHierarchy($data['hierarchy']);
     }

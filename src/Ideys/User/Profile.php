@@ -83,6 +83,11 @@ class Profile
     const ROLE_USER         = 'ROLE_USER';
 
     /**
+     * @var array
+     */
+    private $groupsId = [];
+
+    /**
      * @var \DateTime
      */
     private $lastLogin;
@@ -420,6 +425,42 @@ class Profile
             return 'user.role.'.$item;
         }, $keys);
         return array_combine($keys, $values);
+    }
+
+    /**
+     * @return array
+     */
+    public function getGroupsId()
+    {
+        return $this->groupsId;
+    }
+
+    /**
+     * @param array|string $groupsId
+     *
+     * @return Profile
+     */
+    public function setGroupsId($groupsId)
+    {
+        if (is_string($groupsId)) {
+            $this->groupsId = unserialize($groupsId);
+        } elseif (is_array($groupsId)) {
+            $this->groupsId = $groupsId;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Alias of setGroupsId
+     *
+     * @param array|string $groupsId
+     *
+     * @return Profile
+     */
+    public function setGroups($groupsId)
+    {
+        return $this->setGroupsId($groupsId);
     }
 
     /**

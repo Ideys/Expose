@@ -21,6 +21,7 @@ if (!$schema->tablesExist('expose_user')) {
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('username', 'string', array('length' => 32));
+    $table->addUniqueIndex(array('username'));
     $table->addColumn('email', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('website', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
     $table->addColumn('phone', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
@@ -30,7 +31,7 @@ if (!$schema->tablesExist('expose_user')) {
     $table->addColumn('firstname', 'string', array('length' => 255));
     $table->addColumn('lastname', 'string', array('length' => 255));
     $table->addColumn('organization', 'string', array('length' => 255, 'default' => null, 'notnull' => false));
-    $table->addUniqueIndex(array('username'));
+    $table->addColumn('groups', 'string', array('length' => 255));
     $table->addColumn('password', 'string', array('length' => 255));
     $table->addColumn('roles', 'string', array('length' => 255));
     $table->addColumn('lastLogin', 'datetime', array('default' => null, 'notnull' => false));
