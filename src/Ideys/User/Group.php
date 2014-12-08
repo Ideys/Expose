@@ -20,7 +20,7 @@ class Group
     /**
      * @var int
      */
-    private $hierarchy;
+    private $hierarchy = 0;
 
     /**
      * @param int $id

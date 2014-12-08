@@ -17,6 +17,7 @@ user:
     phone: Phone
     mobile: Mobile
     address: Address
+    group: Group
     groups: Groups
     new: New access
     edit: Edit user

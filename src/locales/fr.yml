@@ -17,6 +17,7 @@ user:
     phone: Téléphone
     mobile: Portable
     address: Adresse
+    group: Groupe
     groups: Groupes
     new: Nouvel accès
     edit: Modifier l'utilisateur

@@ -27,17 +27,15 @@ class GroupProvider
     /**
      * Find a user profile.
      *
-     * @param integer $id
+     * @param int $id
      *
-     * @return \Ideys\User\Group
+     * @return Group
      */
     public function find($id)
     {
         $entity = $this->db->fetchAssoc('SELECT * FROM expose_user_group WHERE id = ?', array((int)$id));
 
-        $group = new Group($entity);
-
-        return $group;
+        return $this->hydrateGroup($entity);
     }
 
     /**
@@ -51,10 +49,41 @@ class GroupProvider
         $groups = array();
 
         foreach ($entities as $entity) {
-            $groups[] = new Group($entity);
+            $groups[] = $this->hydrateGroup($entity);
         }
 
         return $groups;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return Group
+     */
+    private function hydrateGroup($data)
+    {
+         return (new Group())
+            ->setName($data['name'])
+            ->setHierarchy($data['hierarchy']);
+    }
+
+    /**
+     * Persist a group.
+     *
+     * @param Group $group
+     */
+    public function persist(Group $group)
+    {
+        $data = array(
+            'name' => $group->getName(),
+            'hierarchy' => $group->getHierarchy(),
+        );
+
+        if (null === $group->getId()) {
+            $this->db->insert('expose_user_group', $data);
+        } else {
+            $this->db->update('expose_user_group', $data, array('id' => $group->getId()));
+        }
     }
 
     /**
