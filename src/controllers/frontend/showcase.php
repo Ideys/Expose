@@ -127,24 +127,32 @@ $showcaseController->match('/s/{slug}/{itemSlug}', $showcaseContent)
 $showcaseController->match('/contact', function (Request $request) use ($app) {
 
     $settings = SilexHooks::settingsManager($app)->getSettings();
+    $translator = SilexHooks::translator($app);
 
     $messageProvider = new Messaging\MessageProvider($app['db']);
     $message = new Messaging\Message();
+    $spamHelper = new Messaging\SpicedHamHelper();
     $messageType = new Messaging\MessageType($app['form.factory']);
 
     if (Settings\Settings::CONTACT_SECTION_DISABLED === $settings->getContactSection()) {
         throw new Exception\NotFoundHttpException();
     }
 
-    $translator = SilexHooks::translator($app);
+    // Anti-Spam
+    $question = $spamHelper->getRandomQuestion();
+    $message->setSpicedHamQuestion($question['q']);
+
     $form = $messageType->form($message);
 
     $form->handleRequest($request);
-    if ($form->isValid()) {
+    if ($form->isValid()
+        && $spamHelper->isAnswerRight($message->getSpicedHamQuestion(), $message->getSpicedHamAnswer())) {
         $messageProvider->persist($message);
         $messageProvider->sendByEmail($settings, $translator, $message);
         SilexHooks::flashMessage($app, 'contact.info.sent', SilexHooks::FLASH_SUCCESS);
         return SilexHooks::redirect($app, 'contact');
+    } elseif ($form->isSubmitted()) {
+        SilexHooks::flashMessage($app, 'contact.info.error', SilexHooks::FLASH_WARNING);
     }
 
     return SilexHooks::twig($app)->render('frontend/contact.html.twig', array(

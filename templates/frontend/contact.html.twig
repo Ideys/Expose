@@ -31,6 +31,9 @@
         <fieldset>
           {{ form_row(form.message, {'attr': {'rows': '12'} }) }}
         </fieldset>
+        <fieldset>
+          {{ form_row(form.spicedHamAnswer, {'attr': {'placeholder': form.spicedHamQuestion.vars.data} }) }}
+        </fieldset>
         <div class="hidden">
           {{ form_rest(form) }}
         </div>

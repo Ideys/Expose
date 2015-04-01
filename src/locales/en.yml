@@ -48,12 +48,14 @@ contact:
     no.messages: No messages
     send: Send
     info.sent: The message has been sent.
+    info.error: The form contains errors.
     content: Contact section content
     enabled: Visible
     no.form: Hide the form
     disabled: Disabled the section
     send.to.email: Send messages to this email
     send.to.email.subject: New message from %sitename% by %sender_name% (%sender_email%)
+    anti.spam: Please answer this question before validating
 
 section:
     sections: Sections

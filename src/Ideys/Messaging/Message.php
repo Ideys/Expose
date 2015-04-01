@@ -42,6 +42,16 @@ class Message
      */
     private $readAt;
 
+    /**
+     * @var string
+     */
+    private $spicedHamQuestion;
+
+    /**
+     * @var string
+     */
+    private $spicedHamAnswer;
+
 
     /**
      * Get id
@@ -58,7 +68,7 @@ class Message
      *
      * @param integer
      *
-     * @return \Ideys\Messaging\Message
+     * @return Message
      */
     public function setId($id)
     {
@@ -82,7 +92,7 @@ class Message
      *
      * @param string $name
      *
-     * @return \Ideys\Messaging\Message
+     * @return Message
      */
     public function setName($name)
     {
@@ -106,7 +116,7 @@ class Message
      *
      * @param string $email
      *
-     * @return \Ideys\Messaging\Message
+     * @return Message
      */
     public function setEmail($email)
     {
@@ -140,7 +150,7 @@ class Message
      *
      * @param string $subject
      *
-     * @return \Ideys\Messaging\Message
+     * @return Message
      */
     public function setSubject($subject)
     {
@@ -164,7 +174,7 @@ class Message
      *
      * @param string $message
      *
-     * @return \Ideys\Messaging\Message
+     * @return Message
      */
     public function setMessage($message)
     {
@@ -192,7 +202,7 @@ class Message
      *
      * @param \DateTime $date
      *
-     * @return \Ideys\Messaging\Message
+     * @return Message
      */
     public function setDate(\DateTime $date)
     {
@@ -226,12 +236,52 @@ class Message
      *
      * @param \DateTime $readAt
      *
-     * @return \Ideys\Messaging\Message
+     * @return Message
      */
     public function setReadAt(\DateTime $readAt = null)
     {
         $this->readAt = $readAt;
 
         return $this;
+    }
+
+    /**
+     * @param string $spicedHamQuestion
+     *
+     * @return Message
+     */
+    public function setSpicedHamQuestion($spicedHamQuestion)
+    {
+        $this->spicedHamQuestion = $spicedHamQuestion;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpicedHamQuestion()
+    {
+        return $this->spicedHamQuestion;
+    }
+
+    /**
+     * @param string $spicedHamAnswer
+     *
+     * @return Message
+     */
+    public function setSpicedHamAnswer($spicedHamAnswer)
+    {
+        $this->spicedHamAnswer = $spicedHamAnswer;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSpicedHamAnswer()
+    {
+        return $this->spicedHamAnswer;
     }
 }

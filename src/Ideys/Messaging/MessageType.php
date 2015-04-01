@@ -76,6 +76,10 @@ class MessageType
                 ),
                 'label'         => 'contact.message',
             ))
+            ->add('spicedHamQuestion', 'hidden')
+            ->add('spicedHamAnswer', 'text', array(
+                'label'         => 'contact.anti.spam',
+            ))
         ;
 
         return $formBuilder;
