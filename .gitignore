@@ -10,6 +10,7 @@ Desktop.ini
 # Silex
 /var/
 /vendor/
+/web/assets/vendor/
 composer.lock
 
 # Server files
