@@ -1,4 +1,4 @@
-<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.7/slick.min.js"></script>
+<script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.5.8/slick.min.js"></script>
 <script src="{{ app.request.basepath }}/assets/vendor/jquery.kinetic/jquery.kinetic.min.js?v={{ semver }}"></script>
 <script src="{{ app.request.basepath }}/assets/vendor/jquery.kinetic/lib/jquery.mousewheel.min.js?v={{ semver }}"></script>
 <script type="text/javascript">
@@ -18,13 +18,13 @@
         {# Add space key navigation to arrows key #}
         $('body').on('keydown', function(event) {
             if (event.which == 32) {
-                gallerySlider.slickNext();
+                gallerySlider.slick('slickNext');
             }
         });
 
         {# Add navigation on mouse click #}
         gallerySlider.on('click', '.slick-slide', function() {
-            gallerySlider.slickNext();
+            gallerySlider.slick('slickNext');
         });
 
         {# Optional thumblist #}
@@ -44,7 +44,7 @@
             .on('click', '.thumb', function() {
                 var slideIndex = $(this).attr('index');
 
-                gallerySlider.slickGoTo(slideIndex);
+                gallerySlider.slick('slickGoTo', slideIndex);
             });
         {% endif %}
 
