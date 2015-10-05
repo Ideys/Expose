@@ -71,6 +71,13 @@ class Settings
     const LAYOUT_BG_BLACK = 'black';
 
     /**
+     * Main layout color.
+     *
+     * @var string
+     */
+    private $layoutColor = '#ffffff';
+
+    /**
      * @var string
      */
     private $customStyle;
@@ -401,6 +408,26 @@ class Settings
             self::LAYOUT_BG_BLACK => 'site.background.black',
             self::LAYOUT_BG_WHITE => 'site.background.white',
         );
+    }
+
+    /**
+     * @param string $layoutColor
+     *
+     * @return Settings
+     */
+    public function setLayoutColor($layoutColor)
+    {
+        $this->layoutColor = $layoutColor;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLayoutColor()
+    {
+        return $this->layoutColor;
     }
 
     /**
