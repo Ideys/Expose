@@ -87,7 +87,7 @@
     <div class="row">
       <div class="small-12 columns">
         <fieldset>
-          {{ form_widget(form['description'~slide.id], {'attr': {'rows': '2', 'class': 'slide-description'} }) }}
+          {{ form_widget(form['description'~slide.id], {'attr': {'rows': '2', 'class': 'slide-description editable'} }) }}
           {{ form_widget(form['title'~slide.id], {'attr': {'class': 'hidden alt-field-'~section.id} }) }}
           {{ form_widget(form['tags'~slide.id], {'attr': {'class': 'hidden tag-field-'~section.id} }) }}
           {% if section.isLinkable %}
@@ -111,6 +111,7 @@
 {% endif %}
 
 <script>
-    $('#section-form-{{ section.id }} .slide-description').markItUp(markItUpSettingsCompact);
+    'use strict';
+    aloha.dom.query('.editable', document).forEach(aloha);
 </script>
 {% endspaceless %}

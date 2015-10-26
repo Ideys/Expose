@@ -20,6 +20,7 @@
       </div>
       {{ form_row(form.content, {'attr': {
         'rows': '22',
+        'class': 'editable',
         'data-pic-manager-url': path('admin_gallery_manager_content_sections_pic_manager', {'id': section.id})
       } }) }}
       <div class="text-right">
@@ -32,6 +33,7 @@
 </div>
 {{ form_end(form) }}
 <script>
-    $('#section-form-{{ section.id }} #form_content').markItUp(markItUpSettingsFull);
+    'use strict';
+    aloha.dom.query('.editable', document).forEach(aloha);
 </script>
 {% endspaceless %}

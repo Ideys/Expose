@@ -59,8 +59,7 @@
         </a>
       </li>
       <li>
-        <a href="{{ path('logout') }}"
-           title="{{ 'user.logout'|trans }}">
+        <a href="{{ path('logout') }}" title="{{ 'user.logout'|trans }}">
           <i class="fi-power"></i>
         </a>
       </li>
@@ -83,8 +82,8 @@
 
 {% block javascripts %}
 <script src="{{ app.request.basepath }}/assets/vendor/foundation-datepicker/js/foundation-datepicker.min.js?v={{ semver }}"></script>
+<script src="//www.alohaeditor.org/download/aloha.min.js" data-aloha-plugins="common/format"></script>
 <script src="{{ app.request.basepath }}/assets/js/ui.js?v={{ semver }}"></script>
 <script src="{{ app.request.basepath }}/assets/js/items.js?v={{ semver }}"></script>
 <script src="{{ app.request.basepath }}/assets/js/settings.js?v={{ semver }}"></script>
-{% include "backend/htmlEditor.js.twig" only %}
 {% endblock javascripts %}
