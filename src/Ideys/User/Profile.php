@@ -443,7 +443,7 @@ class Profile
     public function setGroupsId($groupsId)
     {
         if (is_string($groupsId)) {
-            $this->groupsId = unserialize($groupsId);
+            $this->groupsId = (empty($groupsId)) ? [] : unserialize($groupsId);
         } elseif (is_array($groupsId)) {
             $this->groupsId = $groupsId;
         }
