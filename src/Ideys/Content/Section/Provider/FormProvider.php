@@ -77,7 +77,7 @@ class FormProvider extends SectionProvider
         if ($form->isValid()) {
             $data = $form->getData();
             $this->handleFiles($data);
-            $this->db->insert('expose_form_result', array(
+            $this->db->insert(TABLE_PREFIX.'form_result', array(
                 'expose_section_id' => $sectionForm->getId(),
                 'result' => serialize($data),
                 'language' => $this->language,
@@ -115,7 +115,7 @@ class FormProvider extends SectionProvider
     public function getResults(Entity\Section $section)
     {
         $sql = 'SELECT r.* '.
-            'FROM expose_form_result AS r '.
+            'FROM '.TABLE_PREFIX.'form_result AS r '.
             'WHERE r.expose_section_id = ? '.
             'ORDER BY r.date ASC ';
         $results = $this->db->fetchAll($sql, array($section->getId()));
@@ -136,7 +136,7 @@ class FormProvider extends SectionProvider
      */
     public function deleteResult($id)
     {
-        $rows = $this->db->delete('expose_form_result', array('id' => $id));
+        $rows = $this->db->delete(TABLE_PREFIX.'form_result', array('id' => $id));
 
         return (0 < $rows);
     }
@@ -153,7 +153,7 @@ class FormProvider extends SectionProvider
         $formDeleted = parent::delete($section);
 
         if ($formDeleted) {
-            $this->db->delete('expose_form_result', array('expose_section_id' => $section->getId()));
+            $this->db->delete(TABLE_PREFIX.'form_result', array('expose_section_id' => $section->getId()));
         }
 
         return $formDeleted;

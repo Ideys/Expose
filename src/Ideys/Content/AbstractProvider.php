@@ -98,7 +98,7 @@ abstract class AbstractProvider
         // Extract table columns
         $sectionColumns = $this->db
             ->getSchemaManager()
-            ->listTableColumns($tableName);
+            ->listTableColumns(TABLE_PREFIX.$tableName);
 
         unset($sectionColumns['id']);
 
@@ -203,7 +203,7 @@ abstract class AbstractProvider
             if ($loggedUser instanceof User) {
                 $user = $this->db
                     ->fetchAssoc(
-                        'SELECT id FROM expose_user '.
+                        'SELECT id FROM '.TABLE_PREFIX.'user '.
                         'WHERE username = ?',
                         array(
                             $loggedUser->getUsername(),

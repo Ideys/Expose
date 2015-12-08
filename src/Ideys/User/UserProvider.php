@@ -51,7 +51,7 @@ class UserProvider implements UserProviderInterface
      */
     public function loadUserByUsername($username)
     {
-        $stmt = $this->db->executeQuery('SELECT * FROM expose_user WHERE username = ?', array(strtolower($username)));
+        $stmt = $this->db->executeQuery('SELECT * FROM '.TABLE_PREFIX.'user WHERE username = ?', array(strtolower($username)));
 
         if (!$user = $stmt->fetch()) {
             throw new UsernameNotFoundException(sprintf('Username "%s" does not exist.', $username));
@@ -64,7 +64,7 @@ class UserProvider implements UserProviderInterface
                   || $profile->getLastLogin()->diff(new \DateTime('now'))->h > 0) {
             $profile->setLastLogin('now');
             $lastLogin = $profile->getLastLogin()->format('Y-m-d H:i:s');
-            $this->db->update('expose_user', array('lastLogin' => $lastLogin), array('id' => $user['id']));
+            $this->db->update(TABLE_PREFIX.'user', array('lastLogin' => $lastLogin), array('id' => $user['id']));
         }
 
         $this->session->set('profile', $profile);
@@ -81,7 +81,7 @@ class UserProvider implements UserProviderInterface
      */
     public function find($id)
     {
-        $user = $this->db->fetchAssoc('SELECT * FROM expose_user WHERE id = ?', array((int)$id));
+        $user = $this->db->fetchAssoc('SELECT * FROM '.TABLE_PREFIX.'user WHERE id = ?', array((int)$id));
 
         $profile = new Profile($user);
 
@@ -95,7 +95,7 @@ class UserProvider implements UserProviderInterface
      */
     public function findAll()
     {
-        $users = $this->db->fetchAll('SELECT * FROM expose_user');
+        $users = $this->db->fetchAll('SELECT * FROM '.TABLE_PREFIX.'user');
         $profiles = array();
 
         foreach ($users as $user) {
@@ -141,9 +141,9 @@ class UserProvider implements UserProviderInterface
         );
 
         if (null === $profile->getId()) {
-            $this->db->insert('expose_user', $data);
+            $this->db->insert(TABLE_PREFIX.'user', $data);
         } else {
-            $this->db->update('expose_user', $data, array('id' => $profile->getId()));
+            $this->db->update(TABLE_PREFIX.'user', $data, array('id' => $profile->getId()));
         }
 
         return $user;
@@ -162,13 +162,13 @@ class UserProvider implements UserProviderInterface
         $loggedUser = $security->getToken()->getUser();
 
         // A user could not delete himself
-        $user = $this->db->fetchAssoc('SELECT * FROM expose_user WHERE id = ?', array($id));
+        $user = $this->db->fetchAssoc('SELECT * FROM '.TABLE_PREFIX.'user WHERE id = ?', array($id));
 
         if ($loggedUser->getUsername() == $user['username']) {
             return false;
         }
 
-        $this->db->delete('expose_user', array('id' => $id));
+        $this->db->delete(TABLE_PREFIX.'user', array('id' => $id));
 
         return true;
     }

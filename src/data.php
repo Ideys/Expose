@@ -6,8 +6,8 @@ use Doctrine\DBAL\Schema\Table;
 $db = SilexHooks::db($app);
 $schema = $db->getSchemaManager();
 
-if (!$schema->tablesExist('expose_user_group')) {
-    $table = new Table('expose_user_group');
+if (!$schema->tablesExist(TABLE_PREFIX.'user_group')) {
+    $table = new Table(TABLE_PREFIX.'user_group');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('name', 'string', array('length' => 255));
@@ -16,8 +16,8 @@ if (!$schema->tablesExist('expose_user_group')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_user')) {
-    $table = new Table('expose_user');
+if (!$schema->tablesExist(TABLE_PREFIX.'user')) {
+    $table = new Table(TABLE_PREFIX.'user');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('username', 'string', array('length' => 32));
@@ -39,7 +39,7 @@ if (!$schema->tablesExist('expose_user')) {
     $schema->createTable($table);
 
     // User profiles demo (password: hello world)
-    $db->insert('expose_user', array(
+    $db->insert(TABLE_PREFIX.'user', array(
       'username' => 'user',
       'email' => 'user@expose.ideys.com',
       'gender' => 'm',
@@ -48,7 +48,7 @@ if (!$schema->tablesExist('expose_user')) {
       'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
       'roles' => serialize(array('ROLE_USER')),
     ));
-    $db->insert('expose_user', array(
+    $db->insert(TABLE_PREFIX.'user', array(
       'username' => 'editor',
       'email' => 'editor@expose.ideys.com',
       'gender' => 'f',
@@ -57,7 +57,7 @@ if (!$schema->tablesExist('expose_user')) {
       'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
       'roles' => serialize(array('ROLE_EDITOR')),
     ));
-    $db->insert('expose_user', array(
+    $db->insert(TABLE_PREFIX.'user', array(
       'username' => 'admin',
       'email' => 'admin@expose.ideys.com',
       'gender' => 'f',
@@ -66,7 +66,7 @@ if (!$schema->tablesExist('expose_user')) {
       'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
       'roles' => serialize(array('ROLE_ADMIN')),
     ));
-    $db->insert('expose_user', array(
+    $db->insert(TABLE_PREFIX.'user', array(
       'username' => 'superadmin',
       'email' => 'superadmin@expose.ideys.com',
       'gender' => 'm',
@@ -77,8 +77,8 @@ if (!$schema->tablesExist('expose_user')) {
     ));
 }
 
-if (!$schema->tablesExist('expose_section')) {
-    $table = new Table('expose_section');
+if (!$schema->tablesExist(TABLE_PREFIX.'section')) {
+    $table = new Table(TABLE_PREFIX.'section');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
@@ -100,8 +100,8 @@ if (!$schema->tablesExist('expose_section')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_section_trans')) {
-    $table = new Table('expose_section_trans');
+if (!$schema->tablesExist(TABLE_PREFIX.'section_trans')) {
+    $table = new Table(TABLE_PREFIX.'section_trans');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true));
@@ -115,8 +115,8 @@ if (!$schema->tablesExist('expose_section_trans')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_section_item')) {
-    $table = new Table('expose_section_item');
+if (!$schema->tablesExist(TABLE_PREFIX.'section_item')) {
+    $table = new Table(TABLE_PREFIX.'section_item');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
@@ -137,8 +137,8 @@ if (!$schema->tablesExist('expose_section_item')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_section_item_trans')) {
-    $table = new Table('expose_section_item_trans');
+if (!$schema->tablesExist(TABLE_PREFIX.'section_item_trans')) {
+    $table = new Table(TABLE_PREFIX.'section_item_trans');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_item_id', 'integer', array('unsigned' => true));
@@ -153,8 +153,8 @@ if (!$schema->tablesExist('expose_section_item_trans')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_form_result')) {
-    $table = new Table('expose_form_result');
+if (!$schema->tablesExist(TABLE_PREFIX.'form_result')) {
+    $table = new Table(TABLE_PREFIX.'form_result');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_section_id', 'integer', array('unsigned' => true));
@@ -166,8 +166,8 @@ if (!$schema->tablesExist('expose_form_result')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_messaging')) {
-    $table = new Table('expose_messaging');
+if (!$schema->tablesExist(TABLE_PREFIX.'messaging')) {
+    $table = new Table(TABLE_PREFIX.'messaging');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('name', 'string', array('length' => 255));
@@ -181,8 +181,8 @@ if (!$schema->tablesExist('expose_messaging')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_files')) {
-    $table = new Table('expose_files');
+if (!$schema->tablesExist(TABLE_PREFIX.'files')) {
+    $table = new Table(TABLE_PREFIX.'files');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('file', 'string', array('length' => 255));
@@ -195,8 +195,8 @@ if (!$schema->tablesExist('expose_files')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_files_recipients')) {
-    $table = new Table('expose_files_recipients');
+if (!$schema->tablesExist(TABLE_PREFIX.'files_recipients')) {
+    $table = new Table(TABLE_PREFIX.'files_recipients');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('expose_files_id', 'integer', array('unsigned' => true));
@@ -209,8 +209,8 @@ if (!$schema->tablesExist('expose_files_recipients')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist('expose_settings')) {
-    $table = new Table('expose_settings');
+if (!$schema->tablesExist(TABLE_PREFIX.'settings')) {
+    $table = new Table(TABLE_PREFIX.'settings');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
     $table->addColumn('attribute', 'string', array('length' => 255));

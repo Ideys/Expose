@@ -119,7 +119,7 @@ class ContentFactory
      */
     public function updateGroupedSections(Section $section)
     {
-        $this->db->update('expose_section', array(
+        $this->db->update(TABLE_PREFIX.'section', array(
             'custom_css' => $section->getCustomCss(),
             'custom_js' => $section->getCustomJs(),
             'shuffle' => $section->getShuffle(),
@@ -128,13 +128,13 @@ class ContentFactory
 
         // Update translated sections parameters
         $sectionsIds = $this->db->fetchAll(
-              'SELECT id FROM expose_section '
+              'SELECT id FROM '.TABLE_PREFIX.'section '
             . 'WHERE tag = ? AND type = ?',
             array($section->getTag(), $section->getType())
         );
 
         foreach ($sectionsIds as $id) {
-            $this->db->update('expose_section_trans', array(
+            $this->db->update(TABLE_PREFIX.'section_trans', array(
                 'parameters' => serialize($section->getParameters()),
             ), array('expose_section_id' => $id['id'], 'language' => $this->language));
         }

@@ -71,7 +71,7 @@ class SettingsManager
      */
     private function findSettings()
     {
-        $parameterRows = $this->db->fetchAll('SELECT * FROM '.'expose_settings');
+        $parameterRows = $this->db->fetchAll('SELECT * FROM '.TABLE_PREFIX.'settings');
 
         // Flatten extracted data
         $parameters = array();
@@ -133,13 +133,13 @@ class SettingsManager
                     }
 
                     // Update if parameter is already persisted...
-                    $isUpdated = $this->db->update('expose_settings', array(
+                    $isUpdated = $this->db->update(TABLE_PREFIX.'settings', array(
                         'value' => $settingsParameter,
                     ), array('attribute' => $propertyName));
 
                     // ...create entry otherwise
                     if (! $isUpdated) {
-                        $this->db->insert('expose_settings', array(
+                        $this->db->insert(TABLE_PREFIX.'settings', array(
                             'attribute' => $propertyName,
                             'value' => $settingsParameter,
                         ));

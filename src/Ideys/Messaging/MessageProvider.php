@@ -33,7 +33,7 @@ class MessageProvider
      */
     public function persist(Message $message)
     {
-        $this->db->insert('expose_messaging', array(
+        $this->db->insert(TABLE_PREFIX.'messaging', array(
             'name' => $message->getName(),
             'email' => $message->getEmail(),
             'subject' => $message->getSubject(),
@@ -50,7 +50,7 @@ class MessageProvider
     public function markAsRead($id)
     {
         $this->db->executeQuery(
-            'UPDATE expose_messaging '
+            'UPDATE '.TABLE_PREFIX.'messaging '
           . 'SET read_at = :datetime '
           . 'WHERE id = :id',
             array(
@@ -68,7 +68,7 @@ class MessageProvider
     public function archive($id)
     {
         $this->db->executeQuery(
-            'UPDATE expose_messaging '
+            'UPDATE '.TABLE_PREFIX.'messaging '
           . 'SET archive = NOT archive '
           . 'WHERE id = :id',
             array('id' => $id)
@@ -82,7 +82,7 @@ class MessageProvider
      */
     public function delete($id)
     {
-        $this->db->delete('expose_messaging', array('id' => $id));
+        $this->db->delete(TABLE_PREFIX.'messaging', array('id' => $id));
     }
 
     /**
@@ -117,7 +117,7 @@ class MessageProvider
         $messages =  array();
 
         $results = $this->db->fetchAll(
-            ' SELECT * FROM expose_messaging' .
+            ' SELECT * FROM '.TABLE_PREFIX.'messaging' .
             ' WHERE archive = ' . (int) $archive .
             ' ORDER BY date DESC'
         );
@@ -193,7 +193,7 @@ class MessageProvider
      */
     private function countMessages($filter)
     {
-        $sqlStatement = 'SELECT count(id) AS total FROM expose_messaging ';
+        $sqlStatement = 'SELECT count(id) AS total FROM '.TABLE_PREFIX.'messaging ';
 
         switch ($filter) {
             case 'unread':

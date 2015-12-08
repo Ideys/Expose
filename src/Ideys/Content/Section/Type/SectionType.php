@@ -117,8 +117,8 @@ class SectionType
     {
         $sql =
             'SELECT s.id, t.title
-             FROM expose_section AS s
-             LEFT JOIN expose_section_trans AS t
+             FROM '.TABLE_PREFIX.'section AS s
+             LEFT JOIN '.TABLE_PREFIX.'section_trans AS t
              ON t.expose_section_id = s.id
              WHERE s.type = ?
              ORDER BY s.hierarchy ASC';

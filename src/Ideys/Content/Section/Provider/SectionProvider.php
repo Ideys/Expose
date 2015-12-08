@@ -249,7 +249,7 @@ class SectionProvider extends AbstractProvider
      */
     public function attachItem(Section $section, $id)
     {
-        $affectedRows = $this->db->update('expose_section_item',
+        $affectedRows = $this->db->update(TABLE_PREFIX.'section_item',
             array('expose_section_id' => $section->getId()),
             array('id' => $id)
         );
@@ -265,7 +265,7 @@ class SectionProvider extends AbstractProvider
     public function switchArchive(Section $section)
     {
         $this->db->executeQuery(
-            'UPDATE expose_section ' .
+            'UPDATE '.TABLE_PREFIX.'section ' .
             'SET archive = NOT archive ' .
             'WHERE id = :id ',
             array('id' => $section->getId())
@@ -293,9 +293,7 @@ class SectionProvider extends AbstractProvider
      */
     private function create(Section $section) {
 
-        $count = $this->db->fetchAssoc(
-            'SELECT COUNT(s.id) AS total '.
-            'FROM expose_section AS s');
+        $count = $this->db->fetchAssoc('SELECT COUNT(s.id) AS total FROM '.TABLE_PREFIX.'section AS s');
         $section->setHierarchy(++$count['total']);
 
         $section->setLanguage($this->language);
@@ -303,15 +301,15 @@ class SectionProvider extends AbstractProvider
         $this->uniqueSlug($section);
         $this->blameAndTimestamp($section);
 
-        $sectionData = $this->objectToArray('expose_section', $section);
+        $sectionData = $this->objectToArray('section', $section);
 
-        $this->db->insert('expose_section', $sectionData);
+        $this->db->insert(TABLE_PREFIX.'section', $sectionData);
         $section->setId($this->db->lastInsertId());
 
-        $translationData = $this->objectToArray('expose_section_trans', $section);
+        $translationData = $this->objectToArray('section_trans', $section);
         $translationData['expose_section_id'] = $section->getId();
 
-        $this->db->insert('expose_section_trans', $translationData);
+        $this->db->insert(TABLE_PREFIX.'section_trans', $translationData);
     }
 
     /**
@@ -323,7 +321,7 @@ class SectionProvider extends AbstractProvider
         // was newly defined as the homepage.
         // Also remove section from sub-folder.
         if ($section->isHomepage()) {
-            $this->db->update('expose_section',
+            $this->db->update(TABLE_PREFIX.'section',
                 array('visibility' => Section::VISIBILITY_CLOSED),
                 array('visibility' => Section::VISIBILITY_HOMEPAGE)
             );
@@ -333,16 +331,16 @@ class SectionProvider extends AbstractProvider
         $this->uniqueSlug($section);
         $this->blameAndTimestamp($section);
 
-        $sectionData = $this->objectToArray('expose_section', $section);
+        $sectionData = $this->objectToArray('section', $section);
 
-        $this->db->update('expose_section',
+        $this->db->update(TABLE_PREFIX.'section',
             $sectionData,
             array('id' => $section->getId()));
 
-        $translationData = $this->objectToArray('expose_section_trans', $section);
+        $translationData = $this->objectToArray('section_trans', $section);
         $translationData['expose_section_id'] = $section->getId();
 
-        $this->db->update('expose_section_trans',
+        $this->db->update(TABLE_PREFIX.'section_trans',
             $translationData,
             array(
                 'expose_section_id' => $section->getId(),
@@ -373,7 +371,7 @@ class SectionProvider extends AbstractProvider
         $slug = String::slugify($title);
 
         $sections = $this->db->fetchAll(
-            'SELECT slug FROM expose_section '.
+            'SELECT slug FROM '.TABLE_PREFIX.'section '.
             'WHERE slug LIKE ? '.
             'AND id != ?',
             array($slug.'%', $section->getId())
@@ -410,9 +408,9 @@ class SectionProvider extends AbstractProvider
         }
 
         // Delete section's translations
-        $this->db->delete('expose_section_trans', array('expose_section_id' => $section->getId()));
+        $this->db->delete(TABLE_PREFIX.'section_trans', array('expose_section_id' => $section->getId()));
         // Delete section
-        $rows = $this->db->delete('expose_section', array('id' => $section->getId()));
+        $rows = $this->db->delete(TABLE_PREFIX.'section', array('id' => $section->getId()));
 
         return (0 < $rows);
     }
@@ -431,10 +429,10 @@ class SectionProvider extends AbstractProvider
             's.hierarchy, s.archive, s.target_blank, '.
             't.title, t.description, t.legend, '.
             't.parameters, t.language '.
-            'FROM expose_section AS s '.
-            'LEFT JOIN expose_section_trans AS t '.
+            'FROM '.TABLE_PREFIX.'section AS s '.
+            'LEFT JOIN '.TABLE_PREFIX.'section_trans AS t '.
             'ON t.expose_section_id = s.id '.
-            'LEFT JOIN expose_section_item AS i '.
+            'LEFT JOIN '.TABLE_PREFIX.'section_item AS i '.
             'ON i.expose_section_id = s.id ';
     }
 }

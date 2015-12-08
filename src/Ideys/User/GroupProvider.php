@@ -33,7 +33,7 @@ class GroupProvider
      */
     public function find($id)
     {
-        $entity = $this->db->fetchAssoc('SELECT * FROM expose_user_group WHERE id = ?', array((int)$id));
+        $entity = $this->db->fetchAssoc('SELECT * FROM '.TABLE_PREFIX.'user_group WHERE id = ?', array((int)$id));
 
         return $this->hydrateGroup($entity);
     }
@@ -45,7 +45,7 @@ class GroupProvider
      */
     public function findAll()
     {
-        $entities = $this->db->fetchAll('SELECT * FROM expose_user_group ORDER BY hierarchy');
+        $entities = $this->db->fetchAll('SELECT * FROM '.TABLE_PREFIX.'user_group ORDER BY hierarchy');
         $groups = array();
 
         foreach ($entities as $entity) {
@@ -81,9 +81,9 @@ class GroupProvider
         );
 
         if (null === $group->getId()) {
-            $this->db->insert('expose_user_group', $data);
+            $this->db->insert(TABLE_PREFIX.'user_group', $data);
         } else {
-            $this->db->update('expose_user_group', $data, array('id' => $group->getId()));
+            $this->db->update(TABLE_PREFIX.'user_group', $data, array('id' => $group->getId()));
         }
     }
 
@@ -96,7 +96,7 @@ class GroupProvider
      */
     public function deleteUser($id)
     {
-        $deleted = $this->db->delete('expose_user_group', array('id' => $id));
+        $deleted = $this->db->delete(TABLE_PREFIX.'user_group', array('id' => $id));
 
         return $deleted > 0;
     }

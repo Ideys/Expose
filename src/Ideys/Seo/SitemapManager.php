@@ -70,8 +70,8 @@ class SitemapManager
         }
 
         $sections = $this->db->fetchAll(
-            'SELECT s.id, s.slug, t.language FROM expose_section AS s '.
-            'LEFT JOIN expose_section_trans AS t '.
+            'SELECT s.id, s.slug, t.language FROM '.TABLE_PREFIX.'section AS s '.
+            'LEFT JOIN '.TABLE_PREFIX.'section_trans AS t '.
             'ON t.expose_section_id = s.id '.
             'WHERE s.visibility NOT IN (?, ?) '.
             'AND s.type NOT IN (?, ?) '.

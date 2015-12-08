@@ -74,16 +74,16 @@ class ItemProvider extends AbstractProvider
 
         $this->blameAndTimestamp($item);
 
-        $itemData = $this->objectToArray('expose_section_item', $item);
+        $itemData = $this->objectToArray('section_item', $item);
 
-        $this->db->insert('expose_section_item', $itemData);
+        $this->db->insert(TABLE_PREFIX.'section_item', $itemData);
 
         $item->setId($this->db->lastInsertId());
 
-        $translationData = $this->objectToArray('expose_section_item_trans', $item);
+        $translationData = $this->objectToArray('section_item_trans', $item);
         $translationData['expose_section_item_id'] = $item->getId();
 
-        $this->db->insert('expose_section_item_trans', $translationData);
+        $this->db->insert(TABLE_PREFIX.'section_item_trans', $translationData);
 
         return $item;
     }
@@ -100,19 +100,19 @@ class ItemProvider extends AbstractProvider
         $item->setSlug(String::slugify($item->getTitle()));
         $this->blameAndTimestamp($item);
 
-        $itemData = $this->objectToArray('expose_section_item', $item);
+        $itemData = $this->objectToArray('section_item', $item);
 
         $this->db->update(
-            'expose_section_item',
+            TABLE_PREFIX.'section_item',
             $itemData,
             array('id' => $item->getId())
         );
 
-        $translationData = $this->objectToArray('expose_section_item_trans', $item);
+        $translationData = $this->objectToArray('section_item_trans', $item);
         $translationData['expose_section_item_id'] = $item->getId();
 
         $this->db->update(
-            'expose_section_item_trans',
+            TABLE_PREFIX.'section_item_trans',
             $translationData,
             array(
                 'expose_section_item_id' => $item->getId(),
@@ -133,12 +133,12 @@ class ItemProvider extends AbstractProvider
     public function delete(Item $item)
     {
         // Delete item's translations
-        $this->db->delete('expose_section_item_trans', array(
+        $this->db->delete(TABLE_PREFIX.'section_item_trans', array(
             'expose_section_item_id' => $item->getId(),
         ));
 
         // Delete item
-        $rows = $this->db->delete('expose_section_item', array(
+        $rows = $this->db->delete(TABLE_PREFIX.'section_item', array(
             'id' => $item->getId(),
         ));
 
@@ -187,12 +187,12 @@ class ItemProvider extends AbstractProvider
             'SELECT i.*, t.title, t.description, t.content, '.
             't.link, t.parameters, t.language, '.
             'st.title AS section_title, s.type AS section_type '.
-            'FROM expose_section_item AS i '.
-            'LEFT JOIN expose_section_item_trans AS t '.
+            'FROM '.TABLE_PREFIX.'section_item AS i '.
+            'LEFT JOIN '.TABLE_PREFIX.'section_item_trans AS t '.
             'ON t.expose_section_item_id = i.id '.
-            'LEFT JOIN expose_section AS s '.
+            'LEFT JOIN '.TABLE_PREFIX.'section AS s '.
             'ON i.expose_section_id = s.id '.
-            'LEFT JOIN expose_section_trans AS st '.
+            'LEFT JOIN '.TABLE_PREFIX.'section_trans AS st '.
             'ON st.expose_section_id = s.id ';
     }
 }

@@ -36,7 +36,7 @@ class FileProvider
 
         $timestamp = (new \DateTime())->format('c');
 
-        $this->db->insert('expose_files', array(
+        $this->db->insert(TABLE_PREFIX.'files', array(
             'file' => $file->getFileName(),
             'mime' => $file->getMime(),
             'title' => $file->getTitle(),
@@ -60,7 +60,7 @@ class FileProvider
      */
     public function editTitle(File $file)
     {
-        $this->db->update('expose_files', array(
+        $this->db->update(TABLE_PREFIX.'files', array(
             'title' => $file->getTitle(),
             'slug' => String::slugify($file->getTitle()),
         ), array('id' => $file->getId()));
@@ -82,11 +82,11 @@ class FileProvider
         );
 
         if ($recipient->getId() > 0) {
-            $this->db->update('expose_files_recipients', $data, array(
+            $this->db->update(TABLE_PREFIX.'files_recipients', $data, array(
                 'id' => $recipient->getId()
             ));
         } else {
-            $this->db->insert('expose_files_recipients', $data);
+            $this->db->insert(TABLE_PREFIX.'files_recipients', $data);
         }
     }
 
@@ -113,8 +113,8 @@ class FileProvider
      */
     public function delete($id)
     {
-        $countDeletedFiles = $this->db->delete('expose_files', array('id' => $id));
-        $this->db->delete('expose_files_recipients', array('expose_files_id' => $id));
+        $countDeletedFiles = $this->db->delete(TABLE_PREFIX.'files', array('id' => $id));
+        $this->db->delete(TABLE_PREFIX.'files_recipients', array('expose_files_id' => $id));
 
         return $countDeletedFiles > 0;
     }
@@ -129,8 +129,8 @@ class FileProvider
         return 'SELECT f.id, f.file, f.mime, f.title, f.name, f.slug, '
              . 'r.id AS rid, r.name AS recipient, r.token, '
              . 'r.download_counter, r.download_logs '
-             . 'FROM expose_files AS f '
-             . 'LEFT JOIN expose_files_recipients AS r '
+             . 'FROM '.TABLE_PREFIX.'files AS f '
+             . 'LEFT JOIN '.TABLE_PREFIX.'files_recipients AS r '
              . 'ON f.id = r.expose_files_id ';
     }
 

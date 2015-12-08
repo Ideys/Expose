@@ -47,7 +47,7 @@ $contentManagerController->post('/sort/sections', function (Request $request) us
     $hierarchy = $request->get('hierarchy');
 
     foreach ($hierarchy as $key => $value) {
-        SilexHooks::db($app)->update('expose_section',
+        SilexHooks::db($app)->update(TABLE_PREFIX.'section',
                 array('hierarchy' => $key),
                 array('id' => filter_var($value, FILTER_SANITIZE_NUMBER_INT))
         );
@@ -64,7 +64,7 @@ $contentManagerController->post('/sort/items', function (Request $request) use (
     $hierarchy = $request->get('hierarchy');
 
     foreach ($hierarchy as $key => $value) {
-        SilexHooks::db($app)->update('expose_section_item',
+        SilexHooks::db($app)->update(TABLE_PREFIX.'section_item',
                 array('hierarchy' => $key),
                 array('id' => filter_var($value, FILTER_SANITIZE_NUMBER_INT))
         );
@@ -109,7 +109,7 @@ $contentManagerController->post('/toggle/items/{id}', function (Request $request
     foreach ($section->getItems('Item') as $item) {
         if (in_array($item->getId(), $itemIds)) {
             $item->toggle();
-            $db->update('expose_section_item',
+            $db->update(TABLE_PREFIX.'section_item',
                 array('published' => $item->isPublished()),
                 array('id' => $item->getId())
             );
