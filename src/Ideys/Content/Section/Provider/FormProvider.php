@@ -5,7 +5,7 @@ namespace Ideys\Content\Section\Provider;
 use Ideys\Content\Item\Entity\Field;
 use Ideys\Content\Section\Entity;
 use Ideys\Files\File;
-use Ideys\String;
+use Ideys\StringHelper;
 use Symfony\Component\Form as SfForm;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -97,7 +97,7 @@ class FormProvider extends SectionProvider
     {
         foreach ($data as $key => $value) {
             if ($value instanceof UploadedFile) {
-                $data[$key.'__file'] = String::slugify($value->getClientOriginalName());
+                $data[$key.'__file'] = StringHelper::slugify($value->getClientOriginalName());
                 $data[$key.'__path'] = uniqid('expose').'.'.$value->guessClientExtension();
                 $value->move(File::getDir(), $data[$key.'__path']);
                 unset($data[$key]);

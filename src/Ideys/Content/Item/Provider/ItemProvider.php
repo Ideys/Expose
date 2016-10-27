@@ -6,7 +6,7 @@ use Ideys\Content\AbstractProvider;
 use Ideys\Content\Item\Entity\Item;
 use Ideys\Content\Item\Entity\Slide;
 use Ideys\Content\Section\Entity\Section;
-use Ideys\String;
+use Ideys\StringHelper;
 
 /**
  * Item provider global class.
@@ -69,7 +69,7 @@ class ItemProvider extends AbstractProvider
     public function create(Section $section, Item $item)
     {
         $item->setLanguage($this->language);
-        $item->setSlug(String::slugify($item->getTitle()));
+        $item->setSlug(StringHelper::slugify($item->getTitle()));
         $item->setExposeSectionId($section->getId());
 
         $this->blameAndTimestamp($item);
@@ -97,7 +97,7 @@ class ItemProvider extends AbstractProvider
      */
     public function update(Item $item)
     {
-        $item->setSlug(String::slugify($item->getTitle()));
+        $item->setSlug(StringHelper::slugify($item->getTitle()));
         $this->blameAndTimestamp($item);
 
         $itemData = $this->objectToArray('section_item', $item);

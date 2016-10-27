@@ -3,8 +3,8 @@
 $app['db.options'] = array(
     'driver' => 'pdo_mysql',
     'host' => 'localhost',
-    'port' => null,
+    'port' => 8889,
     'dbname' => 'exposedb',
     'user' => 'root',
-    'password' => null,
+    'password' => 'root',
 );

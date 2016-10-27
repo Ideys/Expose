@@ -9,6 +9,7 @@
 {% if 'enabled' == settings.contactSection %}
   <div class="medium-5 medium-push-7 columns">
     {{ widgets.inclusion_replace_keys(settings.contactContent) }}
+      <map></map>
   </div>
   <div class="medium-7 medium-pull-5 columns">
     {{ form_start(form) }}
@@ -49,11 +50,9 @@
   </div>
 {% endif %}
 </div>
+
 {% if 'contact.section' == settings.adminLink %}
-<a href="{{ path('admin_content_manager') }}"
-   id="admin-link"
-   class="tiny secondary button">
-  {{ 'admin.admin'|trans }}
-</a>
+<a href="{{ path('admin_content_manager') }}" id="admin-link" class="tiny secondary button">{{ 'admin.admin'|trans }}</a>
 {% endif %}
+
 {%- endblock main %}

@@ -3,7 +3,7 @@
 namespace Ideys\Files;
 
 use Doctrine\DBAL\Connection;
-use Ideys\String;
+use Ideys\StringHelper;
 
 /**
  * Downloadable files manager.
@@ -62,7 +62,7 @@ class FileProvider
     {
         $this->db->update(TABLE_PREFIX.'files', array(
             'title' => $file->getTitle(),
-            'slug' => String::slugify($file->getTitle()),
+            'slug' => StringHelper::slugify($file->getTitle()),
         ), array('id' => $file->getId()));
     }
 

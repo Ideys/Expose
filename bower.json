@@ -2,7 +2,7 @@
   "name": "ideys-expose",
   "private": true,
   "dependencies": {
-    "aloha-editor": "~1.2",
+    "aloha-editor": "^1.1.0",
     "blueimp-file-upload": "~9.9.3",
     "foundation": "~5",
     "foundation-datepicker": "~1.4.0",

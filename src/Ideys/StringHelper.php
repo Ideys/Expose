@@ -5,11 +5,9 @@ namespace Ideys;
 /**
  * String tools.
  */
-class String
+class StringHelper
 {
     /**
-     * Slugify strings.
-     *
      * @param string $string
      * @param string $sep
      *
@@ -40,8 +38,6 @@ class String
     }
 
     /**
-     * Generates a token.
-     *
      * @return string
      */
     public static function generateToken()

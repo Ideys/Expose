@@ -8,7 +8,7 @@ use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Section\Entity\Html;
 use Ideys\Content\Item\Provider\ItemProvider;
 use Ideys\Content\Item\Entity\Page;
-use Ideys\String;
+use Ideys\StringHelper;
 use Silex\Application as SilexApp;
 
 /**
@@ -368,7 +368,7 @@ class SectionProvider extends AbstractProvider
             $title .= '-dir';
         }
 
-        $slug = String::slugify($title);
+        $slug = StringHelper::slugify($title);
 
         $sections = $this->db->fetchAll(
             'SELECT slug FROM '.TABLE_PREFIX.'section '.

@@ -3,7 +3,7 @@
 namespace Ideys\Files;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Ideys\String;
+use Ideys\StringHelper;
 
 /**
  * File object.
@@ -267,7 +267,7 @@ class File
         $this->setFileName(uniqid('expose').'.'.$this->file->guessClientExtension());
         $this->setMime($this->file->getMimeType());
         $this->setName($this->file->getClientOriginalName());
-        $this->setSlug(String::slugify($this->title));
+        $this->setSlug(StringHelper::slugify($this->title));
         $this->getFile()->move(static::getDir(), $this->fileName);
     }
 }
