@@ -2,7 +2,6 @@
 
 namespace Ideys\Settings;
 
-use Silex\Application;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -12,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 class SettingsManager
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     private $db;
 
@@ -39,11 +38,6 @@ class SettingsManager
         'subDomain',
     );
 
-    /**
-     * Constructor.
-     *
-     * @param Connection $connection
-     */
     public function __construct(Connection $connection)
     {
         $this->db = $connection;
@@ -165,7 +159,7 @@ class SettingsManager
      *
      * @return bool True if locale is enabled
      */
-    function checkAvailableLanguage(Request $request)
+    public function checkAvailableLanguage(Request $request)
     {
         return in_array($request->attributes->get('_locale'), $this->getSettings()->getLanguages());
     }
@@ -178,7 +172,7 @@ class SettingsManager
      *
      * @return string The selected language code
      */
-    function clientLanguageSelector(Request $request) {
+     public function clientLanguageSelector(Request $request) {
         $acceptLanguage = $request->headers->get('accept-language');
         $userLanguage   = strtolower(substr($acceptLanguage, 0, 2));
         $language       = (in_array($userLanguage, $this->getSettings()->getLanguages()))

@@ -346,11 +346,6 @@ class SectionProvider extends AbstractProvider
                 'expose_section_id' => $section->getId(),
                 'language' => $section->getLanguage(),
             ));
-
-        // Update other sections parameters with identical tag
-        if ($section->getTag() != null) {
-//            $this->updateGroupedSections($section);
-        }
     }
 
     /**

@@ -70,9 +70,6 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
         )));
     }
 
-    // Handle composite sections with other sections inclusions
-//    $contentFactory->composeSectionItems($section, $app['twig']);
-
     // Form sections logic
     $formView = null;
     if ($section instanceof Form) {

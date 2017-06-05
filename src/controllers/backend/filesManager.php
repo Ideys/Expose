@@ -59,7 +59,7 @@ $filesManagerController->match('/{fileId}/edit/recipient/{id}', function (Reques
     $filesHandler = new Files\FileProvider($app['db']);
     $file = $filesHandler->find($fileId);
     $recipient = $file->getRecipient($id);
-    if (null == $recipient) {
+    if (null === $recipient) {
         $recipient = new Files\Recipient();
         $recipient->setFile($file);
     }

@@ -2,7 +2,6 @@
 
 namespace Ideys\Content\Item\Type;
 
-use Ideys\Content\Section;
 use Ideys\Content\Item\Entity\Item;
 use Symfony\Component\Form\FormFactory;
 
@@ -12,14 +11,12 @@ use Symfony\Component\Form\FormFactory;
 class ItemTypeFactory
 {
     /**
-     * @var \Symfony\Component\Form\FormFactory
+     * @var FormFactory
      */
     protected $formFactory;
 
     /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
+     * @param FormFactory   $formFactory
      */
     public function __construct(FormFactory $formFactory)
     {
@@ -27,9 +24,7 @@ class ItemTypeFactory
     }
 
     /**
-     * Return the item form.
-     *
-     * @param \Ideys\Content\Item\Entity\Item $item
+     * @param Item $item
      *
      * @return \Symfony\Component\Form\Form
      *

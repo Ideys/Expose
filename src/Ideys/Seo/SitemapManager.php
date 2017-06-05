@@ -4,7 +4,6 @@ namespace Ideys\Seo;
 
 use Ideys\Content\Section\Entity\Section;
 use Ideys\Settings\SettingsManager;
-use Silex\Application;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 
@@ -14,30 +13,24 @@ use Symfony\Component\Routing\Generator\UrlGenerator;
 class SitemapManager
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     private $db;
 
     /**
-     * @var \Symfony\Component\Routing\Generator\UrlGenerator
+     * @var UrlGenerator
      */
     private $urlGenerator;
 
     /**
-     * @var \Ideys\Settings\SettingsManager
+     * @var SettingsManager
      */
     private $settingsManager;
 
-    /**
-     * Constructor.
-     *
-     * @param Connection      $connection
-     * @param UrlGenerator    $urlGenerator
-     * @param SettingsManager $settingsManager
-     */
-    public function __construct(Connection $connection,
-                                UrlGenerator $urlGenerator,
-                                SettingsManager $settingsManager)
+    public function __construct(
+        Connection $connection,
+        UrlGenerator $urlGenerator,
+        SettingsManager $settingsManager)
     {
         $this->db = $connection;
         $this->urlGenerator = $urlGenerator;

@@ -4,7 +4,6 @@ use Ideys\SilexHooks;
 use Ideys\User\UserProvider;
 use Ideys\User\ProfileType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception;
 
 $profileController = SilexHooks::controllerFactory($app);
 

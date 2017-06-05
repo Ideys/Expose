@@ -29,7 +29,7 @@
         "symfony/yaml": "~2.8"
     },
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-4": { "": "src/" }
     },
     "minimum-stability": "stable",
     "extra": {

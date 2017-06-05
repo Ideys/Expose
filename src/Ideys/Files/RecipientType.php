@@ -3,7 +3,6 @@
 namespace Ideys\Files;
 
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * File recipient form type.
@@ -11,15 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class RecipientType
 {
     /**
-     * @var \Symfony\Component\Form\FormFactory
+     * @var FormFactory
      */
     protected $formFactory;
 
 
     /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
+     * @param FormFactory   $formFactory
      */
     public function __construct(FormFactory $formFactory)
     {
@@ -29,7 +26,7 @@ class RecipientType
     /**
      * Return the file upload form.
      *
-     * @param \Ideys\Files\Recipient $recipient
+     * @param Recipient $recipient
      *
      * @return \Symfony\Component\Form\Form
      */
@@ -43,7 +40,7 @@ class RecipientType
     /**
      * Return contact message form builder.
      *
-     * @param \Ideys\Files\Recipient $recipient
+     * @param Recipient $recipient
      *
      * @return \Symfony\Component\Form\FormBuilder
      */

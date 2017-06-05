@@ -1,12 +1,13 @@
 <?php
 
+use Ideys\DataHelper;
 use Ideys\SilexHooks;
 use Doctrine\DBAL\Schema\Table;
 
 $db = SilexHooks::db($app);
 $schema = $db->getSchemaManager();
 
-if (!$schema->tablesExist(TABLE_PREFIX.'user_group')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'user_group'])) {
     $table = new Table(TABLE_PREFIX.'user_group');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -16,7 +17,7 @@ if (!$schema->tablesExist(TABLE_PREFIX.'user_group')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'user')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
     $table = new Table(TABLE_PREFIX.'user');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -77,7 +78,7 @@ if (!$schema->tablesExist(TABLE_PREFIX.'user')) {
     ));
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'section')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'section'])) {
     $table = new Table(TABLE_PREFIX.'section');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -95,12 +96,12 @@ if (!$schema->tablesExist(TABLE_PREFIX.'section')) {
     $table->addColumn('visibility', 'string', array('length' => 32));
     $table->addColumn('shuffle', 'boolean');
     $table->addColumn('hierarchy', 'smallint');
-    blameAndTimestampSchema($table);
+    DataHelper::blameAndTimestampSchema($table);
 
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'section_trans')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'section_trans'])) {
     $table = new Table(TABLE_PREFIX.'section_trans');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -115,7 +116,7 @@ if (!$schema->tablesExist(TABLE_PREFIX.'section_trans')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'section_item')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'section_item'])) {
     $table = new Table(TABLE_PREFIX.'section_item');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -132,12 +133,12 @@ if (!$schema->tablesExist(TABLE_PREFIX.'section_item')) {
     $table->addColumn('longitude', 'float', array('scale' => 7, 'precision' => 20, 'default' => null, 'notnull' => false));
     $table->addColumn('published', 'boolean');
     $table->addColumn('hierarchy', 'smallint');
-    blameAndTimestampSchema($table);
+    DataHelper::blameAndTimestampSchema($table);
 
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'section_item_trans')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'section_item_trans'])) {
     $table = new Table(TABLE_PREFIX.'section_item_trans');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -153,7 +154,7 @@ if (!$schema->tablesExist(TABLE_PREFIX.'section_item_trans')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'form_result')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'form_result'])) {
     $table = new Table(TABLE_PREFIX.'form_result');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -166,7 +167,7 @@ if (!$schema->tablesExist(TABLE_PREFIX.'form_result')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'messaging')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'messaging'])) {
     $table = new Table(TABLE_PREFIX.'messaging');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -181,7 +182,7 @@ if (!$schema->tablesExist(TABLE_PREFIX.'messaging')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'files')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'files'])) {
     $table = new Table(TABLE_PREFIX.'files');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -190,12 +191,12 @@ if (!$schema->tablesExist(TABLE_PREFIX.'files')) {
     $table->addColumn('title', 'string', array('length' => 255));
     $table->addColumn('name', 'string', array('length' => 255));
     $table->addColumn('slug', 'string', array('length' => 255));
-    blameAndTimestampSchema($table);
+    DataHelper::blameAndTimestampSchema($table);
 
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'files_recipients')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'files_recipients'])) {
     $table = new Table(TABLE_PREFIX.'files_recipients');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -209,7 +210,7 @@ if (!$schema->tablesExist(TABLE_PREFIX.'files_recipients')) {
     $schema->createTable($table);
 }
 
-if (!$schema->tablesExist(TABLE_PREFIX.'settings')) {
+if (!$schema->tablesExist([TABLE_PREFIX.'settings'])) {
     $table = new Table(TABLE_PREFIX.'settings');
     $table->addColumn('id', 'integer', array('unsigned' => true, 'autoincrement' => true));
     $table->setPrimaryKey(array('id'));
@@ -218,14 +219,4 @@ if (!$schema->tablesExist(TABLE_PREFIX.'settings')) {
     $table->addColumn('value', 'text', array('default' => null, 'notnull' => false));
 
     $schema->createTable($table);
-}
-
-function blameAndTimestampSchema(Table $table)
-{
-    $table->addColumn('created_by', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
-    $table->addIndex(array('created_by'));
-    $table->addColumn('updated_by', 'integer', array('unsigned' => true, 'default' => null, 'notnull' => false));
-    $table->addIndex(array('updated_by'));
-    $table->addColumn('created_at', 'datetime');
-    $table->addColumn('updated_at', 'datetime');
 }

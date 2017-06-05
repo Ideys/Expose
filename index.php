@@ -1,1 +1,0 @@
-<?php header('location:web/index_dev.php');

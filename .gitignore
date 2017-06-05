@@ -1,17 +1,10 @@
-# Windows image file caches
-Thumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Mac crap
-.DS_Store
-
 # Silex
 /var/
 /vendor/
 /web/assets/vendor/
-composer.lock
+
+# Config
+/config/db.php
 
 # Server files
 /web/.htaccess
@@ -19,16 +12,3 @@ composer.lock
 # User assets
 /downloads/
 /web/gallery/
-
-# Others
-[Bb]in
-[Oo]bj
-sql
-TestResults
-*.Cache
-ClientBin
-stylecop.*
-~$*
-*.dbmdl
-.idea
-Generated_Code #added for RIA/Silverlight projects

@@ -14,6 +14,7 @@ use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Symfony\Component\Translation\TranslatorInterface;
 use Neutron\Silex\Provider\ImagineServiceProvider;
 use Ideys\Settings\SettingsServiceProvider;
 use Ideys\Content\Section\Provider\SectionProvider;
@@ -35,7 +36,7 @@ $app->register(new SettingsServiceProvider());
 $app->register(new TwigServiceProvider());
 
 $app['route_class'] = 'Ideys\Route';
-$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+$app['translator'] = $app->share($app->extend('translator', function(TranslatorInterface $translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
 
     foreach ($app['languages'] as $lg) {
@@ -45,7 +46,7 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
     return $translator;
 }));
 
-$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+$app['twig'] = $app->share($app->extend('twig', function(Twig_Environment $twig, $app) {
 
     // Global settings
     $twig->addGlobal('semver', $app['semver']);

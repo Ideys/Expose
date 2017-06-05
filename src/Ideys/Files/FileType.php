@@ -3,7 +3,6 @@
 namespace Ideys\Files;
 
 use Symfony\Component\Form\FormFactory;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * File form type.
@@ -11,15 +10,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 class FileType
 {
     /**
-     * @var \Symfony\Component\Form\FormFactory
+     * @var FormFactory
      */
     protected $formFactory;
 
 
     /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
+     * @param FormFactory   $formFactory
      */
     public function __construct(FormFactory $formFactory)
     {
@@ -29,7 +26,7 @@ class FileType
     /**
      * Return the file upload form.
      *
-     * @param \Ideys\Files\File $file
+     * @param File $file
      *
      * @return \Symfony\Component\Form\Form
      */
@@ -43,7 +40,7 @@ class FileType
     /**
      * Return the edit file title form.
      *
-     * @param \Ideys\Files\File $file
+     * @param File $file
      *
      * @return \Symfony\Component\Form\Form
      */
@@ -58,7 +55,7 @@ class FileType
     /**
      * Return contact message form builder.
      *
-     * @param \Ideys\Files\File $file
+     * @param File $file
      *
      * @return \Symfony\Component\Form\FormBuilder
      */

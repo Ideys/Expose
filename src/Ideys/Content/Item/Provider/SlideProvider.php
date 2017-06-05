@@ -61,7 +61,7 @@ class SlideProvider extends ItemProvider
      */
     public function createResizeSlide(ImagineInterface $imagine, Slide $slide, $maxWidth, $maxHeight = null)
     {
-        $maxHeight = (null == $maxHeight) ? $maxWidth : $maxHeight;
+        $maxHeight = (null === $maxHeight) ? $maxWidth : $maxHeight;
 
         $thumbDir = GalleryProvider::getGalleryDir().'/'.$maxWidth;
         if (!is_dir($thumbDir)) {

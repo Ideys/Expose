@@ -4,7 +4,6 @@ use Ideys\SilexHooks;
 use Ideys\Seo\SitemapManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception;
 
 $rootController = SilexHooks::controllerFactory($app);
 

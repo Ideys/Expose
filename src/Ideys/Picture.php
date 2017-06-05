@@ -18,10 +18,14 @@ class Picture
         $metaData = array();
 
         if (function_exists('exif_read_data')) {
-            $exifData = @exif_read_data($picturePath);
+            try {
+                $exifData = exif_read_data($picturePath);
+            } catch (\Exception $e) {
+                $exifData = false;
+            }
 
             // Picture could not be analyzed
-            if (! $exifData) {
+            if (!$exifData) {
                 return $metaData;
             }
 

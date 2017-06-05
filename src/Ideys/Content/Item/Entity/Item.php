@@ -287,8 +287,8 @@ abstract class Item extends AbstractEntity
      */
     public function hasCoordinates()
     {
-        return ($this->latitude  != null)
-        and ($this->longitude != null);
+        return ($this->latitude !== null)
+            && ($this->longitude !== null);
     }
 
     /**
