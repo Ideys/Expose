@@ -1,5 +1,7 @@
 {% extends "frontend/layout.html.twig" %}
 
+{% import "widgets.html.twig" as widgets %}
+
 {% if not section.navBar %}{% set nav_class = ' no-nav' %}{% else %}{% set nav_class = '' %}{% endif %}
 {% if section.thumbList %}{% set thumb_class = ' gallery-thumb' %}{% else %}{% set thumb_class = '' %}{% endif %}
 {% block body_class parent()

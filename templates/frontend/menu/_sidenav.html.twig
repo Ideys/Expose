@@ -2,7 +2,6 @@
 <ul class="{{ class }}">
   {% if not settings.maintenance or is_granted('ROLE_ADMIN') %}
     {% include "frontend/menu/_sideLinks.html.twig" with {
-        'widgets': widgets,
         'class': class,
         'menuPos': 'main',
         'follow': follow
@@ -11,7 +10,6 @@
 </ul>
 <ul class="secondary {{ class }}">
   {% include "frontend/menu/_sideLinks.html.twig" with {
-        'widgets': widgets,
         'class': class,
         'menuPos': 'second',
         'follow': follow

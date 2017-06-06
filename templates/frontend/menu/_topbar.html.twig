@@ -18,7 +18,6 @@
     {% if not settings.maintenance or is_granted('ROLE_ADMIN') %}
     <ul class="left">
       {% include "frontend/menu/_topLinks.html.twig" with {
-          'widgets': widgets,
           'menuPos': 'main',
         'follow': ''
       } only %}
@@ -28,7 +27,6 @@
       <li class="divider show-for-small"></li>
       {% if not settings.maintenance or is_granted('ROLE_ADMIN') %}
         {% include "frontend/menu/_topLinks.html.twig" with {
-            'widgets': widgets,
             'menuPos': 'second',
             'follow': ''
         } only %}

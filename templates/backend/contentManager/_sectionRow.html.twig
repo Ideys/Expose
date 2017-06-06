@@ -17,8 +17,7 @@
   <span class="handle-section">&nbsp;</span>
   <dl class="accordion" data-accordion>
     {% include "backend/"~section.type~"Manager/_section"~section.type|capitalize~".html.twig" with {
-        'section': section,
-        'widgets': widgets
+        'section': section
     } only %}
   </dl>
   <hr>

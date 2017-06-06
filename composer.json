@@ -24,12 +24,12 @@
         "symfony/validator": "~2.8",
         "doctrine/dbal": "~2.5",
         "swiftmailer/swiftmailer": "~5.4",
-        "neutron/silex-imagine-provider": "dev-master",
+        "neutron/silex-imagine-provider": "~0.1",
         "symfony/locale": "~2.8",
         "symfony/yaml": "~2.8"
     },
     "autoload": {
-        "psr-4": { "": "src/" }
+        "psr-4": { "Ideys\\": "src/Ideys/" }
     },
     "minimum-stability": "stable",
     "extra": {

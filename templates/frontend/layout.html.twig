@@ -1,7 +1,5 @@
 {% extends "layout.html.twig" %}
 
-{% import "widgets.html.twig" as widgets %}
-
 {% block head %}
 {% if settings.googleFonts|length %}
 <link href="//fonts.googleapis.com/css?family={{ settings.googleFonts }}" rel="stylesheet" type="text/css">
@@ -42,16 +40,12 @@
 {% endif %}
 {% if 'top' == settings.menuPosition
   and not hideMenu %}
-  {% include "frontend/menu/_topbar.html.twig" with {
-      'widgets': widgets
-  } only %}
+  {% include "frontend/menu/_topbar.html.twig" only %}
 {% elseif 'left' == settings.menuPosition
   and not hideMenu %}
   <div class="off-canvas-wrap" data-offcanvas>
     <div class="inner-wrap">
-    {% include "frontend/menu/_sidebar.html.twig" with {
-        'widgets': widgets
-    } only %}
+    {% include "frontend/menu/_sidebar.html.twig" only %}
 {% endif %}
     <section id="content"
              {% if 'left' == settings.menuPosition and not hideMenu %}

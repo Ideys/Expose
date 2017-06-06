@@ -38,8 +38,7 @@
        class="large-12 columns">
     {% for section in sections if section.archive == 0 %}
       {% include "backend/contentManager/_sectionRow.html.twig" with {
-          'section': section,
-          'widgets': widgets
+          'section': section
       } only %}
     {% endfor %}
     <a href="{{ path('admin_content_manager_archives') }}"

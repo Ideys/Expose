@@ -1,3 +1,4 @@
+{% import "widgets.html.twig" as widgets %}
 {% spaceless %}
 {% for section in sections
    if  section.isMenuEnabled(is_granted('ROLE_USER'))
