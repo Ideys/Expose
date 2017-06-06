@@ -62,11 +62,15 @@ abstract class AbstractProvider
     /**
      * Hydrate Content class from array data to object.
      *
-     * @param object $object
-     * @param array  $data
+     * @param mixed $object
+     * @param array $data
      */
     protected static function hydrate($object, $data)
     {
+        if (!is_object($object)) {
+            throw new \InvalidArgumentException(sprintf('The parameter $object must be an object, %s given.', gettype($object)));
+        }
+
         $class = new \ReflectionClass($object);
 
         do {
