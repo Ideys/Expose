@@ -1,14 +1,27 @@
-# Silex
-/var/
-/vendor/
-/web/assets/vendor/
-
 # Config
+.idea/
 /config/db.php
 
-# Server files
-/web/.htaccess
+# Node
+/node_modules/
 
-# User assets
-/downloads/
-/web/gallery/
+# Public files
+/public/assets/vendor/
+/public/gallery/
+/public/.htaccess
+
+###> symfony/framework-bundle ###
+.env
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/web-server-bundle ###
+.web-server-pid
+###< symfony/web-server-bundle ###
