@@ -2,7 +2,6 @@
 
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
-use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\ValidatorServiceProvider;
 use Silex\Provider\ServiceControllerServiceProvider;
 use Silex\Provider\FormServiceProvider;
@@ -15,12 +14,11 @@ use Silex\Provider\SwiftmailerServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\Translation\TranslatorInterface;
-use Neutron\Silex\Provider\ImagineServiceProvider;
+use Ideys\ImagineServiceProvider\ImagineServiceProvider;
 use Ideys\Settings\SettingsServiceProvider;
 use Ideys\Content\Section\Provider\SectionProvider;
 
 $app = new Application();
-$app->register(new UrlGeneratorServiceProvider());
 $app->register(new ValidatorServiceProvider());
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new FormServiceProvider());
@@ -36,7 +34,7 @@ $app->register(new SettingsServiceProvider());
 $app->register(new TwigServiceProvider());
 
 $app['route_class'] = 'Ideys\Route';
-$app['translator'] = $app->share($app->extend('translator', function(TranslatorInterface $translator, $app) {
+$app['translator'] = $app->extend('translator', function(TranslatorInterface $translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
 
     foreach ($app['languages'] as $lg) {
@@ -44,9 +42,9 @@ $app['translator'] = $app->share($app->extend('translator', function(TranslatorI
     }
 
     return $translator;
-}));
+});
 
-$app['twig'] = $app->share($app->extend('twig', function(Twig_Environment $twig, $app) {
+$app['twig'] = $app->extend('twig', function(Twig_Environment $twig, $app) {
 
     // Global settings
     $twig->addGlobal('semver', $app['semver']);
@@ -59,6 +57,6 @@ $app['twig'] = $app->share($app->extend('twig', function(Twig_Environment $twig,
     $twig->addExtension(new Twig_Extension_StringLoader());
 
     return $twig;
-}));
+});
 
 return $app;
