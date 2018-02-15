@@ -25,7 +25,7 @@ class FormProvider extends SectionProvider
      */
     public function generateFormFields(SfForm\FormFactory $formFactory, Entity\Form $formSection)
     {
-        $form = $formFactory->createBuilder('form');
+        $form = $formFactory->createBuilder(SfForm\Extension\Core\Type\FormType::class);
 
         foreach ($formSection->getItems() as $item) {
             if (Field::HTML == $item->getCategory()) {

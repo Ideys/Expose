@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Type;
 
 use Ideys\Content\Section\Entity\Section;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**
  * Section Dir type.
@@ -19,8 +20,8 @@ class DirType extends SectionType
     public function formBuilder(Section $section)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $section)
-            ->add('title', 'text', array(
+            ->createBuilder(\Symfony\Component\Form\Extension\Core\Type\FormType::class, $section)
+            ->add('title', TextType::class, array(
                 'label'         => 'section.title',
                 'attr' => array(
                     'placeholder' => 'section.title',

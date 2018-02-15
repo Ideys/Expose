@@ -3,6 +3,11 @@
 namespace Ideys\Settings;
 
 use Ideys\Content\Section\Entity\Section;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,15 +17,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 class SettingsType
 {
     /**
-     * @var \Symfony\Component\Form\FormFactory
+     * @var FormFactory
      */
     protected $formFactory;
 
-    /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
-     */
     public function __construct(FormFactory $formFactory)
     {
         $this->formFactory = $formFactory;
@@ -50,110 +50,110 @@ class SettingsType
     public function formBuilder(Settings $settings)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $settings)
-            ->add('name', 'text', array(
+            ->createBuilder(FormType::class, $settings)
+            ->add('name', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 3)),
                     new Assert\NotBlank(),
                 ),
                 'label'         => 'site.name',
             ))
-            ->add('description', 'textarea', array(
+            ->add('description', TextareaType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 6)),
                     new Assert\NotBlank(),
                 ),
                 'label'         => 'site.description',
             ))
-            ->add('authorName', 'text', array(
+            ->add('authorName', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 3)),
                     new Assert\NotBlank(),
                 ),
                 'label'         => 'site.author',
             ))
-            ->add('subDomain', 'choice', array(
+            ->add('subDomain', ChoiceType::class, array(
                 'choices'       => Settings::getSubDomainChoices(),
                 'label'         => 'site.sub.domain',
             ))
-            ->add('languages', 'choice', array(
+            ->add('languages', ChoiceType::class, array(
                 'multiple'      => true,
                 'choices'       => Settings::getLanguagesChoices(),
                 'label'         => 'language.languages',
             ))
-            ->add('maintenance', 'choice', array(
+            ->add('maintenance', ChoiceType::class, array(
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'site.maintenance.mode',
             ))
-            ->add('analyticsKey', 'text', array(
+            ->add('analyticsKey', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 6)),
                 ),
                 'required'      => false,
                 'label'         => 'google.analytics.key',
             ))
-            ->add('verificationKey', 'text', array(
+            ->add('verificationKey', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 6)),
                 ),
                 'required'      => false,
                 'label'         => 'google.verification.key',
             ))
-            ->add('mapsKey', 'text', array(
+            ->add('mapsKey', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 6)),
                 ),
                 'required'      => false,
                 'label'         => 'google.maps.key',
             ))
-            ->add('googleFonts', 'text', array(
+            ->add('googleFonts', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 5)),
                 ),
                 'required'      => false,
                 'label'         => 'google.fonts',
             ))
-            ->add('layoutBackground', 'choice', array(
+            ->add('layoutBackground', ChoiceType::class, array(
                 'choices'       => Settings::getLayoutBackgroundChoices(),
                 'label'         => 'site.background.background',
             ))
-            ->add('customStyle', 'textarea', array(
+            ->add('customStyle', TextareaType::class, array(
                 'required'      => false,
                 'label'         => 'site.style.custom',
             ))
-            ->add('customJavascript', 'textarea', array(
+            ->add('customJavascript', TextareaType::class, array(
                 'required'      => false,
                 'label'         => 'site.js.custom',
             ))
-            ->add('adminLink', 'choice', array(
+            ->add('adminLink', ChoiceType::class, array(
                 'choices'       => Settings::getAdminLinkChoices(),
                 'label'         => 'admin.link',
             ))
-            ->add('contactContent', 'textarea', array(
+            ->add('contactContent', TextareaType::class, array(
                 'required'      => false,
                 'label'         => 'contact.content',
             ))
-            ->add('contactSection', 'choice', array(
+            ->add('contactSection', ChoiceType::class, array(
                 'choices'       => Settings::getContactSectionChoices(),
                 'label'         => 'contact.section',
             ))
-            ->add('contactSendToEmail', 'email', array(
+            ->add('contactSendToEmail', EmailType::class, array(
                 'label'         => 'contact.send.to.email',
                 'required'      => false,
             ))
-            ->add('menuPosition', 'choice', array(
+            ->add('menuPosition', ChoiceType::class, array(
                 'choices'       => Settings::getMenuPositionChoices(),
                 'label'         => 'site.menu.position',
             ))
-            ->add('hideMenuOnHomepage', 'choice', array(
+            ->add('hideMenuOnHomepage', ChoiceType::class, array(
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'site.menu.hide.on.homepage',
             ))
-            ->add('shareFiles', 'choice', array(
+            ->add('shareFiles', ChoiceType::class, array(
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'file.enabled',
             ))
-            ->add('newSectionDefaultVisibility', 'choice', array(
+            ->add('newSectionDefaultVisibility', ChoiceType::class, array(
                 'choices'       => Section::getVisibilityChoices(),
                 'label'         => 'section.visibility.default',
             ))

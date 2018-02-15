@@ -7,9 +7,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 $rootController = SilexHooks::controllerFactory($app);
 
-$rootController->get('/', function () use ($app) {
+$rootController->get('/', function (Request $request) use ($app) {
 
-    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($app['request']);
+    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($request);
 
     return SilexHooks::redirect($app, 'homepage', array('_locale' => $language));
 })
@@ -28,19 +28,19 @@ $rootController->get('/sitemap.xml', function () use ($app) {
 ->bind('sitemap')
 ;
 
-$rootController->get('/admin', function () use ($app) {
+$rootController->get('/admin', function (Request $request) use ($app) {
 
-    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($app['request']);
+    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($request);
 
     return SilexHooks::redirect($app, 'admin_content_manager', array('_locale' => $language));
 })
 ->bind('admin')
 ;
 
-$rootController->get('/admin-redirect', function () use ($app) {
+$rootController->get('/admin-redirect', function (Request $request) use ($app) {
 
-    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($app['request']);
-    $security = SilexHooks::security($app);
+    $language = SilexHooks::settingsManager($app)->clientLanguageSelector($request);
+    $security = $app['security.voters'];
 
     if ($security->isGranted('ROLE_EDITOR')) {
         $redirectRoute = 'admin_content_manager';

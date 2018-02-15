@@ -1,10 +1,11 @@
 <?php
 
-$app['db.options'] = array(
+return [
+    'prefix' => 'expose_',
     'driver' => 'pdo_mysql',
     'host' => 'localhost',
     'port' => 3306,
     'dbname' => 'exposedb',
     'user' => 'root',
     'password' => '',
-);
+];

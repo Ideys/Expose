@@ -53,7 +53,7 @@
 {% macro item_content(item) %}
 {% spaceless %}
     {% if 'slide' == item.type %}
-        <img src="{{ app.request.basepath }}/gallery/220/{{ item.path }}" alt="{{ item.title|e }}"><div>{{ item.description|replace({"'": "\\'", "\r": '', "\n": ''})|raw }}</div>
+        <img src="{{ asset('gallery/220/'~item.path) }}" alt="{{ item.title|e }}"><div>{{ item.description|replace({"'": "\\'", "\r": '', "\n": ''})|raw }}</div>
     {% endif %}
 {% endspaceless %}
 {% endmacro %}

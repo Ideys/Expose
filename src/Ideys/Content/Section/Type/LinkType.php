@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Type;
 
 use Ideys\Content\Section\Entity\Section;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 
 /**
  * Section Link type.
@@ -20,7 +21,7 @@ class LinkType extends SectionType
     {
         $formBuilder = parent::formBuilder($section)
             ->remove('type')
-            ->add('url', 'url', array(
+            ->add('url', UrlType::class, array(
                 'label' => 'link.url',
             ))
         ;

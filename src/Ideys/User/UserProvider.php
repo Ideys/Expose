@@ -5,35 +5,25 @@ namespace Ideys\User;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\User;
-use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Doctrine\DBAL\Connection;
 
-/**
- * User provider.
- */
 class UserProvider implements UserProviderInterface
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     private $db;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\Session
+     * @var Session
      */
     private $session;
 
-
-    /**
-     * Constructor.
-     *
-     * @param Connection    $connection
-     * @param Session       $session
-     */
     public function __construct(Connection $connection, Session $session)
     {
         $this->db = $connection;
@@ -45,9 +35,9 @@ class UserProvider implements UserProviderInterface
      *
      * @param  string $username
      *
-     * @return User|UserInterface
+     * @return UserInterface
      *
-     * @throws \Symfony\Component\Security\Core\Exception\UsernameNotFoundException
+     * @throws \Exception
      */
     public function loadUserByUsername($username)
     {
@@ -72,14 +62,7 @@ class UserProvider implements UserProviderInterface
         return new User($profile->getUsername(), $profile->getPassword(), $profile->getRoles(), true, true, true, true);
     }
 
-    /**
-     * Find a user profile.
-     *
-     * @param integer $id
-     *
-     * @return \Ideys\User\Profile
-     */
-    public function find($id)
+    public function find($id): Profile
     {
         $user = $this->db->fetchAssoc('SELECT * FROM '.TABLE_PREFIX.'user WHERE id = ?', array((int)$id));
 
@@ -88,12 +71,7 @@ class UserProvider implements UserProviderInterface
         return $profile;
     }
 
-    /**
-     * Find all users profile.
-     *
-     * @return array
-     */
-    public function findAll()
+    public function findAll(): array
     {
         $users = $this->db->fetchAll('SELECT * FROM '.TABLE_PREFIX.'user');
         $profiles = array();
@@ -105,15 +83,7 @@ class UserProvider implements UserProviderInterface
         return $profiles;
     }
 
-    /**
-     * Persist a user profile.
-     *
-     * @param \Symfony\Component\Security\Core\Encoder\EncoderFactory $security
-     * @param \Ideys\User\Profile                                     $profile
-     *
-     * @return \Symfony\Component\Security\Core\User\User
-     */
-    public function persist(EncoderFactory $security, Profile $profile)
+    public function persist(EncoderFactory $security, Profile $profile): User
     {
         $user = new User($profile->getUsername(), $profile->getPassword(), $profile->getRoles());
 
@@ -149,15 +119,7 @@ class UserProvider implements UserProviderInterface
         return $user;
     }
 
-    /**
-     * Delete a user.
-     *
-     * @param integer                                           $id
-     * @param \Symfony\Component\Security\Core\SecurityContext  $security
-     *
-     * @return boolean
-     */
-    public function deleteUser($id, SecurityContext $security)
+    public function deleteUser($id, TokenStorageInterface $security): bool
     {
         $loggedUser = $security->getToken()->getUser();
 

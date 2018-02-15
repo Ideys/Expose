@@ -2,6 +2,8 @@
 
 namespace Ideys\Files;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
 
 /**
@@ -62,11 +64,11 @@ class FileType
     public function formBuilder(File $file)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $file)
-            ->add('title', 'text', array(
+            ->createBuilder(FormType::class, $file)
+            ->add('title', TextType::class, array(
                 'label'         => 'file.title',
             ))
-            ->add('file', 'file', array(
+            ->add('file', \Symfony\Component\Form\Extension\Core\Type\FileType::class, array(
                 'label'         => 'file.file',
             ))
         ;

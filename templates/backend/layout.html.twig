@@ -74,14 +74,14 @@
 {%- endblock content%}
 
 {% block head %}
-<link rel="stylesheet" href="{{ app.request.basepath }}/assets/css/admin.css?v={{ semver }}">
-<link rel="stylesheet" href="{{ app.request.basepath }}/assets/vendor/foundation-datepicker/css/foundation-datepicker.min.css?v={{ semver }}">
+<link rel="stylesheet" href="{{ asset('assets/css/admin.css') }}">
+<link rel="stylesheet" href="{{ asset('assets/vendor/foundation-datepicker/css/foundation-datepicker.min.css') }}">
 {% endblock head %}
 
 {% block javascripts %}
-<script src="{{ app.request.basepath }}/assets/vendor/foundation-datepicker/js/foundation-datepicker.min.js?v={{ semver }}"></script>
+<script src="{{ asset('assets/vendor/foundation-datepicker/js/foundation-datepicker.min.js') }}"></script>
 <script src="//www.alohaeditor.org/download/aloha.min.js" data-aloha-plugins="common/format"></script>
-<script src="{{ app.request.basepath }}/assets/js/ui.js?v={{ semver }}"></script>
-<script src="{{ app.request.basepath }}/assets/js/items.js?v={{ semver }}"></script>
-<script src="{{ app.request.basepath }}/assets/js/settings.js?v={{ semver }}"></script>
+<script src="{{ asset('assets/js/ui.js') }}"></script>
+<script src="{{ asset('assets/js/items.js') }}"></script>
+<script src="{{ asset('assets/js/settings.js') }}"></script>
 {% endblock javascripts %}

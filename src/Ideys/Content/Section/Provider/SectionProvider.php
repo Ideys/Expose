@@ -21,11 +21,6 @@ class SectionProvider extends AbstractProvider
      */
     protected $itemProvider;
 
-    /**
-     * Constructor.
-     *
-     * @param \Silex\Application $app
-     */
     public function __construct(SilexApp $app)
     {
         parent::__construct($app);

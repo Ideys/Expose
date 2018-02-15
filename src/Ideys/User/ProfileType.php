@@ -2,6 +2,13 @@
 
 namespace Ideys\User;
 
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,13 +27,6 @@ class ProfileType
      */
     protected $fullForm;
 
-
-    /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
-     * @param boolean                               $fullForm
-     */
     public function __construct(FormFactory $formFactory, $fullForm = false)
     {
         $this->formFactory = $formFactory;
@@ -59,66 +59,66 @@ class ProfileType
     public function formBuilder(Profile $profile, $groups = [])
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $profile)
-            ->add('username', 'text', array(
+            ->createBuilder(FormType::class, $profile)
+            ->add('username', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 4)),
                     new Assert\NotBlank(),
                 ),
                 'label'         => 'user.name',
             ))
-            ->add('gender', 'choice', array(
+            ->add('gender', ChoiceType::class, array(
                 'constraints'   => array(
                     new Assert\Choice(array(
-                        'choices' => array_flip(Profile::getGenderChoice()),
+                        'choices' => Profile::getGenderChoice(),
                     )),
                 ),
                 'choices'       => Profile::getGenderChoice(),
                 'label'         => 'user.gender',
             ))
-            ->add('firstName', 'text', array(
+            ->add('firstName', TextType::class, array(
                 'constraints'   => array(
                     new Assert\NotBlank(),
                 ),
                 'label'         => 'user.first.name',
             ))
-            ->add('lastName', 'text', array(
+            ->add('lastName', TextType::class, array(
                 'constraints'   => array(
                     new Assert\NotBlank(),
                 ),
                 'label'         => 'user.last.name',
             ))
-            ->add('organization', 'text', array(
+            ->add('organization', TextType::class, array(
                 'required'      => false,
                 'label'         => 'user.organization',
             ))
-            ->add('email', 'email', array(
+            ->add('email', EmailType::class, array(
                 'constraints'   => array(
                     new Assert\Email(),
                 ),
                 'required'      => false,
                 'label'         => 'user.email',
             ))
-            ->add('phone', 'text', array(
+            ->add('phone', TextType::class, array(
                 'required'      => false,
                 'label'         => 'user.phone',
             ))
-            ->add('mobile', 'text', array(
+            ->add('mobile', TextType::class, array(
                 'required'      => false,
                 'label'         => 'user.mobile',
             ))
-            ->add('website', 'url', array(
+            ->add('website', UrlType::class, array(
                 'required'      => false,
                 'label'         => 'user.website',
             ))
-            ->add('address', 'textarea', array(
+            ->add('address', TextareaType::class, array(
                 'required'      => false,
                 'label'         => 'user.address',
                 'attr'          => array(
                     'rows' => 5,
                 )
             ))
-            ->add('plainPassword', 'password', array(
+            ->add('plainPassword', PasswordType::class, array(
                 'constraints'   => ($profile->getId() > 0) ? array() : array(
                     new Assert\NotBlank()
                 ),

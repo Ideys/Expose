@@ -13,23 +13,19 @@ use Symfony\Component\Form\FormFactory;
 class SectionTypeFactory
 {
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     protected $db;
 
     /**
-     * @var \Symfony\Component\Form\FormFactory
+     * @var FormFactory
      */
     protected $formFactory;
 
-    /**
-     * Constructor.
-     *
-     * @param \Doctrine\DBAL\Connection             $db
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
-     */
-    public function __construct(Connection  $db,
-                                FormFactory $formFactory)
+    public function __construct(
+        Connection  $db,
+        FormFactory $formFactory
+    )
     {
         $this->db = $db;
         $this->formFactory = $formFactory;

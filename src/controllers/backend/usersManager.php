@@ -54,7 +54,7 @@ $usersManagerController->get('/{id}/delete', function ($id) use ($app) {
     $session = SilexHooks::session($app);
     $userProvider = new UserProvider($app['db'], $session);
 
-    if (false === $userProvider->deleteUser($id, $app['security'])) {
+    if (false === $userProvider->deleteUser($id, $app['security.token_storage'])) {
         SilexHooks::flashMessage($app, 'user.deletion.error', SilexHooks::FLASH_ALERT);
     } else {
         SilexHooks::flashMessage($app, 'user.deleted');

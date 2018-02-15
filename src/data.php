@@ -40,13 +40,14 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
     $schema->createTable($table);
 
     // User profiles demo (password: hello world)
+    //dump(password_hash('hello world', PASSWORD_DEFAULT));
     $db->insert(TABLE_PREFIX.'user', array(
       'username' => 'user',
       'email' => 'user@expose.ideys.com',
       'gender' => 'm',
       'firstname' => 'Marc',
       'lastname' => 'Assein',
-      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_USER')),
     ));
     $db->insert(TABLE_PREFIX.'user', array(
@@ -55,7 +56,7 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
       'gender' => 'f',
       'firstname' => 'Mathilde',
       'lastname' => 'Sellier',
-      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_EDITOR')),
     ));
     $db->insert(TABLE_PREFIX.'user', array(
@@ -64,7 +65,7 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
       'gender' => 'f',
       'firstname' => 'Nathalie',
       'lastname' => 'Chamitang',
-      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_ADMIN')),
     ));
     $db->insert(TABLE_PREFIX.'user', array(
@@ -73,7 +74,7 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
       'gender' => 'm',
       'firstname' => 'John',
       'lastname' => 'Doe',
-      'password' => 'SK4iRARs2ASrC5yITatgnTmgwmI4zVfJvl/0X6fkKo5s4/DyN1k63kTbw63HMCP9bwCXd1IYBwZm9TAmhAgo+w==',
+      'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_SUPER_ADMIN')),
     ));
 }

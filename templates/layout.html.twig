@@ -15,16 +15,16 @@
         {% if settings.verificationKey|length %}
         <meta name="google-site-verification" content="{{ settings.verificationKey }}">
         {% endif %}
-        <link rel="stylesheet" href="{{ app.request.basepath }}/assets/vendor/foundation/css/normalize.css?v={{ semver }}">
-        <link rel="stylesheet" href="{{ app.request.basepath }}/assets/vendor/foundation/css/foundation.min.css?v={{ semver }}">
-        <link rel="stylesheet" href="{{ app.request.basepath }}/assets/vendor/foundation-icon-fonts/foundation-icons.css?v={{ semver }}">
-        <link rel="stylesheet" href="{{ app.request.basepath }}/assets/css/main.css?v={{ semver }}">
+        <link rel="stylesheet" href="{{ asset('assets/vendor/foundation/css/normalize.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/vendor/foundation/css/foundation.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/vendor/foundation-icon-fonts/foundation-icons.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
         {% block head %}{% endblock %}
         {% if settings.mapsKey %}
         <script type="text/javascript"
                 src="https://maps.googleapis.com/maps/api/js?key={{ settings.mapsKey }}&sensor=false"></script>
         {% endif %}
-        <script src="{{ app.request.basepath }}/assets/vendor/foundation/js/vendor/modernizr.js?v={{ semver }}"></script>
+        <script src="{{ asset('assets/vendor/foundation/js/vendor/modernizr.js') }}"></script>
     </head>
     <body class="{% block body_class '' %}">
         <!--[if lt IE 7]>
@@ -55,12 +55,12 @@
         </button>
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-        <script>window.jQuery || document.write('<script src="{{ app.request.basepath }}/assets/vendor/jquery/dist/jquery.min.js"><\/script>')</script>
+        <script>window.jQuery || document.write('<script src="{{ asset('assets/vendor/jquery/dist/jquery.min.js') }}"><\/script>')</script>
         <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-        <script src="{{ app.request.basepath }}/assets/vendor/foundation/js/foundation.min.js?v={{ semver }}"></script>
-        <script src="{{ app.request.basepath }}/assets/js/main.js?v={{ semver }}"></script>
+        <script src="{{ asset('assets/vendor/foundation/js/foundation.min.js') }}"></script>
+        <script src="{{ asset('assets/js/main.js') }}"></script>
         <script>
-          var basePath = "{{ app.request.basepath }}";
+          var basePath = "/";
         </script>
         {% block javascripts %}{% endblock %}
         {% block foundation_js %}
