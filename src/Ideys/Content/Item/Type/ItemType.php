@@ -14,11 +14,6 @@ abstract class ItemType
      */
     protected $formFactory;
 
-    /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory   $formFactory
-     */
     public function __construct(FormFactory $formFactory)
     {
         $this->formFactory = $formFactory;

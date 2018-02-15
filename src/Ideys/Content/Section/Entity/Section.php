@@ -294,14 +294,14 @@ class Section extends AbstractEntity
     public static function getTypeChoices()
     {
         return array(
-            self::SECTION_GALLERY   => 'section.gallery',
-            self::SECTION_CHANNEL   => 'section.channel',
-            self::SECTION_HTML      => 'section.html',
-            self::SECTION_BLOG      => 'section.blog',
-            self::SECTION_FORM      => 'section.form',
-            self::SECTION_MAP       => 'section.map',
-            self::SECTION_LINK      => 'section.link',
-            self::SECTION_DIR       => 'section.dir',
+           'section.gallery' => self::SECTION_GALLERY,
+           'section.channel' => self::SECTION_CHANNEL,
+           'section.html'    => self::SECTION_HTML,
+           'section.blog'    => self::SECTION_BLOG,
+           'section.form'    => self::SECTION_FORM,
+           'section.map'     => self::SECTION_MAP,
+           'section.link'    => self::SECTION_LINK,
+           'section.dir'     => self::SECTION_DIR,
         );
     }
 
@@ -413,8 +413,8 @@ class Section extends AbstractEntity
     public static function getMenuPosChoices()
     {
         return array(
-            self::MENU_POS_MAIN     => 'section.menu.main',
-            self::MENU_POS_SECOND   => 'section.menu.second',
+            'section.menu.main'   => self::MENU_POS_MAIN,
+            'section.menu.second' => self::MENU_POS_SECOND,
         );
     }
 
@@ -466,11 +466,11 @@ class Section extends AbstractEntity
     public static function getVisibilityChoices()
     {
         return array(
-            self::VISIBILITY_HOMEPAGE    => 'section.visibility.homepage',
-            self::VISIBILITY_PUBLIC      => 'section.visibility.public',
-            self::VISIBILITY_PRIVATE     => 'section.visibility.private',
-            self::VISIBILITY_HIDDEN      => 'section.visibility.hidden',
-            self::VISIBILITY_CLOSED      => 'section.visibility.closed',
+            'section.visibility.homepage' => self::VISIBILITY_HOMEPAGE,
+            'section.visibility.public'   => self::VISIBILITY_PUBLIC,
+            'section.visibility.private'  => self::VISIBILITY_PRIVATE,
+            'section.visibility.hidden'   => self::VISIBILITY_HIDDEN,
+            'section.visibility.closed'   => self::VISIBILITY_CLOSED,
         );
     }
 

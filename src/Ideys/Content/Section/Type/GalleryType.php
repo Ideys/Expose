@@ -5,6 +5,7 @@ namespace Ideys\Content\Section\Type;
 use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Section\Entity\Gallery;
 use Ideys\Settings\Settings;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
  * Section Gallery type.
@@ -22,35 +23,35 @@ class GalleryType extends SectionType
     {
         $formBuilder = parent::formBuilder($section)
             ->remove('type')
-            ->add('galleryMode', 'choice', array(
+            ->add('galleryMode', ChoiceType::class, array(
                 'label' => 'gallery.mode.mode',
                 'choices' => Gallery::getGalleryModeChoice(),
             ))
-            ->add('slideMode', 'choice', array(
+            ->add('slideMode', ChoiceType::class, array(
                 'label' => 'gallery.slide.mode',
                 'choices' => Gallery::getSlideModeChoice(),
             ))
-            ->add('size', 'choice', array(
+            ->add('size', ChoiceType::class, array(
                 'label' => 'gallery.slide.size.size',
                 'choices' => Gallery::getSizeChoice(),
             ))
-            ->add('navBar', 'choice', array(
+            ->add('navBar', ChoiceType::class, array(
                 'label' => 'gallery.nav.bar.display',
                 'choices' => Settings::getIOChoices(),
             ))
-            ->add('thumbList', 'choice', array(
+            ->add('thumbList', ChoiceType::class, array(
                 'label' => 'gallery.thumb.list.display',
                 'choices' => Settings::getIOChoices(),
             ))
-            ->add('gridRows', 'choice', array(
+            ->add('gridRows', ChoiceType::class, array(
                 'label' => 'gallery.grid.rows',
                 'choices' => Gallery::getGalleryGridRowsChoice(),
             ))
-            ->add('gridRowsMedium', 'choice', array(
+            ->add('gridRowsMedium', ChoiceType::class, array(
                 'label' => 'gallery.grid.rows.medium',
                 'choices' => Gallery::getGalleryGridRowsChoice(8),
             ))
-            ->add('gridRowsSmall', 'choice', array(
+            ->add('gridRowsSmall', ChoiceType::class, array(
                 'label' => 'gallery.grid.rows.small',
                 'choices' => Gallery::getGalleryGridRowsChoice(3),
             ))

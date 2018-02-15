@@ -194,10 +194,10 @@ class Map extends Section implements SectionInterface
     public static function getMapModeChoice()
     {
         return array(
-            self::MAP_MODE_HYBRID    => 'map.mode.hybrid',
-            self::MAP_MODE_ROAD_MAP  => 'map.mode.road.map',
-            self::MAP_MODE_SATELLITE => 'map.mode.satellite',
-            self::MAP_MODE_TERRAIN   => 'map.mode.terrain',
+            'map.mode.hybrid'    => self::MAP_MODE_HYBRID,
+            'map.mode.road.map'  => self::MAP_MODE_ROAD_MAP,
+            'map.mode.satellite' => self::MAP_MODE_SATELLITE,
+            'map.mode.terrain'   => self::MAP_MODE_TERRAIN,
         );
     }
 }

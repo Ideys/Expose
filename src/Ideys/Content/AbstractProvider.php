@@ -2,7 +2,6 @@
 
 namespace Ideys\Content;
 
-use Ideys\SilexHooks;
 use Doctrine\DBAL\Schema\Column;
 use Doctrine\DBAL\Types as DbTypes;
 use Doctrine\Common\Inflector\Inflector;
@@ -31,16 +30,11 @@ abstract class AbstractProvider
      */
     protected $language = 'en';
 
-    /**
-     * Constructor.
-     *
-     * @param \Silex\Application $app
-     */
     public function __construct(SilexApp $app)
     {
-        $this->db = SilexHooks::db($app);
+        $this->db = $app['db'];
         $this->security = $app['security.token_storage'];
-        $this->language = SilexHooks::language($app);
+        $this->language = $app['translator']->getLocale();
     }
 
     /**

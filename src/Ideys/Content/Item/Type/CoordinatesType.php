@@ -3,6 +3,8 @@
 namespace Ideys\Content\Item\Type;
 
 use Ideys\Content\Item\Entity\Item;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -20,7 +22,7 @@ class CoordinatesType extends ItemType
     public function formBuilder(Item $item)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $item);
+            ->createBuilder(FormType::class, $item);
 
         static::coordinatesFields($formBuilder);
 
@@ -37,13 +39,13 @@ class CoordinatesType extends ItemType
     public static function coordinatesFields(FormBuilderInterface $formBuilder)
     {
         $formBuilder
-            ->add('latitude', 'number', array(
+            ->add('latitude', NumberType::class, array(
                 'label' => 'map.latitude',
-                'precision' => 15,
+                'scale' => 15,
             ))
-            ->add('longitude', 'number', array(
+            ->add('longitude', NumberType::class, array(
                 'label' => 'map.longitude',
-                'precision' => 15,
+                'scale' => 15,
             ))
         ;
 

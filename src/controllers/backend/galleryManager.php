@@ -33,8 +33,8 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
     }
 
     /** @var \Symfony\Component\Form\FormFactory $app['form.factory'] */
-    $formBuilder = $app['form.factory']->createBuilder('form')
-        ->add('global_legend', 'textarea', array(
+    $formBuilder = $app['form.factory']->createBuilder(\Symfony\Component\Form\Extension\Core\Type\FormType::class)
+        ->add('global_legend', \Symfony\Component\Form\Extension\Core\Type\TextareaType::class, array(
             'label'     => 'gallery.global.legend',
             'data'      => $section->getLegend(),
             'required'  => false,
@@ -44,7 +44,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         if ($slide instanceof Slide)
         // Generate related slide fields
         $formBuilder
-        ->add('title'.$slide->getId(), 'text', array(
+        ->add('title'.$slide->getId(), \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
             'required'      => false,
             'label'         => 'gallery.picture.alt',
             'data'          => $slide->getTitle(),
@@ -52,7 +52,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
                 'placeholder' => 'gallery.picture.alt',
             ),
         ))
-        ->add('description'.$slide->getId(), 'textarea', array(
+        ->add('description'.$slide->getId(), \Symfony\Component\Form\Extension\Core\Type\TextareaType::class, array(
             'required'      => false,
             'label'         => 'section.description',
             'data'          => $slide->getDescription(),
@@ -60,7 +60,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
                 'placeholder' => 'section.description',
             ),
         ))
-        ->add('tags'.$slide->getId(), 'text', array(
+        ->add('tags'.$slide->getId(), \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
             'required'      => false,
             'label'         => 'tags',
             'data'          => $slide->getTags(),
@@ -68,7 +68,7 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
                 'placeholder' => 'tags',
             ),
         ))
-        ->add('link'.$slide->getId(), 'text', array(
+        ->add('link'.$slide->getId(), \Symfony\Component\Form\Extension\Core\Type\TextType::class, array(
             'required'      => false,
             'label'         => 'gallery.slide.link',
             'data'          => $slide->getLink(),

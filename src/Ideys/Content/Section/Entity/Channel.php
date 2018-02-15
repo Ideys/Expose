@@ -72,9 +72,9 @@ class Channel extends Section implements SectionInterface
     public static function getProviderChoice()
     {
         return array(
-            Entity\Video::PROVIDER_VIMEO => ucfirst(Entity\Video::PROVIDER_VIMEO),
-            Entity\Video::PROVIDER_DAILYMOTION => ucfirst(Entity\Video::PROVIDER_DAILYMOTION),
-            Entity\Video::PROVIDER_YOUTUBE => ucfirst(Entity\Video::PROVIDER_YOUTUBE),
+            ucfirst(Entity\Video::PROVIDER_VIMEO) => Entity\Video::PROVIDER_VIMEO,
+            ucfirst(Entity\Video::PROVIDER_DAILYMOTION) => Entity\Video::PROVIDER_DAILYMOTION,
+            ucfirst(Entity\Video::PROVIDER_YOUTUBE) => Entity\Video::PROVIDER_YOUTUBE,
         );
     }
 }

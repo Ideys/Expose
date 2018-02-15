@@ -3,6 +3,7 @@
 namespace Ideys\Content\Section\Type;
 
 use Ideys\Content\Section\Entity\Section;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
  * Section Form type.
@@ -20,7 +21,7 @@ class FormType extends SectionType
     {
         $formBuilder = parent::formBuilder($section)
             ->remove('type')
-            ->add('validationMessage', 'textarea', array(
+            ->add('validationMessage', TextareaType::class, array(
                 'label' => 'form.validation.message',
                 'required' => false,
             ))

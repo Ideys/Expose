@@ -5,6 +5,10 @@ namespace Ideys\Content\Section\Type;
 use Ideys\Content\Section\Entity\Section;
 use Ideys\Settings\Settings;
 use Doctrine\DBAL\Connection;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
 
 /**
@@ -45,61 +49,60 @@ class SectionType
     public function formBuilder(Section $section)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $section)
-            ->add('type', 'choice', array(
+            ->createBuilder(FormType::class, $section)
+            ->add('type', ChoiceType::class, array(
                 'choices'       => Section::getTypeChoices(),
                 'label'         => 'content.type',
             ))
-            ->add('title', 'text', array(
+            ->add('title', TextType::class, array(
                 'label'         => 'section.title',
                 'attr'          => array(
                     'placeholder' => 'section.title',
                 ),
             ))
-            ->add('description', 'textarea', array(
+            ->add('description', TextareaType::class, array(
                 'required'      => false,
                 'label'         => 'section.description',
                 'attr'          => array(
                     'placeholder' => 'section.description',
                 ),
             ))
-            ->add('customCss', 'textarea', array(
+            ->add('customCss', TextareaType::class, array(
                 'required'      => false,
                 'label'         => 'section.custom.css',
                 'attr'          => array(
                     'placeholder' => 'section.custom.css',
                 ),
             ))
-            ->add('customJs', 'textarea', array(
+            ->add('customJs', TextareaType::class, array(
                 'required'      => false,
                 'label'         => 'section.custom.js',
                 'attr'          => array(
                     'placeholder' => 'section.custom.js',
                 ),
             ))
-            ->add('exposeSectionId', 'choice', array(
+            ->add('exposeSectionId', ChoiceType::class, array(
                 'choices'       => $this->getDirChoices(),
                 'required'      => false,
                 'label'         => 'dir.dir',
-                'empty_value'   => 'dir.root',
             ))
-            ->add('menuPos', 'choice', array(
+            ->add('menuPos', ChoiceType::class, array(
                 'choices'       => Section::getMenuPosChoices(),
                 'label'         => 'section.menu.menu',
             ))
-            ->add('targetBlank', 'choice', array(
+            ->add('targetBlank', ChoiceType::class, array(
                 'label'         => 'link.target.blank',
                 'choices'       => Settings::getIOChoices(),
             ))
-            ->add('visibility', 'choice', array(
+            ->add('visibility', ChoiceType::class, array(
                 'choices'       => Section::getVisibilityChoices(),
                 'label'         => 'section.visibility.visibility',
             ))
-            ->add('shuffle', 'choice', array(
+            ->add('shuffle', ChoiceType::class, array(
                 'choices'       => Settings::getIOChoices(),
                 'label'         => 'gallery.slide.shuffle',
             ))
-            ->add('tag', 'text', array(
+            ->add('tag', TextType::class, array(
                 'label'         => 'section.tag',
                 'required'      => false,
             ))
@@ -127,7 +130,7 @@ class SectionType
 
         $choice = array();
         foreach ($sections as $section) {
-            $choice[$section['id']] = $section['title'];
+            $choice[$section['title']] = $section['id'];
         }
 
         return $choice;

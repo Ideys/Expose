@@ -3,6 +3,7 @@
 namespace Ideys;
 
 use Silex\Application as App;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 /**
  * Useful hooks to inform IDE of objects
@@ -67,18 +68,6 @@ class SilexHooks
     public static function monolog(App $app) { return $app['monolog']; }
 
     /**
-     * Shortcut to extract locale language string from translator service.
-     *
-     * @param App $app
-     *
-     * @return string
-     */
-    public static function language(App $app)
-    {
-        return static::translator($app)->getLocale();
-    }
-
-    /**
      * Shortcut for redirect responses.
      *
      * @param App    $app
@@ -120,6 +109,6 @@ class SilexHooks
      */
     public static function standardForm(App $app)
     {
-        return $app['form.factory']->createBuilder('form')->getForm();
+        return $app['form.factory']->createBuilder(FormType::class)->getForm();
     }
 }

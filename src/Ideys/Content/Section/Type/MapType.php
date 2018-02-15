@@ -4,6 +4,8 @@ namespace Ideys\Content\Section\Type;
 
 use Ideys\Content\Section\Entity\Section;
 use Ideys\Content\Section\Entity\Map;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
 
 /**
  * Section Map type.
@@ -21,19 +23,19 @@ class MapType extends SectionType
     {
         $formBuilder = parent::formBuilder($section)
             ->remove('type')
-            ->add('zoom', 'choice', array(
+            ->add('zoom', ChoiceType::class, array(
                 'label' => 'map.zoom',
                 'choices' => Map::getZoomChoice(),
             ))
-            ->add('latitude', 'number', array(
+            ->add('latitude', NumberType::class, array(
                 'label' => 'map.latitude',
-                'precision' => 15,
+                'scale' => 15,
             ))
-            ->add('longitude', 'number', array(
+            ->add('longitude', NumberType::class, array(
                 'label' => 'map.longitude',
-                'precision' => 15,
+                'scale' => 15,
             ))
-            ->add('mapMode', 'choice', array(
+            ->add('mapMode', ChoiceType::class, array(
                 'label' => 'map.mode.mode',
                 'choices' => Map::getMapModeChoice(),
             ))

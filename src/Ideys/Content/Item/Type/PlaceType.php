@@ -3,6 +3,8 @@
 namespace Ideys\Content\Item\Type;
 
 use Ideys\Content\Item\Entity\Place;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
@@ -20,8 +22,8 @@ class PlaceType extends ItemType
     public function formBuilder(Place $place)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $place)
-            ->add('title', 'text', array(
+            ->createBuilder(FormType::class, $place)
+            ->add('title', TextType::class, array(
                 'label' => 'section.title',
                 'attr' => array(
                     'placeholder' => 'section.title',

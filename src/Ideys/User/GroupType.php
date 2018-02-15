@@ -2,6 +2,8 @@
 
 namespace Ideys\User;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,11 +17,6 @@ class GroupType
      */
     protected $formFactory;
 
-    /**
-     * Constructor.
-     *
-     * @param \Symfony\Component\Form\FormFactory $formFactory
-     */
     public function __construct(FormFactory $formFactory)
     {
         $this->formFactory = $formFactory;
@@ -49,8 +46,8 @@ class GroupType
     public function formBuilder(Group $group)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $group)
-            ->add('name', 'text', array(
+            ->createBuilder(FormType::class, $group)
+            ->add('name', TextType::class, array(
                 'constraints'   => array(
                     new Assert\Length(array('min' => 4)),
                     new Assert\NotBlank(),

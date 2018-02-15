@@ -111,9 +111,9 @@ class Gallery extends Section implements SectionInterface
     public static function getGalleryModeChoice()
     {
         return array(
-            self::GALLERY_MODE_SLIDESHOW    => 'gallery.mode.slideshow',
-            self::GALLERY_MODE_VERTICAL     => 'gallery.mode.vertical',
-            self::GALLERY_MODE_MASONRY      => 'gallery.mode.masonry',
+            'gallery.mode.slideshow' => self::GALLERY_MODE_SLIDESHOW,
+            'gallery.mode.vertical'  => self::GALLERY_MODE_VERTICAL,
+            'gallery.mode.masonry'   => self::GALLERY_MODE_MASONRY,
         );
     }
 
@@ -125,8 +125,8 @@ class Gallery extends Section implements SectionInterface
     public static function getSlideModeChoice()
     {
         return array(
-            self::SLIDE_MODE_SLIDE  => 'gallery.slide.slide',
-            self::SLIDE_MODE_FADE   => 'gallery.slide.fade',
+           'gallery.slide.slide' => self::SLIDE_MODE_SLIDE,
+           'gallery.slide.fade' => self::SLIDE_MODE_FADE,
         );
     }
 
@@ -141,7 +141,7 @@ class Gallery extends Section implements SectionInterface
     {
         $rows = array();
         foreach (range(1, $max) as $row) {
-            $rows[(string)$row] = 'gallery.grid.rows'.$row;
+            $rows['gallery.grid.rows'.$row] = (string)$row;
         }
         return $rows;
     }
@@ -214,9 +214,9 @@ class Gallery extends Section implements SectionInterface
     public static function getSizeChoice()
     {
         return array(
-            self::SIZE_CENTERED     => 'gallery.slide.size.centered',
-            self::SIZE_FULL_SCREEN  => 'gallery.slide.size.full.screen',
-            self::SIZE_EXTENDED     => 'gallery.slide.size.extended',
+            'gallery.slide.size.centered'    => self::SIZE_CENTERED,
+            'gallery.slide.size.full.screen' => self::SIZE_FULL_SCREEN,
+            'gallery.slide.size.extended'    => self::SIZE_EXTENDED,
         );
     }
 
