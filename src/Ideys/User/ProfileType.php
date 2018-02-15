@@ -129,7 +129,7 @@ class ProfileType
 
         if ($this->fullForm) {
             $formBuilder
-                ->add('roles', 'choice', array(
+                ->add('roles', ChoiceType::class, array(
                     'label'         => 'user.role.role',
                     'choices'       => Profile::getRolesChoice(),
                     'multiple'      => true,
@@ -141,7 +141,7 @@ class ProfileType
                         )),
                     ),
                 ))
-                ->add('groupsId', 'choice', array(
+                ->add('groupsId', ChoiceType::class, array(
                     'label'         => 'user.groups',
                     'choices'       => $this->groupsAsChoice($groups),
                     'multiple'      => true,
