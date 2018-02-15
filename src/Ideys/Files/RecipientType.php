@@ -2,6 +2,8 @@
 
 namespace Ideys\Files;
 
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormFactory;
 
 /**
@@ -47,8 +49,8 @@ class RecipientType
     public function formBuilder(Recipient $recipient)
     {
         $formBuilder = $this->formFactory
-            ->createBuilder('form', $recipient)
-            ->add('name', 'text', array(
+            ->createBuilder(FormType::class, $recipient)
+            ->add('name', TextType::class, array(
                 'label'         => 'file.recipient',
             ))
         ;

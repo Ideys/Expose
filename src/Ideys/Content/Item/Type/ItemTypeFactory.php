@@ -15,9 +15,6 @@ class ItemTypeFactory
      */
     protected $formFactory;
 
-    /**
-     * @param FormFactory   $formFactory
-     */
     public function __construct(FormFactory $formFactory)
     {
         $this->formFactory = $formFactory;

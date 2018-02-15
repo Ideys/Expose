@@ -117,7 +117,7 @@ class Field extends Item
             return 'form.field.'.$item;
         }, $keys);
 
-        return array_combine($keys, $values);
+        return array_combine($values, $keys);
     }
 
     /**

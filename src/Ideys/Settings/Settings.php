@@ -146,8 +146,8 @@ class Settings
     public static function getIOChoices()
     {
         return array(
-            '1' => 'yes',
-            '0' => 'no',
+            'yes' => '1',
+            'no'  => '0',
         );
     }
 
@@ -239,8 +239,8 @@ class Settings
     public static function getSubDomainChoices()
     {
         return array(
-            self::SUB_DOMAIN_ROOT => 'http://',
-            self::SUB_DOMAIN_WWW  => 'http://www.',
+            'http://'     => self::SUB_DOMAIN_ROOT,
+            'http://www.' => self::SUB_DOMAIN_WWW,
         );
     }
 
@@ -272,8 +272,8 @@ class Settings
     public static function getLanguagesChoices()
     {
         return array(
-            'en' => 'language.en',
-            'fr' => 'language.fr',
+            'language.en' => 'en',
+            'language.fr' => 'fr',
         );
     }
 
@@ -405,8 +405,8 @@ class Settings
     public static function getLayoutBackgroundChoices()
     {
         return array(
-            self::LAYOUT_BG_BLACK => 'site.background.black',
-            self::LAYOUT_BG_WHITE => 'site.background.white',
+            'site.background.black' => self::LAYOUT_BG_BLACK,
+            'site.background.white' => self::LAYOUT_BG_WHITE,
         );
     }
 
@@ -498,9 +498,9 @@ class Settings
     public static function getAdminLinkChoices()
     {
         return array(
-            self::ADMIN_LINK_POS_CONTACT    => 'admin.link.on.contact.section',
-            self::ADMIN_LINK_POS_MENU       => 'admin.link.on.menu',
-            self::ADMIN_LINK_POS_DISABLED   => 'admin.link.disabled',
+            'admin.link.on.contact.section' => self::ADMIN_LINK_POS_CONTACT,
+            'admin.link.on.menu'            => self::ADMIN_LINK_POS_MENU,
+            'admin.link.disabled'           => self::ADMIN_LINK_POS_DISABLED,
         );
     }
 
@@ -552,9 +552,9 @@ class Settings
     public static function getContactSectionChoices()
     {
         return array(
-            self::CONTACT_SECTION_ENABLED   => 'contact.enabled',
-            self::CONTACT_SECTION_NO_FORM   => 'contact.no.form',
-            self::CONTACT_SECTION_DISABLED  => 'contact.disabled',
+            'contact.enabled'  => self::CONTACT_SECTION_ENABLED,
+            'contact.no.form'  => self::CONTACT_SECTION_NO_FORM,
+            'contact.disabled' => self::CONTACT_SECTION_DISABLED,
         );
     }
 
@@ -606,8 +606,8 @@ class Settings
     public static function getMenuPositionChoices()
     {
         return array(
-            self::MENU_POS_TOP  => 'top',
-            self::MENU_POS_LEFT => 'left',
+            'top'  => self::MENU_POS_TOP,
+            'left' => self::MENU_POS_LEFT,
         );
     }
 

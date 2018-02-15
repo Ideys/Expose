@@ -2,22 +2,16 @@
 
 namespace Ideys\Settings;
 
-use Silex\Application;
-use Silex\ServiceProviderInterface;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 
 /**
  * Silex settings manager service provider for Ideys Expose.
  */
 class SettingsServiceProvider implements ServiceProviderInterface
 {
-    public function register(Application $app)
+    public function register(Container $app)
     {
-        $app['settings'] = $app->share(function ($app) {
-            return new SettingsManager($app['db']);
-        });
-    }
-
-    public function boot(Application $app)
-    {
+        $app['settings'] = new SettingsManager($app['db']);
     }
 }

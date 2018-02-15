@@ -1,7 +1,5 @@
 <?php
 
-require __DIR__.'/db.php';
-
 $app['swiftmailer.options'] = array(
     'host' => 'localhost',
     'port' => '25',
@@ -25,9 +23,9 @@ $app['security.firewalls'] = array(
             'key' => '2QRXS92PSXZ5SWGF5UB1LS901ZDPGYNNLG98H2BU',
             'always_remember_me' => true,
         ),
-        'users' => $app->share(function () use ($app) {
+        'users' => function () use ($app) {
             return new \Ideys\User\UserProvider($app['db'], $app['session']);
-        }),
+        }
     ),
 );
 
@@ -45,6 +43,5 @@ $app['twig.path'] = array(__DIR__.'/../templates');
 $app['twig.options'] = array('cache' => __DIR__.'/../var/cache/twig');
 
 $app['languages'] = array('en', 'fr');
+$app['locale'] = 'fr';
 $app['locale_fallback'] = 'fr';
-
-$app['semver'] = '0.5';

@@ -10,7 +10,7 @@
           {% if slide.link|length %}
           <a href="{{ slide.link }}" title="{{ slide.title|e }}" target="_blank">
           {% endif %}
-          <img src="{{ app.request.basepath }}/gallery/1200/{{ slide.path }}"
+          <img src="{{ asset('gallery/1200/'~slide.path) }}"
                alt="{{ slide.title|e }}">
           {% if slide.link|length %}
           </a>

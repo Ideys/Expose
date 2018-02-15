@@ -34,7 +34,7 @@ $showcaseContent = function (Request $request, $slug = null, $itemSlug = null) u
         throw new Exception\NotFoundHttpException();
     }
 
-    $security = SilexHooks::security($app);
+    $security = $app['security.voters'];
     $urlGenerator = SilexHooks::urlGenerator($app);
 
     if (! $section->isHomepage() && $settingsManager->getSettings()->getMaintenance()
@@ -160,7 +160,7 @@ $showcaseController->match('/contact', function (Request $request) use ($app) {
 ->method('GET|POST')
 ;
 
-$showcaseController->get('/files/{token}/{slug}', function ($token, $slug) use ($app) {
+$showcaseController->get('/files/{token}/{slug}', function (Request $request, string $token, string $slug) use ($app) {
 
     $settings = SilexHooks::settingsManager($app)->getSettings();
     $filesHandler = new Files\FileProvider($app['db']);
@@ -176,7 +176,7 @@ $showcaseController->get('/files/{token}/{slug}', function ($token, $slug) use (
 
     $filesHandler->logDownload($file->getRecipients()[0]);
 
-    if (null !== $app['request']->query->get('preview')) {
+    if (null !== $request->query->get('preview')) {
         $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_INLINE;
     } else {
         $mode = \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_ATTACHMENT;

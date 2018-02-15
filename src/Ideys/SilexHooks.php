@@ -3,6 +3,7 @@
 namespace Ideys;
 
 use Silex\Application as App;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 /**
  * Useful hooks to inform IDE of objects
@@ -20,23 +21,9 @@ class SilexHooks
     /**
      * @param App $app
      *
-     * @return \Symfony\Component\Security\Core\SecurityContext
-     */
-    public static function security(App $app) { return $app['security']; }
-
-    /**
-     * @param App $app
-     *
      * @return \Symfony\Component\HttpFoundation\Session\Session
      */
     public static function session(App $app) { return $app['session']; }
-
-    /**
-     * @param App $app
-     *
-     * @return \Symfony\Component\HttpFoundation\Request
-     */
-    public static function request(App $app) { return $app['request']; }
 
     /**
      * @param App $app
@@ -62,13 +49,6 @@ class SilexHooks
     /**
      * @param App $app
      *
-     * @return \Symfony\Component\Form\FormFactory
-     */
-    public static function formFactory(App $app) { return $app['form.factory']; }
-
-    /**
-     * @param App $app
-     *
      * @return \Doctrine\DBAL\Connection
      */
     public static function db(App $app) { return $app['db']; }
@@ -86,18 +66,6 @@ class SilexHooks
      * @return \Monolog\Logger
      */
     public static function monolog(App $app) { return $app['monolog']; }
-
-    /**
-     * Shortcut to extract locale language string from translator service.
-     *
-     * @param App $app
-     *
-     * @return string
-     */
-    public static function language(App $app)
-    {
-        return static::translator($app)->getLocale();
-    }
 
     /**
      * Shortcut for redirect responses.
@@ -141,6 +109,6 @@ class SilexHooks
      */
     public static function standardForm(App $app)
     {
-        return static::formFactory($app)->createBuilder('form')->getForm();
+        return $app['form.factory']->createBuilder(FormType::class)->getForm();
     }
 }
