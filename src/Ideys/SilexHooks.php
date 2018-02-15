@@ -20,23 +20,9 @@ class SilexHooks
     /**
      * @param App $app
      *
-     * @return \Symfony\Component\Security\Core\SecurityContext
-     */
-    public static function security(App $app) { return $app['security']; }
-
-    /**
-     * @param App $app
-     *
      * @return \Symfony\Component\HttpFoundation\Session\Session
      */
     public static function session(App $app) { return $app['session']; }
-
-    /**
-     * @param App $app
-     *
-     * @return \Symfony\Component\HttpFoundation\Request
-     */
-    public static function request(App $app) { return $app['request']; }
 
     /**
      * @param App $app
@@ -58,13 +44,6 @@ class SilexHooks
      * @return \Twig_Environment
      */
     public static function twig(App $app) { return $app['twig']; }
-
-    /**
-     * @param App $app
-     *
-     * @return \Symfony\Component\Form\FormFactory
-     */
-    public static function formFactory(App $app) { return $app['form.factory']; }
 
     /**
      * @param App $app
@@ -141,6 +120,6 @@ class SilexHooks
      */
     public static function standardForm(App $app)
     {
-        return static::formFactory($app)->createBuilder('form')->getForm();
+        return $app['form.factory']->createBuilder('form')->getForm();
     }
 }

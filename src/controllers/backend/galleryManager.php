@@ -32,7 +32,8 @@ $galleryManagerController->match('/{id}/labels', function (Request $request, $id
         throw new \Exception('The section is not a gallery.');
     }
 
-    $formBuilder = SilexHooks::formFactory($app)->createBuilder('form')
+    /** @var \Symfony\Component\Form\FormFactory $app['form.factory'] */
+    $formBuilder = $app['form.factory']->createBuilder('form')
         ->add('global_legend', 'textarea', array(
             'label'     => 'gallery.global.legend',
             'data'      => $section->getLegend(),

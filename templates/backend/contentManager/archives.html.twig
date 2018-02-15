@@ -26,7 +26,7 @@
 
 {% block javascripts %}
 {{ parent() }}
-<script src="{{ app.request.basepath }}/assets/vendor/jquery-ui/ui/minified/widget.min.js"></script>
-<script src="{{ app.request.basepath }}/assets/vendor/blueimp-file-upload/js/jquery.iframe-transport.js"></script>
-<script src="{{ app.request.basepath }}/assets/vendor/blueimp-file-upload/js/jquery.fileupload.js"></script>
+<script src="{{ asset('assets/vendor/jquery-ui/ui/minified/widget.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.iframe-transport.js') }}"></script>
+<script src="{{ asset('assets/vendor/blueimp-file-upload/js/jquery.fileupload.js') }}"></script>
 {% endblock javascripts %}
