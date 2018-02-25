@@ -39,7 +39,7 @@ class SectionProvider extends AbstractProvider
 
         $sql = static::baseQuery()
             . 'WHERE t.language = ? '
-            . 'GROUP BY s.id '
+            //. 'GROUP BY s.id '
             . 'ORDER BY s.hierarchy ASC ';
         $rows = $this->db->fetchAll($sql, array($this->language));
 
