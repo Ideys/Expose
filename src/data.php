@@ -47,6 +47,7 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
       'gender' => 'm',
       'firstname' => 'Marc',
       'lastname' => 'Assein',
+      'groups' => serialize(['main']),
       'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_USER')),
     ));
@@ -56,6 +57,7 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
       'gender' => 'f',
       'firstname' => 'Mathilde',
       'lastname' => 'Sellier',
+      'groups' => serialize(['main']),
       'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_EDITOR')),
     ));
@@ -65,6 +67,7 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
       'gender' => 'f',
       'firstname' => 'Nathalie',
       'lastname' => 'Chamitang',
+      'groups' => serialize(['main']),
       'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_ADMIN')),
     ));
@@ -74,6 +77,7 @@ if (!$schema->tablesExist([TABLE_PREFIX.'user'])) {
       'gender' => 'm',
       'firstname' => 'John',
       'lastname' => 'Doe',
+      'groups' => serialize(['main']),
       'password' => '$2y$10$By2JrAGGH2UnVq0CSdjmS.41VrWj3Pp5rSuWzjKVPZ3RQj28AHcJq',
       'roles' => serialize(array('ROLE_SUPER_ADMIN')),
     ));
