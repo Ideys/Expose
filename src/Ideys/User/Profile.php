@@ -205,17 +205,12 @@ class Profile
         return $this->gender;
     }
 
-    /**
-     * Return gender choices.
-     *
-     * @return array
-     */
-    public static function getGenderChoice()
+    public static function getGenderChoice(): array
     {
-        return array(
-            'f' => 'user.f',
-            'm' => 'user.m',
-        );
+        return [
+            'user.f' => 'f',
+            'user.m' => 'm',
+        ];
     }
 
     /**
@@ -424,7 +419,7 @@ class Profile
         $values = array_map(function($item){
             return 'user.role.'.$item;
         }, $keys);
-        return array_combine($keys, $values);
+        return array_combine($values, $keys);
     }
 
     /**

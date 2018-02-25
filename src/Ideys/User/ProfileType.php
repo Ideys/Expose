@@ -168,7 +168,7 @@ class ProfileType
         $choices = [];
 
         foreach ($groups as $group) {
-            $choices[$group->getId()] = $group->getName();
+            $choices[$group->getName()] = $group->getId();
         }
 
         return $choices;
