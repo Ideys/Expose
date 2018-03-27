@@ -1,6 +1,6 @@
 {
-    "name": "fabpot/silex-skeleton",
-    "description": "A pre-configured skeleton for the Silex microframework",
+    "name": "valegar/expose",
+    "description": "A simple gallery manager with an easy to use admin",
     "license": "MIT",
     "type": "project",
     "require": {
